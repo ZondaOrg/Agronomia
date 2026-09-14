@@ -1,5 +1,5 @@
 import { useEffect, forwardRef, useImperativeHandle } from "react";
-import Table from "@/shared/components/table/Table";
+import Table from "@/shared/components/table/simple-table/Table";
 import Spinner from "@/shared/components/spinner/Spinner";
 import UseGetUsers from "@/features/add-user/hooks/use-get-users";
 import type { User } from "@/features/add-user/types/User";

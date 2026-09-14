@@ -2,7 +2,7 @@ import type { RouteData } from "@/core/routes/route-data";
 import { VENDEDOR_ROUTES } from "./paths";
 import VendedorLayout from "@/core/auth/layout/roles/vendedor/VendedorLayout";
 import { ProviderPanel } from "@/views/provider/ProviderPanel";
-import { ProvidersList } from "@/views/provider/pages/ProviderList";
+import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
 import { Client } from "@/views/client/Client";
 import ClientPanel from "@/views/client/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";

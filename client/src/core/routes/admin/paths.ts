@@ -6,6 +6,9 @@ export const ADMIN_ROUTES = {
     PRODUCTOS: `productos`,
     VENTAS: `ventas`,
     ADD_PROVIDER: `nuevo-proveedor`,
+    PAYMENT_PANEL: "formas-de-pago/:providerId/:providerName",
+    PAYMENT_PANEL_PATH: (providerId: number, providerName: string) =>
+        `formas-de-pago/${providerId}/${encodeURIComponent(providerName)}`,
     EDIT_PROVIDER: `editar-proveedor/:providerId`,
     EDIT_PROVIDER_PATH: (providerId: number) =>
         `editar-proveedor/${providerId}`,

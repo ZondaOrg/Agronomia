@@ -5,11 +5,12 @@ import Configuration from "@/features/add-user/pages/configuration/Configuration
 import ClientPanel from "@/views/client/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { ProviderPanel } from "@/views/provider/ProviderPanel";
-import { ProvidersList } from "@/views/provider/pages/ProviderList";
+import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
 import AddProvider from "@/features/add-provider/pages/AddProvider";
 import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
+import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -40,6 +41,11 @@ export const AdminRoutes: RouteData[] = [
                         path: ADMIN_ROUTES.EDIT_PROVIDER,
                         element: <EditProvider />,
                         handle: { breadcrumb: "Editar Proveedor" },
+                    },
+                    {
+                        path: ADMIN_ROUTES.PAYMENT_PANEL,
+                        element: <PaymentsPanel />,
+                        handle: { breadcrumb: "Formas de Pago" },
                     },
                 ],
             },

@@ -57,7 +57,7 @@ export const ProviderCard = ({ provider }: { provider: Provider }) => {
                         {...section}
                     />
                 ))}
-                <PaymentsMethods payments={provider.payments} />
+                <PaymentsMethods provider={provider} />
                 <PricesButton hasPrices={hasPrices} />
             </section>
         </article>

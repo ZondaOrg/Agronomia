@@ -18,14 +18,3 @@ export interface TablePaginator<T> {
     totalPages: number;
     last: boolean;
 }
-
-export interface TableDataContent {
-    columns: ColumnHeader[];
-    rows: SimpleRow[];
-}
-
-interface SimpleRow {
-    id: number;
-    data: Record<string, unknown>;
-    actions?: React.ReactNode;
-}
