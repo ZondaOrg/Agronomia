@@ -1,3 +1,6 @@
+import { Tabs } from "@/shared/components/tabs/Tabs";
+import { tabs } from "./tabs/Tabs";
+
 export const PaymentsPanel = () => {
-    return <h1>Payments Panel</h1>;
+    return <Tabs tabs={tabs} />;
 };
