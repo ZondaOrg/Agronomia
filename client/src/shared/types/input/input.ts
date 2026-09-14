@@ -1,5 +1,6 @@
 export type InputType =
     | "text"
+    | "number"
     | "select"
     | "email"
     | "password"

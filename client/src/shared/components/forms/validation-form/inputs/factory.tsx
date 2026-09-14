@@ -1,4 +1,10 @@
-import type { DeepRequired, FieldError, FieldErrorsImpl, Merge, UseFormRegister } from "react-hook-form";
+import type {
+    DeepRequired,
+    FieldError,
+    FieldErrorsImpl,
+    Merge,
+    UseFormRegister,
+} from "react-hook-form";
 import type { InferData, Schema } from "../shema";
 import type { output } from "zod";
 import type { InputData } from "@/shared/types/input/input";
@@ -49,15 +55,16 @@ function Input<T extends Schema>({
             );
         case "dynamic":
             return (
-                <DynamicInput 
+                <DynamicInput
                     key={input.id}
                     input={input}
                     inputStyles={styles}
                     error={error}
                     register={register}
                 />
-            )
+            );
         case "text":
+        case "number":
         case "email":
         case "password":
             return (
