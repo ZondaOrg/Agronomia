@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Tab } from "./types/Tabs";
-import { activeTab, tab, tabPanel, tabsContainer, tabsList } from "./styles";
+import { tab, tabPanel, tabsContainer, tabsList } from "./styles";
 
 export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -23,12 +23,9 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
                     return (
                         <button
                             key={tabData.nameTab}
-                            id={`tab-${index}`}
-                            className={`${tab} ${isActive ? activeTab : ""}`}
+                            className={tab({ active: isActive })}
                             type="button"
                             role="tab"
-                            aria-selected={isActive}
-                            aria-controls={`tabpanel-${index}`}
                             tabIndex={isActive ? 0 : -1}
                             onClick={() => setActiveIndex(index)}
                         >
@@ -38,7 +35,6 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
                 })}
             </div>
             <div
-                id={`tabpanel-${activeIndex}`}
                 className={tabPanel}
                 role="tabpanel"
                 aria-labelledby={`tab-${activeIndex}`}
