@@ -14,7 +14,6 @@ import com.agro.shared.entities.province.Province;
 import com.agro.shared.entities.rol.Role;
 import com.agro.shared.service.ResetService;
 import com.agro.shared.valueObjects.cuit.CuitDuplicatedException;
-import com.agro.shared.valueObjects.cuit.CuitException;
 import com.agro.shared.valueObjects.email.EmailValue;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;

@@ -18,11 +18,11 @@ public class CuitValue
     }
 
     private void validate(String value) {
-        if(!isOnlyNumber(value)) {
-            throw new CuitException("El Cuit debe tener solo números");
+        if(!isValidLength(value)) {
+            throw new CuitFormatException("El Cuit debe tener 11 números");
         }
-        else if(!isValidLength(value)) {
-            throw new CuitException("El Cuit debe tener 11 números");
+        else if(!isOnlyNumber(value)) {
+            throw new CuitFormatException("El Cuit debe tener solo números");
         }
         this.cuit = value;
     }
