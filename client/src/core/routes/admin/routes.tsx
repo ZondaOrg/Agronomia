@@ -11,6 +11,7 @@ import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
+import { Outlet } from "react-router";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -44,8 +45,18 @@ export const AdminRoutes: RouteData[] = [
                     },
                     {
                         path: ADMIN_ROUTES.PAYMENT_PANEL,
-                        element: <PaymentsPanel />,
-                        handle: { breadcrumb: "Formas de Pago" },
+                        element: <Outlet />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.providerName ?? "Proveedor",
+                        },
+                        children: [
+                            {
+                                index: true,
+                                element: <PaymentsPanel />,
+                                handle: { breadcrumb: "Formas de Pago" },
+                            },
+                        ],
                     },
                 ],
             },
