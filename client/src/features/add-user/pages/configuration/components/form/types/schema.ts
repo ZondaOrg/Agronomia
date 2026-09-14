@@ -1,6 +1,7 @@
 import z from "zod";
+import { ROLE } from "@/shared/domain/user/role";
 
-const roles = ["FACTURACION", "VENDEDOR", "ADMINISTRADOR"] as const;
+const roles = [ROLE.BILLING, ROLE.SELLER, ROLE.ADMIN] as const;
 
 const schema = z.object({
     name: z.string().min(1, "El nombre es requerido"),

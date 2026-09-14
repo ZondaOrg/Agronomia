@@ -7,6 +7,8 @@ import { Client } from "@/views/client/Client";
 import ClientPanel from "@/views/client/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
+import { Outlet } from "react-router";
+import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -22,6 +24,21 @@ export const VendedorRoutes: RouteData[] = [
                     {
                         index: true,
                         element: <ProvidersList />,
+                    },
+                    {
+                        path: VENDEDOR_ROUTES.PAYMENT_PANEL,
+                        element: <Outlet />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.providerName ?? "Proveedor",
+                        },
+                        children: [
+                            {
+                                index: true,
+                                element: <PaymentsPanel />,
+                                handle: { breadcrumb: "Formas de Pago" },
+                            },
+                        ],
                     },
                 ],
             },

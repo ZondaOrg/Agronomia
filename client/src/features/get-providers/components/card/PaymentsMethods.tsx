@@ -1,4 +1,5 @@
 import { RoleGuard } from "@/core/auth/components/RoleGuard";
+import { ROLE } from "@/shared/domain/user/role";
 import { ExternalLinkIcon } from "@/shared/components/icon/components/icons/ExternalLink";
 import SubSection from "@/shared/components/section/components/subSection/SubSection";
 import { paymentRow, paymentText, pricesLink, pricesLinkIcon } from "./styles";
@@ -30,7 +31,7 @@ export const PaymentsMethods = ({ provider }: { provider: Provider }) => {
                             <ExternalLinkIcon className={pricesLinkIcon} />
                         </Link>
                     ) : (
-                        <RoleGuard allowedRoles={["DUENIO"]}>
+                        <RoleGuard allowedRoles={[ROLE.OWNER]}>
                             <button
                                 type="button"
                                 className={pricesLink}

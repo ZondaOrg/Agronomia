@@ -1,6 +1,6 @@
 import type { Branch } from "@/features/add-user/types/Branch";
 import type { InputRow } from "@/shared/types/input/input";
-
+import { ROLE } from "@/shared/domain/user/role";
 
 const createUserInputs = (branches: Branch[]): InputRow[] => [
     [
@@ -21,9 +21,9 @@ const createUserInputs = (branches: Branch[]): InputRow[] => [
             placeholder: "Selecciona rol",
             id: 2,
             options: [
-                { id: 1, value: "FACTURACION", label: "Facturación" },
-                { id: 2, value: "VENDEDOR", label: "Vendedor" },
-                { id: 3, value: "ADMINISTRADOR", label: "Administrador" },
+                { id: 1, value: ROLE.BILLING, label: "Facturación" },
+                { id: 2, value: ROLE.SELLER, label: "Vendedor" },
+                { id: 3, value: ROLE.ADMIN, label: "Administrador" },
             ],
         },
     ],

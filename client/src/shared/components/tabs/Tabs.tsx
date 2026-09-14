@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Tab } from "./types/Tabs";
 import { tab, tabPanel, tabsContainer, tabsList } from "./styles";
+import { RoleGuard } from "@/core/auth/components/RoleGuard";
 
 export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -21,16 +22,18 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
                     const isActive = index === activeIndex;
 
                     return (
-                        <button
-                            key={tabData.nameTab}
-                            className={tab({ active: isActive })}
-                            type="button"
-                            role="tab"
-                            tabIndex={isActive ? 0 : -1}
-                            onClick={() => setActiveIndex(index)}
-                        >
-                            {tabData.nameTab}
-                        </button>
+                        <RoleGuard allowedRoles={tabData.allowedRoles || []}>
+                            <button
+                                key={tabData.nameTab}
+                                className={tab({ active: isActive })}
+                                type="button"
+                                role="tab"
+                                tabIndex={isActive ? 0 : -1}
+                                onClick={() => setActiveIndex(index)}
+                            >
+                                {tabData.nameTab}
+                            </button>
+                        </RoleGuard>
                     );
                 })}
             </div>

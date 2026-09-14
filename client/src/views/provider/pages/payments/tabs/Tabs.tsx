@@ -1,5 +1,6 @@
 import { UpdatePayments } from "@/features/update-payments/pages/UpdatePayments";
 import type { Tab } from "@/shared/components/tabs/types/Tabs";
+import { ROLE } from "@/shared/domain/user/role";
 
 export const tabs: Tab[] = [
     {
@@ -8,6 +9,7 @@ export const tabs: Tab[] = [
     },
     {
         page: <UpdatePayments />,
+        allowedRoles: [ROLE.OWNER],
         nameTab: "Actualizar",
     },
 ];
