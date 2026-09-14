@@ -22,21 +22,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalHandlerException {
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<RestErrorResponse> handleBusinessException(
-            BusinessException exception,
-            HttpServletRequest request
-    ) {
-        log.warn("Business rule violation - URI: {} | Message: {}", request.getRequestURI(), exception.getMessage());
-        RestErrorResponse error = new RestErrorResponse(
-                "Regla de negocio violada",
-                exception.getMessage(),
-                request.getServletPath(),
-                CauseError.BUSINESS_RULE_VIOLATION
-        );
-        return ResponseEntity.badRequest().body(error);
-    }
-
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<RestErrorResponse> handleConflictExcerption(ConflictException exception, HttpServletRequest request) {
         log.warn("Conflict rule violation - URI: {} | Message: {}", request.getRequestURI(), exception.getMessage());
