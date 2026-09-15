@@ -2,6 +2,7 @@ import { ADD_LEGAL_NAME } from "@/features/add-client/adapter/api-contract";
 import { createSubForms } from "@/shared/components/forms/types/factory";
 import { formatCuit } from "@/shared/domain/cuit-cuil/format";
 import { provinces } from "@/shared/domain/locate/locate";
+import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
 
 export const socialMotiveSubform = createSubForms([
     {
@@ -16,13 +17,7 @@ export const socialMotiveSubform = createSubForms([
             ],
             [
                 { motive: "Localidad", name: ADD_LEGAL_NAME.location },
-                { motive: "Provincia", name: ADD_LEGAL_NAME.province, type: "select", options: provinces.map(province => {
-                        return {
-                            value: province,
-                            label: province,
-                            id: province
-                        }
-                    })
+                { motive: "Provincia", name: ADD_LEGAL_NAME.province, type: "select", options: createSelectOptions(provinces)
                 }
             ]
         ]

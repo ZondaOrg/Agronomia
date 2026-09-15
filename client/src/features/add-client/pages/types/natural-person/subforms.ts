@@ -2,6 +2,7 @@ import { ADD_NATURAL_CLIENT } from "@/features/add-client/adapter/api-contract"
 import { createSubForms } from "@/shared/components/forms/types/factory"
 import { formatCuit } from "@/shared/domain/cuit-cuil/format"
 import { provinces } from "@/shared/domain/locate/locate"
+import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options"
 
 export const naturalPersonsubForms = createSubForms([
     {
@@ -21,14 +22,7 @@ export const naturalPersonsubForms = createSubForms([
             ],
             [
                 { motive: "Localidad", name: ADD_NATURAL_CLIENT.location },
-                { motive: "Provincia", name: ADD_NATURAL_CLIENT.province, type: "select", options: provinces.map(province => {
-                        return {
-                            value: province,
-                            label: province,
-                            id: province
-                        }
-                    })
-                }
+                { motive: "Provincia", name: ADD_NATURAL_CLIENT.province, type: "select", options: createSelectOptions(provinces) }
             ]
         ]
     }

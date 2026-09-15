@@ -1,6 +1,6 @@
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
 import providerSchema from "./types/provider-schema";
-import { providerSubForms } from "./types/input";
+import { providerSubForms } from "./types/subforms";
 import Button from "@/shared/components/button/Button";
 import { token } from "@styled-system/tokens";
 import { useAddProviders } from "../hook/use-add-provider";
