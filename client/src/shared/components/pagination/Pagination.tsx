@@ -12,7 +12,7 @@ export const Pagination = ({
     totalPages,
     onPageChange,
 }: PaginationProps) => {
-    const { nav, navButton, pageButton, activePageButton, ellipsis } = styles();
+    const { nav, navButton, pageButton, ellipsis } = styles();
 
     if (totalPages <= 1) return null;
 
@@ -41,9 +41,8 @@ export const Pagination = ({
                     <button
                         key={page}
                         type="button"
-                        className={
-                            page === currentPage ? activePageButton : pageButton
-                        }
+                        className={pageButton}
+                        data-active={page === currentPage}
                         onClick={() => onPageChange(page)}
                     >
                         {page}
