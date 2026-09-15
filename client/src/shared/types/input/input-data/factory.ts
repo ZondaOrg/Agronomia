@@ -1,6 +1,5 @@
 import type { BaseInputData, InputData, InputRow } from "../input";
 import type { CreateField, CreateRowField } from "./create-field";
-import { createName } from "./create-name-field";
 import { createPlaceholder } from "./create-placeholder";
 
 export function createInputsRow(fields: CreateRowField[], idCounter?: {current: number}): InputRow[] {
@@ -26,7 +25,7 @@ export function createInputRow(field: CreateField, index: number, idCounter?: {c
             }
         default: 
             return {
-                type: field.type,
+                type: field.type ?? "text",
                 ...base
             }
     }
@@ -35,7 +34,7 @@ export function createInputRow(field: CreateField, index: number, idCounter?: {c
 function createRowInput(field: CreateField, id: number): BaseInputData {
     return {
         id: id,
-        name: createName(field.motive),
+        name: field.name,
         title: field.motive,
         placeholder: field.placeholder ?? createPlaceholder(field.motive),
         defaultValue: field.defaultValue,
