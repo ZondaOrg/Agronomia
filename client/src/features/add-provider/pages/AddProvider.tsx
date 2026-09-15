@@ -6,7 +6,7 @@ import { token } from "@styled-system/tokens";
 import { useAddProviders } from "../hook/use-add-provider";
 import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
-import type { ProviderRequest } from "../types/ProviderRequest";
+import type { ProviderRequest } from "../adapter/ProviderRequest";
 import { ModalCreateProvider } from "./components/ModalCreateProvider";
 import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
 import { css } from "@styled-system/css";
