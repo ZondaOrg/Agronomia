@@ -1,7 +1,6 @@
-import { naturalPersonsubForms, socialMotiveSubform } from "./types/subforms";
-import naturalPersonSchema from "./types/natural-person-schema";
+import naturalPersonSchema from "./types/natural-person/natural-person-schema";
 import PolimorficForm from "@/shared/components/forms/polimorfic-form/PolimorficForm";
-import socialMotiveSchema from "./types/social-motive-schema";
+import socialMotiveSchema from "./types/social-motive/social-motive-schema";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import useAddClient from "../hooks/use-add-client";
 import SuccessToast from "@/shared/components/toast/success/SuccessToast";
@@ -13,6 +12,8 @@ import { ModalCreateClient } from "../components/modal-create-client/ModalCreate
 import Button from "@/shared/components/button/Button";
 import { token } from "@styled-system/tokens";
 import { css } from "@styled-system/css";
+import { naturalPersonsubForms } from "./types/natural-person/subforms";
+import { socialMotiveSubform } from "./types/social-motive/subforms";
 
 const backButtonContainer = css({
     display: "flex",

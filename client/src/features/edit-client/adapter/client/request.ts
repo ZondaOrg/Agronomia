@@ -8,7 +8,7 @@ export type ClientEditRequest = NaturalEditRequest | LegalEditRequest;
 export function clientRequestAdapter(client: ClientToEdit): ClientEditRequest {
     if ("razonSocial" in client) {
         return {
-            type: ClientOption.RAZON_SOCIAL,
+            type: ClientOption.LEGAL_NAME,
             associateName: client.name,
             associateSurname: client.surname,
             associatePhone: client.phone,
