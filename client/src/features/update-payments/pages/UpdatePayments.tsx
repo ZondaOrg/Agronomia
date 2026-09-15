@@ -13,7 +13,7 @@ export const UpdatePayments = () => {
     const [page, setPage] = useState(0);
     const [draftRow, setDraftRow] =
         useState<Partial<PaymentRow>>(initialPaymentDraft);
-    const size = 5;
+    const size = 4;
 
     const addPayment = () => {
         if (!draftRow.paymentMethod?.trim()) {
@@ -63,6 +63,7 @@ export const UpdatePayments = () => {
         <FormTable<PaymentRow>
             columns={paymentColumns}
             rows={pageRows}
+            nameElements="formas de pago"
             page={currentPage}
             size={size}
             totalElements={rows.length}

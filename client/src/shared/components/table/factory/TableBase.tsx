@@ -17,6 +17,7 @@ import {
 
 export interface TableBaseProps<T> extends TablePaginator<T> {
     draftRow?: React.ReactNode;
+    nameElements: string;
     onPageChange?: (page: number) => void;
     renderCell?: (value: unknown, key: string, data: T) => React.ReactNode;
 }
@@ -56,6 +57,7 @@ export const TableBase = <T extends Record<string, unknown>>({
     totalElements = 0,
     totalPages = 0,
     draftRow,
+    nameElements = "elementos",
     onPageChange,
     renderCell,
 }: TableBaseProps<T>) => {
@@ -91,9 +93,10 @@ export const TableBase = <T extends Record<string, unknown>>({
             </div>
 
             {(totalElements > 0 || totalPages > 1) && (
-                <div className={pagination}>
+                <footer className={pagination}>
                     <span className={size}>
-                        Mostrando {rows.length} de {totalElements} elementos
+                        Mostrando {rows.length} de {totalElements}{" "}
+                        {nameElements}
                     </span>
                     <div className={paginationButton}>
                         {onPageChange && totalPages > 1 && (
@@ -106,7 +109,7 @@ export const TableBase = <T extends Record<string, unknown>>({
                             />
                         )}
                     </div>
-                </div>
+                </footer>
             )}
         </div>
     );

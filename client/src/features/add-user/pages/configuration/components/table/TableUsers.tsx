@@ -61,6 +61,7 @@ export const TableUsers = forwardRef<TableUsersRef>((_, ref) => {
             rows={formattedRows}
             page={users.page}
             size={users.size}
+            nameElements="usuarios"
             totalElements={users.totalElements}
             totalPages={users.totalPages}
             last={users.last}

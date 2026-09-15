@@ -11,6 +11,12 @@ export const getPageNumbers = (
             i >= currentPage - delta && i <= currentPage + delta;
 
         if (isEdge || isNearCurrent) {
+            const lastPage = pages[pages.length - 1];
+
+            if (typeof lastPage === "number" && i - lastPage === 2) {
+                pages.push(lastPage + 1);
+            }
+
             pages.push(i);
         } else if (pages[pages.length - 1] !== "...") {
             pages.push("...");

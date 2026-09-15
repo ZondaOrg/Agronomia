@@ -87,4 +87,144 @@ export const initialPaymentRows: DataRow<PaymentRow>[] = [
             bonusPercentage: "",
         },
     },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
+    {
+        id: 1,
+        data: {
+            paymentMethod:
+                "DOL720: 30% seña - 17,50% a 10 días - 17,50% a 360 días - 17,50% a 540 días",
+            adjustment: "Descuento",
+            percentage: "",
+            bonusPercentage: "",
+        },
+    },
 ];

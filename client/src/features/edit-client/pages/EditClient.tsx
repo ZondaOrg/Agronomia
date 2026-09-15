@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import PolimorficForm from "@/shared/components/forms/polimorfic-form/PolimorficForm";
-
-import {
-    generateNaturalPersonSubForms,
-    generateSocialMotiveSubForms,
-} from "./types/subForms";
 import { useGetClientById } from "../hook/use-get-client-by-id";
 import { usePutClient } from "../hook/use-put-client";
-import type { ClientEditSchema } from "../types/Client";
 import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
-import socialMotiveSchema from "../types/social-motive-schema";
-import naturalPersonSchema from "../types/natural-person-schema";
+import { generateNaturalPersonSubForms } from "./types/natural-person/subforms";
+import { generateSocialMotiveSubForms } from "./types/social-motive/subforms";
+import socialMotiveSchema from "./types/social-motive/social-motive-schema";
+import naturalPersonSchema from "./types/natural-person/natural-person-schema";
+import type { ClientRequest } from "../adapter/request/client";
 
 export const EditClient = () => {
     const { clientId } = useParams<{ clientId: string }>();
@@ -59,8 +56,8 @@ export const EditClient = () => {
     const isLegalClient = "razonSocial" in client;
     const naturalPersonForms = generateNaturalPersonSubForms(client);
     const socialMotiveForms = generateSocialMotiveSubForms(client);
-    const handleSubmit = async (data: ClientEditSchema) => {
-        const updatedClient = await editClient({ ...data, id: client.id });
+    const handleSubmit = async (data: Omit<ClientRequest, "type">) => {
+        const updatedClient = await editClient(data, client.id);
 
         if (updatedClient) {
             navigate("..");
