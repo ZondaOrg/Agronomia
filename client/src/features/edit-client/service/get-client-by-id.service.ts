@@ -1,10 +1,7 @@
 import http from "@/core/server/http-client";
 import { CLIENT_PATH_BY_ID } from "@/core/server/urls/client";
-import {
-    clientResponseAdapter,
-    type ClientResponse,
-} from "../adapter/client/response";
 import type { ClientToEdit } from "../types/Client";
+import { clientResponseAdapter, type ClientResponse } from "../adapter/response";
 
 export const getClientById = async (
     clientId: number,
