@@ -1,7 +1,8 @@
 import type React from "react";
+import type { Params } from "react-router";
 
 type Handle = {
-    breadcrumb?: string;
+    breadcrumb?: string | ((params: Params<string>) => string);
 };
 
 type IndexRouteData = {

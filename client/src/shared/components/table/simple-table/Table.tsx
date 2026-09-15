@@ -1,4 +1,4 @@
-import type { TablePaginator } from "@/shared/types/table/Table";
+import type { TablePaginator } from "@/shared/components/table/types/Table";
 import {
     tableWrapper,
     tableCard,

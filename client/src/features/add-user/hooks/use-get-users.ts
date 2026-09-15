@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { TablePaginator } from "@/shared/types/table/Table";
+import type { TablePaginator } from "@/shared/components/table/types/Table";
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 import type { User } from "../types/User";
 import getUsersService from "../services/get-users.service";

@@ -1,7 +1,7 @@
 import http from "@/core/server/http-client";
-import type { TablePaginator } from "@/shared/types/table/Table";
-import type { User } from "@/features/admin/types/User";
+import type { TablePaginator } from "@/shared/components/table/types/Table";
 import { USERS_PATH } from "@/core/server/urls/users";
+import type { User } from "../types/User";
 
 async function getUsersService(
     page: number = 0,
