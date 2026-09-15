@@ -1,11 +1,11 @@
-import type { NaturalPerson } from "../../domain/natural-person";
-import type { RazonSocial } from "../../domain/razon-social";
-import type { NaturalPersonSchema } from "../../pages/types/natural-person-schema";
-import type { SocialMotiveSchema } from "../../pages/types/social-motive-schema";
-import { ClientOption } from "../../../../shared/domain/client/client";
+import type { NaturalPerson } from "../domain/natural-person";
+import type { RazonSocial } from "../domain/razon-social";
+import type { NaturalPersonSchema } from "../pages/types/natural-person/natural-person-schema";
+import type { SocialMotiveSchema } from "../pages/types/social-motive/social-motive-schema";
+import { ClientOption } from "../../../shared/domain/client/client";
 
 type RazonSocialResponse = SocialMotiveSchema & {
-    type: typeof ClientOption.RAZON_SOCIAL;
+    type: typeof ClientOption.LEGAL_NAME;
     id: number;
 };
 
@@ -35,7 +35,7 @@ export function clientResponseAdapter(
                 email: response.email,
             };
 
-        case ClientOption.RAZON_SOCIAL:
+        case ClientOption.LEGAL_NAME:
             return {
                 id: response.id,
                 cuit: response.cuit,
