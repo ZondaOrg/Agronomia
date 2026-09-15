@@ -1,27 +1,9 @@
-import type { BaseInputData, InputData, InputRow, Option, TextInputType } from "./input";
-
-type BaseCreateField = {
-    motive: string
-    isRequired: boolean 
-    placeholder?: string
-    disable?: boolean
-    defaultValue?: string
-}
-
-type CreateTextField    = BaseCreateField & {type: TextInputType}
-type CreateSelectField  = BaseCreateField & {type: 'select', options: Option[]}
-type CreateDynamicField = BaseCreateField & {type: 'dynamic', format: (data: string) => string}
-
-export type CreateField = 
-    CreateTextField   | 
-    CreateSelectField | 
-    CreateDynamicField
-
-export type CreateRowField = CreateField[]
+import type { BaseInputData, InputData, InputRow } from "../input";
+import type { CreateField, CreateRowField } from "./create-field";
+import { createName } from "./create-name-field";
 
 export function createInputsRow(fields: CreateRowField[], idCounter?: {current: number}): InputRow[] {
     return fields.map((row) => row.map((field, i) => createInputRow(field, i, idCounter)));
-
 }
 
 export function createInputRow(field: CreateField, index: number, idCounter?: {current: number}): InputData {
@@ -60,20 +42,3 @@ function createRowInput(field: CreateField, id: number): BaseInputData {
         disabled: field.disable
     }
 }
-
-function createName(text: string): string {
-    const normalized = text
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-zA-Z0-9\s]/g, " ");
-
-    const words = normalized.trim().split(/\s+/).filter(Boolean);
-
-    return words
-        .map((word, i) => {
-            const lower = word.toLowerCase();
-            return i === 0 ? lower : lower.charAt(0).toUpperCase() + lower.slice(1);
-        })
-        .join("");
-}
-

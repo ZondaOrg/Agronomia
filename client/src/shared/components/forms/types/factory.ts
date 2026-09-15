@@ -1,5 +1,6 @@
-import { createInputsRow, type CreateField } from "@/shared/types/input/factory";
+import { createInputsRow } from "@/shared/types/input/input-data/factory";
 import type { SubFormData } from "./sub-form"
+import type { CreateField } from "@/shared/types/input/input-data/create-field";
 
 interface CreateSubForm {
     name?: string 
