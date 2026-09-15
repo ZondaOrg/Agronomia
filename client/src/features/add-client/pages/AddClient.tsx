@@ -1,18 +1,18 @@
-import { naturalPersonsubForms, socialMotiveSubform } from "./types/subforms";
-import naturalPersonSchema from "./types/natural-person-schema";
+import naturalPersonSchema from "./types/natural-person/natural-person-schema";
 import PolimorficForm from "@/shared/components/forms/polimorfic-form/PolimorficForm";
-import socialMotiveSchema from "./types/social-motive-schema";
+import socialMotiveSchema from "./types/social-motive/social-motive-schema";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import useAddClient from "../hooks/use-add-client";
 import SuccessToast from "@/shared/components/toast/success/SuccessToast";
-import { useState } from "react";
-import type { ClientSchema } from "../adapter/client-schema";
 import useIsModal from "@/shared/hooks/use-is-modal";
 import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
 import { ModalCreateClient } from "../components/modal-create-client/ModalCreateClient";
 import Button from "@/shared/components/button/Button";
 import { token } from "@styled-system/tokens";
 import { css } from "@styled-system/css";
+import { naturalPersonsubForms } from "./types/natural-person/subforms";
+import { socialMotiveSubform } from "./types/social-motive/subforms";
+import type { ClientRequest } from "../adapter/request/client";
 
 const backButtonContainer = css({
     display: "flex",
@@ -23,11 +23,9 @@ const backButtonContainer = css({
 
 const AddClient = () => {
     const { add, refresh, data, error } = useAddClient();
-    const [client, setClient] = useState<ClientSchema>();
     const { isOpen, onOpenIs, backToPrev, refresh: r } = useIsModal();
 
-    const handleClient = async (clientData: ClientSchema) => {
-        setClient(clientData);
+    const handleClient = async (clientData: Exclude<ClientRequest, "type">) => {
         const client = await add(clientData);
         if (client) onOpenIs(!!client, "confirm");
     };
@@ -88,7 +86,7 @@ const AddClient = () => {
             )}
             {data && (
                 <SuccessToast
-                    message={`Se ha creado el cliente ${client?.name} ${client?.surname}`}
+                    message={`Se ha creado el cliente ${data.completeName.name} ${data.completeName.surname}`}
                     title="Cliente creado"
                     onClose={refresh}
                 />

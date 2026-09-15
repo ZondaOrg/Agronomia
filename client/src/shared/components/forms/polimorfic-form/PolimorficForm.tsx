@@ -10,7 +10,7 @@ import ValidationForm, {
 import { container } from "./styles";
 
 interface PolimorficFormProps<T extends Schema> {
-    options: OptionForm<T>[];
+    options: OptionForm[];
     buttonData: ButtonData;
     onCancel: (isCancel: boolean) => void;
     initialSubType?: string;
@@ -63,7 +63,7 @@ function PolimorficForm<T extends Schema>({
 
 interface SubFormFactoryProps<T extends Schema> {
     subType: string;
-    options: OptionForm<T>[];
+    options: OptionForm[];
     onCancel: (isCancel: boolean) => void;
     initialValues?: Partial<InferData<T>>;
     ref: React.Ref<ValidationFormHandleProps>;
