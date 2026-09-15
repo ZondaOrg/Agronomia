@@ -1,5 +1,5 @@
 import type { TablePaginator } from "@/shared/components/table/types/Table";
-import TableBase from "../TableBase";
+import TableBase from "../factory/TableBase";
 
 interface TableProps<T> extends TablePaginator<T> {
     onPageChange?: (page: number) => void;

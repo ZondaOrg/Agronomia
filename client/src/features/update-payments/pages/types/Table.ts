@@ -20,35 +20,61 @@ export const paymentColumns: FormColumn[] = [
     {
         key: "paymentMethod",
         header: "FORMA DE PAGO",
-        inputType: "text",
-        placeholder: "Ingresa descripción forma de pago",
+        input: {
+            type: "text",
+            name: "paymentMethod",
+            title: "Forma de pago",
+            placeholder: "Ingresa descripción forma de pago",
+            defaultValue: "",
+            id: 1,
+        },
     },
     {
         key: "adjustment",
         header: "RECARGO/DESCUENTO",
-        inputType: "select",
-        options: [...adjustmentOptions],
+        input: {
+            type: "select",
+            name: "adjustment",
+            title: "Recargo/descuento",
+            placeholder: "Selecciona",
+            defaultValue: "No aplica",
+            options: [...adjustmentOptions],
+            id: 2,
+        },
     },
     {
         key: "percentage",
         header: "VALOR %",
-        inputType: "number",
-        placeholder: "%",
+        input: {
+            type: "number",
+            name: "percentage",
+            title: "Valor %",
+            placeholder: "%",
+            defaultValue: "",
+            id: 3,
+        },
     },
     {
         key: "bonusPercentage",
-        header: "BONIFICACIÓN",
-        inputType: "number",
-        placeholder: "%",
+        header: "BONIFICACIÓN %",
+        input: {
+            type: "number",
+            name: "bonusPercentage",
+            title: "Bonificación %",
+            placeholder: "%",
+            defaultValue: "",
+            id: 4,
+        },
     },
 ];
 
-export const initialPaymentDraft: PaymentRow = {
-    paymentMethod: "",
-    adjustment: "No aplica",
-    percentage: "",
-    bonusPercentage: "",
-};
+export const initialPaymentDraft = paymentColumns.reduce(
+    (draft, column) => ({
+        ...draft,
+        [column.key]: column.input.defaultValue ?? "",
+    }),
+    {},
+) as PaymentRow;
 
 export const initialPaymentRows: DataRow<PaymentRow>[] = [
     {

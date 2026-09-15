@@ -26,7 +26,7 @@ export const Pagination = ({
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
             >
-                ‹ Previous
+                ‹ Anterior
             </button>
 
             {pages.map((page, index) =>
@@ -57,7 +57,7 @@ export const Pagination = ({
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
             >
-                Next ›
+                Siguiente ›
             </button>
         </nav>
     );

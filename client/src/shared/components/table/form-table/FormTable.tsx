@@ -1,23 +1,26 @@
-import TableBase from "../TableBase";
+import TableBase from "../factory/TableBase";
 import type { ColumnHeader, TablePaginator } from "../types/Table";
-import { td, tdActions, tr } from "../simple-table/style";
-import { addButton } from "./style";
-import { FormTableInput } from "./components/FormTableInput";
-import type { InputType, Option } from "@/shared/types/input/input";
+import { td, tr } from "../factory/style";
+import { FormTableInput } from "./components/factory";
+import Button from "../../button/Button";
+import { token } from "@styled-system/tokens";
+import { createActionCell } from "../factory/actionsFactory";
+import type { InputData } from "@/shared/types/input/input";
 
 export interface FormColumn extends ColumnHeader {
-    inputType: InputType;
-    placeholder?: string;
-    options?: Option[];
+    input: InputData;
 }
 
-export interface FormTableProps<T extends Record<string, unknown>>
-    extends Omit<TablePaginator<T>, "columns"> {
+export interface FormTableProps<T extends Record<string, unknown>> extends Omit<
+    TablePaginator<T>,
+    "columns"
+> {
     columns: FormColumn[];
     draftRow?: Partial<T>;
     onDraftChange?: (draftRow: Partial<T>) => void;
-    onAddRow?: () => void;
+    onAddRow: () => void;
     addLabel?: string;
+    onPageChange?: (page: number) => void;
 }
 
 export const FormTable = <T extends Record<string, unknown>>({
@@ -32,7 +35,8 @@ export const FormTable = <T extends Record<string, unknown>>({
     const draftContent = draftRow ? (
         <tr className={tr(0)}>
             {columns.map((column) => {
-                const value = draftRow[column.key];
+                const value =
+                    draftRow[column.key] ?? column.input.defaultValue ?? "";
 
                 return (
                     <td
@@ -40,10 +44,8 @@ export const FormTable = <T extends Record<string, unknown>>({
                         className={td}
                     >
                         <FormTableInput
-                            type={column.inputType}
+                            input={column.input}
                             value={value}
-                            placeholder={column.placeholder}
-                            options={column.options}
                             onChange={(nextValue) =>
                                 onDraftChange?.({
                                     ...draftRow,
@@ -54,17 +56,19 @@ export const FormTable = <T extends Record<string, unknown>>({
                     </td>
                 );
             })}
-            <td className={tdActions}>
-                {onAddRow && (
-                    <button
-                        className={addButton}
-                        type="button"
-                        onClick={onAddRow}
-                    >
-                        + {addLabel}
-                    </button>
-                )}
-            </td>
+            {createActionCell(
+                <Button
+                    color="white"
+                    hoverColor={token("colors.primaryColorHover")}
+                    textColor={token("colors.primaryColor")}
+                    textHoverColor="white"
+                    borderColor={token("colors.primaryColor")}
+                    type="button"
+                    onClick={onAddRow}
+                >
+                    {addLabel}
+                </Button>,
+            )}
         </tr>
     ) : null;
 

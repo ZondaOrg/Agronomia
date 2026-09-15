@@ -1,0 +1,32 @@
+name: Main Config
+version: 1.0.0
+schema: v1
+models:
+    - name: Gemini Pro
+      provider: gemini
+      model: gemini-2.5-pro
+      apiKey: AQ.Ab8RN6JKMLiWUHu0BZgkPZtWFMNeYAZ_ygWstSDNZYX3LbMI2g
+      roles:
+          - chat
+          - edit
+          - apply
+      defaultCompletionOptions:
+          contextLength: 1048576
+          maxTokens: 65536
+      capabilities:
+          - tool_use
+          - image_input
+    - name: Gemini Flash
+      provider: gemini
+      model: gemini-2.5-flash
+      apiKey: AQ.Ab8RN6JKMLiWUHu0BZgkPZtWFMNeYAZ_ygWstSDNZYX3LbMI2g
+      roles:
+          - chat
+          - edit
+          - apply
+      defaultCompletionOptions:
+          contextLength: 1048576
+          maxTokens: 65536
+      capabilities:
+          - tool_use
+          - image_input

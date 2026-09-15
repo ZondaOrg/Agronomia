@@ -1,4 +1,5 @@
 import { css, sva } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 const nav = css.raw({
     display: "flex",
@@ -11,11 +12,11 @@ const nav = css.raw({
 const navButton = css.raw({
     border: 0,
     background: "transparent",
-    color: "#666666",
+    color: token("colors.primaryColor"),
     fontSize: "14px",
     cursor: "pointer",
     padding: "6px 8px",
-    _hover: { color: "#333333" },
+    _hover: { color: token("colors.primaryColorHover") },
     _disabled: { color: "#CCCCCC", cursor: "not-allowed" },
 });
 
@@ -24,6 +25,7 @@ const pageButton = css.raw({
     alignItems: "center",
     justifyContent: "center",
     width: "32px",
+    bg: token("colors.primaryColor"),
     height: "32px",
     border: "1px solid transparent",
     borderRadius: "6px",
@@ -40,6 +42,7 @@ const activePageButton = css.raw({
     justifyContent: "center",
     width: "32px",
     height: "32px",
+    bg: token("colors.primaryColor"),
     border: "1px solid primaryColor",
     borderRadius: "6px",
     background: "white",

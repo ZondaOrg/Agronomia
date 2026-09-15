@@ -1,6 +1,6 @@
-import type { ColumnHeader, DataRow, TablePaginator } from "./types/Table";
-import { Pagination } from "../pagination/Pagination";
-import { createActionCell } from "./factory/actionsFactory";
+import type { ColumnHeader, DataRow, TablePaginator } from "../types/Table";
+import { Pagination } from "../../pagination/Pagination";
+import { createActionCell } from "./actionsFactory";
 import {
     tableWrapper,
     tableCard,
@@ -11,8 +11,9 @@ import {
     tr,
     td,
     pagination,
-    footerText,
-} from "./factory/style";
+    size,
+    paginationButton,
+} from "./style";
 
 export interface TableBaseProps<T> extends TablePaginator<T> {
     draftRow?: React.ReactNode;
@@ -91,10 +92,10 @@ export const TableBase = <T extends Record<string, unknown>>({
 
             {(totalElements > 0 || totalPages > 1) && (
                 <div className={pagination}>
-                    <span className={footerText}>
+                    <span className={size}>
                         Mostrando {rows.length} de {totalElements} elementos
                     </span>
-                    <div>
+                    <div className={paginationButton}>
                         {onPageChange && totalPages > 1 && (
                             <Pagination
                                 currentPage={page + 1}
