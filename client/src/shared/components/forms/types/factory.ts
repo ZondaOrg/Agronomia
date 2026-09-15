@@ -1,10 +1,10 @@
 import { createInputsRow } from "@/shared/types/input/input-data/factory";
 import type { SubFormData } from "./sub-form"
-import type { CreateField } from "@/shared/types/input/input-data/create-field";
+import type { CreateRowField } from "@/shared/types/input/input-data/create-field";
 
 interface CreateSubForm {
     name?: string 
-    fields: CreateField[][]
+    fields: CreateRowField[]
 }
 
 export function createSubForms(factoryData: CreateSubForm[]): SubFormData[] {

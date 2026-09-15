@@ -3,7 +3,7 @@ import type { TextInputType } from "../type-check"
 
 type BaseCreateField = {
     motive: string
-    isRequired: boolean 
+    isRequired?: false 
     placeholder?: string
     disable?: boolean
     defaultValue?: string

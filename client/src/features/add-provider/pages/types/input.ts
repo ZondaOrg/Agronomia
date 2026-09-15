@@ -6,11 +6,11 @@ export const providerSubForms = createSubForms([
         name: "Datos",
         fields: [
             [
-                { motive: "Razón social", type: "text", isRequired: true },
-                { motive: "CUIT/CUIL", type: "dynamic", isRequired: true, format: formatCuit },
+                { motive: "Razón social", type: "text" },
+                { motive: "CUIT/CUIL", type: "dynamic", format: formatCuit },
             ],
             [
-                { motive: "Nombre comercial", type: "text", isRequired: true },
+                { motive: "Nombre comercial", type: "text" },
             ],
         ]
     },
@@ -18,11 +18,11 @@ export const providerSubForms = createSubForms([
         name: "Contacto",
         fields: [
             [
-                { motive: "Teléfono fábrica", type: "text", isRequired: true },
+                { motive: "Teléfono fábrica", type: "text"  },
             ],
             [
-                { motive: "Nombre viajante", type: "text", isRequired: true },
-                { motive: "Teléfono viajante", type: "text", isRequired: true }
+                { motive: "Nombre viajante", type: "text", isRequired: false },
+                { motive: "Teléfono viajante", type: "text", isRequired: false }
             ],
         ]
     }

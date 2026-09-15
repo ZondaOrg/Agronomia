@@ -39,7 +39,7 @@ function createRowInput(field: CreateField, id: number): BaseInputData {
         title: field.motive,
         placeholder: field.placeholder ?? createPlaceholder(field.motive),
         defaultValue: field.defaultValue,
-        required: field.isRequired,
+        required: field.isRequired ?? true,
         disabled: field.disable
     }
 }
