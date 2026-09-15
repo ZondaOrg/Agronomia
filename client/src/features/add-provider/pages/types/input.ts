@@ -1,7 +1,36 @@
-import type { SubFormData } from "@/shared/components/forms/types/sub-form";
+import { createSubForms } from "@/shared/components/forms/types/factory";
 import { formatCuit } from "@/shared/domain/cuit-cuil/format";
 
-export const providerSubForms: SubFormData[] = [
+export const providerSubForms = createSubForms([
+    {
+        name: "Datos",
+        fields: [
+            [
+                { motive: "Razón social", type: "text", isRequired: true },
+                { motive: "CUIT/CUIL", type: "dynamic", isRequired: true, format: formatCuit },
+            ],
+            [
+                { motive: "Nombre comercial", type: "text", isRequired: true },
+            ],
+        ]
+    },
+    {
+        name: "Contacto",
+        fields: [
+            [
+                { motive: "Teléfono fábrica", type: "text", isRequired: true },
+            ],
+            [
+                { motive: "Nombre viajante", type: "text", isRequired: true },
+                { motive: "Teléfono viajante", type: "text", isRequired: true }
+            ],
+        ]
+    }
+]);
+
+console.log(providerSubForms)
+
+/*export const providerSubForms: SubFormData[] = [
     {
         title: "Datos",
         inputs: [
@@ -69,4 +98,4 @@ export const providerSubForms: SubFormData[] = [
         ],
         id: 1,
     },
-];
+];*/

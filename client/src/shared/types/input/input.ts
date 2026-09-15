@@ -6,8 +6,19 @@ export type InputType =
     | "file"
     | "dynamic";
 
-export type TextInputType = Exclude<InputType, "select">;
+export type TextInputType = Exclude<InputType, "select" | "dynamic">;
 export type SelectInputType = Extract<InputType, "select">;
+
+export type BaseInputData = {
+    name: string;
+    title: string;
+    placeholder: string;
+    defaultValue?: string;
+    id: number;
+    required?: boolean;
+    disabled?: boolean;
+};
+
 
 export type TextInputData = {
     type: TextInputType;
