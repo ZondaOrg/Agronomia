@@ -12,13 +12,26 @@ public record VigentePaymentsResponseDTO(
         String nameList,
         TableFormResponseDTO<PaymentResponseDTO> payments
 ) {
-    public static @Nullable VigentePaymentsResponseDTO fromModel(VigentePayment vigente, List<ColumnHeaderDTO> columns) {
-        List<PaymentResponseDTO> payments = vigente.getPayments().stream().map(PaymentResponseDTO::fromModel).toList();
+
+    public static @Nullable VigentePaymentsResponseDTO fromModel(
+            VigentePayment vigente,
+            List<ColumnHeaderDTO> columns,
+            int page,
+            int size
+    ) {
+        if (vigente == null) return null;
 
         return new VigentePaymentsResponseDTO(
-            vigente.getId(),
-            vigente.getNameList(),
-            TableFormResponseDTO.fromList(columns, payments, PaymentResponseDTO::id)
+                vigente.getId(),
+                vigente.getNameList(),
+                TableFormResponseDTO.fromPagedList(
+                        columns,
+                        vigente.getPayments(),
+                        PaymentResponseDTO::fromModel,
+                        PaymentResponseDTO::id,
+                        page,
+                        size
+                )
         );
     }
 }

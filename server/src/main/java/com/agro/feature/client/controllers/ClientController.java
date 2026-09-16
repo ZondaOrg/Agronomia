@@ -7,7 +7,7 @@ import com.agro.feature.client.dtos.request.ClientEditRequest;
 import com.agro.feature.client.dtos.request.ClientRequest;
 import com.agro.feature.client.dtos.response.ClientResponse;
 import com.agro.feature.client.services.ClientService;
-import com.agro.shared.dtos.table.PageResponseDTO;
+import com.agro.shared.dtos.page.PageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

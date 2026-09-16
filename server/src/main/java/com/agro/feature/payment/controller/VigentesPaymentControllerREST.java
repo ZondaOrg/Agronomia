@@ -30,7 +30,9 @@ public class VigentesPaymentControllerREST {
     @PreAuthorize("hasAnyRole('DUENIO')")
     @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
     public ResponseEntity<VigentePaymentsResponseDTO> getProviderById(
-            @PathVariable Long providerId
+            @PathVariable Long providerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "4") int size
     ) {
 
         VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId);
@@ -42,6 +44,6 @@ public class VigentesPaymentControllerREST {
                 ColumnHeaderDTO.of("bonusPercentage", "BONIFICACIÓN %")
         );
 
-        return ResponseEntity.ok(VigentePaymentsResponseDTO.fromModel(vigente, columns));
+        return ResponseEntity.ok(VigentePaymentsResponseDTO.fromModel(vigente, columns, page, size));
     }
 }

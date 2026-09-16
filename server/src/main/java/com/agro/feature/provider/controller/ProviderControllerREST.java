@@ -6,7 +6,7 @@ import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.dtos.request.ProviderEditRequestDTO;
 import com.agro.feature.provider.dtos.request.ProviderRequestDTO;
 import com.agro.feature.provider.dtos.response.ProviderResponseDTO;
-import com.agro.shared.dtos.table.PageResponseDTO;
+import com.agro.shared.dtos.page.PageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
