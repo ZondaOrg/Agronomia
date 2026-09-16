@@ -15,6 +15,14 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String description;
+
+    private Application application;
+
+    private int percentage;
+
+    private int bonusPercentage;
+
     @ManyToOne
     @JoinColumn(name = "vigentePayments_id")
     private VigentePayment vigentePayment;

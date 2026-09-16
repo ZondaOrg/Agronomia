@@ -1,5 +1,6 @@
 package com.agro.feature.provider.domain;
 
+import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.shared.valueObjects.cuit.CuitValue;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,21 +36,22 @@ public class Provider {
     @Column(name = "company_id", nullable = false)
     private Long companyId;
 
-    private List<PaymentMethod> paymentMethods = new ArrayList<>();
+    @OneToOne(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private VigentePayment vigentePayment;
 
     private List<Integer> listPrices = new ArrayList<>();
 
     @Builder
     public Provider(String tradeName, String legalName, String cuit, String phoneNumber,
                     Traveler traveler, Long companyId,
-                    List<PaymentMethod> paymentMethods, List<Integer> listPrices) {
+                    VigentePayment vigent, List<Integer> listPrices) {
         this.tradeName = tradeName;
         this.legalName = legalName;
         this.cuit = new CuitValue(cuit);
         this.phoneNumber = phoneNumber;
         this.traveler = traveler;
         this.companyId = companyId;
-        this.paymentMethods = (paymentMethods != null) ? paymentMethods : new ArrayList<>();
+        this.vigentePayment = vigent;
         this.listPrices = (listPrices != null) ? listPrices : new ArrayList<>();
     }
 
@@ -63,7 +65,7 @@ public class Provider {
     }
 
     public List<String> getPaymentMethods() {
-        return paymentMethods.stream().map(PaymentMethod::getValue).toList();
+        return vigentePayment.getPaymentsMethods();
     }
 
     public void update(Provider provider) {

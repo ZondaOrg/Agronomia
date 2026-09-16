@@ -1,11 +1,10 @@
 package com.agro.feature.payment.controller;
 
 import com.agro.core.api.Api;
-import com.agro.feature.payment.contracts.PaymentDataService;
+import com.agro.feature.payment.contracts.VigentesPaymentDataService;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
-import com.agro.shared.dtos.table.TableResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +16,13 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping(Api.PROVIDER)
+@RequestMapping(Api.PAYMENT)
 @Tag(name = "Metodos de pagos", description = "Operaciones relacionadas a la gestión de metodos de pago")
-public class PaymentControllerREST {
+public class VigentesPaymentControllerREST {
 
-    private final PaymentDataService  paymentDataService;
+    private final VigentesPaymentDataService paymentDataService;
 
-    public PaymentControllerREST(PaymentDataService paymentDataService) {
+    public VigentesPaymentControllerREST(VigentesPaymentDataService paymentDataService) {
         this.paymentDataService = paymentDataService;
     }
 
@@ -31,12 +30,10 @@ public class PaymentControllerREST {
     @PreAuthorize("hasAnyRole('DUENIO')")
     @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
     public ResponseEntity<VigentePaymentsResponseDTO> getProviderById(
-            @PathVariable Long providerId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "4") int size
+            @PathVariable Long providerId
     ) {
 
-        VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId, page, size);
+        VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId);
 
         List<ColumnHeaderDTO> columns = List.of(
                 ColumnHeaderDTO.of("paymentMethod", "FORMA DE PAGO"),
