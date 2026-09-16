@@ -4,6 +4,7 @@ import com.agro.core.api.Api;
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
+import com.agro.shared.annotations.role.OwnerEndpoint;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ public class VigentesPaymentControllerREST {
     }
 
     @GetMapping("/{providerId}")
-    @PreAuthorize("hasAnyRole('DUENIO')")
+    @OwnerEndpoint
     @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
     public ResponseEntity<VigentePaymentsResponseDTO> getProviderById(
             @PathVariable Long providerId,
