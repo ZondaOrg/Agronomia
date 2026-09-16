@@ -31,6 +31,11 @@ public class JwtConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/").permitAll()
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
                                 .requestMatchers(Api.HEALTH).permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/" + Api.AUTH + Api.LOGIN).permitAll()
