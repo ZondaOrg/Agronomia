@@ -219,10 +219,22 @@ public class DataSeederImpl implements DataSeeder {
                         .cuit("30-59873421-8")
                         .phoneNumber("3401-445-6677")
                         .companyId(companyId)
+                        .build(),
+
+                Provider.builder()
+                        .tradeName("Insumos Vacíos")
+                        .legalName("Insumos Vacíos S.A.")
+                        .cuit("30-99999999-9")
+                        .phoneNumber("11-1111-1111")
+                        .companyId(companyId)
                         .build()
         );
 
-        providers.forEach(provider -> {
+        // Cantidades para los 11 proveedores (el último tiene 0 pagos)
+        int[] paymentCounts = { 25, 18, 14, 10, 8, 6, 4, 3, 2, 1, 0 };
+
+        for (int i = 0; i < providers.size(); i++) {
+            Provider provider = providers.get(i);
             Provider savedProvider = providerService.save(provider);
 
             VigentePayment vigentePayment = VigentePayment.builder()
@@ -231,16 +243,30 @@ public class DataSeederImpl implements DataSeeder {
                     .payments(new ArrayList<>())
                     .build();
 
-            Payment p1 = new Payment(null, "DOL720: 30% seña - 17,50% a 10 días", Application.NOAPLICA, 0, 0, vigentePayment);
-            Payment p2 = new Payment(null, "DOL720: 30% seña - 17,50% a 18 días", Application.DESCUENTO, 8, 0, vigentePayment);
-            Payment p3 = new Payment(null, "DOL720: 30% seña - 17,50% a 180 días", Application.RECARGO, 6, 5, vigentePayment);
+            int totalPayments = paymentCounts[i];
+            for (int j = 1; j <= totalPayments; j++) {
+                Application app;
+                if (j % 3 == 0) {
+                    app = Application.DESCUENTO;
+                } else if (j % 3 == 1) {
+                    app = Application.RECARGO;
+                } else {
+                    app = Application.NOAPLICA;
+                }
 
-            vigentePayment.getPayments().add(p1);
-            vigentePayment.getPayments().add(p2);
-            vigentePayment.getPayments().add(p3);
+                Payment p = new Payment(
+                        null,
+                        "DOL720: Condición " + j + " - Plan " + totalPayments,
+                        app,
+                        j,
+                        j % 2 == 0 ? 5 : 0,
+                        vigentePayment
+                );
+                vigentePayment.getPayments().add(p);
+            }
 
             vigentesPaymentService.save(vigentePayment);
-        });
+        }
     }
 
     private void createClients(Long companyId, Long userId) {

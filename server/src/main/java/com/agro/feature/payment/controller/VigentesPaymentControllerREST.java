@@ -39,8 +39,8 @@ public class VigentesPaymentControllerREST {
         VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId);
 
         List<ColumnHeaderDTO> columns = List.of(
-                ColumnHeaderDTO.of("paymentMethod", "FORMA DE PAGO"),
-                ColumnHeaderDTO.of("adjustment", "RECARGO/DESCUENTO"),
+                ColumnHeaderDTO.of("description", "FORMA DE PAGO"),
+                ColumnHeaderDTO.of("application", "RECARGO/DESCUENTO"),
                 ColumnHeaderDTO.of("percentage", "VALOR %"),
                 ColumnHeaderDTO.of("bonusPercentage", "BONIFICACIÓN %")
         );

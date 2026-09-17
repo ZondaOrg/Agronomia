@@ -1,14 +1,11 @@
-import type { TablePaginator } from "@/shared/components/table/types/Table";
-import TableBase from "../factory/TableBase";
+import type { TableBaseProps } from "../base/TableBase";
+import TableBase from "../base/TableBase";
 
-interface TableProps<T> extends TablePaginator<T> {
-    onPageChange?: (page: number) => void;
-    renderCell?: (value: unknown, key: string, data: T) => React.ReactNode;
-}
+type TableProps<T extends Record<string, unknown>> = TableBaseProps<T>;
 
-export const Table = <T extends Record<string, unknown>>({
-    ...props
-}: TableProps<T>) => {
+export const Table = <T extends Record<string, unknown>>(
+    props: TableProps<T>,
+) => {
     return <TableBase {...props} />;
 };
 

@@ -14,16 +14,16 @@ export type VigentesPayment = {
 
 export type PaymentResponse = {
     id: number;
-    paymentMethod: string;
-    adjustment: string;
+    application: string;
+    description: string;
     percentage: number;
     bonusPercentage: number;
 };
 
 export type Payment = {
     id: number;
-    paymentMethod: string;
-    adjustment: string;
+    application: string;
+    description: string;
     percentage: number;
     bonusPercentage: number;
 };
