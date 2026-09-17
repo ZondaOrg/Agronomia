@@ -12,7 +12,7 @@ import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
 import { Outlet } from "react-router";
-import AddProduct from "@/features/add-product/pages/AddProduct";
+import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -69,7 +69,7 @@ export const AdminRoutes: RouteData[] = [
                         children: [
                             {
                                 index: true,
-                                element: <AddProduct />,
+                                element: <ProductPanel />,
                                 handle: { breadcrumb: "Lista de precios" },
                             },
                         ],
