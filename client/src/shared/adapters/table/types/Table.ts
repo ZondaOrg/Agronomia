@@ -17,7 +17,7 @@ export interface PageInfoDTO {
     last: boolean;
 }
 
-export interface TableFormResponseDTO<T> {
+export interface TableResponseDTO<T> {
     id: number;
     nameList: string;
     payments: {

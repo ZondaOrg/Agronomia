@@ -52,7 +52,9 @@ export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
 
     return (
         <TableBase
-            table={{ ...table, columns: formColumns }}
+            columns={formColumns}
+            rows={table.rows}
+            page={table.page}
             nameElements={nameElements}
             onPageChange={onPageChange}
             renderRowActions={renderRowActions}

@@ -17,7 +17,7 @@ export interface PageInfo {
     last: boolean;
 }
 
-export interface TableForm<T> {
+export interface Table<T> {
     columns: ColumnHeader[];
     rows: Row<T>[];
     page: PageInfo;

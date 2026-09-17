@@ -1,15 +1,15 @@
-import type { TableForm } from "@/shared/types/table/Table";
+import type { Table } from "@/shared/types/table/Table";
 
 export type VigentesPaymentResponse = {
     id: number;
     nameList: string;
-    payments: TableForm<PaymentResponse>;
+    payments: Table<PaymentResponse>;
 };
 
 export type VigentesPayment = {
     id: number;
     nameList: string;
-    payments: TableForm<Payment>;
+    payments: Table<Payment>;
 };
 
 export type PaymentResponse = {

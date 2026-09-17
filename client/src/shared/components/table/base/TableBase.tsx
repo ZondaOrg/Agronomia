@@ -1,11 +1,13 @@
-import type { TableForm } from "@/shared/types/table/Table";
 import { tableWrapper, tableCard, table as tableStyle } from "./style";
 import TableHeader from "./components/header";
 import TableBody from "./components/body";
 import TableFooter from "./components/footer";
+import type { ColumnHeader, Row, PageInfo } from "@/shared/types/table/Table";
 
 export interface TableBaseProps<T extends Record<string, unknown>> {
-    table: TableForm<T>;
+    columns: ColumnHeader[];
+    rows: Row<T>[];
+    page?: PageInfo;
     nameElements?: string;
     draftRow?: React.ReactNode;
     onPageChange?: (page: number) => void;
@@ -14,14 +16,15 @@ export interface TableBaseProps<T extends Record<string, unknown>> {
 }
 
 export const TableBase = <T extends Record<string, unknown>>({
-    table,
+    columns = [],
+    rows = [],
+    page,
     nameElements = "elementos",
     draftRow,
     onPageChange,
     renderCell,
     renderRowActions,
 }: TableBaseProps<T>) => {
-    const { columns = [], rows = [], page } = table;
     const showActionsColumn = Boolean(renderRowActions) || Boolean(draftRow);
 
     return (

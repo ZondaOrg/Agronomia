@@ -1,10 +1,7 @@
-import type { Row, TableForm } from "@/shared/types/table/Table";
+import type { Row, Table } from "@/shared/types/table/Table";
 
 export class TableAdapter {
-    static adapt<T, R>(
-        table: TableForm<T>,
-        dataMapper?: (item: T) => R,
-    ): TableForm<R> {
+    static adapt<T, R>(table: Table<T>, dataMapper?: (item: T) => R): Table<R> {
         const rows: Row<R>[] = table.rows.map((row) => ({
             id: row.id,
             data: dataMapper
