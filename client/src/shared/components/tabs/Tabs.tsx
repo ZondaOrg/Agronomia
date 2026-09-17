@@ -7,10 +7,6 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const activeTabData = tabs[activeIndex];
 
-    if (!activeTabData) {
-        return null;
-    }
-
     return (
         <section className={tabsContainer}>
             <div
