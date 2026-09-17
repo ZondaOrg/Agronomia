@@ -6,20 +6,27 @@ import Spinner from "@/shared/components/spinner/Spinner";
 
 export const UpdateVigentPayment = () => {
     const { providerId } = useParams<{ providerId: string }>();
-    const { getPayments, data, isLoading } = useGetPayments();
+
+    const { getPayments, onPageChange, data, isLoading } = useGetPayments();
 
     const parsedProviderId =
         providerId && !isNaN(Number(providerId)) ? Number(providerId) : null;
 
     useEffect(() => {
         if (parsedProviderId === null) return;
-        getPayments(0, 4, parsedProviderId);
+
+        getPayments(parsedProviderId);
     }, [parsedProviderId]);
 
     return (
         <>
             {isLoading && <Spinner centered />}
-            {!isLoading && data && <UpdatePayments data={data.payments} />}
+            {!isLoading && data && (
+                <UpdatePayments
+                    data={data.payments}
+                    onPageChange={onPageChange}
+                />
+            )}
             {!isLoading && !data && <h1>No se encontraron pagos</h1>}
         </>
     );

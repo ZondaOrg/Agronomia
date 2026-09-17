@@ -15,9 +15,10 @@ const initialPaymentDraft: Partial<Payment> = {
 
 type UpdatePaymentsProps = {
     data: TableForm<Payment>;
+    onPageChange: (newPage: number) => void;
 };
 
-export const UpdatePayments = ({ data }: UpdatePaymentsProps) => {
+export const UpdatePayments = ({ data, onPageChange }: UpdatePaymentsProps) => {
     const [draftRow, setDraftRow] =
         useState<Partial<Payment>>(initialPaymentDraft);
 
@@ -38,7 +39,7 @@ export const UpdatePayments = ({ data }: UpdatePaymentsProps) => {
             table={data}
             inputs={paymentInputs}
             nameElements="formas de pago"
-            // onPageChange={onPageChange}
+            onPageChange={onPageChange}
             draftRow={draftRow}
             onDraftChange={setDraftRow}
             onAddRow={addPayment}
