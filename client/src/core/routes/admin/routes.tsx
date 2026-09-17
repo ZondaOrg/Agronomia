@@ -12,6 +12,8 @@ import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { PaymentsPanel } from "@/views/payments/page/panel/PaymentsPanel";
 import { Payments } from "@/views/payments/Payments";
+import ProductPanel from "@/views/provider/pages/product/ProductPanel";
+import { Outlet } from "react-router";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -44,7 +46,7 @@ export const AdminRoutes: RouteData[] = [
                         handle: { breadcrumb: "Editar Proveedor" },
                     },
                     {
-                        path: ADMIN_ROUTES.PAYMENT_PANEL,
+                        path: ADMIN_ROUTES.PAYMENT.PANEL,
                         element: <Payments />,
                         handle: {
                             breadcrumb: (params) =>
