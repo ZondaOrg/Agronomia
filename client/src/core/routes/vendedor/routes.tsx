@@ -8,7 +8,7 @@ import ClientPanel from "@/views/client/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Outlet } from "react-router";
-import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
+import { PaymentsPanel } from "@/views/payments/page/panel/PaymentsPanel";
 
 export const VendedorRoutes: RouteData[] = [
     {

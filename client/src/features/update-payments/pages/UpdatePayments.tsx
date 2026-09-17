@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormTable } from "@/shared/components/table/form-table/FormTable";
 import { DeleteButton } from "@/shared/components/button/variants/Delete-button";
 import {
@@ -7,6 +7,7 @@ import {
     paymentColumns,
     type PaymentRow,
 } from "./types/Table";
+import { useGetPayments } from "../../get-vigentes-payments-by-provider/hooks/use-get-vigentes-payments";
 
 export const UpdatePayments = () => {
     const [rows, setRows] = useState(initialPaymentRows);
@@ -14,6 +15,13 @@ export const UpdatePayments = () => {
     const [draftRow, setDraftRow] =
         useState<Partial<PaymentRow>>(initialPaymentDraft);
     const size = 4;
+
+    const { getPayments } = useGetPayments();
+
+    useEffect(() => {
+        const providerId = 1;
+        getPayments(page, size, providerId);
+    }, []);
 
     const addPayment = () => {
         if (!draftRow.paymentMethod?.trim()) {
