@@ -59,7 +59,7 @@ export const ProviderCard = ({ provider }: { provider: Provider }) => {
                     />
                 ))}
                 <PaymentsMethods provider={provider} />
-                <PricesButton hasPrices={hasPrices} />
+                <PricesButton hasPrices={hasPrices} idProvider = {provider.id} nameProvider = {provider.legalName} />
             </section>
         </article>
     );

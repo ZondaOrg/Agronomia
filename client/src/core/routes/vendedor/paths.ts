@@ -16,10 +16,14 @@ export const VENDEDOR_ROUTES = {
         ADD: CLIENTS.ADD,
         EDIT: CLIENTS.EDIT,
     },
-    PRODUCTS: PRODUCTS.BASE,
+    PRODUCTS: {
+        BASE: PRODUCTS.BASE
+    },
     PAYMENT: {
         PANEL: PAYMENT.PANEL,
         PANEL_PATH: PAYMENT.PANEL_PATH
     },
-    SALES: SALE.BASE
+    SALES: {
+        BASE: SALE.BASE
+    }
 };
