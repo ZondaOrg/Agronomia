@@ -20,12 +20,12 @@ export const AdminRoutes: RouteData[] = [
         handle: { breadcrumb: "Inicio" },
         children: [
             {
-                path: `${ADMIN_ROUTES.CONFIGURATION}`,
+                path: `${ADMIN_ROUTES.CONFIGURATION.BASE}`,
                 element: <Configuration />,
                 handle: { breadcrumb: "Configuración" },
             },
             {
-                path: `${ADMIN_ROUTES.PROVEEDORES}`,
+                path: `${ADMIN_ROUTES.PROVIDERS.BASE}`,
                 element: <ProviderPanel />,
                 handle: { breadcrumb: "Proveedores" },
                 children: [
@@ -34,17 +34,17 @@ export const AdminRoutes: RouteData[] = [
                         element: <ProvidersList />,
                     },
                     {
-                        path: `${ADMIN_ROUTES.ADD_PROVIDER}`,
+                        path: `${ADMIN_ROUTES.PROVIDERS.ADD}`,
                         element: <AddProvider />,
                         handle: { breadcrumb: "Nuevo Proveedor" },
                     },
                     {
-                        path: ADMIN_ROUTES.EDIT_PROVIDER,
+                        path: ADMIN_ROUTES.PROVIDERS.EDIT,
                         element: <EditProvider />,
                         handle: { breadcrumb: "Editar Proveedor" },
                     },
                     {
-                        path: ADMIN_ROUTES.PAYMENT_PANEL,
+                        path: ADMIN_ROUTES.PAYMENT.PANEL,
                         element: <Outlet />,
                         handle: {
                             breadcrumb: (params) =>
@@ -61,7 +61,7 @@ export const AdminRoutes: RouteData[] = [
                 ],
             },
             {
-                path: `${ADMIN_ROUTES.CLIENTES}`,
+                path: `${ADMIN_ROUTES.CLIENTS.BASE}`,
                 element: <Client />,
                 handle: { breadcrumb: "Clientes" },
                 children: [
@@ -70,12 +70,12 @@ export const AdminRoutes: RouteData[] = [
                         element: <ClientPanel />,
                     },
                     {
-                        path: `${ADMIN_ROUTES.ADD_CLIENT}`,
+                        path: `${ADMIN_ROUTES.CLIENTS.ADD}`,
                         element: <AddClient />,
                         handle: { breadcrumb: "Nuevo Cliente" },
                     },
                     {
-                        path: ADMIN_ROUTES.EDIT_CLIENT,
+                        path: ADMIN_ROUTES.CLIENTS.EDIT,
                         element: <EditClient />,
                         handle: { breadcrumb: "Editar Cliente" },
                     },
