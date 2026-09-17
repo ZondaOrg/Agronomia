@@ -17,6 +17,10 @@ export const UpdateVigentPayment = () => {
         }
     }, [providerId]);
 
+    if (isLoading) {
+        return <Spinner centered />;
+    }
+
     if (isLoading || !data) {
         return <h1>No se encontraron pagos</h1>;
     }
@@ -25,24 +29,18 @@ export const UpdateVigentPayment = () => {
 
     return (
         <>
-            {isLoading && <Spinner centered />}
-            {!isLoading && data && (
-                <>
-                    <ComposeForm
-                        subForms={vigentesPaymentsForm}
-                        schema={paymentsSchema}
-                        bordered={false}
-                        buttonData={{ text: "Guardar listado" }}
-                        onSubmit={() => console.log("submit")}
-                        onCancel={() => console.log("cancel")}
-                    />
-                    <UpdatePayments
-                        data={data.payments}
-                        onPageChange={onPageChange}
-                    />
-                </>
-            )}
-            {!isLoading && !data && <h1>No se encontraron pagos</h1>}
+            <ComposeForm
+                subForms={vigentesPaymentsForm}
+                schema={paymentsSchema}
+                bordered={false}
+                buttonData={{ text: "Guardar listado" }}
+                onSubmit={() => console.log("submit")}
+                onCancel={() => console.log("cancel")}
+            />
+            <UpdatePayments
+                data={data.payments}
+                onPageChange={onPageChange}
+            />
         </>
     );
 };
