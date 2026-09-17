@@ -1,67 +1,80 @@
 import type { InputData } from "@/shared/types/input/input";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface TableInputProps {
     input: InputData;
-    value: unknown;
-    onChange: (value: string) => void;
+    registration: UseFormRegisterReturn;
+    error?: string;
 }
 
-const SelectInput = ({ input, value, onChange }: TableInputProps) => {
-    if (input.type !== "select") {
-        return null;
-    }
+const SelectInput = ({ input, registration, error }: TableInputProps) => {
+    if (input.type !== "select") return null;
 
     return (
-        <select
-            value={String(value ?? input.defaultValue ?? "")}
-            disabled={input.disabled}
-            onChange={(event) => onChange(event.target.value)}
-        >
-            {input.options.map((option) => (
-                <option
-                    key={option.id}
-                    value={option.value}
-                >
-                    {option.label}
-                </option>
-            ))}
-        </select>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+            <select
+                disabled={input.disabled}
+                {...registration}
+            >
+                {input.options.map((option) => (
+                    <option
+                        key={option.id}
+                        value={option.value}
+                    >
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+            {error && (
+                <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
+            )}
+        </div>
     );
 };
 
-const TextInput = ({ input, value, onChange }: TableInputProps) => (
-    <input
-        type={input.type}
-        placeholder={input.placeholder}
-        value={String(value ?? input.defaultValue ?? "")}
-        disabled={input.disabled}
-        onChange={(event) => onChange(event.target.value)}
-    />
+const TextInput = ({ input, registration, error }: TableInputProps) => (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+        <input
+            type={input.type}
+            placeholder={input.placeholder}
+            disabled={input.disabled}
+            {...registration}
+        />
+        {error && (
+            <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
+        )}
+    </div>
 );
 
-export const FormTableInput = ({ input, value, onChange }: TableInputProps) => {
-    switch (input.type) {
+const NumberInput = ({ input, registration, error }: TableInputProps) => (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+        <input
+            type="number"
+            step="any"
+            placeholder={input.placeholder}
+            disabled={input.disabled}
+            {...registration}
+        />
+        {error && (
+            <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
+        )}
+    </div>
+);
+
+export const FormTableInput = (props: TableInputProps) => {
+    switch (props.input.type) {
         case "select":
-            return (
-                <SelectInput
-                    input={input}
-                    value={value}
-                    onChange={onChange}
-                />
-            );
+            return <SelectInput {...props} />;
+        case "number":
+            return <NumberInput {...props} />;
         case "file":
         case "dynamic":
         case "text":
-        case "number":
         case "email":
         case "password":
-            return (
-                <TextInput
-                    input={input}
-                    value={value}
-                    onChange={onChange}
-                />
-            );
+            return <TextInput {...props} />;
+        default:
+            return null;
     }
 };
 

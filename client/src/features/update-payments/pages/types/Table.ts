@@ -22,7 +22,7 @@ export const paymentInputs: Record<string, InputData> = {
     },
 
     [ADD_PAYMENT.percentage]: {
-        type: "text",
+        type: "number",
         name: ADD_PAYMENT.percentage,
         title: "Valor %",
         placeholder: "%",
@@ -30,7 +30,7 @@ export const paymentInputs: Record<string, InputData> = {
         id: 3,
     },
     [ADD_PAYMENT.bonusPercentage]: {
-        type: "text",
+        type: "number",
         name: ADD_PAYMENT.bonusPercentage,
         title: "Bonificación %",
         placeholder: "%",
