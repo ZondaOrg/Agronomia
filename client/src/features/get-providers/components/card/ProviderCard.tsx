@@ -43,7 +43,7 @@ export const ProviderCard = ({ provider }: { provider: Provider }) => {
                     type="button"
                     className={styles.editLink}
                 >
-                    <Link to={ADMIN_ROUTES.EDIT_PROVIDER_PATH(provider.id)}>
+                    <Link to={ADMIN_ROUTES.PROVIDERS.EDIT_PATH(provider.id)}>
                         Editar
                     </Link>
                     <EditIcon className={styles.editIcon} />

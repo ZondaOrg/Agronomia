@@ -7,7 +7,7 @@ const AdminLayout = () => {
     return (
         <AuthenticatedLayout
             links={links}
-            avatarTo={ADMIN_ROUTES.CONFIGURATION}
+            avatarTo={ADMIN_ROUTES.CONFIGURATION.BASE}
             allowedRoles={[ROLE.OWNER]}
         />
     );
