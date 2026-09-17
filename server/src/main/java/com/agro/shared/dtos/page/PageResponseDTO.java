@@ -1,4 +1,4 @@
-package com.agro.shared.dtos.table;
+package com.agro.shared.dtos.page;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;

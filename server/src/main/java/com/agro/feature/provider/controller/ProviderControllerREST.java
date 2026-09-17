@@ -1,23 +1,19 @@
 package com.agro.feature.provider.controller;
 
 import com.agro.core.api.Api;
-import com.agro.feature.auth.dtos.request.Credentials;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.dtos.request.ProviderEditRequestDTO;
 import com.agro.feature.provider.dtos.request.ProviderRequestDTO;
 import com.agro.feature.provider.dtos.response.ProviderResponseDTO;
-import com.agro.shared.dtos.table.PageResponseDTO;
+import com.agro.shared.dtos.page.PageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -58,6 +54,7 @@ public class ProviderControllerREST {
 
         return ResponseEntity.ok(ProviderResponseDTO.fromModel(provider));
     }
+
 
     @PostMapping
     @PreAuthorize("hasAnyRole('DUENIO')")
