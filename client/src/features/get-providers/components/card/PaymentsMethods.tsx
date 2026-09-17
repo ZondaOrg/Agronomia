@@ -21,7 +21,7 @@ export const PaymentsMethods = ({ provider }: { provider: Provider }) => {
                     </span>
                     {count > 0 ? (
                         <Link
-                            to={ADMIN_ROUTES.PAYMENT_PANEL_PATH(
+                            to={ADMIN_ROUTES.PAYMENT.PANEL_PATH(
                                 provider.id,
                                 provider.tradeName,
                             )}
