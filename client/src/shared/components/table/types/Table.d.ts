@@ -12,6 +12,7 @@ export interface DataRow<T> {
 export interface TablePaginator<T> {
     columns: ColumnHeader[];
     rows: DataRow<T>[];
+    nameElements: string;
     page: number;
     size: number;
     totalElements: number;

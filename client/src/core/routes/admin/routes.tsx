@@ -10,9 +10,8 @@ import AddProvider from "@/features/add-provider/pages/AddProvider";
 import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
-import { PaymentsPanel } from "@/views/provider/pages/payments/PaymentsPanel";
-import { Outlet } from "react-router";
-import ProductPanel from "@/views/provider/pages/product/ProductPanel";
+import { PaymentsPanel } from "@/views/payments/page/panel/PaymentsPanel";
+import { Payments } from "@/views/payments/Payments";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -45,8 +44,8 @@ export const AdminRoutes: RouteData[] = [
                         handle: { breadcrumb: "Editar Proveedor" },
                     },
                     {
-                        path: ADMIN_ROUTES.PAYMENT.PANEL,
-                        element: <Outlet />,
+                        path: ADMIN_ROUTES.PAYMENT_PANEL,
+                        element: <Payments />,
                         handle: {
                             breadcrumb: (params) =>
                                 params.providerName ?? "Proveedor",

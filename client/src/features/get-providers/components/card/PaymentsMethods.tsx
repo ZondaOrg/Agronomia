@@ -32,13 +32,16 @@ export const PaymentsMethods = ({ provider }: { provider: Provider }) => {
                         </Link>
                     ) : (
                         <RoleGuard allowedRoles={[ROLE.OWNER]}>
-                            <button
-                                type="button"
+                            <Link
+                                to={ADMIN_ROUTES.PAYMENT_PANEL_PATH(
+                                    provider.id,
+                                    provider.tradeName,
+                                )}
                                 className={pricesLink}
                             >
                                 Añadir
                                 <ExternalLinkIcon className={pricesLinkIcon} />
-                            </button>
+                            </Link>
                         </RoleGuard>
                     )}
                 </div>
