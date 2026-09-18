@@ -1,6 +1,6 @@
 import type { Tab } from "@/shared/components/tabs/types/Tabs";
 import { ROLE } from "@/shared/domain/user/role";
-import { UpdateVigentPayment } from "../../../../../features/update-vigentes-payments/pages/UpdateVigentPayment";
+import { VigentPaymentPage } from "../../vigent-payments/VigentPaymentPage";
 
 export const tabs: Tab[] = [
     {
@@ -8,7 +8,7 @@ export const tabs: Tab[] = [
         nameTab: "Ver",
     },
     {
-        page: <UpdateVigentPayment />,
+        page: <VigentPaymentPage />,
         allowedRoles: [ROLE.OWNER],
         nameTab: "Actualizar",
     },

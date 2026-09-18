@@ -10,10 +10,10 @@ import AddProvider from "@/features/add-provider/pages/AddProvider";
 import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
-import { PaymentsPanel } from "@/views/payments/page/panel/PaymentsPanel";
 import { Payments } from "@/views/payments/Payments";
 import { Outlet } from "react-router";
 import ProductPanel from "@/views/provider/pages/product/ProductPanel";
+import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -55,7 +55,7 @@ export const AdminRoutes: RouteData[] = [
                         children: [
                             {
                                 index: true,
-                                element: <PaymentsPanel />,
+                                element: <VigentPaymentsPanel />,
                                 handle: { breadcrumb: "Formas de Pago" },
                             },
                         ],

@@ -1,30 +1,16 @@
-import { useEffect } from "react";
-import { useGetPayments } from "@/features/get-vigentes-payments-by-provider/hooks/use-get-vigentes-payments";
-import { useParams } from "react-router";
-import { UpdatePayments } from "@/features/update-payments/pages/UpdatePayments";
-import Spinner from "@/shared/components/spinner/Spinner";
+// features/update-vigentes-payments/UpdateVigentPayment.tsx
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
+import { UpdatePayments } from "@/features/update-payments/pages/UpdatePayments";
 import { generatePaymentsSubForms } from "./types/subForms";
 import paymentsSchema from "./types/vigent-schema";
+import type { VigentesPayment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 
-export const UpdateVigentPayment = () => {
-    const { getPayments, onPageChange, data, isLoading } = useGetPayments();
-    const { providerId } = useParams<{ providerId: string }>();
+type Props = {
+    data: VigentesPayment;
+    onPageChange: (page: number) => void;
+};
 
-    useEffect(() => {
-        if (providerId) {
-            getPayments(Number(providerId));
-        }
-    }, [providerId]);
-
-    if (isLoading) {
-        return <Spinner centered />;
-    }
-
-    if (isLoading || !data) {
-        return <h1>No se encontraron pagos</h1>;
-    }
-
+export const UpdateVigentPayment = ({ data, onPageChange }: Props) => {
     const vigentesPaymentsForm = generatePaymentsSubForms(data);
 
     return (
