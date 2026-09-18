@@ -4,6 +4,9 @@ import paymentsSchema from "./types/vigent-schema";
 import { CreatePaymentsTable } from "./components/table/CreatePaymentsTable";
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 import { useDraftRows } from "@/shared/hooks/use-draft-rows";
+import type { VigentPaymentRequest } from "../adapter/PaymentRequest";
+import { useCreateVigentPayments } from "../hook/use-create-vigent-payments";
+import Spinner from "@/shared/components/spinner/Spinner";
 
 type Props = {
     providerId: number;
@@ -12,9 +15,17 @@ type Props = {
 export const CreateVigentPayment = ({ providerId }: Props) => {
     const { table, rows, addDraft, removeDraft, changePage } =
         useDraftRows<Payment>();
-    const handleSubmit = () => {
-        const payments = rows.map((row) => row.data);
-        console.log("submit", providerId, payments);
+
+    const { createVigentPayments, loading, error } = useCreateVigentPayments();
+
+    const onSubmit = (data: Pick<VigentPaymentRequest, "nameList">) => {
+        const payload: VigentPaymentRequest = {
+            nameList: data.nameList,
+            providerId,
+            payments: rows.map(({ data: rowData }) => rowData),
+        };
+
+        createVigentPayments(payload);
     };
 
     return (
@@ -24,7 +35,7 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
                 schema={paymentsSchema}
                 bordered={false}
                 buttonData={{ text: "Guardar listado" }}
-                onSubmit={handleSubmit}
+                onSubmit={onSubmit}
                 onCancel={() => console.log("cancel")}
             />
             <CreatePaymentsTable
@@ -33,6 +44,8 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
                 onRemoveRow={removeDraft}
                 onPageChange={changePage}
             />
+            {loading && <Spinner />}
+            {error && <p>Ocurrió un error al guardar el listado.</p>}
         </>
     );
 };

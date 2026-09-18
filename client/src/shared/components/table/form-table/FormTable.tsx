@@ -49,7 +49,7 @@ export const FormTable = <
     } = useForm<InferData<S> & FieldValues>({
         resolver: zodResolver(schema) as unknown as Resolver<
             InferData<S> & FieldValues
-        >, // 👈 fix
+        >,
         defaultValues,
     });
 
