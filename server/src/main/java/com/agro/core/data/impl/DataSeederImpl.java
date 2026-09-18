@@ -230,12 +230,20 @@ public class DataSeederImpl implements DataSeeder {
                         .build()
         );
 
-        // Cantidades para los 11 proveedores (el último tiene 0 pagos)
+        // Cantidades para los 11 proveedores (el último tiene 0 pagos, pero SÍ tiene VigentePayment vacío)
         int[] paymentCounts = { 25, 18, 14, 10, 8, 6, 4, 3, 2, 1, 0 };
+
+        // Índice del proveedor que directamente NO va a tener ningún VigentePayment asociado
+        int providerIndexWithoutVigente = providers.size() - 2; // "Don Mario Semillas"
 
         for (int i = 0; i < providers.size(); i++) {
             Provider provider = providers.get(i);
             Provider savedProvider = providerService.save(provider);
+
+            if (i == providerIndexWithoutVigente) {
+                // Este proveedor no tendrá ningún VigentePayment asociado
+                continue;
+            }
 
             VigentePayment vigentePayment = VigentePayment.builder()
                     .nameList("julio 2026")
