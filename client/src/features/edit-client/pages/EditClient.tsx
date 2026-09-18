@@ -5,7 +5,7 @@ import { useGetClientById } from "../hook/use-get-client-by-id";
 import { usePutClient } from "../hook/use-put-client";
 import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 import { generateNaturalPersonSubForms } from "./types/natural-person/subforms";
 import { generateSocialMotiveSubForms } from "./types/social-motive/subforms";
 import socialMotiveSchema from "./types/social-motive/social-motive-schema";

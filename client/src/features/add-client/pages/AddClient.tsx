@@ -5,7 +5,7 @@ import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import useAddClient from "../hooks/use-add-client";
 import SuccessToast from "@/shared/components/toast/success/SuccessToast";
 import useIsModal from "@/shared/hooks/use-is-modal";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 import { ModalCreateClient } from "../components/modal-create-client/ModalCreateClient";
 import Button from "@/shared/components/button/Button";
 import { token } from "@styled-system/tokens";

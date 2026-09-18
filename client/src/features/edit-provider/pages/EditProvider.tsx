@@ -7,7 +7,7 @@ import providerSchema from "./types/provider-edit-schema";
 import { generateSubForm } from "./types/input";
 import type { ProviderEdit } from "../api/dto/ProviderEdit";
 import Spinner from "@/shared/components/spinner/Spinner";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 import Button from "@/shared/components/button/Button";
 import { token } from "@styled-system/tokens";
 import { css } from "@styled-system/css";

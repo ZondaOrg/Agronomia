@@ -1,13 +1,13 @@
 import useIsModal from "@/shared/hooks/use-is-modal";
 import useAddProduct from "../hooks/add-product";
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
-import { ModalCreateClient } from "@/features/add-client/components/modal-create-client/ModalCreateClient";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import SuccessToast from "@/shared/components/toast/success/SuccessToast";
 import type { AddProductRequest } from "../adapters/request/add-product";
 import productSubForms from "../types/sub-forms";
 import productSchema from "../types/schema";
+import { SuccessModal } from "@/shared/components/modal/variants/success/ModalCreateClient";
 
 const AddProduct = () => {
     const { add, refresh, data, error } = useAddProduct();
@@ -38,7 +38,7 @@ const AddProduct = () => {
                 onCancel={r}
             />
 
-            <ModalCreateClient
+            <SuccessModal
                 isOpen={isOpen("confirm")}
                 onClose={backToPrev}
                 title="Producto agregado"
