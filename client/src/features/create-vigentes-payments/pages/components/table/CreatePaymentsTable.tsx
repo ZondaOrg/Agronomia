@@ -7,8 +7,20 @@ import paymentSchema from "./types/payment-schema";
 import { paymentInputs } from "./types/Table";
 
 type CreatePaymentsTableProps = {
-    data?: Table<Payment>;
     onPageChange: (newPage: number) => void;
+};
+
+const emptyTable: Table<Payment> = {
+    columns: [],
+    rows: [],
+    page: {
+        page: 0,
+        size: 4,
+        totalElements: 0,
+        totalPages: 0,
+        first: true,
+        last: true,
+    },
 };
 
 export const CreatePaymentsTable = ({
@@ -20,6 +32,7 @@ export const CreatePaymentsTable = ({
 
     return (
         <FormTable<Payment, typeof paymentSchema>
+            table={emptyTable}
             inputs={paymentInputs}
             schema={paymentSchema}
             nameElements="formas de pago"

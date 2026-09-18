@@ -11,6 +11,7 @@ type Props = {
 };
 
 export const UpdateVigentPayment = ({ data, onPageChange }: Props) => {
+    console.log("Data recibida en UpdateVigentPayment:", data);
     const vigentesPaymentsForm = generatePaymentsSubForms(data);
 
     return (

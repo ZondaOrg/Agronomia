@@ -1,13 +1,23 @@
+import { z } from "zod";
 import TableBase from "../base/TableBase";
-import { useForm, type FieldValues, type DefaultValues } from "react-hook-form";
+import {
+    useForm,
+    type FieldValues,
+    type DefaultValues,
+    type Resolver,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
-import type { InferData, Schema } from "../../forms/validation-form/shema";
+import type { InferData } from "../../forms/validation-form/shema";
 import type { FormTableProps } from "./types/ValidationForm";
 import { buildTableDefaultValues } from "./types/defaultValues";
+import { buildColumnsFromSchema } from "./types/buildColumnsFromSchema";
 import { DraftRow } from "./components/DraftRow";
 
-export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
+export const FormTable = <
+    T extends Record<string, unknown>,
+    S extends z.ZodObject<z.ZodRawShape>,
+>({
     table,
     inputs,
     schema,
@@ -19,11 +29,7 @@ export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
     initialValues,
 }: FormTableProps<T, S>) => {
     const { formColumns, defaultValues } = useMemo(() => {
-        const cols = table.columns.map((col) => ({
-            ...col,
-            input: inputs[col.key],
-        }));
-
+        const cols = buildColumnsFromSchema(schema, inputs);
         const tableDefaults = buildTableDefaultValues(cols);
 
         return {
@@ -33,7 +39,7 @@ export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
                 ...initialValues,
             } as DefaultValues<InferData<S> & FieldValues>,
         };
-    }, [table.columns, inputs, initialValues]);
+    }, [schema, inputs, initialValues]);
 
     const {
         register,
@@ -41,7 +47,9 @@ export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
         reset,
         formState: { errors },
     } = useForm<InferData<S> & FieldValues>({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(schema) as unknown as Resolver<
+            InferData<S> & FieldValues
+        >, // 👈 fix
         defaultValues,
     });
 
@@ -52,9 +60,11 @@ export const FormTable = <T extends Record<string, unknown>, S extends Schema>({
 
     return (
         <TableBase
-            columns={formColumns}
-            rows={table.rows}
-            page={table.page}
+            table={{
+                columns: formColumns,
+                rows: table.rows,
+                page: table.page,
+            }}
             nameElements={nameElements}
             onPageChange={onPageChange}
             renderRowActions={renderRowActions}

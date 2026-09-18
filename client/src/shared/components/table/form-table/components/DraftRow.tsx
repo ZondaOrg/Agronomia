@@ -12,7 +12,7 @@ import { token } from "@styled-system/tokens";
 import FormTableInput from "./factory";
 
 interface DraftRowProps<TFieldValues extends FieldValues> {
-    columns: Array<{ key: string; input?: InputData; [key: string]: unknown }>;
+    columns: Array<{ key: string; input?: InputData }>;
     register: UseFormRegister<TFieldValues>;
     errors: FieldErrors<TFieldValues>;
     addLabel: string;
