@@ -17,7 +17,7 @@ export const TableUsers = forwardRef<TableUsersRef>((_, ref) => {
 
     useImperativeHandle(ref, () => ({
         refresh: async () => {
-            getUsers(users?.page ?? 0);
+            getUsers(users?.page.page ?? 0);
         },
     }));
 
@@ -39,29 +39,19 @@ export const TableUsers = forwardRef<TableUsersRef>((_, ref) => {
         return <div>No hay usuarios disponibles.</div>;
     }
 
-    const formattedRows = users.rows.map((row) => ({
-        ...row,
-        actions: (
-            <div style={{ display: "flex", gap: "8px" }}>
-                <button onClick={() => handleEditUser(row.data)}>Editar</button>
-                <button onClick={() => handleDeleteUser(row.id)}>
-                    Eliminar
-                </button>
-            </div>
-        ),
-    }));
-
     return (
         <Table<User>
-            columns={users.columns}
-            rows={formattedRows}
-            page={users.page}
-            size={users.size}
+            table={users}
             nameElements="usuarios"
-            totalElements={users.totalElements}
-            totalPages={users.totalPages}
-            last={users.last}
             onPageChange={onPageChange}
+            renderRowActions={(rowId, data) => (
+                <div style={{ display: "flex", gap: "8px" }}>
+                    <button onClick={() => handleEditUser(data)}>Editar</button>
+                    <button onClick={() => handleDeleteUser(rowId)}>
+                        Eliminar
+                    </button>
+                </div>
+            )}
         />
     );
 });

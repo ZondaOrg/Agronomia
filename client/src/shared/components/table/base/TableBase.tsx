@@ -2,12 +2,10 @@ import { tableWrapper, tableCard, table as tableStyle } from "./style";
 import TableHeader from "./components/header";
 import TableBody from "./components/body";
 import TableFooter from "./components/footer";
-import type { ColumnHeader, Row, PageInfo } from "@/shared/types/table/Table";
+import type { Table } from "@/shared/types/table/Table";
 
 export interface TableBaseProps<T extends Record<string, unknown>> {
-    columns: ColumnHeader[];
-    rows: Row<T>[];
-    page?: PageInfo;
+    table: Table<T>;
     nameElements?: string;
     draftRow?: React.ReactNode;
     onPageChange?: (page: number) => void;
@@ -16,15 +14,14 @@ export interface TableBaseProps<T extends Record<string, unknown>> {
 }
 
 export const TableBase = <T extends Record<string, unknown>>({
-    columns = [],
-    rows = [],
-    page,
+    table,
     nameElements = "elementos",
     draftRow,
     onPageChange,
     renderCell,
     renderRowActions,
 }: TableBaseProps<T>) => {
+    const { columns = [], rows = [], page } = table;
     const showActionsColumn = Boolean(renderRowActions) || Boolean(draftRow);
 
     return (

@@ -65,7 +65,7 @@ public class Provider {
     }
 
     public List<String> getPaymentMethods() {
-        return vigentePayment.getPaymentsMethods();
+        return vigentePayment == null ? List.of() : vigentePayment.getPaymentsMethods();
     }
 
     public void update(Provider provider) {

@@ -1,6 +1,3 @@
-export const ADD_PAYMENT = {
-    description: "description",
-    application: "application",
-    percentage: "percentage",
-    bonusPercentage: "bonusPercentage",
+export const ADD_VIGENT_PAYMENTS = {
+    nameList: "nameList",
 } as const;

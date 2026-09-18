@@ -1,8 +1,5 @@
-import type { ADD_PAYMENT } from "./api-contract";
+import type { ADD_VIGENT_PAYMENTS } from "./api-contract";
 
-export type PaymentRequest = {
-    [ADD_PAYMENT.application]: string;
-    [ADD_PAYMENT.description]: string;
-    [ADD_PAYMENT.percentage]: number;
-    [ADD_PAYMENT.bonusPercentage]: number;
+export type ProviderRequest = {
+    [ADD_VIGENT_PAYMENTS.nameList]: string;
 };

@@ -1,5 +1,5 @@
 import { createSubForms } from "@/shared/components/forms/types/factory";
-import { ADD_VIGENT_PAYMENTS } from "../../adapter/api-contract copy";
+import { ADD_VIGENT_PAYMENTS } from "../../adapter/api-contract";
 
 export const paymentsSubForms = createSubForms([
     {
