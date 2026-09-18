@@ -1,12 +1,29 @@
+import { CLIENTS } from "../urls/clients";
+import { CONFIGURATION } from "../urls/configuration";
+import { PAYMENT } from "../urls/payments";
+import { PRODUCTS } from "../urls/products";
+import { PROVIDERS } from "../urls/providers";
+import { SALE } from "../urls/sale";
+
 export const VENDEDOR_ROUTES = {
     BASE: "/vendedor",
-    CONFIGURATION: `configuration`,
-    PROVEEDORES: `proveedores`,
-    CLIENTES: `clientes`,
-    PRODUCTOS: `productos`,
-    PAYMENT_PANEL: "formas-de-pago/:providerId/:providerName",
-    PAYMENT_PANEL_PATH: (providerId: number, providerName: string) =>
-        `formas-de-pago/${providerId}/${encodeURIComponent(providerName)}`,
-    VENTAS: `ventas`,
-    EDIT_CLIENT: `editar-cliente/:clientId`,
+    CONFIGURATION: CONFIGURATION.BASE,
+    PROVIDERS: {
+        BASE: PROVIDERS.BASE,
+    },
+    CLIENT: {
+        BASE: CLIENTS.BASE,
+        ADD: CLIENTS.ADD,
+        EDIT: CLIENTS.EDIT,
+    },
+    PRODUCTS: {
+        BASE: PRODUCTS.BASE
+    },
+    PAYMENT: {
+        PANEL: PAYMENT.PANEL,
+        PANEL_PATH: PAYMENT.PANEL_PATH
+    },
+    SALES: {
+        BASE: SALE.BASE
+    }
 };

@@ -44,7 +44,7 @@ export const EditProvider = () => {
     }, [getProviderById, providerId]);
 
     const backToProviders = () => {
-        navigate(`${ADMIN_ROUTES.BASE}/${ADMIN_ROUTES.PROVEEDORES}`);
+        navigate(`${ADMIN_ROUTES.BASE}/${ADMIN_ROUTES.PROVIDERS.BASE}`);
     };
 
     const generatedSubForm = data ? generateSubForm(data) : [];
@@ -58,7 +58,7 @@ export const EditProvider = () => {
         });
 
         if (updatedProvider) {
-            navigate(`${ADMIN_ROUTES.BASE}/${ADMIN_ROUTES.PROVEEDORES}`, {
+            navigate(`${ADMIN_ROUTES.BASE}/${ADMIN_ROUTES.PROVIDERS.BASE}`, {
                 state: { providerUpdated: true },
             });
         }

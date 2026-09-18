@@ -17,7 +17,7 @@ export const VendedorRoutes: RouteData[] = [
         handle: { breadcrumb: "Inicio" },
         children: [
             {
-                path: `${VENDEDOR_ROUTES.PROVEEDORES}`,
+                path: `${VENDEDOR_ROUTES.PROVIDERS.BASE}`,
                 element: <ProviderPanel />,
                 handle: { breadcrumb: "Proveedores" },
                 children: [
@@ -26,7 +26,7 @@ export const VendedorRoutes: RouteData[] = [
                         element: <ProvidersList />,
                     },
                     {
-                        path: VENDEDOR_ROUTES.PAYMENT_PANEL,
+                        path: VENDEDOR_ROUTES.PAYMENT.PANEL,
                         element: <Outlet />,
                         handle: {
                             breadcrumb: (params) =>
@@ -43,7 +43,7 @@ export const VendedorRoutes: RouteData[] = [
                 ],
             },
             {
-                path: `${VENDEDOR_ROUTES.CLIENTES}`,
+                path: `${VENDEDOR_ROUTES.CLIENT.BASE}`,
                 element: <Client />,
                 handle: { breadcrumb: "Clientes" },
                 children: [
@@ -52,12 +52,12 @@ export const VendedorRoutes: RouteData[] = [
                         element: <ClientPanel />,
                     },
                     {
-                        path: `nuevo-cliente`,
+                        path: `${VENDEDOR_ROUTES.CLIENT.ADD}`,
                         element: <AddClient />,
                         handle: { breadcrumb: "Nuevo Cliente" },
                     },
                     {
-                        path: VENDEDOR_ROUTES.EDIT_CLIENT,
+                        path: VENDEDOR_ROUTES.CLIENT.EDIT,
                         element: <EditClient />,
                         handle: { breadcrumb: "Editar Cliente" },
                     },
