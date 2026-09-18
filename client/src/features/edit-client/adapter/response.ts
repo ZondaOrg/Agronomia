@@ -32,6 +32,7 @@ export type ClientResponse = RazonSocialResponse | NaturalPersonResponse
 export function clientResponseAdapter(
     response: ClientResponse,
 ): Client {
+    const {id, cuit, address, email, location, province} = response;
     switch (response.type) {
         case ClientOption.NATURAL_PERSON:
             return {
@@ -39,16 +40,33 @@ export function clientResponseAdapter(
                     name: response.name,
                     surname: response.surname,
                 },
-                ...response
+                phone: response.phone,
+                id,
+                cuit,
+                address,
+                email,
+                location,
+                province,
+                type: "NATURAL_PERSON"
             };
 
         case ClientOption.LEGAL_NAME:
             return {
-                completeName: {
-                    name: response.associateName,
-                    surname: response.associateSurname,
+                associatePerson: {
+                    completeName: {
+                        name: response.associateName,
+                        surname: response.associateSurname,
+                    },
+                    phone: response.associatePhone
                 },
-                ...response
+                id,
+                cuit,
+                address,
+                email,
+                location,
+                province,
+                razonSocial: response.razonSocial,
+                type: "RAZON_SOCIAL"
             };
     }
 }
