@@ -1,21 +1,20 @@
-import { useState } from "react";
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
 import { paymentsSubForms } from "./types/subForms";
 import paymentsSchema from "./types/vigent-schema";
 import { CreatePaymentsTable } from "./components/table/CreatePaymentsTable";
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
-import type { Table } from "@/shared/types/table/Table";
+import { useDraftRows } from "@/shared/hooks/use-draft-rows";
 
 type Props = {
     providerId: number;
 };
 
 export const CreateVigentPayment = ({ providerId }: Props) => {
-    const [draftPayments, setDraftPayments] = useState<Table<Payment>>();
-
-    const handlePageChange = (page: number) => {
-        // acá paginás el draft en memoria (setDraftPayments),
-        // ya que todavía no hay nada persistido en el backend
+    const { table, rows, addDraft, removeDraft, changePage } =
+        useDraftRows<Payment>();
+    const handleSubmit = () => {
+        const payments = rows.map((row) => row.data);
+        console.log("submit", providerId, payments);
     };
 
     return (
@@ -25,12 +24,14 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
                 schema={paymentsSchema}
                 bordered={false}
                 buttonData={{ text: "Guardar listado" }}
-                onSubmit={() => console.log("submit", providerId)}
+                onSubmit={handleSubmit}
                 onCancel={() => console.log("cancel")}
             />
             <CreatePaymentsTable
-                data={draftPayments}
-                onPageChange={handlePageChange}
+                table={table}
+                onAddRow={(data) => addDraft(data as Payment)}
+                onRemoveRow={removeDraft}
+                onPageChange={changePage}
             />
         </>
     );

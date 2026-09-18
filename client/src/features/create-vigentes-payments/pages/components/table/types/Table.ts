@@ -6,7 +6,7 @@ export const paymentInputs: Record<string, InputData> = {
     [ADD_PAYMENT.description]: {
         type: "text",
         name: ADD_PAYMENT.description,
-        title: "Descripción",
+        title: "FORMA DE PAGO",
         placeholder: "Ingresa descripción",
         defaultValue: "",
         id: 1,
@@ -14,7 +14,7 @@ export const paymentInputs: Record<string, InputData> = {
     [ADD_PAYMENT.application]: {
         type: "select",
         name: ADD_PAYMENT.application,
-        title: "Aplicación",
+        title: "RECARGO/DESCUENTO",
         placeholder: "Selecciona",
         defaultValue: "No Aplica",
         options: [...adjustmentOptions],
@@ -24,7 +24,7 @@ export const paymentInputs: Record<string, InputData> = {
     [ADD_PAYMENT.percentage]: {
         type: "number",
         name: ADD_PAYMENT.percentage,
-        title: "Valor %",
+        title: "VALOR %",
         placeholder: "%",
         defaultValue: "",
         id: 3,
@@ -32,7 +32,7 @@ export const paymentInputs: Record<string, InputData> = {
     [ADD_PAYMENT.bonusPercentage]: {
         type: "number",
         name: ADD_PAYMENT.bonusPercentage,
-        title: "Bonificación %",
+        title: "BONIFICACIÓN %",
         placeholder: "%",
         defaultValue: "",
         id: 4,

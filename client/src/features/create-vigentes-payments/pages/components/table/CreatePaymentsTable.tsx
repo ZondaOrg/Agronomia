@@ -7,40 +7,29 @@ import paymentSchema from "./types/payment-schema";
 import { paymentInputs } from "./types/Table";
 
 type CreatePaymentsTableProps = {
+    table: Table<Payment>;
+    onAddRow: (data: z.infer<typeof paymentSchema>) => void;
+    onRemoveRow: (rowId: number) => void;
     onPageChange: (newPage: number) => void;
 };
 
-const emptyTable: Table<Payment> = {
-    columns: [],
-    rows: [],
-    page: {
-        page: 0,
-        size: 4,
-        totalElements: 0,
-        totalPages: 0,
-        first: true,
-        last: true,
-    },
-};
-
 export const CreatePaymentsTable = ({
+    table,
+    onAddRow,
+    onRemoveRow,
     onPageChange,
 }: CreatePaymentsTableProps) => {
-    const handleAddPayment = (validData: z.infer<typeof paymentSchema>) => {
-        console.log("Data validada lista para enviar:", validData);
-    };
-
     return (
         <FormTable<Payment, typeof paymentSchema>
-            table={emptyTable}
+            table={table}
             inputs={paymentInputs}
             schema={paymentSchema}
             nameElements="formas de pago"
             onPageChange={onPageChange}
-            onAddRow={handleAddPayment}
+            onAddRow={onAddRow}
             addLabel="+ Añadir forma de pago"
-            renderRowActions={() => (
-                <DeleteButton onClick={() => {} /* onDeleteRow(rowId) */} />
+            renderRowActions={(rowId) => (
+                <DeleteButton onClick={() => onRemoveRow(rowId)} />
             )}
         />
     );
