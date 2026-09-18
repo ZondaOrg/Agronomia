@@ -1,7 +1,7 @@
 import { FormTable } from "@/shared/components/table/form-table/FormTable";
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
-import paymentSchema from "./types/payment-schema";
-import { paymentInputs } from "./types/Table";
+import paymentSchema from "../../create-vigentes-payments/pages/components/table/types/payment-schema";
+import { paymentInputs } from "../../create-vigentes-payments/pages/components/table/types/Table";
 import type { Table } from "@/shared/types/table/Table";
 import type * as z from "zod";
 import { DeleteButton } from "@/shared/components/button/variants/Delete-button";

@@ -1,6 +1,6 @@
 import type { InputData } from "@/shared/types/input/input";
-import { ADD_PAYMENT } from "../../adapter/api-contract";
-import { adjustmentOptions } from "../../types/ajustment-options";
+import { ADD_PAYMENT } from "../../../../../update-payments/adapter/api-contract";
+import { adjustmentOptions } from "../../../../../update-payments/types/ajustment-options";
 
 export const paymentInputs: Record<string, InputData> = {
     [ADD_PAYMENT.description]: {
