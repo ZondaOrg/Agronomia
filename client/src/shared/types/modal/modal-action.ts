@@ -1,1 +1,1 @@
-export type ModalAction = 'confirm' | 'advertence'
+export type ModalAction = 'success' | 'advertence' | 'error'
