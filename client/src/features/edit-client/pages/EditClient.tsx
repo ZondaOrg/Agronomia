@@ -6,11 +6,10 @@ import { usePutClient } from "../hook/use-put-client";
 import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
-import { generateNaturalPersonSubForms } from "./types/natural-person/subforms";
-import { generateSocialMotiveSubForms } from "./types/social-motive/subforms";
-import socialMotiveSchema from "./types/social-motive/social-motive-schema";
-import naturalPersonSchema from "./types/natural-person/natural-person-schema";
+import naturalPersonSchema from "../types/natural-person/natural-person-schema";
 import type { ClientRequest } from "../adapter/request/client";
+import { generateForm } from "../types/generate-form";
+import socialMotiveSchema from "../types/social-motive/social-motive-schema";
 
 export const EditClient = () => {
     const { clientId } = useParams<{ clientId: string }>();
@@ -54,8 +53,8 @@ export const EditClient = () => {
     }
 
     const isLegalClient = "razonSocial" in client;
-    const naturalPersonForms = generateNaturalPersonSubForms(client);
-    const socialMotiveForms = generateSocialMotiveSubForms(client);
+    const naturalPersonForms = generateForm(client);
+    const socialMotiveForms = generateForm(client);
     const handleSubmit = async (data: Omit<ClientRequest, "type">) => {
         const updatedClient = await editClient(data, client.id);
 

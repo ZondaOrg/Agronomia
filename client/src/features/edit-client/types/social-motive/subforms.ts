@@ -2,10 +2,10 @@ import { createSubForms } from "@/shared/components/forms/types/factory";
 import { formatCuit } from "@/shared/domain/cuit-cuil/format";
 import { provinces } from "@/shared/domain/locate/locate";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
-import { withInitialValues } from "../generate-initial-values";
 import type { SubFormData } from "@/shared/components/forms/types/sub-form";
-import type { ClientToEdit } from "@/features/edit-client/types/Client";
 import { EDIT_LEGAL_NAME } from "@/features/edit-client/adapter/api-contract";
+import type { RazonSocial } from "../../domain/razon-social";
+import { withInitialValues } from "../../pages/types/generate-initial-values";
 
 const socialMotiveSubform = createSubForms([
     {
@@ -41,7 +41,7 @@ const socialMotiveSubform = createSubForms([
 ]);
 
 export function generateSocialMotiveSubForms(
-    client: ClientToEdit,
+    client: RazonSocial,
 ): SubFormData[] {
     return withInitialValues(socialMotiveSubform, {
         razonSocial: client.razonSocial,
@@ -49,9 +49,9 @@ export function generateSocialMotiveSubForms(
         address: client.address ?? "",
         locate: client.location,
         province: client.province,
-        name: client.name,
-        surname: client.surname,
-        phone: client.phone,
+        [EDIT_LEGAL_NAME.associateName]: client.associatePerson.completeName.name,
+        [EDIT_LEGAL_NAME.associateSurname]: client.associatePerson.completeName.surname,
+        [EDIT_LEGAL_NAME.associatePhone]: client.associatePerson.phone,
         email: client.email ?? "",
     });
 }
