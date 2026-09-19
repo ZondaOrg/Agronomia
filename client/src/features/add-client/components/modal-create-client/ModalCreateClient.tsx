@@ -28,7 +28,7 @@ export const ModalCreateClient = ({
                     hoverColor={token("colors.primaryColorHover")}
                     onClick={onClose}
                 >
-                    Ententido
+                    Entendido
                 </Button>
             </div>
         </Modal>
