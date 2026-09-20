@@ -7,7 +7,7 @@ import OptionList from "./components/options-list";
 import ValidationForm, {
     type ValidationFormHandleProps,
 } from "../validation-form/ValidationForm";
-import { container } from "./styles";
+import FormContainer from "../components/form-container/FormContainer";
 
 interface PolimorficFormProps<T extends Schema> {
     options: OptionForm[];
@@ -36,7 +36,7 @@ function PolimorficForm<T extends Schema>({
     const subTypes = options.map((option) => option.subType);
 
     return (
-        <section className={container}>
+        <FormContainer>
             <OptionList
                 onOption={handleOption}
                 options={subTypes}
@@ -57,7 +57,7 @@ function PolimorficForm<T extends Schema>({
                 buttonData={buttonData}
                 cancelOption={{ onSubmit: handleCancel }}
             />
-        </section>
+        </FormContainer>
     );
 }
 

@@ -1,16 +1,35 @@
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
-import addClient from "../services/add-client";
 import type { Client } from "../domain/client";
 import type { ClientRequest } from "../adapter/request/client";
+import useNotify from "@/shared/hooks/use-notify/use-notify";
+import type { HttpError } from "@/core/server/errors/http-error";
+import addClient from "../services/add-client";
 
 const useAddClient = () => {
-    const { error, data, execute, refresh } = useFetch<Client>();
+    const { execute, refresh } = useFetch<Client>();
+    const { action, notify, isCancel, handleNotify, handleCancelNotify, init } = useNotify()
 
     async function add(clientData: Exclude<ClientRequest, "type">) {
-        return await execute(addClient)(clientData);
+        handleNotify(
+            clientData, 
+            {
+                title: "Cliente agregado",
+                message: (client: Client) => `Se registro al cliente ${client.completeName.name} ${client.completeName.surname}`
+            },
+            {
+                title: "Error Cliente",
+                message: (error: HttpError) => error.getMessage
+            },
+            execute(addClient)
+        )
     }
 
-    return { add, refresh, data, error };
+    const onRefresh = () => {
+        refresh()
+        init()
+    }
+
+    return { isCancel, notify, action, add, onRefresh, handleCancelNotify };
 };
 
 export default useAddClient;

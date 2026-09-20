@@ -56,7 +56,7 @@ export const ConfirmModal = ({
                         }
                         hoverColor={
                             danger
-                                ? token("colors.dangerHover")
+                                ? token("colors.danger")
                                 : token("colors.primaryColorHover")
                         }
                         textColor="white"

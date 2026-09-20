@@ -1,17 +1,17 @@
 import { useState } from "react";
+import type { NotifyAction } from "./use-notify/modal-action";
 import { useNavigate } from "react-router";
-import type { ModalAction } from "../types/modal/modal-action";
 
 const useIsModal = () => {
     const navigate = useNavigate();
     const [is, setIsOpen] = useState(false);
-    const [action, setAction] = useState<ModalAction>();
+    const [action, setAction] = useState<NotifyAction>();
 
     const backToPrev = () => {
         navigate(-1);
     };
 
-    const onOpenIs = (isData: boolean, action: ModalAction) => {
+    const onOpenIs = (isData: boolean, action: NotifyAction) => {
         if(!isData) {
             navigate(-1);
         }
@@ -21,7 +21,7 @@ const useIsModal = () => {
         }
     }
 
-    const isOpen = (a: ModalAction) => is && action === a
+    const isOpen = (a: NotifyAction) => is && action === a
 
     const refresh = () => {
         setIsOpen(false);

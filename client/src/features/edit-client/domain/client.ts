@@ -1,11 +1,16 @@
-import type { CompleteName } from "./complete-name"
+import type { ClientOption } from "@/shared/domain/client/client"
+import type { NaturalPerson } from "./natural-person"
+import type { RazonSocial } from "./razon-social"
 
-export interface Client {
+export type ClientBase = {
     id: number
-    cuit: string,
-    address?: string
+    readonly cuit: string,
     location: string
     province: string
-    completeName: CompleteName
+    address?: string
     email?: string | null
+    type: ClientOption
 }
+
+
+export type Client = NaturalPerson | RazonSocial

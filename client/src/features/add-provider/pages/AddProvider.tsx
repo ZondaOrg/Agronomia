@@ -8,7 +8,7 @@ import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import type { ProviderRequest } from "../adapter/ProviderRequest";
 import { ModalCreateProvider } from "./components/ModalCreateProvider";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 import { css } from "@styled-system/css";
 import useIsModal from "@/shared/hooks/use-is-modal";
 

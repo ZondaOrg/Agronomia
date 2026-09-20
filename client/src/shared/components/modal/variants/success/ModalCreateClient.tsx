@@ -3,7 +3,7 @@ import Modal from "@/shared/components/modal/Modal";
 import { token } from "@styled-system/tokens";
 import { successContent, successMessage, successTitle } from "./styles";
 
-export const ModalCreateClient = ({
+export const SuccessModal = ({
     isOpen,
     onClose,
     title,
