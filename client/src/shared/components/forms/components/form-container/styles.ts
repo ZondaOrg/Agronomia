@@ -2,11 +2,7 @@ import { css } from "@styled-system/css";
 import type { Size } from "../../types/size";
 import type { SystemStyleObject } from "@styled-system/types";
 
-export const container = css.raw({
-    placeSelf: {
-        base: "center",
-        md: "start"
-    },
+export const baseContainer = css.raw({
     display: "grid",
     placeItems: "center",
     gap: "5vh",
@@ -19,9 +15,14 @@ export const container = css.raw({
     bg: "#FFF"
 });
 
+export const container = css.raw({
+    ...baseContainer,
+});
+
 export const smallContainer = css.raw({
-    ...container,
-   maxWidth: "640px",
+    ...baseContainer,
+    maxWidth: "800px",
+     placeSelf: "center"
 });
 
 
