@@ -4,7 +4,9 @@ export const container = {
     display: "flex",
     flexDirection: "column" as const,
     gap: "1rem",
-    backgroundColor: "#ff0000",
+    width: "100%",
+    minHeight: "100px",
+    bg: "red.500",
 };
 
 export const sectionHeader = {
