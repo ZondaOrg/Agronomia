@@ -1,12 +1,12 @@
 import { ADD_NATURAL_CLIENT } from "@/features/add-client/adapter/api-contract"
-import type { ClientToEdit } from "@/features/edit-client/types/Client"
 import { createSubForms } from "@/shared/components/forms/types/factory"
 import type { SubFormData } from "@/shared/components/forms/types/sub-form"
 import { formatCuit } from "@/shared/domain/cuit-cuil/format"
 import { provinces } from "@/shared/domain/locate/locate"
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options"
-import { withInitialValues } from "../generate-initial-values"
+import { withInitialValues } from "../../pages/types/generate-initial-values"
 import { EDIT_NATURAL_PERSON } from "@/features/edit-client/adapter/api-contract"
+import type { NaturalPerson } from "../../domain/natural-person"
 
 const naturalPersonsubForms = createSubForms([
     {
@@ -33,16 +33,16 @@ const naturalPersonsubForms = createSubForms([
 ])
 
 export function generateNaturalPersonSubForms(
-    client: ClientToEdit,
+    client: NaturalPerson,
 ): SubFormData[] {
     return withInitialValues(naturalPersonsubForms, {
-        name: client.name,
-        surname: client.surname,
+        name: client.completeName.name,
+        surname: client.completeName.surname,
         cuit: client.cuit,
         phone: client.phone,
         email: client.email ?? "",
         address: client.address ?? "",
-        locate: client.locate,
+        locate: client.location,
         province: client.province,
     });
 }
