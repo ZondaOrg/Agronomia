@@ -21,8 +21,24 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
 
     @Override
     public VigentePayment getVigentePaymentsPaginatedById(Long providerId) {
-        Provider provider = providerDataService.getProviderById(providerId);
-        return vigentesPaymentDAO.findByProvider(provider); //QUE PASA SI NO EXISTE O VIENE NULL???
+        Provider provider = getProvider(providerId);
+        return vigentesPaymentDAO.findByProvider(provider);
+    }
+
+    private Provider getProvider(Long providerId) {
+        return providerDataService.getProviderById(providerId);
+    }
+
+    @Override
+    public VigentePayment createVigentePayment(VigentePayment model, Long idProvider) {
+        Provider provider = getProvider(idProvider);
+        model.setProvider(provider);
+        provider.setVigentePayment(model);
+        if (model.getPayments() != null) {
+            model.getPayments().forEach(payment -> payment.setVigentePayment(model));
+        }
+
+        return save(model);
     }
 
     @Override

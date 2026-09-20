@@ -1,5 +1,7 @@
 package com.agro.shared.dtos.page;
 
+import org.springframework.data.domain.Page;
+
 public record PageInfoDTO(
         int page,
         int size,
@@ -17,6 +19,17 @@ public record PageInfoDTO(
                 totalPages,
                 page == 0,
                 totalPages == 0 || page >= totalPages - 1
+        );
+    }
+
+    public static <T> PageInfoDTO of(Page<T> page) {
+        return new PageInfoDTO(
+                page.getNumber(),
+                page.getSize(),
+                (int) page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
         );
     }
 }

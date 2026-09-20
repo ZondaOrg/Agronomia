@@ -2,7 +2,7 @@ package com.agro.feature.payment.dto.response;
 
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
-import com.agro.shared.dtos.table.TableFormResponseDTO;
+import com.agro.shared.dtos.table.TableResponseDTO;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public record VigentePaymentsResponseDTO(
         Long id,
         String nameList,
-        TableFormResponseDTO<PaymentResponseDTO> payments
+        TableResponseDTO<PaymentResponseDTO> payments
 ) {
 
     public static @Nullable VigentePaymentsResponseDTO fromModel(
@@ -24,7 +24,7 @@ public record VigentePaymentsResponseDTO(
         return new VigentePaymentsResponseDTO(
                 vigente.getId(),
                 vigente.getNameList(),
-                TableFormResponseDTO.fromPagedList(
+                TableResponseDTO.fromList(
                         columns,
                         vigente.getPayments(),
                         PaymentResponseDTO::fromModel,
