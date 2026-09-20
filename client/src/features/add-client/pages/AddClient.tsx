@@ -7,14 +7,14 @@ import { socialMotiveSubform } from "../types/social-motive/subforms";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
 
 const AddClient = () => {
-    const { action, notify, add, stop, onRefresh } = useAddClient();
+    const { isCancel, notify, action, add, onRefresh, handleCancelNotify } = useAddClient();
 
     return (
         <NotifyHandler 
-            action={action} 
-            notify={notify ?? {}} 
-            onClose={onRefresh} 
-            refreshNotify={onRefresh}>
+            notify={notify}
+            action={action}
+            isCancel={isCancel}
+            refresh={onRefresh}>
             <PolimorficForm
                 options={[
                     {
@@ -31,7 +31,7 @@ const AddClient = () => {
                     },
                 ]}
                 buttonData={{ text: "Agregar cliente" }}
-                onCancel={stop}
+                onCancel={handleCancelNotify}
             />
         </NotifyHandler>
     )

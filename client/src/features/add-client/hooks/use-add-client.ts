@@ -1,38 +1,27 @@
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
-import addClient from "../services/add-client";
 import type { Client } from "../domain/client";
 import type { ClientRequest } from "../adapter/request/client";
-import useNotify from "@/shared/hooks/use-notify";
+import useNotify from "@/shared/hooks/use-notify/use-notify";
+import type { HttpError } from "@/core/server/errors/http-error";
+import addClient from "../services/add-client";
 
 const useAddClient = () => {
-    const { error, execute, refresh } = useFetch<Client>();
-    const { notify, action, handleNotify, stop, init } = useNotify();
+    const { execute, refresh } = useFetch<Client>();
+    const { action, notify, isCancel, handleNotify, handleCancelNotify, init } = useNotify()
 
     async function add(clientData: Exclude<ClientRequest, "type">) {
-        const client = await execute(addClient)(clientData);
-        handleNotify(client, successNotify, errorNotify)
-    }
-
-    const successNotify = (client: Client) => {
-        return {
-            toast: {
-                title: "Cliente Agregado",
-                message: `El cliente ${client.completeName.name} ${client.completeName.surname} fue agregado`
+        handleNotify(
+            clientData, 
+            {
+                title: "Cliente agregado",
+                message: (client: Client) => `Se registro al cliente ${client.completeName.name} ${client.completeName.surname}`
             },
-            modal: {
-                title: "cliente agregado",
-                message: `El cliente ${client.completeName.name} ${client.completeName.surname} fue agregado`
-            }
-        }
-    }
-
-    const errorNotify = () => {
-        return {
-            toast: {
-                title: "",
-                message: error ? error.message : "Error al crear el cliente"
-            }
-        }
+            {
+                title: "Error Cliente",
+                message: (error: HttpError) => error.getMessage
+            },
+            execute(addClient)
+        )
     }
 
     const onRefresh = () => {
@@ -40,7 +29,7 @@ const useAddClient = () => {
         init()
     }
 
-    return { notify, action, add, stop, onRefresh };
+    return { isCancel, notify, action, add, onRefresh, handleCancelNotify };
 };
 
 export default useAddClient;

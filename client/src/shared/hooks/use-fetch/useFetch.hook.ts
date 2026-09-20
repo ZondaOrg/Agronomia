@@ -21,6 +21,7 @@ function useFetch<D>(): UseFetch<D> {
                     if (error instanceof HttpError) {
                         setError(error);
                     }
+                    throw error;
                 } finally {
                     setIsLoading(false);
                 }
