@@ -5,11 +5,11 @@ import { useGetClientById } from "../hook/use-get-client-by-id";
 import { usePutClient } from "../hook/use-put-client";
 import Spinner from "@/shared/components/spinner/Spinner";
 import ErrorToast from "@/shared/components/toast/error/ErrorToast";
-import { ConfirmModal } from "@/shared/components/modal/variants/ConfirmModalProps";
 import naturalPersonSchema from "../types/natural-person/natural-person-schema";
 import type { ClientRequest } from "../adapter/request/client";
 import { generateForm } from "../types/generate-form";
 import socialMotiveSchema from "../types/social-motive/social-motive-schema";
+import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
 
 export const EditClient = () => {
     const { clientId } = useParams<{ clientId: string }>();
