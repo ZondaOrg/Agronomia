@@ -1,1 +1,0 @@
-export type ModalAction = 'success' | 'advertence' | 'error'

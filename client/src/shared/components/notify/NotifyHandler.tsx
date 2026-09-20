@@ -3,29 +3,21 @@ import ErrorToast from "../toast/error/ErrorToast";
 import SuccessToast from "../toast/success/SuccessToast";
 import { ConfirmModal } from "../modal/variants/commit/ConfirmModalProps";
 import type React from "react";
-import Button from "../button/Button";
-import { token } from "@styled-system/tokens";
-import { css } from "@styled-system/css";
 import { useNavigate } from "react-router";
 import type { NotifyMessage } from "./types/notify-message";
-import type { ModalAction } from "@/shared/types/modal/modal-action";
+import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";
+import BackButton from "./components/back-button/BackButton";
 
 interface NotifyHandlerProps {
     notify: NotifyMessage
-    action?: ModalAction
+    action?: NotifyAction
     isCancel: boolean
     children: React.ReactNode
+    onCancel: (isData: boolean) => void
     refresh: () => void
 }
 
-const backButtonContainer = css({
-    display: "flex",
-    justifyContent: "flex-start",
-    width: "100%",
-    marginBottom: "24px",
-});
-
-function NotifyHandler({notify, action, isCancel, children, refresh}: NotifyHandlerProps) {
+function NotifyHandler({notify, action, isCancel, children, onCancel, refresh}: NotifyHandlerProps) {
     const navigate = useNavigate();
 
     const backToPrev = () => {
@@ -34,17 +26,7 @@ function NotifyHandler({notify, action, isCancel, children, refresh}: NotifyHand
 
     return (
         <>
-            <div className={backButtonContainer}>
-                <Button
-                    color="white"
-                    hoverColor={token("colors.primaryColorHover") + "20"}
-                    borderColor={token("colors.primaryColor")}
-                    textColor={token("colors.primaryColor")}
-                    onClick={backToPrev}
-                >
-                    ← Regresar
-                </Button>
-            </div>
+            <BackButton isCancel={isCancel} onCancel={onCancel} />
             {children}
             {isCancel && <ConfirmModal
                 isOpen={action === "advertence"}

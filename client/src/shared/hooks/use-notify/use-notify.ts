@@ -2,11 +2,11 @@ import { useState } from "react";
 import type { NotifyMessage } from "../../components/notify/types/notify-message";
 import { HttpError } from "@/core/server/errors/http-error";
 import type { Notify } from "../../components/notify/types/notify";
-import type { ModalAction } from "@/shared/types/modal/modal-action";
+import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";
 import { useNavigate } from "react-router";
 
 const useNotify = () => {
-    const [action, setAction] = useState<ModalAction>();
+    const [action, setAction] = useState<NotifyAction>();
     const [notify, setNotify] = useState<NotifyMessage>({});
     const [isCancel, setIsCancel] = useState(false);
     const navegate = useNavigate();
