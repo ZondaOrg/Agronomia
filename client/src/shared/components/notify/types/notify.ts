@@ -1,10 +1,4 @@
-export interface Notify {
-    modal?: {
-        title: string
-        message: string
-    },
-    toast?: {
-        title?: string 
-        message: string
-    }
+export interface Notify<T> {
+    title: string
+    message: (data: T) => string 
 }
