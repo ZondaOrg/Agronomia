@@ -13,8 +13,4 @@ export const paymentsSubForms = createSubForms([
             ],
         ],
     },
-    {
-        name: "Formas de pago",
-        fields: [],
-    },
 ]);

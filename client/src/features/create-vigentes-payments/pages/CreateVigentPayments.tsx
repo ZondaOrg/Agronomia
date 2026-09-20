@@ -1,38 +1,36 @@
-import { useRef } from "react";
-import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
-import { paymentsSubForms } from "./types/subForms";
-import paymentsSchema from "./types/vigent-schema";
-import { CreatePaymentsTable } from "./components/table/CreatePaymentsTable";
+import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
+import { vigentPaymentSections } from "./types/multiFormSections";
 import { useCreateVigentPayments } from "../hook/use-create-vigent-payments";
 import Spinner from "@/shared/components/spinner/Spinner";
+import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 
 type Props = {
     providerId: number;
 };
 
 export const CreateVigentPayment = ({ providerId }: Props) => {
-    const { withPayments, loading, error } =
-        useCreateVigentPayments(providerId);
+    const { createVigentPayments, loading, error } = useCreateVigentPayments();
 
-    const submitRef = useRef<(rest: { nameList: string }) => void>(() => {});
+    const handleSubmit = (data: unknown[]) => {
+        const [fieldsData, tableData] = data as [
+            { nameList: string },
+            Payment[],
+        ];
 
-    const onSubmit = (data: { nameList: string }) => {
-        submitRef.current(data);
+        createVigentPayments({
+            nameList: fieldsData.nameList,
+            providerId,
+            payments: tableData,
+        });
     };
 
     return (
         <>
-            <ComposeForm
-                subForms={paymentsSubForms}
-                schema={paymentsSchema}
-                bordered={false}
-                buttonData={{ text: "Guardar listado" }}
-                onSubmit={onSubmit}
+            <MultiForm
+                sections={vigentPaymentSections}
+                submitLabel="Guardar forma de pago"
+                onSubmit={handleSubmit}
                 onCancel={() => console.log("cancel")}
-            />
-            <CreatePaymentsTable
-                withPayments={withPayments}
-                submitRef={submitRef}
             />
             {loading && <Spinner />}
             {error && <p>Ocurrió un error al guardar el listado.</p>}
