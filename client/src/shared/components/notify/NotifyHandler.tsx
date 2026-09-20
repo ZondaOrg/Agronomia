@@ -13,11 +13,12 @@ interface NotifyHandlerProps {
     action?: NotifyAction
     isCancel: boolean
     children: React.ReactNode
+    isBack: boolean
     onCancel: (isData: boolean) => void
     refresh: () => void
 }
 
-function NotifyHandler({notify, action, isCancel, children, onCancel, refresh}: NotifyHandlerProps) {
+function NotifyHandler({notify, action, isCancel, isBack, children, onCancel, refresh}: NotifyHandlerProps) {
     const navigate = useNavigate();
 
     const backToPrev = () => {
@@ -26,7 +27,7 @@ function NotifyHandler({notify, action, isCancel, children, onCancel, refresh}: 
 
     return (
         <>
-            <BackButton isCancel={isCancel} onCancel={onCancel} />
+            {isBack && <BackButton isCancel={isCancel} onCancel={onCancel} />}
             {children}
             {isCancel && <ConfirmModal
                 isOpen={action === "advertence"}

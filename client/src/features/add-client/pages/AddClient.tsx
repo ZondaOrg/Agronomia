@@ -14,6 +14,7 @@ const AddClient = () => {
             notify={notify}
             action={action}
             isCancel={isCancel}
+            isBack={true}
             refresh={onRefresh}
             onCancel={handleCancelNotify}>
             <PolimorficForm
