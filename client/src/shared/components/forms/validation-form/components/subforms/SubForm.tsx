@@ -19,7 +19,6 @@ function SubForm<T extends Schema>({
         <div className={container}>
             {title && <p className={t}>{title}</p>}
             {inputs.map((row, rowIndex) => {
-                console.log("row", rowIndex, row.length, row);
                 const styleForRow =
                     row.length === 1 ? inputWithMaxWidth("420px") : inputStyles;
 

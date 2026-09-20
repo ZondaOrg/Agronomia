@@ -1,8 +1,11 @@
-export const container = () => ({
+// import { token } from "@styled-system/tokens";
+
+export const container = {
     display: "flex",
     flexDirection: "column" as const,
     gap: "1rem",
-});
+    backgroundColor: "#ff0000",
+};
 
 export const sectionHeader = {
     display: "flex",
