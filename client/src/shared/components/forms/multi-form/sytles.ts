@@ -6,7 +6,6 @@ export const container = {
     gap: "1rem",
     width: "100%",
     minHeight: "100px",
-    bg: "red.500",
 };
 
 export const sectionHeader = {

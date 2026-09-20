@@ -1,5 +1,5 @@
 import type { InputData } from "@/shared/types/input/input";
-import { ADD_PAYMENT } from "./api-contract";
+import { ADD_PAYMENT } from "../../adapter/api-contract";
 import { adjustmentOptions } from "@/features/update-payments/types/ajustment-options";
 
 export const paymentInputs: Record<string, InputData> = {
