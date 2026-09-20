@@ -8,7 +8,7 @@ import ClientPanel from "@/views/client/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Outlet } from "react-router";
-import { PaymentsPanel } from "@/views/payments/page/panel/PaymentsPanel";
+import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -35,7 +35,7 @@ export const VendedorRoutes: RouteData[] = [
                         children: [
                             {
                                 index: true,
-                                element: <PaymentsPanel />,
+                                element: <VigentPaymentsPanel />,
                                 handle: { breadcrumb: "Formas de Pago" },
                             },
                         ],

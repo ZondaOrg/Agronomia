@@ -1,33 +1,33 @@
-import { useEffect } from "react";
-import { useGetPayments } from "@/features/get-vigentes-payments-by-provider/hooks/use-get-vigentes-payments";
-import { useParams } from "react-router";
+// features/update-vigentes-payments/UpdateVigentPayment.tsx
+import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
 import { UpdatePayments } from "@/features/update-payments/pages/UpdatePayments";
-import Spinner from "@/shared/components/spinner/Spinner";
+import { generatePaymentsSubForms } from "./types/subForms";
+import paymentsSchema from "./types/vigent-schema";
+import type { VigentesPayment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 
-export const UpdateVigentPayment = () => {
-    const { providerId } = useParams<{ providerId: string }>();
+type Props = {
+    data: VigentesPayment;
+    onPageChange: (page: number) => void;
+};
 
-    const { getPayments, onPageChange, data, isLoading } = useGetPayments();
-
-    const parsedProviderId =
-        providerId && !isNaN(Number(providerId)) ? Number(providerId) : null;
-
-    useEffect(() => {
-        if (parsedProviderId === null) return;
-
-        getPayments(parsedProviderId);
-    }, [parsedProviderId]);
+export const UpdateVigentPayment = ({ data, onPageChange }: Props) => {
+    console.log("Data recibida en UpdateVigentPayment:", data);
+    const vigentesPaymentsForm = generatePaymentsSubForms(data);
 
     return (
         <>
-            {isLoading && <Spinner centered />}
-            {!isLoading && data && (
-                <UpdatePayments
-                    data={data.payments}
-                    onPageChange={onPageChange}
-                />
-            )}
-            {!isLoading && !data && <h1>No se encontraron pagos</h1>}
+            <ComposeForm
+                subForms={vigentesPaymentsForm}
+                schema={paymentsSchema}
+                bordered={false}
+                buttonData={{ text: "Guardar listado" }}
+                onSubmit={() => console.log("submit")}
+                onCancel={() => console.log("cancel")}
+            />
+            <UpdatePayments
+                data={data.payments}
+                onPageChange={onPageChange}
+            />
         </>
     );
 };

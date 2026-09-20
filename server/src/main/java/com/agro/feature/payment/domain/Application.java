@@ -14,4 +14,13 @@ public enum Application {
     public String getLabel() {
         return label;
     }
+
+    public static Application fromLabel(String label) {
+        for (Application value : values()) {
+            if (value.label.equalsIgnoreCase(label)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("No existe Application con label: " + label);
+    }
 }

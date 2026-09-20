@@ -3,11 +3,14 @@ package com.agro.feature.payment.controller;
 import com.agro.core.api.Api;
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
 import com.agro.feature.payment.domain.VigentePayment;
+import com.agro.feature.payment.dto.request.VigentePaymentsRequestDTO;
+import com.agro.feature.payment.dto.response.VigentPaymentsResponseSimpleDTO;
 import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
 import com.agro.shared.annotations.role.OwnerEndpoint;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,4 +50,15 @@ public class VigentesPaymentControllerREST {
 
         return ResponseEntity.ok(VigentePaymentsResponseDTO.fromModel(vigente, columns, page, size));
     }
+
+    @PostMapping()
+    @OwnerEndpoint
+    @Operation(summary = "Crear metodos de pago de un proveedor por un id")
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> createVigentePayment(
+            @RequestBody @Valid VigentePaymentsRequestDTO request
+    ){
+        VigentePayment vigent = paymentDataService.createVigentePayment(request.toModel(), request.providerId());
+        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigent));
+    }
+
 }
