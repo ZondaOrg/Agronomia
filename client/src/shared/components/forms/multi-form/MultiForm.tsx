@@ -52,10 +52,7 @@ function MultiForm({
     };
 
     return (
-        <section
-            id="MI_TEST"
-            className={css(container)}
-        >
+        <section className={css(container)}>
             {sections.map((section, index) => (
                 <div key={index}>
                     {(section.title || section.subtitle) && (

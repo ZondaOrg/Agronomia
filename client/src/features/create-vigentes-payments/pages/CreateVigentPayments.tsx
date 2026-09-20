@@ -25,7 +25,7 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
     };
 
     return (
-        <div id="holaaaaa">
+        <>
             <MultiForm
                 sections={vigentPaymentSections}
                 submitLabel="Guardar forma de pago"
@@ -34,6 +34,6 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
             />
             {loading && <Spinner />}
             {error && <p>Ocurrió un error al guardar el listado.</p>}
-        </div>
+        </>
     );
 };
