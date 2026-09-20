@@ -1,4 +1,3 @@
-import type { Notify } from "./types/notify";
 import { SuccessModal } from "../modal/variants/success/ModalCreateClient";
 import ErrorToast from "../toast/error/ErrorToast";
 import SuccessToast from "../toast/success/SuccessToast";
@@ -7,15 +6,16 @@ import type React from "react";
 import Button from "../button/Button";
 import { token } from "@styled-system/tokens";
 import { css } from "@styled-system/css";
-import type { ModalAction } from "@/shared/types/modal/modal-action";
 import { useNavigate } from "react-router";
+import type { NotifyMessage } from "./types/notify-message";
+import type { ModalAction } from "@/shared/types/modal/modal-action";
 
 interface NotifyHandlerProps {
-    notify: Notify
-    children: React.ReactNode
+    notify: NotifyMessage
     action?: ModalAction
-    onClose: () => void
-    refreshNotify: () => void
+    isCancel: boolean
+    children: React.ReactNode
+    refresh: () => void
 }
 
 const backButtonContainer = css({
@@ -25,7 +25,7 @@ const backButtonContainer = css({
     marginBottom: "24px",
 });
 
-function NotifyHandler ({notify, action, children, onClose, refreshNotify}: NotifyHandlerProps) {
+function NotifyHandler({notify, action, isCancel, children, refresh}: NotifyHandlerProps) {
     const navigate = useNavigate();
 
     const backToPrev = () => {
@@ -46,7 +46,7 @@ function NotifyHandler ({notify, action, children, onClose, refreshNotify}: Noti
                 </Button>
             </div>
             {children}
-            <ConfirmModal
+            {isCancel && <ConfirmModal
                 isOpen={action === "advertence"}
                 title="¿Seguro deseas cancelar?"
                 message="Si cancelas perderás los cambios realizados."
@@ -54,17 +54,17 @@ function NotifyHandler ({notify, action, children, onClose, refreshNotify}: Noti
                 cancelText="Continuar editando"
                 danger
                 onConfirm={backToPrev}
-                onCancel={refreshNotify}
-            />
+                onCancel={refresh}
+            />}
 
-            {notify.modal && <SuccessModal
+            {notify && notify.modal && <SuccessModal
                 isOpen={action === "success"}
                 onClose={backToPrev}
                 title={notify.modal.title}
                 message={notify.modal.message}
             />}
-            {action === "error" && notify.toast && <ErrorToast message={notify.toast.message} onClose={onClose} />}
-            {action === "success" && notify.toast && <SuccessToast message={notify.toast.message} title={notify.toast.title} onClose={onClose} />}
+            {action === "error" && notify.toast && <ErrorToast message={notify.toast.message} onClose={refresh} />}
+            {action === "success" && notify.toast && <SuccessToast message={notify.toast.message} title={notify.toast.title} onClose={refresh} />}
         </>
     )
 }
