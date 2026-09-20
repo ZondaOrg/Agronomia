@@ -25,6 +25,7 @@ const AddProduct = () => {
                 schema={productSchema}
                 buttonData={{ text: "Agregar producto" }}
                 onSubmit={handleProduct}
+                size="lg"
                 onCancel={(isData) => onOpenIs(isData, "advertence")}
             />
             <ConfirmModal
