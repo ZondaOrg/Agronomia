@@ -5,12 +5,29 @@ import com.agro.feature.product.domain.exceptions.ListPriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "products")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
+    @Getter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "provider_id", nullable = false)
+    private Long provider_id;
+
+    @Embedded
     private ProductName name;
 
+    @Embedded
     private Porcent bonification;
 
     @Getter
@@ -20,13 +37,15 @@ public class Product {
     private String description;
 
     @Getter
+    @Enumerated(EnumType.STRING)
     private Money money;
 
     @Getter
-    private Double listPrice;
+    @Enumerated(EnumType.STRING)
+    private IVA iva;
 
     @Getter
-    private IVA iva;
+    private Double listPrice;
 
     @Getter
     private Double freight;
@@ -94,5 +113,9 @@ public class Product {
 
     public Integer getBonification() {
         return bonification.get();
+    }
+
+    public void assocIdProvider(Long idProvider) {
+        this.provider_id = idProvider;
     }
 }

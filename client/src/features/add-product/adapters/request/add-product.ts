@@ -1,11 +1,13 @@
+import type { IvaRequest } from "./iva"
+
 export interface AddProductRequest {
     name: string,
     type: string,
-    money: string,
-    listPrice: string,
-    iva: string,
-    bonification: string,
-    freight?: string
+    money: "ARS" | "USD",
+    listPrice: number,
+    iva: IvaRequest,
+    bonification: number,
+    freight?: number
     description?: string,
     //options: OptionRequest[]
 }

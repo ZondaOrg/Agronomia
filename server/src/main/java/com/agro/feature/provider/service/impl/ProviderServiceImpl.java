@@ -57,6 +57,11 @@ public class ProviderServiceImpl implements ProviderService, ProviderDataService
     }
 
     @Override
+    public Boolean existProvider(Long providerId) {
+        return providerDAO.existsById(providerId);
+    }
+
+    @Override
     public Provider save(Provider provider) {
         return providerDAO.save(provider);
     }

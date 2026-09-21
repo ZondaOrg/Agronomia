@@ -14,4 +14,6 @@ public interface ProviderDataService {
 
     Provider getProviderById(Long providerId);
 
+    Boolean existProvider(Long providerId);
+
 }
