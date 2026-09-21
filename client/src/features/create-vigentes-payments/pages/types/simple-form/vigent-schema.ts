@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { ADD_VIGENT_PAYMENTS } from "../../adapter/api-contract";
+import { ADD_VIGENT_PAYMENTS } from "../../../adapter/api-contract";
 
 const paymentsSchema = z.object({
     [ADD_VIGENT_PAYMENTS.nameList]: z

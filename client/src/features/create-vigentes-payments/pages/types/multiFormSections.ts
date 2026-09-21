@@ -1,12 +1,12 @@
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
-import { paymentsSubForms } from "./subForms";
-import paymentsSchema from "./vigent-schema";
-import paymentSchema from "./payment-schema";
+import { paymentsSubForms } from "./simple-form/subForms";
+import paymentsSchema from "./simple-form/vigent-schema";
+import paymentSchema from "./table-form/payment-schema";
 import {
     composeSection,
     tableSection,
 } from "@/shared/components/forms/multi-form/types/Factory";
-import { paymentInputs } from "./Table";
+import { paymentInputs } from "./table-form/Table";
 
 export const vigentPaymentSections = [
     composeSection({
