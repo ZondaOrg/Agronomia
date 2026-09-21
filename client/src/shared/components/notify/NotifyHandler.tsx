@@ -13,7 +13,7 @@ interface NotifyHandlerProps {
     action?: NotifyAction;
     isCancel: boolean;
     children: React.ReactNode;
-    isBack: boolean;
+    isBack?: boolean;
     onCancel: (isData: boolean) => void;
     refresh: () => void;
 }
@@ -22,7 +22,7 @@ function NotifyHandler({
     notify,
     action,
     isCancel,
-    isBack,
+    isBack = false,
     children,
     onCancel,
     refresh,
