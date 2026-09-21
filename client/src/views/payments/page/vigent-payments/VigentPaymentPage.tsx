@@ -15,7 +15,7 @@ export const VigentPaymentPage = () => {
         }
     }, [providerId]);
 
-    if (isLoading) {
+    if (isLoading && !data) {
         return <Spinner centered />;
     }
 

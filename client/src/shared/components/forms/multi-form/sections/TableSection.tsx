@@ -13,6 +13,7 @@ interface TableSectionProps<T, S extends z.ZodObject<z.ZodRawShape>> {
     nameElements: string;
     addLabel?: string;
     initialValues?: Table<T>;
+    onPageChange?: (page: number) => void;
 }
 
 function TableSectionInner<
@@ -25,17 +26,26 @@ function TableSectionInner<
         nameElements,
         addLabel,
         initialValues,
+        onPageChange,
     }: TableSectionProps<T, S>,
     ref: React.Ref<FormSectionHandle<T[]>>,
 ) {
-    const { table, rows, addDraft, removeDraft, changePage } =
-        useDraftRows<T>(initialValues);
+    const { table, rows, addDraft, removeDraft, changePage, resetDraft } =
+        useDraftRows<T>(initialValues, 4, onPageChange);
 
     useImperativeHandle(ref, () => ({
         isDirty: () => rows.length > 0,
         isValid: () => true,
         getData: () => rows.map((r) => r.data),
+        reset: () => resetDraft(), // 👈 esto es lo que faltaba conectar
     }));
+
+    const handlePageChange = (newPage: number) => {
+        changePage(newPage);
+        if (onPageChange) {
+            onPageChange(newPage);
+        }
+    };
 
     return (
         <FormTable<T, S>
@@ -45,7 +55,7 @@ function TableSectionInner<
             nameElements={nameElements}
             addLabel={addLabel ?? "Añadir registro"}
             onAddRow={(data) => addDraft(data as T)}
-            onPageChange={changePage}
+            onPageChange={handlePageChange}
             renderRowActions={(rowId) => (
                 <DeleteButton onClick={() => removeDraft(rowId)} />
             )}

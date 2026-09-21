@@ -31,6 +31,7 @@ export function renderSection(
                     nameElements={config.nameElements}
                     addLabel={config.addLabel}
                     initialValues={config.initialValues}
+                    onPageChange={config.onPageChange}
                 />
             );
         default: {

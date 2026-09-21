@@ -22,6 +22,7 @@ export type TableSectionConfig<T, S> = {
     nameElements: string;
     addLabel?: string;
     initialValues?: Table<T>;
+    onPageChange?: (page: number) => void;
 };
 
 export type MultiFormSectionConfig =
