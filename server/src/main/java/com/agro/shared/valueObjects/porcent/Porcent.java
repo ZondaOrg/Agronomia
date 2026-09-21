@@ -1,5 +1,10 @@
 package com.agro.shared.valueObjects.porcent;
 
+import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
+
+@Embeddable
+@EqualsAndHashCode(of = "porcent")
 public class Porcent {
     private Integer porcent;
 

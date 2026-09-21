@@ -5,12 +5,23 @@ import com.agro.feature.product.domain.exceptions.ListPriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
     private ProductName name;
 
+    @Embedded
     private Porcent bonification;
 
     @Getter

@@ -1,8 +1,13 @@
 package com.agro.feature.product.domain.valueObjects;
 
+import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
+
 import java.text.Normalizer;
 import java.util.Objects;
 
+@Embeddable
+@EqualsAndHashCode(of = "name")
 public class ProductName {
     private String name;
 
