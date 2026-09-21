@@ -1,7 +1,7 @@
 import type { AddedProduct } from "../domain/product";
 
-async function add(product): Promise<AddedProduct> {
+async function addProduct(product): Promise<AddedProduct> {
 
 }
 
-export default add;
+export default addProduct;
