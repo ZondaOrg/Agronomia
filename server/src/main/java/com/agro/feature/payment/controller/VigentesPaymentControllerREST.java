@@ -4,6 +4,7 @@ import com.agro.core.api.Api;
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.dto.request.VigentePaymentsRequestDTO;
+import com.agro.feature.payment.dto.request.VigentePaymentsUpdateDTO;
 import com.agro.feature.payment.dto.response.VigentPaymentsResponseSimpleDTO;
 import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
 import com.agro.shared.annotations.role.OwnerEndpoint;
@@ -61,4 +62,14 @@ public class VigentesPaymentControllerREST {
         return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigent));
     }
 
+    @PutMapping()
+    @OwnerEndpoint
+    @Operation(summary = "Actualizar metodos de pago de un proveedor por un id")
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> updateVigentePayment(
+            @RequestBody @Valid VigentePaymentsUpdateDTO request
+    ){
+        VigentePayment vigent = paymentDataService.updateVigent(request.vigentId(), request.deletePayments(), request.toModel());
+
+        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigent));
+    }
 }
