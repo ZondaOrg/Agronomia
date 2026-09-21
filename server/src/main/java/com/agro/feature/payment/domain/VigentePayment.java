@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "vigentePayments")
+@Entity(name = "vigent_payments")
 @Data
 @Builder
 @NoArgsConstructor
