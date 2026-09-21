@@ -7,6 +7,7 @@ import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,13 +37,15 @@ public class Product {
     private String description;
 
     @Getter
+    @Enumerated(EnumType.STRING)
     private Money money;
 
     @Getter
-    private Double listPrice;
+    @Enumerated(EnumType.STRING)
+    private IVA iva;
 
     @Getter
-    private IVA iva;
+    private Double listPrice;
 
     @Getter
     private Double freight;

@@ -2,10 +2,10 @@ export interface AddProductRequest {
     name: string,
     type: string,
     money: string,
-    listPrice: string,
+    listPrice: number,
     iva: string,
-    bonification: string,
-    freight?: string
+    bonification: number,
+    freight?: number
     description?: string,
     //options: OptionRequest[]
 }
