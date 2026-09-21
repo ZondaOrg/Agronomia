@@ -1,4 +1,3 @@
-// features/update-vigentes-payments/UpdateVigentPayment.tsx
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
 import { UpdatePayments } from "@/features/update-payments/pages/UpdatePayments";
 import { generatePaymentsSubForms } from "./types/subForms";
