@@ -25,4 +25,5 @@ public record PaymentRequestDTO(
                 .bonusPercentage(bonusPercentage)
                 .build();
     }
+
 }

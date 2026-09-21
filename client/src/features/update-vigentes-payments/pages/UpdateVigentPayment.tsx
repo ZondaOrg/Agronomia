@@ -27,32 +27,28 @@ export const UpdateVigentPayment = ({
         handleCancelNotify,
     } = useUpdateVigentPayments();
 
-    const originalPaymentsList =
-        data.payments?.rows.map((row) => row.data) || [];
-
     const sections = getUpdateVigentPaymentSections(
         data,
         data.payments,
         onPageChange,
     );
 
-    const handleSubmit = (formData: unknown[]) => {
-        const [fieldsData, tableData] = formData as [
+    const handleSubmit = (
+        formData: unknown[],
+        deletedIdsBySection?: (number[] | undefined)[],
+    ) => {
+        const [fieldsData, newPayments] = formData as [
             { nameList: string },
             Payment[],
         ];
 
-        const deletePayments = originalPaymentsList
-            .filter((orig) => !tableData.some((t) => t.id === orig.id))
-            .map((p) => p.id!);
-
-        const newPayments = tableData.filter((p) => !p.id);
+        const deletePayments = deletedIdsBySection?.[1] ?? [];
 
         updateVigentPayments({
             vigentId,
             nameList: fieldsData.nameList,
             deletePayments,
-            payments: newPayments,
+            newPayments,
         });
     };
 

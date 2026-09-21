@@ -59,6 +59,11 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
             paymentDAO.softDeleteByIds(deletePayments);
         }
 
+        if (model.getPayments() != null) {
+            model.getPayments().forEach(payment -> payment.setVigentePayment(vigent));
+        }
+
+
         return save(vigent);
     }
 

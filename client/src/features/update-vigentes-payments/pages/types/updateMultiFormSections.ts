@@ -7,11 +7,12 @@ import {
     composeSection,
     tableSection,
 } from "@/shared/components/forms/multi-form/types/Factory";
-import { paymentsSubForms } from "./subForms";
-import paymentsSchema from "./vigent-schema";
-import paymentSchema from "@/features/update-payments/pages/types/payment-schema";
-import { paymentInputs } from "@/features/update-payments/pages/types/Table";
+
 import type { Table } from "@/shared/types/table/Table";
+import paymentSchema from "./table-form/payment-schema";
+import { vigentSubForms } from "./simple-form/subForms";
+import vigentSchema from "./simple-form/vigent-schema";
+import { paymentInputs } from "./table-form/Table";
 
 export const updatePaymentListSchema = z.array(paymentSchema);
 
@@ -23,8 +24,8 @@ export const getUpdateVigentPaymentSections = (
     composeSection({
         title: "Datos del listado",
         subtitle: "Modificá la referencia de vigencia actual.",
-        subForms: paymentsSubForms,
-        schema: paymentsSchema,
+        subForms: vigentSubForms,
+        schema: vigentSchema,
         initialValues: { nameList: currentData.nameList },
     }),
     tableSection<Payment, typeof paymentSchema>({

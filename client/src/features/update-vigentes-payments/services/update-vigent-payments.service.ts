@@ -1,7 +1,7 @@
 import http from "@/core/server/http-client";
 import { PAYMENT_PATH } from "@/core/server/urls/payment";
-import type { vigentUpdateRequest } from "../adapter/VigentRequest";
 import type { VigentesPayment } from "../types/VigentesPayment";
+import type { vigentUpdateRequest } from "../adapter/VigentRequest";
 
 async function updateVigentPaymentsService(
     vigent: vigentUpdateRequest,

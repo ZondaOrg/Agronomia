@@ -191,6 +191,7 @@ export const useDraftRows = <T extends Record<string, unknown>>(
         removeDraft,
         changePage,
         deletedIds,
+        addedRows,
         resetDraft,
     };
 };
