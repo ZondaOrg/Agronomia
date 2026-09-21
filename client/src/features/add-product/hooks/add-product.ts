@@ -1,16 +1,18 @@
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 import type { AddedProduct } from "../domain/product";
 import useNotify from "@/shared/hooks/use-notify/use-notify";
-import type { AddProductRequest } from "../adapters/request/add-product";
 import type { HttpError } from "@/core/server/errors/http-error";
 import addProduct from "../services/add";
+import { useParams } from "react-router";
+import type { AddProductSchema } from "../types/schema";
 
 const useAddProduct = () => {
     const { execute, refresh } = useFetch<AddedProduct>();
+    const { idProvider } = useParams();
 
     const { action, notify, isCancel, handleNotify, handleCancelNotify, init } = useNotify()
 
-    async function add(productData: AddProductRequest) {
+    async function add(productData: AddProductSchema) {
         handleNotify(
             productData, 
             {
@@ -21,7 +23,7 @@ const useAddProduct = () => {
                 title: "Error Cliente",
                 message: (error: HttpError) => error.getMessage
             },
-            execute(addProduct)
+            execute(() => addProduct(productData, idProvider!))
         )
     }
 
