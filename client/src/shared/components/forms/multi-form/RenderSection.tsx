@@ -30,6 +30,8 @@ export function renderSection(
                     schema={config.schema}
                     nameElements={config.nameElements}
                     addLabel={config.addLabel}
+                    initialValues={config.initialValues}
+                    onPageChange={config.onPageChange}
                 />
             );
         default: {
