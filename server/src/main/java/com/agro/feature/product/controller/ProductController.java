@@ -2,9 +2,9 @@ package com.agro.feature.product.controller;
 
 import com.agro.core.api.Api;
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.ProductMapper;
-import com.agro.feature.product.dtos.request.AddProductRequestDTO;
-import com.agro.feature.product.dtos.response.AddProductResponseDTO;
+import com.agro.feature.product.dtos.add.AddProductMapper;
+import com.agro.feature.product.dtos.add.request.AddProductRequestDTO;
+import com.agro.feature.product.dtos.add.response.AddProductResponseDTO;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +31,9 @@ public class ProductController {
             @RequestBody @Valid AddProductRequestDTO request,
             @PathVariable Long providerId
     ){
-        Product product = ProductMapper.dtoToModel(request);
+        Product product = AddProductMapper.dtoToModel(request);
         Product addedProduct = productService.add(product, request.type(), providerId);
-        AddProductResponseDTO productResponseDto = ProductMapper.modelToDto(addedProduct);
+        AddProductResponseDTO productResponseDto = AddProductMapper.modelToDto(addedProduct);
         return ResponseEntity.ok(productResponseDto);
     }
 }

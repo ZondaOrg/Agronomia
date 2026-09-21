@@ -1,10 +1,10 @@
-package com.agro.feature.product.dtos;
+package com.agro.feature.product.dtos.add;
 
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.request.AddProductRequestDTO;
-import com.agro.feature.product.dtos.response.AddProductResponseDTO;
+import com.agro.feature.product.dtos.add.request.AddProductRequestDTO;
+import com.agro.feature.product.dtos.add.response.AddProductResponseDTO;
 
-public class ProductMapper {
+public class AddProductMapper {
 
     public static Product dtoToModel(AddProductRequestDTO request) {
         if(request.freight() == null) {
