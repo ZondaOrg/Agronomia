@@ -1,10 +1,13 @@
 package com.agro.shared.valueObjects.porcent;
 
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @EqualsAndHashCode(of = "porcent")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Porcent {
     private Integer porcent;
 
