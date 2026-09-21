@@ -1,6 +1,7 @@
 package com.agro.feature.payment.dto.request;
 
 import com.agro.feature.payment.domain.VigentePayment;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +12,8 @@ public record VigentePaymentsRequestDTO(
         Long providerId,
         @NotNull
         String nameList,
+        @NotEmpty(message = "Debe agregar al menos una forma de pago al listado")
+        @Valid
         List<PaymentRequestDTO> payments
 ) {
 

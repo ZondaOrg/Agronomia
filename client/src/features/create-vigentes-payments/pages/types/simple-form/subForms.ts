@@ -1,7 +1,7 @@
 import { createSubForms } from "@/shared/components/forms/types/factory";
-import { ADD_VIGENT_PAYMENTS } from "../../adapter/api-contract";
+import { ADD_VIGENT_PAYMENTS } from "../../../adapter/api-contract";
 
-export const paymentsSubForms = createSubForms([
+export const vigentSubForms = createSubForms([
     {
         name: "Datos del listado",
         fields: [
