@@ -30,13 +30,14 @@ function TableSectionInner<
     }: TableSectionProps<T, S>,
     ref: React.Ref<FormSectionHandle<T[]>>,
 ) {
-    const { table, rows, addDraft, removeDraft, changePage } =
-        useDraftRows<T>(initialValues);
+    const { table, rows, addDraft, removeDraft, changePage, resetDraft } =
+        useDraftRows<T>(initialValues, 4, onPageChange);
 
     useImperativeHandle(ref, () => ({
         isDirty: () => rows.length > 0,
         isValid: () => true,
         getData: () => rows.map((r) => r.data),
+        reset: () => resetDraft(), // 👈 esto es lo que faltaba conectar
     }));
 
     const handlePageChange = (newPage: number) => {
