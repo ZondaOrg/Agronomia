@@ -26,7 +26,7 @@ public class ProductController {
 
     @PostMapping("/add/{providerId}")
     @OwnerEndpoint
-    @Operation(summary = "Crear metodos de pago de un proveedor por un id")
+    @Operation(summary = "Agregar Productos de un proveedor por un id")
     public ResponseEntity<AddProductResponseDTO> add(
             @RequestBody @Valid AddProductRequestDTO request,
             @PathVariable Long providerId
