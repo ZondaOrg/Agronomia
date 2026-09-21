@@ -24,4 +24,6 @@ public final class Api {
 
     public static final String CLIENT = MAIN_NAME + V + "/client";
 
+    public static final String PRODUCT = MAIN_NAME + V + "/product";
+
 }
