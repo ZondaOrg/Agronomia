@@ -18,6 +18,7 @@ export const updatePaymentListSchema = z.array(paymentSchema);
 export const getUpdateVigentPaymentSections = (
     currentData: VigentesPayment,
     currentPayments: Table<Payment>,
+    onPageChange?: (page: number) => void,
 ) => [
     composeSection({
         title: "Datos del listado",
@@ -35,5 +36,6 @@ export const getUpdateVigentPaymentSections = (
         nameElements: "formas de pago",
         addLabel: "+ Añadir forma de pago",
         initialValues: currentPayments,
+        onPageChange: onPageChange,
     }),
 ];

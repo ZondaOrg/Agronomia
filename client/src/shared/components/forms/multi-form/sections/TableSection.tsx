@@ -13,6 +13,7 @@ interface TableSectionProps<T, S extends z.ZodObject<z.ZodRawShape>> {
     nameElements: string;
     addLabel?: string;
     initialValues?: Table<T>;
+    onPageChange?: (page: number) => void;
 }
 
 function TableSectionInner<
@@ -25,6 +26,7 @@ function TableSectionInner<
         nameElements,
         addLabel,
         initialValues,
+        onPageChange,
     }: TableSectionProps<T, S>,
     ref: React.Ref<FormSectionHandle<T[]>>,
 ) {
@@ -37,6 +39,13 @@ function TableSectionInner<
         getData: () => rows.map((r) => r.data),
     }));
 
+    const handlePageChange = (newPage: number) => {
+        changePage(newPage);
+        if (onPageChange) {
+            onPageChange(newPage);
+        }
+    };
+
     return (
         <FormTable<T, S>
             table={table}
@@ -45,7 +54,7 @@ function TableSectionInner<
             nameElements={nameElements}
             addLabel={addLabel ?? "Añadir registro"}
             onAddRow={(data) => addDraft(data as T)}
-            onPageChange={changePage}
+            onPageChange={handlePageChange}
             renderRowActions={(rowId) => (
                 <DeleteButton onClick={() => removeDraft(rowId)} />
             )}

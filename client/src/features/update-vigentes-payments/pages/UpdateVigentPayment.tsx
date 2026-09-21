@@ -1,7 +1,10 @@
 import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
 import { useUpdateVigentPayments } from "../hooks/use-update-vigent-payments";
-import type { VigentesPayment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
+import type {
+    Payment,
+    VigentesPayment,
+} from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 import { getUpdateVigentPaymentSections } from "./types/updateMultiFormSections";
 
 type Props = {
@@ -11,9 +14,9 @@ type Props = {
 };
 
 export const UpdateVigentPayment = ({
-    // vigentId,
+    vigentId,
     data,
-    // onPageChange,
+    onPageChange,
 }: Props) => {
     const {
         isCancel,
@@ -24,7 +27,34 @@ export const UpdateVigentPayment = ({
         handleCancelNotify,
     } = useUpdateVigentPayments();
 
-    const sections = getUpdateVigentPaymentSections(data, data.payments);
+    const originalPaymentsList =
+        data.payments?.rows.map((row) => row.data) || [];
+
+    const sections = getUpdateVigentPaymentSections(
+        data,
+        data.payments,
+        onPageChange,
+    );
+
+    const handleSubmit = (formData: unknown[]) => {
+        const [fieldsData, tableData] = formData as [
+            { nameList: string },
+            Payment[],
+        ];
+
+        const deletePayments = originalPaymentsList
+            .filter((orig) => !tableData.some((t) => t.id === orig.id))
+            .map((p) => p.id!);
+
+        const newPayments = tableData.filter((p) => !p.id);
+
+        updateVigentPayments({
+            vigentId,
+            nameList: fieldsData.nameList,
+            deletePayments,
+            payments: newPayments,
+        });
+    };
 
     return (
         <NotifyHandler
