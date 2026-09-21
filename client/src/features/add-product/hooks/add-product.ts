@@ -16,11 +16,11 @@ const useAddProduct = () => {
         handleNotify(
             productData, 
             {
-                title: "Cliente agregado",
+                title: "Producto agregado",
                 message: (product: AddedProduct) => `Se registro el producto ${product.name}`
             },
             {
-                title: "Error Cliente",
+                title: "Producto Cliente",
                 message: (error: HttpError) => error.getMessage
             },
             execute(() => addProduct(productData, idProvider!))
