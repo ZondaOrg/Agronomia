@@ -19,7 +19,6 @@ export const UpdateVigentPayment = ({ data, onPageChange }: Props) => {
             <ComposeForm
                 subForms={vigentesPaymentsForm}
                 schema={paymentsSchema}
-                bordered={false}
                 buttonData={{ text: "Guardar listado" }}
                 onSubmit={() => console.log("submit")}
                 onCancel={() => console.log("cancel")}
