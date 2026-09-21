@@ -11,12 +11,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "products")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "provider_id", nullable = false)
+    private Long provider_id;
 
     @Embedded
     private ProductName name;
@@ -105,5 +110,9 @@ public class Product {
 
     public Integer getBonification() {
         return bonification.get();
+    }
+
+    public void assocIdProvider(Long idProvider) {
+        this.provider_id = idProvider;
     }
 }
