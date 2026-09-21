@@ -5,23 +5,31 @@ import { DeleteButton } from "@/shared/components/button/variants/Delete-button"
 import { FormTable } from "@/shared/components/table/form-table/FormTable";
 import type { InputData } from "@/shared/types/input/input";
 import type { FormSectionHandle } from "../types/FormSection";
+import type { Table } from "@/shared/types/table/Table";
 
-interface TableSectionProps<S extends z.ZodObject<z.ZodRawShape>> {
+interface TableSectionProps<T, S extends z.ZodObject<z.ZodRawShape>> {
     inputs: Record<string, InputData>;
     schema: S;
     nameElements: string;
     addLabel?: string;
+    initialValues?: Table<T>;
 }
 
 function TableSectionInner<
     T extends Record<string, unknown>,
     S extends z.ZodObject<z.ZodRawShape>,
 >(
-    { inputs, schema, nameElements, addLabel }: TableSectionProps<S>,
+    {
+        inputs,
+        schema,
+        nameElements,
+        addLabel,
+        initialValues,
+    }: TableSectionProps<T, S>,
     ref: React.Ref<FormSectionHandle<T[]>>,
 ) {
     const { table, rows, addDraft, removeDraft, changePage } =
-        useDraftRows<T>();
+        useDraftRows<T>(initialValues);
 
     useImperativeHandle(ref, () => ({
         isDirty: () => rows.length > 0,
@@ -49,5 +57,7 @@ export const TableSection = forwardRef(TableSectionInner) as <
     T extends Record<string, unknown>,
     S extends z.ZodObject<z.ZodRawShape>,
 >(
-    props: TableSectionProps<S> & { ref?: React.Ref<FormSectionHandle<T[]>> },
+    props: TableSectionProps<T, S> & {
+        ref?: React.Ref<FormSectionHandle<T[]>>;
+    },
 ) => React.ReactElement;

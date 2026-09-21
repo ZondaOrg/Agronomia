@@ -25,6 +25,7 @@ export const VigentPaymentPage = () => {
 
     return (
         <UpdateVigentPayment
+            vigentId={data.id}
             data={data}
             onPageChange={onPageChange}
         />

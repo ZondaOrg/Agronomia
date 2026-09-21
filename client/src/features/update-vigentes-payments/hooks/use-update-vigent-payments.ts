@@ -5,12 +5,12 @@ import type { HttpError } from "@/core/server/errors/http-error";
 import type { vigentUpdateRequest } from "../adapter/VigentRequest";
 import updateVigentPaymentsService from "../services/update-vigent-payments.service";
 
-export const useCreateVigentPayments = () => {
+export const useUpdateVigentPayments = () => {
     const { execute, refresh } = useFetch<VigentesPayment>();
     const { action, notify, isCancel, handleNotify, handleCancelNotify, init } =
         useNotify();
 
-    async function createVigentPayments(payload: vigentUpdateRequest) {
+    async function updateVigentPayments(payload: vigentUpdateRequest) {
         handleNotify(
             payload,
             {
@@ -35,7 +35,7 @@ export const useCreateVigentPayments = () => {
         isCancel,
         notify,
         action,
-        createVigentPayments,
+        updateVigentPayments,
         onRefresh,
         handleCancelNotify,
     };

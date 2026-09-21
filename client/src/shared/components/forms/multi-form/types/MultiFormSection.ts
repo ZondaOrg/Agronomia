@@ -2,6 +2,7 @@ import type { z } from "zod";
 import type { SubFormData } from "../../types/sub-form";
 import type { Schema, InferData } from "../../validation-form/shema";
 import type { InputData } from "@/shared/types/input/input";
+import type { Table } from "@/shared/types/table/Table";
 
 export type ComposeSectionConfig<S extends Schema> = {
     type: "compose";
@@ -12,18 +13,15 @@ export type ComposeSectionConfig<S extends Schema> = {
     initialValues?: Partial<InferData<S>>;
 };
 
-export type TableSectionConfig<
-    T extends Record<string, unknown>,
-    S extends z.ZodObject<z.ZodRawShape>,
-> = {
+export type TableSectionConfig<T, S> = {
     type: "table";
-    title?: string;
+    title: string;
     subtitle?: string;
     inputs: Record<string, InputData>;
     schema: S;
     nameElements: string;
     addLabel?: string;
-    readonly _rowType?: T;
+    initialValues?: Table<T>;
 };
 
 export type MultiFormSectionConfig =

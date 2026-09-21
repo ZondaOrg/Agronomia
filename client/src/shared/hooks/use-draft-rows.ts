@@ -1,21 +1,36 @@
 import { useState, useCallback, useMemo } from "react";
-import type { Table, Row } from "@/shared/types/table/Table";
+import {
+    type Table,
+    type Row,
+    getEmptyTable,
+} from "@/shared/types/table/Table";
 
-export const useDraftRows = <T extends Record<string, unknown>>(size = 4) => {
-    const [rows, setRows] = useState<Row<T>[]>([]);
+export const useDraftRows = <T extends Record<string, unknown>>(
+    initialValues: Table<T> = getEmptyTable<T>(),
+    size = 4,
+) => {
+    const [rows, setRows] = useState<Row<T>[]>(() =>
+        initialValues.rows.map((row) => ({
+            id: row.id,
+            data: row.data,
+        })),
+    );
+
     const [page, setPage] = useState(0);
 
     const addDraft = useCallback((data: T) => {
-        setRows((prev) => [
-            ...prev,
-            {
-                id:
-                    prev.length > 0
-                        ? Math.max(...prev.map((r) => r.id)) + 1
-                        : 1,
-                data,
-            },
-        ]);
+        setRows((prev) => {
+            const maxId =
+                prev.length > 0 ? Math.max(...prev.map((r) => r.id)) : 0;
+
+            return [
+                ...prev,
+                {
+                    id: maxId + 1,
+                    data,
+                },
+            ];
+        });
     }, []);
 
     const removeDraft = useCallback((id: number) => {
