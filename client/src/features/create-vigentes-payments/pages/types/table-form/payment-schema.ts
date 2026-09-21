@@ -35,10 +35,8 @@ const paymentSchema = z
 
 export type PaymentSchemaType = z.infer<typeof paymentSchema>;
 
-export default paymentSchema;
+export const paymentListSchema = z
+    .array(paymentSchema)
+    .min(1, { message: "Debe agregar al menos un pago al listado" });
 
-export const adjustmentOptions = [
-    { id: 1, label: "No Aplica", value: "No Aplica" },
-    { id: 2, label: "Descuento", value: "Descuento" },
-    { id: 3, label: "Recargo", value: "Recargo" },
-];
+export default paymentSchema;

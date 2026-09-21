@@ -1,20 +1,20 @@
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
-import { paymentsSubForms } from "./simple-form/subForms";
-import paymentsSchema from "./simple-form/vigent-schema";
 import paymentSchema from "./table-form/payment-schema";
 import {
     composeSection,
     tableSection,
 } from "@/shared/components/forms/multi-form/types/Factory";
 import { paymentInputs } from "./table-form/Table";
+import { vigentSubForms } from "./simple-form/subForms";
+import vigentSchema from "./simple-form/vigent-schema";
 
 export const vigentPaymentSections = [
     composeSection({
         title: "Datos del listado",
         subtitle:
             "Usá una referencia que reconozcas después. Este listado de formas de pago rige desde que lo cargás hasta que cargues uno nuevo.",
-        subForms: paymentsSubForms,
-        schema: paymentsSchema,
+        subForms: vigentSubForms,
+        schema: vigentSchema,
     }),
     tableSection<Payment, typeof paymentSchema>({
         title: "Formas de pago",

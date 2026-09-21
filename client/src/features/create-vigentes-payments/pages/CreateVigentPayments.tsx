@@ -1,15 +1,22 @@
 import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
 import { vigentPaymentSections } from "./types/multiFormSections";
 import { useCreateVigentPayments } from "../hook/use-create-vigent-payments";
-import Spinner from "@/shared/components/spinner/Spinner";
 import type { Payment } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
+import NotifyHandler from "@/shared/components/notify/NotifyHandler";
 
 type Props = {
     providerId: number;
 };
 
 export const CreateVigentPayment = ({ providerId }: Props) => {
-    const { createVigentPayments, loading, error } = useCreateVigentPayments();
+    const {
+        isCancel,
+        notify,
+        action,
+        createVigentPayments,
+        onRefresh,
+        handleCancelNotify,
+    } = useCreateVigentPayments();
 
     const handleSubmit = (data: unknown[]) => {
         const [fieldsData, tableData] = data as [
@@ -25,15 +32,20 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
     };
 
     return (
-        <>
+        <NotifyHandler
+            notify={notify}
+            action={action}
+            isCancel={isCancel}
+            isBack={true}
+            refresh={onRefresh}
+            onCancel={handleCancelNotify}
+        >
             <MultiForm
                 sections={vigentPaymentSections}
                 submitLabel="Guardar forma de pago"
                 onSubmit={handleSubmit}
-                onCancel={() => console.log("cancel")}
+                onCancel={handleCancelNotify}
             />
-            {loading && <Spinner />}
-            {error && <p>Ocurrió un error al guardar el listado.</p>}
-        </>
+        </NotifyHandler>
     );
 };
