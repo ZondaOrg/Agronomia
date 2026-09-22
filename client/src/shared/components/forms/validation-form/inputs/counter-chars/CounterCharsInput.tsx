@@ -59,7 +59,7 @@ function CounterCharsInput<T extends Schema>({
             />
             <div>
                 {error && <ErrorMessage message={error.message as string} />}
-                <span className={counter(isValid)}>{`${charCount}/${input.limit}`}</span>
+                <span className={counter(isValid)}>{`${charCount} / ${input.limit}`}</span>
             </div>
         </div>
     )
