@@ -12,16 +12,10 @@ import {
     inlineValue,
 } from "./styles";
 import { IconList } from "@/shared/components/icon/components/iconList/IconList";
-import { PhoneIcon } from "@/shared/components/icon/components/icons/Phone";
 import { InitialsName } from "@/shared/components/avatar/components/initialsName/InitialsName";
-import type { RazonSocial } from "../../domain/razon-social";
-import type { NaturalPerson } from "../../domain/natural-person";
-import { UserIcon } from "@/shared/components/icon/components/icons/User";
-import EmailIcon from "@/shared/components/icon/components/icons/EmailIcon";
-import UbicationIcon from "@/shared/components/icon/components/icons/Ubication";
-
 import { Link } from "react-router";
 import { EditIcon } from "@/shared/components/icon/components/icons/EditIcon";
+import { clientItems } from "./types/client-data";
 
 interface ClientCardProps {
     client: Client;
@@ -32,7 +26,7 @@ export const ClientCard = ({ client }: ClientCardProps) => {
         <article className={card}>
             <header className={contactHeader}>
                 <InitialsName
-                    fullName={client.name + " " + client.surname}
+                    fullName={client.type === "RAZON_SOCIAL" ? client.razonSocial : client.name + " " + client.surname}
                     size="md"
                     nameClassName={clientName}
                 />
@@ -62,53 +56,5 @@ export const ClientCard = ({ client }: ClientCardProps) => {
         </article>
     );
 };
-
-const clientItems = (client: Client) =>
-    "razonSocial" in client
-        ? legalPersonItems(client)
-        : naturalPersonItems(client);
-
-function naturalPersonItems(client: NaturalPerson) {
-    return [
-        {
-            icon: PhoneIcon,
-            value: client.phone,
-        },
-        {
-            icon: EmailIcon,
-            value: client.email ?? "No indicado",
-        },
-        {
-            icon: UbicationIcon,
-            value:
-                (client.ubication.address ?? "Dirección no indicada") +
-                " - " +
-                client.ubication.location,
-        },
-    ];
-}
-function legalPersonItems(client: RazonSocial) {
-    return [
-        {
-            icon: UbicationIcon,
-            value:
-                (client.ubication.address ?? "Dirección no indicada") +
-                " - " +
-                client.ubication.location,
-        },
-        {
-            icon: PhoneIcon,
-            value: client.associatePhone,
-        },
-        {
-            icon: UserIcon,
-            value: client.name + " " + client.surname,
-        },
-        {
-            icon: EmailIcon,
-            value: client.email ?? "No indicado",
-        },
-    ];
-}
 
 export default ClientCard;
