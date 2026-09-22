@@ -1,5 +1,6 @@
 package com.agro.core.data.impl;
 
+import com.agro.core.data.DataSeeder;
 import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.client.domain.Client;
 import com.agro.feature.client.domain.NaturalPerson;
@@ -16,7 +17,6 @@ import com.agro.feature.provider.domain.Traveler;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.services.UserService;
-import com.agro.core.data.DataSeeder;
 import com.agro.shared.entities.province.Province;
 import com.agro.shared.entities.rol.Role;
 import com.agro.shared.valueObjects.email.EmailValue;

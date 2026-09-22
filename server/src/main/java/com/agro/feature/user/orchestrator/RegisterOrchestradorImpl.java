@@ -5,7 +5,6 @@ import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.company.contracts.CompanyDataService;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.email.contracts.EmailSendRegister;
-import com.agro.feature.email.service.EmailService;
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.domain.exceptions.EmailDuplicatedException;
 import com.agro.feature.user.services.UserService;
