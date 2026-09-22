@@ -9,12 +9,14 @@ import com.agro.shared.annotations.role.OwnerEndpoint;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController(Api.PRODUCT_TYPE)
+@RestController
+@RequestMapping(Api.PRODUCT_TYPE)
 public class ProductTypeController {
 
     private ProductTypeService service;
