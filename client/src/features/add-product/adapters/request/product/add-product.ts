@@ -11,8 +11,3 @@ export interface AddProductRequest {
     description?: string,
     //options: OptionRequest[]
 }
-
-export interface OptionRequest {
-    name: string 
-    price: string
-}
