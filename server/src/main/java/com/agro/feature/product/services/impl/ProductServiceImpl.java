@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
             throw new EntityNotFoundException("No se puede crear un producto sin asignar un provedor");
         }
         product.assocIdProvider(idProvider);
-        Optional<String> name = dao.findNameByProvider(idProvider, product.getName());
+        Optional<String> name = dao.findNameByProvider(idProvider, product.getFormatName());
         name.ifPresent(product::validateName);
         return dao.save(product);
     }
