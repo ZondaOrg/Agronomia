@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface ProductDAO extends JpaRepository<Product, Long> {
     @Query(
-            "SELECT p.name.value " +
+            "SELECT p.name.normalizeValue " +
             "FROM Product p " +
-            "WHERE p.provider_id = :idProvider AND p.name.value = :productName"
+            "WHERE p.provider_id = :idProvider AND p.name.normalizeValue = :productName"
     )
     Optional<String> findNameByProvider(
             @Param("idProvider") Long idProvider,
