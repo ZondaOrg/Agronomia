@@ -7,10 +7,12 @@ const useGetAllTypes = () => {
     const {execute, data} = useFetch<ProductType[]>();
 
     useEffect(() => {
-        execute(getAllTypes);
+        execute(getAllTypes)();
     }, []);
 
-    return {data}
+
+
+    return {productTypes: data?.map(productType => productType.name)}
 }
 
 export default useGetAllTypes;
