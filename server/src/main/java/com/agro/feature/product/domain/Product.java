@@ -52,6 +52,7 @@ public class Product {
     @Getter
     private Double freight;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Optional> optionals = new HashSet<>();
 
     public Product(
