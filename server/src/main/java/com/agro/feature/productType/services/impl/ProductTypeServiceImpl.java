@@ -6,7 +6,7 @@ import com.agro.feature.productType.services.ProductTypeService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Transactional
@@ -18,7 +18,12 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     }
 
     @Override
-    public Set<ProductType> getAll() {
-        return Set.of();
+    public List<ProductType> getAll() {
+        return dao.findAll();
+    }
+
+    @Override
+    public ProductType add(ProductType productType) {
+        return dao.save(productType);
     }
 }

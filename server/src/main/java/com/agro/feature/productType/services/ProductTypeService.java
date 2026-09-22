@@ -2,8 +2,10 @@ package com.agro.feature.productType.services;
 
 import com.agro.feature.productType.domain.ProductType;
 
-import java.util.Set;
+import java.util.List;
 
 public interface ProductTypeService {
-    Set<ProductType> getAll();
+    List<ProductType> getAll();
+
+    ProductType add(ProductType productType);
 }
