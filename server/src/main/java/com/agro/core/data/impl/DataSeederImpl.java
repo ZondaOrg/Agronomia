@@ -11,6 +11,8 @@ import com.agro.feature.payment.domain.Application;
 import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.service.VigentesPaymentService;
+import com.agro.feature.productType.domain.ProductType;
+import com.agro.feature.productType.services.ProductTypeService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.domain.Traveler;
 import com.agro.feature.provider.service.ProviderService;
@@ -34,17 +36,20 @@ public class DataSeederImpl implements DataSeeder {
     private final ProviderService providerService;
     private final ClientService clientService;
     private final VigentesPaymentService vigentesPaymentService;
+    private final ProductTypeService productTypeService;
 
     public DataSeederImpl(
             UserService userService,
             ProviderService providerService,
             ClientService clientService,
-            VigentesPaymentService vigentesPaymentService
+            VigentesPaymentService vigentesPaymentService,
+            ProductTypeService productTypeService
     ) {
         this.userService = userService;
         this.providerService = providerService;
         this.clientService = clientService;
         this.vigentesPaymentService = vigentesPaymentService;
+        this.productTypeService = productTypeService;
     }
 
     @Override
@@ -110,6 +115,7 @@ public class DataSeederImpl implements DataSeeder {
 
         createProviders(company.getId());
         createClients(user.getId(), company.getId());
+        createProductTypes();
     }
 
     private void createProviders(Long companyId) {
@@ -364,5 +370,42 @@ public class DataSeederImpl implements DataSeeder {
             client.setCompanyId(companyId);
             clientService.save(client, userId);
         });
+    }
+
+    private void createProductTypes() {
+        List<ProductType> productTypes = List.of(
+                new ProductType(
+                        "Tractor"
+                ),
+                new ProductType(
+                        "Tolva auto descartable"
+                ),
+                new ProductType(
+                        "Semillero"
+                ),
+                new ProductType(
+                        "Acomplado"
+                ),
+                new ProductType(
+                        "Desmalezadora"
+                ),
+                new ProductType(
+                        "Mixer"
+                ),
+                new ProductType(
+                        "Chimango"
+                ),
+                new ProductType(
+                        "Comedor"
+                ),
+                new ProductType(
+                        "Portarollo"
+                ),
+                new ProductType(
+                        "Pala"
+                )
+        );
+
+        productTypes.forEach(productTypeService::add);
     }
 }
