@@ -7,7 +7,6 @@ import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

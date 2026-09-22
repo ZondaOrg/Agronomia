@@ -1,4 +1,4 @@
-package com.agro.feature.product.dtos.request;
+package com.agro.feature.product.dtos.add.request;
 
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
