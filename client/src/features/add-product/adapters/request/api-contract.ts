@@ -9,3 +9,8 @@ export const ADD_PRODUCT = {
     freight: "freight",
     options: "options"
 } as const
+
+export const OPTIONAL = {
+    name: "name",
+    price: "price",
+} as const

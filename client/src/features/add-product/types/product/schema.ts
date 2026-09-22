@@ -1,7 +1,7 @@
 import z from "zod";
-import { ADD_PRODUCT } from "../adapters/request/api-contract";
-import { moneyKeys } from "./money";
-import { ivaKeys } from "./iva";
+import { ADD_PRODUCT } from "../../adapters/request/api-contract";
+import { moneyKeys } from "../../domain/money";
+import { ivaKeys } from "../../domain/iva";
 
 const productSchema = z.object({
     [ADD_PRODUCT.name]: z.string().nonempty({ message: "El nombre es obligatorio"}),

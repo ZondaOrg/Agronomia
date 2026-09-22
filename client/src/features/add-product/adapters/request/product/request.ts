@@ -1,4 +1,4 @@
-import type { AddProductSchema } from "../../types/schema";
+import type { AddProductSchema } from "../../../types/product/schema";
 import type { AddProductRequest } from "./add-product";
 
 export function requestAdapter(schema: AddProductSchema): AddProductRequest {
