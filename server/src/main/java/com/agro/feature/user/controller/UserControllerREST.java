@@ -2,7 +2,6 @@ package com.agro.feature.user.controller;
 
 import com.agro.core.api.Api;
 import com.agro.feature.user.domain.User;
-import com.agro.feature.user.dtos.UserMapper;
 import com.agro.feature.user.dtos.request.UserRequest;
 import com.agro.feature.user.dtos.response.UserResponseSimple;
 import com.agro.feature.user.dtos.response.UserWithCompanyLogo;

@@ -3,12 +3,7 @@ package com.agro.feature.client.dtos;
 import com.agro.feature.client.domain.Client;
 import com.agro.feature.client.domain.NaturalPerson;
 import com.agro.feature.client.domain.RazonSocial;
-import com.agro.feature.client.dtos.request.ClientRequest;
-import com.agro.feature.client.dtos.request.ClientEditRequest;
-import com.agro.feature.client.dtos.request.NaturalPersonEditRequest;
-import com.agro.feature.client.dtos.request.NaturalPersonRequest;
-import com.agro.feature.client.dtos.request.RazonSocialEditRequest;
-import com.agro.feature.client.dtos.request.RazonSocialRequest;
+import com.agro.feature.client.dtos.request.*;
 import com.agro.feature.client.dtos.response.ClientResponse;
 import org.springframework.stereotype.Component;
 

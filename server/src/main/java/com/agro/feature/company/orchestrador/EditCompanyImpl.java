@@ -2,7 +2,6 @@ package com.agro.feature.company.orchestrador;
 
 import com.agro.feature.company.contracts.CompanyDataService;
 import com.agro.feature.company.domain.Company;
-import com.agro.feature.company.service.CompanyService;
 import com.agro.feature.image.contracts.SaveImageService;
 import com.agro.feature.image.domain.Imagen;
 import jakarta.transaction.Transactional;

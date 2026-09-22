@@ -21,7 +21,7 @@ const useAddProduct = () => {
                 message: (product: AddedProduct) => `Se registro el producto ${product.name}`
             },
             {
-                title: "Producto Cliente",
+                title: "Error Producto",
                 message: (error: HttpError) => error.getMessage
             },
             execute(() => addProduct(productData, optionals, idProvider!))

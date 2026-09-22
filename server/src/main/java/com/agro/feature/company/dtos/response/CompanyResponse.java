@@ -1,7 +1,6 @@
 package com.agro.feature.company.dtos.response;
 
 import com.agro.feature.company.domain.Company;
-import com.agro.shared.dtos.table.TableResponseDTO;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
