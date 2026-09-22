@@ -9,6 +9,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "products")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +50,9 @@ public class Product {
 
     @Getter
     private Double freight;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Optional> optionals = new HashSet<>();
 
     public Product(
             String name,
@@ -112,5 +118,9 @@ public class Product {
 
     public void assocIdProvider(Long idProvider) {
         this.provider_id = idProvider;
+    }
+
+    void addOptional(Optional optional) {
+        optionals.add(optional);
     }
 }

@@ -6,7 +6,6 @@ import com.agro.feature.auth.dtos.AuthMapper;
 import com.agro.feature.auth.dtos.request.Credentials;
 import com.agro.feature.auth.dtos.response.AuthResponse;
 import com.agro.feature.auth.orchestrator.LoginOrchestrator;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

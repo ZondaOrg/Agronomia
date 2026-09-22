@@ -165,4 +165,11 @@ class ProductTest {
     void testInicialmenteUnProductNoTieneTipoDeProductoAsociado() {
         assertEquals("a", product.getProductType());
     }
+
+    @Test
+    void testUnProductoAgregaUnOpcional() {
+        Optional optional = new Optional(product, "opcional 1", 100D);
+        product.addOptional(optional);
+        assertEquals(optional.getMoney(), product.getMoney());
+    }
 }

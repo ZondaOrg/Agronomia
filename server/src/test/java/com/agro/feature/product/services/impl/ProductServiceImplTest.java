@@ -6,7 +6,6 @@ import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
-import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
@@ -21,7 +20,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Testcontainers
