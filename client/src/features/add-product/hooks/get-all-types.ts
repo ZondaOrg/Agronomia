@@ -1,10 +1,9 @@
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 import { useEffect } from "react";
-import type { ProductType } from "../domain/product-type";
 import { getAllTypes } from "../services/getAllTypes";
 
 const useGetAllTypes = () => {
-    const {execute, data} = useFetch<ProductType[]>();
+    const {execute, data} = useFetch<string[]>();
 
     useEffect(() => {
         execute(getAllTypes)();
@@ -12,7 +11,7 @@ const useGetAllTypes = () => {
 
 
 
-    return {productTypes: data?.map(productType => productType.name)}
+    return {productTypes: data}
 }
 
 export default useGetAllTypes;
