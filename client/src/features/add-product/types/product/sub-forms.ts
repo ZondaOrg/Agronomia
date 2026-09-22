@@ -11,10 +11,10 @@ const productSubForms: SubFormData[] = createSubForms([
         fields: [
             [
                 { motive: "Producto", name: ADD_PRODUCT.name },
-                { motive: "Descripción", name: ADD_PRODUCT.description, isRequired: false },
+                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: ["a"].map(a => { return  { label: a, value: a, id: a}}) },
             ],
             [
-                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: ["a"].map(a => { return  { label: a, value: a, id: a}}) },
+                { motive: "Descripción", type: "counter-chars", limit: 500, name: ADD_PRODUCT.description, isRequired: false },
             ]
         ]
     },
