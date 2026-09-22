@@ -1,6 +1,5 @@
 package com.agro.core.handlers.model;
 
-import com.agro.shared.valueObjects.cuit.CuitDuplicatedException;
 import com.agro.shared.valueObjects.cuit.CuitFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
