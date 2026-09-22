@@ -4,10 +4,12 @@ import com.agro.core.ContainerPostgresql;
 import com.agro.feature.payment.domain.Application;
 import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
+import com.agro.feature.payment.persistence.dao.PaymentDAO;
 import com.agro.feature.payment.service.VigentesPaymentService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,10 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Testcontainers
@@ -43,6 +47,9 @@ public class VigentesPaymentDataServiceTest {
     @Autowired
     private ProviderService providerService;
 
+    @Autowired
+    private PaymentDAO paymentDAO;
+
     @Test
     @DisplayName("Debe retornar el VigentePayment asociado a un proveedor existente")
     void shouldReturnVigentePaymentWhenProviderExists() {
@@ -62,7 +69,13 @@ public class VigentesPaymentDataServiceTest {
                 .payments(new ArrayList<>())
                 .build();
 
-        Payment payment = new Payment(null, "Contado", Application.NOAPLICA, 0, 0, vigentePayment);
+        Payment payment = Payment.builder()
+                .description("Contado")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
         vigentePayment.getPayments().add(payment);
 
         vigentesPaymentService.save(vigentePayment);
@@ -93,6 +106,158 @@ public class VigentesPaymentDataServiceTest {
         VigentePayment result = vigentesPaymentDataService.getVigentePaymentsPaginatedById(savedProvider.getId());
 
         assertThat(result).isNull();
+    }
+
+    @Test
+    @DisplayName("Debe crear un VigentePayment asociado al proveedor")
+    void shouldCreateVigentePayment() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Create")
+                .legalName("Proveedor Create S.A.")
+                .cuit("30-33333333-9")
+                .phoneNumber("11-1111-2222")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment model = VigentePayment.builder()
+                .nameList("Septiembre 2026")
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Transferencia")
+                .application(Application.DESCUENTO)
+                .percentage(10)
+                .bonusPercentage(0)
+                .build();
+
+        model.getPayments().add(payment);
+
+        VigentePayment created = vigentesPaymentDataService.createVigentePayment(model, savedProvider.getId());
+
+        assertThat(created).isNotNull();
+        assertThat(created.getId()).isNotNull();
+        assertThat(created.getNameList()).isEqualTo("Septiembre 2026");
+        assertThat(created.getProvider().getId()).isEqualTo(savedProvider.getId());
+        assertThat(created.getPayments()).hasSize(1);
+        assertThat(created.getPayments().get(0).getVigentePayment().getId()).isEqualTo(created.getId());
+    }
+
+    @Test
+    @DisplayName("Debe actualizar un VigentePayment existente agregando nuevos pagos")
+    void shouldUpdateVigentePaymentAndAddNewPayments() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Update")
+                .legalName("Proveedor Update S.A.")
+                .cuit("30-44444444-9")
+                .phoneNumber("11-3333-4444")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment existing = VigentePayment.builder()
+                .nameList("Lista Vieja")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        existing = vigentesPaymentService.save(existing);
+
+        VigentePayment updateModel = VigentePayment.builder()
+                .nameList("Lista Nueva")
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment newPayment = Payment.builder()
+                .description("Cheque")
+                .application(Application.RECARGO)
+                .percentage(5)
+                .bonusPercentage(2)
+                .vigentePayment(existing)
+                .build();
+
+        updateModel.getPayments().add(newPayment);
+
+        VigentePayment updated = vigentesPaymentDataService.updateVigent(existing.getId(), null, updateModel);
+
+        assertThat(updated.getNameList()).isEqualTo("Lista Nueva");
+        assertThat(updated.getPayments()).hasSize(1);
+        assertThat(updated.getPayments().get(0).getDescription()).isEqualTo("Cheque");
+    }
+
+    @Test
+    @DisplayName("Debe actualizar un VigentePayment y aplicar soft delete a los pagos indicados")
+    void shouldUpdateVigentePaymentAndSoftDeletePayments() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Soft Delete")
+                .legalName("Proveedor Soft Delete S.A.")
+                .cuit("30-55555555-9")
+                .phoneNumber("11-5555-6666")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment existing = VigentePayment.builder()
+                .nameList("Lista a eliminar pagos")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment paymentToKeep = Payment.builder()
+                .description("Mantener")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(existing)
+                .build();
+
+        Payment paymentToDelete = Payment.builder()
+                .description("Eliminar")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(existing)
+                .build();
+
+        existing.getPayments().add(paymentToKeep);
+        existing.getPayments().add(paymentToDelete);
+
+        existing = vigentesPaymentService.save(existing);
+
+        Long deletedId = existing.getPayments().stream()
+                .filter(p -> p.getDescription().equals("Eliminar"))
+                .findFirst()
+                .orElseThrow()
+                .getId();
+
+        VigentePayment updateModel = VigentePayment.builder()
+                .nameList("Lista Actualizada")
+                .payments(new ArrayList<>())
+                .build();
+
+        VigentePayment updated = vigentesPaymentDataService.updateVigent(existing.getId(), List.of(deletedId), updateModel);
+
+        Optional<Payment> deletedPayment = paymentDAO.findById(deletedId);
+
+        assertThat(updated.getNameList()).isEqualTo("Lista Actualizada");
+        assertThat(deletedPayment).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Debe lanzar EntityNotFoundException al intentar actualizar un VigentePayment inexistente")
+    void shouldThrowExceptionWhenUpdatingNonExistentVigentePayment() {
+        VigentePayment updateModel = VigentePayment.builder()
+                .nameList("Fallo")
+                .payments(new ArrayList<>())
+                .build();
+
+        assertThatThrownBy(() -> vigentesPaymentDataService.updateVigent(999L, null, updateModel))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("No se encontro el metodo de pago");
     }
 
     @AfterEach

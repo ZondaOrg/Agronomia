@@ -133,8 +133,21 @@ public class ProductionDataSeeder implements CommandLineRunner {
                     .payments(new ArrayList<>())
                     .build();
 
-            Payment p1 = new Payment(null, "DOL720: 30% seña - 17,50% a 10 días", Application.NOAPLICA, 0, 0, vigentePayment);
-            Payment p2 = new Payment(null, "DOL720: 30% seña - 17,50% a 18 días", Application.DESCUENTO, 8, 0, vigentePayment);
+            Payment p1 = Payment.builder()
+                    .description("DOL720: 30% seña - 17,50% a 10 días")
+                    .application(Application.NOAPLICA)
+                    .percentage(0)
+                    .bonusPercentage(0)
+                    .vigentePayment(vigentePayment)
+                    .build();
+
+            Payment p2 = Payment.builder()
+                    .description("DOL720: 30% seña - 17,50% a 18 días")
+                    .application(Application.DESCUENTO)
+                    .percentage(8)
+                    .bonusPercentage(0)
+                    .vigentePayment(vigentePayment)
+                    .build();
 
             vigentePayment.getPayments().add(p1);
             vigentePayment.getPayments().add(p2);

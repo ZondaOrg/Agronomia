@@ -230,18 +230,14 @@ public class DataSeederImpl implements DataSeeder {
                         .build()
         );
 
-        // Cantidades para los 11 proveedores (el último tiene 0 pagos, pero SÍ tiene VigentePayment vacío)
         int[] paymentCounts = { 25, 18, 14, 10, 8, 6, 4, 3, 2, 1, 0 };
-
-        // Índice del proveedor que directamente NO va a tener ningún VigentePayment asociado
-        int providerIndexWithoutVigente = providers.size() - 2; // "Don Mario Semillas"
+        int providerIndexWithoutVigente = providers.size() - 2;
 
         for (int i = 0; i < providers.size(); i++) {
             Provider provider = providers.get(i);
             Provider savedProvider = providerService.save(provider);
 
             if (i == providerIndexWithoutVigente) {
-                // Este proveedor no tendrá ningún VigentePayment asociado
                 continue;
             }
 
@@ -261,15 +257,14 @@ public class DataSeederImpl implements DataSeeder {
                 } else {
                     app = Application.NOAPLICA;
                 }
+                Payment p = Payment.builder()
+                        .description("DOL720: Condición " + j + " - Plan " + totalPayments)
+                        .application(app)
+                        .percentage(j)
+                        .bonusPercentage(j % 2 == 0 ? 5 : 0)
+                        .vigentePayment(vigentePayment)
+                        .build();
 
-                Payment p = new Payment(
-                        null,
-                        "DOL720: Condición " + j + " - Plan " + totalPayments,
-                        app,
-                        j,
-                        j % 2 == 0 ? 5 : 0,
-                        vigentePayment
-                );
                 vigentePayment.getPayments().add(p);
             }
 
