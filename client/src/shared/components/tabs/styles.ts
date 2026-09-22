@@ -51,11 +51,4 @@ export const tab = cva({
 export const tabPanel = css({
     width: "100%",
     marginTop: "24px",
-    minWidth: 0,
-    padding: "24px",
-    boxSizing: "border-box",
-    border: "1px solid",
-    borderColor: "#E8E8E8",
-    borderRadius: "lg",
-    bg: "white",
 });
