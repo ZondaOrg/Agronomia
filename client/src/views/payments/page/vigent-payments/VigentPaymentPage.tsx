@@ -15,7 +15,7 @@ export const VigentPaymentPage = () => {
         }
     }, [providerId]);
 
-    if (isLoading) {
+    if (isLoading && !data) {
         return <Spinner centered />;
     }
 
@@ -25,6 +25,7 @@ export const VigentPaymentPage = () => {
 
     return (
         <UpdateVigentPayment
+            vigentId={data.id}
             data={data}
             onPageChange={onPageChange}
         />

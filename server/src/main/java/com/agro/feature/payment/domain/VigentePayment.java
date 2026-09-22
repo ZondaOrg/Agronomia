@@ -34,4 +34,9 @@ public class VigentePayment {
     public List<String> getPaymentsMethods() {
         return payments.stream().map(Payment::getDescription).toList();
     }
+
+    public void update(VigentePayment model) {
+        nameList = model.getNameList();
+        payments.addAll(model.getPayments());
+    }
 }

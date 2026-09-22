@@ -36,7 +36,7 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
             notify={notify}
             action={action}
             isCancel={isCancel}
-            isBack={true}
+            isBack={false}
             refresh={onRefresh}
             onCancel={handleCancelNotify}
         >

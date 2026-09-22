@@ -10,7 +10,10 @@ import { renderSection } from "./RenderSection";
 
 interface MultiFormProps {
     sections: MultiFormSectionConfig[];
-    onSubmit: (data: unknown[]) => void;
+    onSubmit: (
+        data: unknown[],
+        deletedIdsBySection?: (number[] | undefined)[],
+    ) => void;
     onCancel?: (isDirty: boolean) => void;
     submitLabel?: string;
     bordered?: boolean;
@@ -47,7 +50,10 @@ function MultiForm({
         );
         if (validations.some((v) => !v)) return;
 
-        onSubmit(entries.map((r) => r?.getData()));
+        const data = entries.map((r) => r?.getData());
+        const deletedIdsBySection = entries.map((r) => r?.getDeletedIds?.());
+
+        onSubmit(data, deletedIdsBySection);
         entries.forEach((r) => r?.reset?.());
     };
 
