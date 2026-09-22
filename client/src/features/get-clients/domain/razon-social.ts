@@ -9,4 +9,5 @@ export type RazonSocial = {
     surname: string;
     associatePhone: string;
     email?: string;
+    type: "RAZON_SOCIAL"
 }

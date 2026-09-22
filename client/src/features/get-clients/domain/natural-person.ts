@@ -8,4 +8,5 @@ export type NaturalPerson = {
     surname: string;
     phone: string;
     email?: string;
+    type: "NATURAL_PERSON"
 }
