@@ -122,6 +122,10 @@ public class Product {
         return name.get();
     }
 
+    public String getFormatName() {
+        return name.getFormatText();
+    }
+
     public Integer getBonification() {
         return bonification.get();
     }
