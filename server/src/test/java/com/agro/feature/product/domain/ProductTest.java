@@ -21,6 +21,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         );
     }
@@ -55,6 +56,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20,
                 30d
         );
@@ -74,6 +76,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 0,
                 30d
         ));
@@ -87,6 +90,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 101,
                 30d
         ));
@@ -106,6 +110,7 @@ class ProductTest {
                 Money.ARS,
                 listPrice,
                 IVA.GENERAL,
+                "a",
                 20,
                 30d
         );
@@ -121,6 +126,7 @@ class ProductTest {
                 Money.ARS,
                 listPrice,
                 IVA.GENERAL,
+                "a",
                 20,
                 30d
         );
@@ -135,6 +141,7 @@ class ProductTest {
                 Money.ARS,
                 100000020d,
                 IVA.GENERAL,
+                "a",
                 100
         ));
     }
@@ -156,21 +163,6 @@ class ProductTest {
 
     @Test
     void testInicialmenteUnProductNoTieneTipoDeProductoAsociado() {
-        assertNull(product.getProductType());
-    }
-
-    @Test
-    void testSeAgregaUnTipoDeProducto() {
-        String type = "camión coesachador";
-        product.setProductType(type);
-        assertEquals(type, product.getProductType());
-    }
-
-    @Test
-    void testSiUnProductoTieneUnTipoAsignado_NoSePuedeModificar() {
-        String type = "camión coesachador";
-        product.setProductType(type);
-        String failType = "camión coesachador megatron";
-        assertThrows(AssignedProductTypeException.class,() -> product.setProductType(failType));
+        assertEquals("a", product.getProductType());
     }
 }

@@ -29,7 +29,7 @@ public class ResetServiceImpl implements ResetService {
                 "providers",
                 "companys",
                 "branches",
-                "vigente_payments",
+                "vigent_payments",
                 "payment",
                 "products",
                 "product_types"

@@ -1,6 +1,5 @@
 package com.agro.feature.product.domain;
 
-import com.agro.feature.product.domain.exceptions.AssignedProductTypeException;
 import com.agro.feature.product.domain.exceptions.ListPriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
@@ -55,11 +54,13 @@ public class Product {
             Money money,
             Double listPrice,
             IVA iva,
+            String productType,
             Integer bonification) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
+        this.productType = productType;
         this.money = money;
         this.description = description;
         this.freight = 0d;
@@ -71,12 +72,14 @@ public class Product {
             Money money,
             Double listPrice,
             IVA iva,
+            String productType,
             Integer bonification,
             Double freight) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
+        this.productType = productType;
         this.money = money;
         this.description = description;
         this.freight = freight;
@@ -97,13 +100,6 @@ public class Product {
         if(name.toEquals(productName)) {
             throw new SameProductNameException("Ya existe un producto con el nombre " + productName);
         }
-    }
-
-    public void setProductType(String productType) {
-        if(this.productType != null) {
-            throw new AssignedProductTypeException("Ya se encuentra asignado el tipo " + this.productType);
-        }
-        this.productType = productType;
     }
 
     public String getName() {
