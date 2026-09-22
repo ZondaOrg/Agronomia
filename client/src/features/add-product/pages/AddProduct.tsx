@@ -28,7 +28,7 @@ const AddProduct = () => {
         >
             <MultiForm
                 sections={productSections}
-                submitLabel="Guardar forma de pago"
+                submitLabel="Guardar producto"
                 onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
             />
