@@ -17,6 +17,7 @@ public class Optional {
     private Money money;
 
     public Optional(Product product, String name, Double price) {
+        product.addOptional(this);
         this.product = product;
         this.name = name;
         this.price = price;
