@@ -13,6 +13,7 @@ import FileInput from "./file/FileInput";
 import TextInput from "./text/TextInput";
 import type { SystemStyleObject } from "@styled-system/types";
 import DynamicInput from "./dynamic/DynamicInput";
+import CounterCharsInput from "./counter-chars/CounterCharsInput";
 
 export type FieldErrorType<T extends Schema> =
     | FieldError
@@ -63,8 +64,17 @@ function Input<T extends Schema>({
                     register={register}
                 />
             );
+        case "counter-chars":
+            return (
+                <CounterCharsInput
+                    key={input.id}
+                    input={input}
+                    inputStyles={styles}
+                    error={error}
+                    register={register}
+                />
+            )
         case "text":
-        case "number":
         case "email":
         case "password":
             return (
