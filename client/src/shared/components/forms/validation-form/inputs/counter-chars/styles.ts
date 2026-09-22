@@ -1,4 +1,5 @@
 import { css, cva } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 import type { SystemStyleObject } from "@styled-system/types";
 
 export const container = (styles: SystemStyleObject) => css({
@@ -13,7 +14,7 @@ const counterColor = cva({
                 color: "black"
             },
             false: {
-                color: "red"
+                color: token("colors.danger")
             }
         }
     }
