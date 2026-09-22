@@ -6,7 +6,7 @@ import type { output } from "zod";
 import { css } from "@styled-system/css";
 import { fieldStyles } from "../styles";
 import ErrorMessage from "../error/ErrorMessage";
-import { container, counter } from "./styles";
+import { container, counter, errorsContainer } from "./styles";
 import { useState } from "react";
 
 interface TextInputProps<T extends Schema> {
@@ -57,7 +57,7 @@ function CounterCharsInput<T extends Schema>({
                 disabled={input.disabled}
                 onChange={handleCharCounter}
             />
-            <div>
+            <div className={errorsContainer}>
                 {error && <ErrorMessage message={error.message as string} />}
                 <span className={counter(isValid)}>{`${charCount} / ${input.limit}`}</span>
             </div>

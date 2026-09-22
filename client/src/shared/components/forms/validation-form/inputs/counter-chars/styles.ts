@@ -7,7 +7,16 @@ export const container = (styles: SystemStyleObject) => css({
     height: "200px",
 })
 
+export const errorsContainer = css({
+    display: "flex",
+    justifyContent: "space-between",
+    w: "100%"
+})
+
 const counterColor = cva({
+    base: {
+      justifySelf: "end"  
+    },
     variants: {
         color: {
             true: {
