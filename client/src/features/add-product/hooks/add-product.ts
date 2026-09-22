@@ -4,7 +4,8 @@ import useNotify from "@/shared/hooks/use-notify/use-notify";
 import type { HttpError } from "@/core/server/errors/http-error";
 import addProduct from "../services/add";
 import { useParams } from "react-router";
-import type { AddProductSchema } from "../types/schema";
+import type { AddProductSchema } from "../types/product/schema";
+import type { OptionalSchema } from "../types/optional/schema";
 
 const useAddProduct = () => {
     const { execute, refresh } = useFetch<AddedProduct>();
@@ -12,7 +13,7 @@ const useAddProduct = () => {
 
     const { action, notify, isCancel, handleNotify, handleCancelNotify, init } = useNotify()
 
-    async function add(productData: AddProductSchema) {
+    async function add(productData: AddProductSchema, optionals: OptionalSchema[]) {
         handleNotify(
             productData, 
             {
@@ -23,7 +24,7 @@ const useAddProduct = () => {
                 title: "Producto Cliente",
                 message: (error: HttpError) => error.getMessage
             },
-            execute(() => addProduct(productData, idProvider!))
+            execute(() => addProduct(productData, optionals, idProvider!))
         )
     }
 

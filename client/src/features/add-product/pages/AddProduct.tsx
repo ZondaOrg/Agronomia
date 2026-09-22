@@ -1,11 +1,21 @@
 import useAddProduct from "../hooks/add-product";
-import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
-import productSubForms from "../types/sub-forms";
-import productSchema from "../types/schema";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
+import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
+import { productSections } from "../types/multi-form";
+import type { AddProductSchema } from "../types/product/schema";
+import type { OptionalSchema } from "../types/optional/schema";
 
 const AddProduct = () => {
     const { isCancel, notify, action, add, onRefresh, handleCancelNotify } = useAddProduct();
+
+    const handleSubmit = (data: unknown[]) => {
+            const [products, optionals] = data as [
+                AddProductSchema,
+                OptionalSchema[],
+            ];
+    
+            add(products, optionals);
+        };
 
     return (
         <NotifyHandler
@@ -16,12 +26,10 @@ const AddProduct = () => {
             refresh={onRefresh}
             onCancel={handleCancelNotify}
         >
-            <ComposeForm
-                subForms={productSubForms}
-                schema={productSchema}
-                buttonData={{ text: "Agregar producto" }}
-                onSubmit={add}
-                size="lg"
+            <MultiForm
+                sections={productSections}
+                submitLabel="Guardar forma de pago"
+                onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
             />
         </NotifyHandler>
