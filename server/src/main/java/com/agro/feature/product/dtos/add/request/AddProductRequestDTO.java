@@ -15,8 +15,8 @@ public record AddProductRequestDTO(
         @NotNull Double listPrice,
         @NotNull IVA iva,
         @NotNull Integer bonification,
+        @NotNull Set<AddedOptionalRequest> optionals,
         Double freight,
-        String description,
-        Set<AddedOptionalRequest> optionals
+        String description
 ) {
 }
