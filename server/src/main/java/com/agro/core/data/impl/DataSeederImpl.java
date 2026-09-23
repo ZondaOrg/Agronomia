@@ -48,7 +48,7 @@ public class DataSeederImpl implements DataSeeder {
             ProviderService providerService,
             ClientService clientService,
             VigentesPaymentService vigentesPaymentService,
-            ProductService productService
+            ProductService productService,
             ProductTypeService productTypeService
     ) {
         this.userService = userService;
@@ -155,6 +155,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         1330D,
                         IVA.GENERAL,
+                        "Tractor",
                         50,
                         10D
                 ),
@@ -164,6 +165,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         50D,
                         IVA.GENERAL,
+                        "Tractor",
                         50
                 ),
                 new Product(
@@ -172,6 +174,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -181,6 +184,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         20D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -190,6 +194,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -199,6 +204,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -208,6 +214,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         8000D,
                         IVA.GENERAL,
+                        "Pala",
                         99,
                         800D
                 ),
@@ -217,6 +224,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         800D,
                         IVA.GENERAL,
+                        "Pala",
                         50,
                         60D
                 )
@@ -229,6 +237,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         1330D,
                         IVA.GENERAL,
+                        "Tractor",
                         50,
                         10D
                 ),
@@ -238,6 +247,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         50D,
                         IVA.GENERAL,
+                        "Tractor",
                         50
                 ),
                 new Product(
@@ -246,6 +256,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -255,6 +266,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         20D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -264,6 +276,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -273,6 +286,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 )
