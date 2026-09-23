@@ -1,6 +1,8 @@
 package com.agro.feature.payment.dto.response;
 
 import com.agro.feature.payment.domain.VigentePayment;
+import com.agro.shared.annotations.format.FormattedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.jspecify.annotations.Nullable;
 
 import java.sql.Timestamp;
@@ -10,6 +12,7 @@ import java.util.List;
 public record VigentPaymentsResponseSimpleDTO(
         Long id,
         String nameList,
+        @FormattedDate
         LocalDateTime updateAt,
         List<PaymentResponseDTO> payments
 ) {
