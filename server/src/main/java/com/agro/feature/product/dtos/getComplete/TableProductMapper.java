@@ -22,8 +22,7 @@ public class TableProductMapper {
                 new ColumnHeaderDTO("listPrice", "PRECIO LISTA"),
                 new ColumnHeaderDTO("bonification", "BONIFICACIÓN"),
                 new ColumnHeaderDTO("freight", "VALOR FLETE"),
-                new ColumnHeaderDTO("iva", "IVA"),
-                new ColumnHeaderDTO("freight", "Flete")
+                new ColumnHeaderDTO("iva", "IVA")
         );
     }
 
