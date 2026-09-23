@@ -2,7 +2,7 @@ import { createSubForms } from "@/shared/components/forms/types/factory";
 import { ADD_PRODUCT } from "../../adapters/request/api-contract";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
 import { moneys } from "../../domain/money";
-import { iva } from "@/shared/domain/iva/iva";
+import { ivaPorcents } from "@/shared/domain/iva/iva";
 
 const productSubForms = (productTypes: string[]) => createSubForms([
     {
@@ -23,7 +23,7 @@ const productSubForms = (productTypes: string[]) => createSubForms([
             [
                 { motive: "Moneda", name: ADD_PRODUCT.money, type: "select", options: createSelectOptions(moneys)},
                 { motive: "Precio lista", name: ADD_PRODUCT.listPrice }, 
-                { motive: "Iva", name: ADD_PRODUCT.iva, type: "select", options: createSelectOptions(iva) },
+                { motive: "Iva", name: ADD_PRODUCT.iva, type: "select", options: createSelectOptions(ivaPorcents) },
             ],
             [
                 { motive: "Bonificación", name: ADD_PRODUCT.bonification },
