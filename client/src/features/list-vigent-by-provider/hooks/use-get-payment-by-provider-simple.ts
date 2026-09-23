@@ -15,7 +15,7 @@ export const useGetVigentesPaymentsByProvider = () => {
     return {
         data,
         error,
-        loading: isLoading,
+        isLoading,
         getVigentPaymentsByProvider,
         refresh,
     };

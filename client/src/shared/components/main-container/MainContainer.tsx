@@ -32,7 +32,9 @@ const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
             <div className={bodyWrapper}>
                 <Breadcrumb />
                 <h1 className={h1}>{title}</h1>
-                <Outlet />
+                <div>
+                    <Outlet />
+                </div>
             </div>
         </main>
     );

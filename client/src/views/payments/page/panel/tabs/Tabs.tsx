@@ -1,10 +1,11 @@
 import type { Tab } from "@/shared/components/tabs/types/Tabs";
 import { ROLE } from "@/shared/domain/user/role";
 import { VigentPaymentPage } from "../../vigent-payments/VigentPaymentPage";
+import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
 
 export const tabs: Tab[] = [
     {
-        page: <h1>Ver Pagos</h1>,
+        page: <ListVigentPayments />,
         nameTab: "Ver",
     },
     {
