@@ -1,38 +1,31 @@
-import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
-import useFetch from "../use-fetch/useFetch.hook";
+import { useEffect, useState } from "react";
+import useSearch from "../use-search";
 
-export const useAdapterPaginatedFetch = <T, Args extends unknown[]>(
+export const usePaginatedWithSerch = <T, Args extends unknown[]>(
     serviceFunction: (page: number, size: number, search: string, ...args: Args) => Promise<T>,
     defaultSize = 4,
     args: Args
 ) => {
-    const [searchParams] = useSearchParams();
-    const search = searchParams.get("search") ?? "";
-    const { data, error, isLoading, execute, refresh } = useFetch<T>();
     const [currentPage, setCurrentPage] = useState(0);
+    const { search, handleSearch } = useSearch();
 
-    const onSearchPage = useCallback(
-        (page: number) => {
-            setCurrentPage(page);
-            return execute(serviceFunction)(page, defaultSize, search, ...args);
-        },
-        [execute, serviceFunction, defaultSize, search, args]
-    );
+    function onSearch(search: string) {
+        serviceFunction(currentPage, defaultSize, search, ...args);
+        handleSearch(search);
+    }
+
+    function onChangePage(page: number, size: number, search: string) {
+        setCurrentPage(page); 
+        serviceFunction(page, size, search, ...args);
+    }
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        onSearchPage(0)
-    }, [onSearchPage, search]);
+        const fn = () => onChangePage(currentPage, defaultSize, search);
+        fn();
+    }, []);
 
-    return {
-        data,
-        error,
-        isLoading,
-        currentPage,
-        onSearchPage,
-        refresh,
-    };
+    return { currentPage, search, onSearch, onChangePage }
+
 };
 
-export default useAdapterPaginatedFetch;
+export default usePaginatedWithSerch;
