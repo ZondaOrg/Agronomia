@@ -106,6 +106,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                        "a",
                 20
                 ), "type", provider.getId());
         service.add(new Product(
@@ -114,6 +115,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         service.add(new Product(
@@ -122,6 +124,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         service.add(new Product(
@@ -130,6 +133,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, "", provider.getId());
@@ -149,6 +153,7 @@ class ProductServiceImplTest {
                         Money.ARS,
                         10000000d,
                         IVA.GENERAL,
+                        "a",
                         20
                 ),
                 "type",
@@ -159,6 +164,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         service.add(new Product(
@@ -167,6 +173,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         service.add(new Product(
@@ -175,6 +182,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         ), "type", provider.getId());
         Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, filter, provider.getId());
