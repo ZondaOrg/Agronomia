@@ -15,7 +15,6 @@ public class GetterProductMapper {
                 product.getFreight(),
                 product.getIva(),
                 product.getCreatedAt(),
-                product.getDescription(),
                 DetailsMapper.modelToDto(product)
         );
     }
