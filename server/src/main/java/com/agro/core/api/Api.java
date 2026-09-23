@@ -26,4 +26,5 @@ public final class Api {
 
     public static final String PRODUCT = MAIN_NAME + V + "/product";
 
+    public static final String PRODUCT_TYPE = MAIN_NAME + V + "/product-type";
 }
