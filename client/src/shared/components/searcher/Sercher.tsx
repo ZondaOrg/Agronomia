@@ -1,8 +1,9 @@
-import { SearchInput } from "@/shared/components/searcher/components/SearchInput";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { SearchInput } from "./components/SearchInput";
+import type { SearcherProps } from "./types";
 
-const SearchEngineClient = () => {
+export const Searcher = ({title, placeholder}: SearcherProps) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [value, setValue] = useState(searchParams.get("search") ?? "");
 
@@ -24,14 +25,12 @@ const SearchEngineClient = () => {
 
     return (
         <div>
-            <h2>Buscar</h2>
+            <h2>{title}</h2>
             <SearchInput
                 value={value}
                 onChange={setValue}
-                placeholder="Nombre"
+                placeholder={placeholder}
             />
         </div>
     );
 };
-
-export default SearchEngineClient;
