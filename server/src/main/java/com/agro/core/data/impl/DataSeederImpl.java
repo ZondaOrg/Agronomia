@@ -16,6 +16,8 @@ import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.services.ProductService;
+import com.agro.feature.productType.domain.ProductType;
+import com.agro.feature.productType.services.ProductTypeService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.domain.Traveler;
 import com.agro.feature.provider.service.ProviderService;
@@ -39,19 +41,22 @@ public class DataSeederImpl implements DataSeeder {
     private final ClientService clientService;
     private final VigentesPaymentService vigentesPaymentService;
     private final ProductService productService;
+    private final ProductTypeService productTypeService;
 
     public DataSeederImpl(
             UserService userService,
             ProviderService providerService,
             ClientService clientService,
             VigentesPaymentService vigentesPaymentService,
-            ProductService productService
+            ProductService productService,
+            ProductTypeService productTypeService
     ) {
         this.userService = userService;
         this.providerService = providerService;
         this.clientService = clientService;
         this.vigentesPaymentService = vigentesPaymentService;
         this.productService = productService;
+        this.productTypeService = productTypeService;
     }
 
     @Override
@@ -118,6 +123,7 @@ public class DataSeederImpl implements DataSeeder {
         createProducts(company.getId());
         createProviders(company.getId());
         createClients(user.getId(), company.getId());
+        createProductTypes();
     }
 
     private void createProducts(Long companyId) {
@@ -149,6 +155,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         1330D,
                         IVA.GENERAL,
+                        "Tractor",
                         50,
                         10D
                 ),
@@ -158,6 +165,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         50D,
                         IVA.GENERAL,
+                        "Tractor",
                         50
                 ),
                 new Product(
@@ -166,6 +174,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -175,6 +184,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         20D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -184,6 +194,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -193,6 +204,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -202,6 +214,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         8000D,
                         IVA.GENERAL,
+                        "Pala",
                         99,
                         800D
                 ),
@@ -211,6 +224,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         800D,
                         IVA.GENERAL,
+                        "Pala",
                         50,
                         60D
                 )
@@ -223,6 +237,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         1330D,
                         IVA.GENERAL,
+                        "Tractor",
                         50,
                         10D
                 ),
@@ -232,6 +247,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         50D,
                         IVA.GENERAL,
+                        "Tractor",
                         50
                 ),
                 new Product(
@@ -240,6 +256,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -249,6 +266,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.ARS,
                         20D,
                         IVA.REDUCIDA,
+                        "Camión",
                         50,
                         30D
                 ),
@@ -258,6 +276,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 ),
@@ -267,6 +286,7 @@ public class DataSeederImpl implements DataSeeder {
                         Money.USD,
                         1D,
                         IVA.REDUCIDA,
+                        "Cosechadora",
                         50,
                         40D
                 )
@@ -534,5 +554,42 @@ public class DataSeederImpl implements DataSeeder {
             client.setCompanyId(companyId);
             clientService.save(client, userId);
         });
+    }
+
+    private void createProductTypes() {
+        List<ProductType> productTypes = List.of(
+                new ProductType(
+                        "Tractor"
+                ),
+                new ProductType(
+                        "Tolva auto descartable"
+                ),
+                new ProductType(
+                        "Semillero"
+                ),
+                new ProductType(
+                        "Acomplado"
+                ),
+                new ProductType(
+                        "Desmalezadora"
+                ),
+                new ProductType(
+                        "Mixer"
+                ),
+                new ProductType(
+                        "Chimango"
+                ),
+                new ProductType(
+                        "Comedor"
+                ),
+                new ProductType(
+                        "Portarollo"
+                ),
+                new ProductType(
+                        "Pala"
+                )
+        );
+
+        productTypes.forEach(productTypeService::add);
     }
 }
