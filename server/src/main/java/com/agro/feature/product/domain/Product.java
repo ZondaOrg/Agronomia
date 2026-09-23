@@ -1,6 +1,5 @@
 package com.agro.feature.product.domain;
 
-import com.agro.feature.product.domain.exceptions.AssignedProductTypeException;
 import com.agro.feature.product.domain.exceptions.ListPriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
@@ -9,6 +8,13 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -49,17 +55,27 @@ public class Product {
     @Getter
     private Double freight;
 
+    @Getter
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Optional> optionals = new HashSet<>();
+
     public Product(
             String name,
             String description,
             Money money,
             Double listPrice,
             IVA iva,
+            String productType,
             Integer bonification) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
+        this.productType = productType;
         this.money = money;
         this.description = description;
         this.freight = 0d;
@@ -71,12 +87,14 @@ public class Product {
             Money money,
             Double listPrice,
             IVA iva,
+            String productType,
             Integer bonification,
             Double freight) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
+        this.productType = productType;
         this.money = money;
         this.description = description;
         this.freight = freight;
@@ -99,15 +117,12 @@ public class Product {
         }
     }
 
-    public void setProductType(String productType) {
-        if(this.productType != null) {
-            throw new AssignedProductTypeException("Ya se encuentra asignado el tipo " + this.productType);
-        }
-        this.productType = productType;
-    }
-
     public String getName() {
         return name.get();
+    }
+
+    public String getFormatName() {
+        return name.getFormatText();
     }
 
     public Integer getBonification() {
@@ -116,5 +131,13 @@ public class Product {
 
     public void assocIdProvider(Long idProvider) {
         this.provider_id = idProvider;
+    }
+
+    void addOptional(Optional optional) {
+        optionals.add(optional);
+    }
+
+    public List<Optional> getOptionals() {
+        return optionals.stream().toList();
     }
 }

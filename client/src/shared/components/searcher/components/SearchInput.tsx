@@ -1,4 +1,4 @@
-import { SearchIcon } from "../icon/components/icons/Search";
+import { SearchIcon } from "../../icon/components/icons/Search";
 import { styles } from "./styles";
 
 type SearchInputProps = {

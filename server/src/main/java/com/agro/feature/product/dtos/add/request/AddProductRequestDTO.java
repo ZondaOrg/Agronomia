@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Set;
+
 public record AddProductRequestDTO(
         @NotNull @NotBlank @NotEmpty String name,
         @NotNull @NotBlank @NotEmpty String type,
@@ -13,6 +15,7 @@ public record AddProductRequestDTO(
         @NotNull Double listPrice,
         @NotNull IVA iva,
         @NotNull Integer bonification,
+        @NotNull Set<AddedOptionalRequest> optionals,
         Double freight,
         String description
 ) {

@@ -1,4 +1,4 @@
-import { usePaginatedFetch } from "@/shared/hooks/use-paginator";
+import { usePaginatedFetch } from "@/shared/hooks/use-paginator/use-paginator";
 import { getPaymentsByProviderService } from "../services/get-payments-by-provider.service";
 
 export const useGetPayments = () => {

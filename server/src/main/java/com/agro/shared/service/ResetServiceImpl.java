@@ -29,9 +29,10 @@ public class ResetServiceImpl implements ResetService {
                 "providers",
                 "companys",
                 "branches",
-                "vigente_payments",
+                "vigent_payments",
                 "payment",
-                "products"
+                "products",
+                "product_types"
         );
 
         String sql = "TRUNCATE TABLE " +

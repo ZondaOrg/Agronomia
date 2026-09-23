@@ -1,4 +1,4 @@
-import { SearchInput } from "@/shared/components/search-input/SearchInput";
+import { SearchInput } from "@/shared/components/searcher/components/SearchInput";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 

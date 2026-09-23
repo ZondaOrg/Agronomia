@@ -1,4 +1,4 @@
-import { usePaginatedFetch } from "@/shared/hooks/use-paginator";
+import { usePaginatedFetch } from "@/shared/hooks/use-paginator/use-paginator";
 import type { User } from "../types/User";
 import getUsersService from "../services/get-users.service";
 import type { Table } from "@/shared/types/table/Table";
