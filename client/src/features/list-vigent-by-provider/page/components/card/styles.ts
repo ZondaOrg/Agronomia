@@ -6,13 +6,13 @@ export const applicationText = cva({
     },
     variants: {
         type: {
-            recargo: { color: "red.600" },
-            descuento: { color: "green.600" },
-            default: { color: "gray.700" },
+            Recargo: { color: "red.600" },
+            Descuento: { color: "green.600" },
+            "No Aplica": { color: "gray.700" },
         },
     },
     defaultVariants: {
-        type: "default",
+        type: "No Aplica",
     },
 });
 
@@ -24,9 +24,14 @@ export const listItemStyle = css({
     fontSize: "sm",
     color: "gray.700",
     width: "100%",
-    backgroundColor: "gray.50",
     borderRadius: "md",
     padding: "4",
+    _odd: {
+        backgroundColor: "white",
+    },
+    _even: {
+        backgroundColor: "gray.50",
+    },
 });
 
 export const bulletStyle = css({
@@ -35,7 +40,7 @@ export const bulletStyle = css({
     width: "1.5",
     flexShrink: 0,
     borderRadius: "full",
-    backgroundColor: "gray.400",
+    backgroundColor: "black",
 });
 
 export const bonusStyle = css({

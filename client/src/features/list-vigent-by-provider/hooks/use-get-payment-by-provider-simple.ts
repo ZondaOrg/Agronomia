@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
-import type { VigentesPayment } from "../types/VigentesPayment";
 import getPaymentsByProviderService from "../service/get-vigent-payments-by-provider-simple.service";
+import type { VigentesPayment } from "../types/VigentesPayment";
 
 export const useGetVigentesPaymentsByProvider = () => {
     const { data, error, isLoading, execute, refresh } =

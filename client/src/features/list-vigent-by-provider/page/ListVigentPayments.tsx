@@ -29,7 +29,7 @@ export const ListVigentPayments = () => {
             description={`última actualización ${data.updateAt}`}
         >
             <ul className={paymentList}>
-                {data?.payments?.map((payment) => (
+                {data.payments.map((payment) => (
                     <PaymentCard
                         key={payment.id}
                         payment={payment}

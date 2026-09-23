@@ -6,17 +6,9 @@ import {
     listItemStyle,
 } from "./styles";
 
-const APPLICATION_VARIANT: Record<string, "recargo" | "descuento"> = {
-    Recargo: "recargo",
-    Descuento: "descuento",
-};
-
-const NO_APPLICATION_LABEL = "No Aplica";
-
 export const PaymentCard = ({ payment }: { payment: Payment }) => {
-    const hasApplication = payment.application !== NO_APPLICATION_LABEL;
-    const applicationType = APPLICATION_VARIANT[payment.application];
     const hasBonus = Number(payment.bonusPercentage) !== 0;
+    const hasApplication = payment.application !== "No Aplica";
 
     return (
         <li className={listItemStyle}>
@@ -29,7 +21,7 @@ export const PaymentCard = ({ payment }: { payment: Payment }) => {
                         <strong>[{payment.application}]:</strong>{" "}
                         <span
                             className={applicationText({
-                                type: applicationType,
+                                type: payment.application,
                             })}
                         >
                             [{payment.percentage}%]

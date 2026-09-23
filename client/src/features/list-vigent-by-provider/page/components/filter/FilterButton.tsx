@@ -1,3 +1,4 @@
+import { FilterIcon } from "@/shared/components/icon/components/icons/FilterIcon";
 import { filtrarStyle } from "./styles";
 
 export const FiltrarButton = ({ onClick }: { onClick?: () => void }) => (
@@ -6,6 +7,6 @@ export const FiltrarButton = ({ onClick }: { onClick?: () => void }) => (
         onClick={onClick}
     >
         Filtrar
-        {/* <Filter size={14} /> */}
+        <FilterIcon size={14} />
     </button>
 );
