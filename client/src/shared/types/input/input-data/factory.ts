@@ -22,7 +22,13 @@ export function createInputRow(field: CreateField, index: number, idCounter?: {c
                 type: "dynamic",
                 format: field.format,
                 ...base
-            }
+            };
+        case "counter-chars":
+            return {
+                type: "counter-chars",
+                limit: field.limit,
+                ...base
+            };
         default: 
             return {
                 type: field.type ?? "text",

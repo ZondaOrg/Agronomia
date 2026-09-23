@@ -3,6 +3,7 @@ package com.agro.feature.product.controller;
 import com.agro.core.api.Api;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.dtos.add.AddProductMapper;
+import com.agro.feature.product.dtos.add.AddedOptionalsMapper;
 import com.agro.feature.product.dtos.add.request.AddProductRequestDTO;
 import com.agro.feature.product.dtos.add.response.AddProductResponseDTO;
 import com.agro.feature.product.services.ProductService;
@@ -32,7 +33,8 @@ public class ProductController {
             @PathVariable Long providerId
     ){
         Product product = AddProductMapper.dtoToModel(request);
-        Product addedProduct = productService.add(product, request.type(), providerId);
+        Product productWithOptionals = AddedOptionalsMapper.dtosToModels(product, request.optionals());
+        Product addedProduct = productService.add(productWithOptionals, request.type(), providerId);
         AddProductResponseDTO productResponseDto = AddProductMapper.modelToDto(addedProduct);
         return ResponseEntity.ok(productResponseDto);
     }

@@ -5,16 +5,13 @@ import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.branch.persistence.BranchDAO;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
-import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.domain.Traveler;
-import com.agro.feature.provider.persistence.ProviderDAO;
-import com.agro.feature.provider.service.ProviderService;
 import com.agro.feature.user.domain.User;
-import com.agro.shared.valueObjects.email.EmailValue;
 import com.agro.feature.user.orchestrator.RegisterOrchestrator;
 import com.agro.shared.entities.rol.Role;
 import com.agro.shared.service.ResetService;
+import com.agro.shared.valueObjects.email.EmailValue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +26,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Testcontainers

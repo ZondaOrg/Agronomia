@@ -10,10 +10,10 @@ const productSubForms = (productTypes: string[]) => createSubForms([
         fields: [
             [
                 { motive: "Producto", name: ADD_PRODUCT.name },
-                { motive: "Descripción", name: ADD_PRODUCT.description, isRequired: false },
+                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: createSelectOptions(productTypes) },
             ],
             [
-                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: createSelectOptions(productTypes) },
+                { motive: "Descripción", name: ADD_PRODUCT.description, isRequired: false },
             ]
         ]
     },

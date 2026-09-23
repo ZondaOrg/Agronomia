@@ -8,6 +8,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -47,6 +53,12 @@ public class Product {
 
     @Getter
     private Double freight;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Optional> optionals = new HashSet<>();
 
     public Product(
             String name,
@@ -106,11 +118,19 @@ public class Product {
         return name.get();
     }
 
+    public String getFormatName() {
+        return name.getFormatText();
+    }
+
     public Integer getBonification() {
         return bonification.get();
     }
 
     public void assocIdProvider(Long idProvider) {
         this.provider_id = idProvider;
+    }
+
+    void addOptional(Optional optional) {
+        optionals.add(optional);
     }
 }

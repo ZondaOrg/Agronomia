@@ -4,7 +4,8 @@ export type InputType =
     | "email"
     | "password"
     | "file"
-    | "dynamic";
+    | "dynamic"
+    | "counter-chars";
 
-export type TextInputType = Exclude<InputType, "select" | "dynamic">;
+export type TextInputType = Exclude<InputType, "select" | "dynamic" | "counter-chars">;
 export type SelectInputType = Extract<InputType, "select">;

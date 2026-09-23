@@ -11,7 +11,13 @@ const productSchema = z.object({
     [ADD_PRODUCT.money]: z.enum(moneyKeys, {error: "Seleccione una moneda"}),
     [ADD_PRODUCT.iva]: z.enum(ivaKeys, {error: "Seleccione el IVA"}),
     [ADD_PRODUCT.freight]: z.string().optional(),
-    [ADD_PRODUCT.description]: z.string().optional(),
+    [ADD_PRODUCT.description]: 
+        z.string()
+        .refine(
+            (value: string) => value.length <= 500,
+            { message: "Se superaron los 500 caracteres, reduzca la cantidad de caracteres"}
+        )
+        .optional()
 });
 
 
