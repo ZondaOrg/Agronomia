@@ -15,13 +15,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -91,6 +93,92 @@ class ProductServiceImplTest {
         );
         service.add(product, "type", provider.getId());
         assertThrows(SameProductNameException.class, () -> service.add(failProduct, "type", provider.getId()));
+    }
+
+    @Test
+    void testUnaBusquedaPaginaTraeTodosLosProductosDelProveedor() {
+        service.add(
+                new Product(
+                "Product 1",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+                ), "type", provider.getId());
+        service.add(new Product(
+                "Product 2",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        service.add(new Product(
+                "Product 3",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        service.add(new Product(
+                "Product 4",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, "", provider.getId());
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 1")));
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 2")));
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 3")));
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 4")));
+    }
+
+    @Test
+    void testUnaBusquedaPaginaFiltraLosProductosDelProveedor() {
+        String filter = "Tractor";
+
+        service.add(new Product(
+                "Tractorcito 1",
+                        "product nss",
+                        Money.ARS,
+                        10000000d,
+                        IVA.GENERAL,
+                        20
+                ),
+                "type",
+                provider.getId());
+        service.add(new Product(
+                "tractorcito 2",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        service.add(new Product(
+                "Casechadora 3",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        service.add(new Product(
+                "Casechadora 4",
+                "product nss",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                20
+        ), "type", provider.getId());
+        Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, filter, provider.getId());
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Tractorcito 1")));
+        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "tractorcito 2")));
+        assertFalse(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Casechadora 3")));
     }
 
     @AfterEach

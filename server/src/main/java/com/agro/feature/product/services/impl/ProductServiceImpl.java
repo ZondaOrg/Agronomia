@@ -6,6 +6,8 @@ import com.agro.feature.product.services.ProductService;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,5 +32,10 @@ public class ProductServiceImpl implements ProductService {
         Optional<String> name = dao.findNameByProvider(idProvider, product.getFormatName());
         name.ifPresent(product::validateName);
         return dao.save(product);
+    }
+
+    @Override
+    public Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long idProvider) {
+        return dao.searchPagesOfProductsWith(search, idProvider, PageRequest.of(page, size));
     }
 }
