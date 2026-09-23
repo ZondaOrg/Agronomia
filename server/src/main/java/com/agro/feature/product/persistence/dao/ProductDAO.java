@@ -24,6 +24,7 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
     @Query(
         "SELECT p " +
         "FROM Product p " +
+        "LEFT JOIN FETCH p.optionals " +
         "WHERE p.provider_id = :idProvider " +
         "AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%')) " +
         "ORDER BY p.name.value ASC"

@@ -14,6 +14,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -55,9 +56,11 @@ public class Product {
     @Getter
     private Double freight;
 
+    @Getter
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Optional> optionals = new HashSet<>();
 
@@ -136,5 +139,9 @@ public class Product {
 
     void addOptional(Optional optional) {
         optionals.add(optional);
+    }
+
+    public List<Optional> getOptionals() {
+        return optionals.stream().toList();
     }
 }
