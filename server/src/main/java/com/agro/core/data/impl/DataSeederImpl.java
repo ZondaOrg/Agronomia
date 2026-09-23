@@ -12,6 +12,10 @@ import com.agro.feature.payment.domain.Application;
 import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.service.VigentesPaymentService;
+import com.agro.feature.product.domain.IVA;
+import com.agro.feature.product.domain.Money;
+import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.services.ProductService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.domain.Traveler;
 import com.agro.feature.provider.service.ProviderService;
@@ -34,17 +38,20 @@ public class DataSeederImpl implements DataSeeder {
     private final ProviderService providerService;
     private final ClientService clientService;
     private final VigentesPaymentService vigentesPaymentService;
+    private final ProductService productService;
 
     public DataSeederImpl(
             UserService userService,
             ProviderService providerService,
             ClientService clientService,
-            VigentesPaymentService vigentesPaymentService
+            VigentesPaymentService vigentesPaymentService,
+            ProductService productService
     ) {
         this.userService = userService;
         this.providerService = providerService;
         this.clientService = clientService;
         this.vigentesPaymentService = vigentesPaymentService;
+        this.productService = productService;
     }
 
     @Override
@@ -108,8 +115,171 @@ public class DataSeederImpl implements DataSeeder {
         userService.save(user);
         userService.save(otherUser);
 
+        createProducts(company.getId());
         createProviders(company.getId());
         createClients(user.getId(), company.getId());
+    }
+
+    private void createProducts(Long companyId) {
+        Provider provider1 = providerService.save(Provider.builder()
+                .tradeName("Agroinsumos del Norte")
+                .legalName("Agroinsumos del Norte S.R.L.")
+                .cuit("31-87654321-1")
+                .phoneNumber("11-4444-5555")
+                .companyId(companyId)
+                .listPrices(new ArrayList<>(List.of(1500, 2300, 3100)))
+                .build()
+        );
+
+        Provider provider2 = providerService.save(Provider.builder()
+                .tradeName("Agroinsumos del Norte")
+                .legalName("Agroinsumos del Norte S.R.L.")
+                .cuit("37-87654121-6")
+                .phoneNumber("11-4444-5555")
+                .companyId(companyId)
+                .listPrices(new ArrayList<>(List.of(1500, 2300, 3100)))
+                .build()
+        );
+
+
+        List<Product> products1 = List.of(
+                new Product(
+                        "Tractorzote",
+                        "Tractor Mega grande",
+                        Money.ARS,
+                        1330D,
+                        IVA.GENERAL,
+                        50,
+                        10D
+                ),
+                new Product(
+                        "Tractocito",
+                        "Tractor chiquito",
+                        Money.ARS,
+                        50D,
+                        IVA.GENERAL,
+                        50
+                ),
+                new Product(
+                        "Camioncito",
+                        "Camion chiquito",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        30D
+                ),
+                new Product(
+                        "Camionzote",
+                        "Camion grande",
+                        Money.ARS,
+                        20D,
+                        IVA.REDUCIDA,
+                        50,
+                        30D
+                ),
+                new Product(
+                        "Cosechadora 1",
+                        "Cosechadora mediana",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        40D
+                ),
+                new Product(
+                        "Cosechadora 2",
+                        "Cosechadora chica",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        40D
+                ),
+                new Product(
+                        "Palota",
+                        "Pala para salir a laburar",
+                        Money.ARS,
+                        8000D,
+                        IVA.GENERAL,
+                        99,
+                        800D
+                ),
+                new Product(
+                        "PalotITA",
+                        "Pala para salir a laburar poco",
+                        Money.ARS,
+                        800D,
+                        IVA.GENERAL,
+                        50,
+                        60D
+                )
+        );
+
+        List<Product> products2 = List.of(
+                new Product(
+                        "Tractorzote",
+                        "Tractor Mega grande",
+                        Money.ARS,
+                        1330D,
+                        IVA.GENERAL,
+                        50,
+                        10D
+                ),
+                new Product(
+                        "Tractocito",
+                        "Tractor chiquito",
+                        Money.ARS,
+                        50D,
+                        IVA.GENERAL,
+                        50
+                ),
+                new Product(
+                        "Camioncito",
+                        "Camion chiquito",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        30D
+                ),
+                new Product(
+                        "Camionzote",
+                        "Camion grande",
+                        Money.ARS,
+                        20D,
+                        IVA.REDUCIDA,
+                        50,
+                        30D
+                ),
+                new Product(
+                        "Cosechadora 1",
+                        "Cosechadora mediana",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        40D
+                ),
+                new Product(
+                        "Cosechadora 2",
+                        "Cosechadora chica",
+                        Money.USD,
+                        1D,
+                        IVA.REDUCIDA,
+                        50,
+                        40D
+                )
+        );
+
+        products1.forEach(product ->
+                productService.add(product, "Cosechadora", provider1.getId())
+        );
+
+        products2.forEach(product ->
+                productService.add(product, "Cosechadora", provider2.getId())
+        );
+
     }
 
     private void createProviders(Long companyId) {
