@@ -58,6 +58,7 @@ public class Product {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Optional> optionals = new HashSet<>();
 
