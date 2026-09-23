@@ -14,6 +14,7 @@ public class AddProductMapper {
                     request.money(),
                     request.listPrice(),
                     request.iva(),
+                    request.type(),
                     request.bonification()
             );
         }
@@ -23,6 +24,7 @@ public class AddProductMapper {
                 request.money(),
                 request.listPrice(),
                 request.iva(),
+                request.type(),
                 request.bonification(),
                 request.freight()
         );

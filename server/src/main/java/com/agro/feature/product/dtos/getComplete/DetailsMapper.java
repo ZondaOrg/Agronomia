@@ -13,7 +13,9 @@ public class DetailsMapper {
     }
 
     static List<OptionalResponseDTO> modelsToDto(List<Optional> optionals) {
-        return (List<OptionalResponseDTO>) optionals.stream().map(DetailsMapper::modelToDto);
+        return optionals.stream()
+                .map(DetailsMapper::modelToDto)
+                .toList();
     }
 
     static OptionalResponseDTO modelToDto(Optional optional) {

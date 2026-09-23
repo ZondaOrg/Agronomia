@@ -1,20 +1,19 @@
 import { createSubForms } from "@/shared/components/forms/types/factory";
-import type { SubFormData } from "@/shared/components/forms/types/sub-form";
 import { ADD_PRODUCT } from "../../adapters/request/api-contract";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
 import { moneys } from "../../domain/money";
 import { iva } from "../../domain/iva";
 
-const productSubForms: SubFormData[] = createSubForms([
+const productSubForms = (productTypes: string[]) => createSubForms([
     {
         name: "Identificación",
         fields: [
             [
                 { motive: "Producto", name: ADD_PRODUCT.name },
-                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: ["a"].map(a => { return  { label: a, value: a, id: a}}) },
+                { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: createSelectOptions(productTypes) },
             ],
             [
-                { motive: "Descripción", type: "counter-chars", limit: 500, name: ADD_PRODUCT.description, isRequired: false },
+                { motive: "Descripción", name: ADD_PRODUCT.description, isRequired: false },
             ]
         ]
     },

@@ -57,6 +57,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         );
         Provider newProvider = Provider.builder()
@@ -89,6 +90,7 @@ class ProductServiceImplTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         );
         service.add(product, "type", provider.getId());
