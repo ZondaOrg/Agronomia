@@ -5,7 +5,6 @@ import SectionPanel from "@/shared/components/section/components/section-panel/S
 import Spinner from "@/shared/components/spinner/Spinner";
 import { PaymentCard } from "./components/card/PaymentCard";
 import { paymentList } from "./styles";
-import { formatUpdatedAt } from "../utils/format-date";
 import { FiltrarButton } from "./components/filter/FilterButton";
 
 export const ListVigentPayments = () => {
@@ -27,7 +26,7 @@ export const ListVigentPayments = () => {
             centered
             maxHeight="lg"
             actions={<FiltrarButton />}
-            description={`última actualización ${formatUpdatedAt(data.updateAt)}`}
+            description={`última actualización ${data.updateAt}`}
         >
             <ul className={paymentList}>
                 {data?.payments?.map((payment) => (
