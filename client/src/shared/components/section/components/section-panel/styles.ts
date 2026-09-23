@@ -1,5 +1,6 @@
 // styles.ts
 import { css, cva } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 export const panel = cva({
     base: {
@@ -58,7 +59,7 @@ export const title = cva({
 
 export const description = css({
     fontSize: "sm",
-    color: "fg.muted",
+    color: token("colors.textSubtle"),
     margin: 0,
     whiteSpace: "nowrap",
 });
