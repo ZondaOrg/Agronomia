@@ -7,13 +7,13 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-public record VigentePaymentsResponseDTO(
+public record VigentePaymentsTableResponseDTO(
         Long id,
         String nameList,
         TableResponseDTO<PaymentResponseDTO> payments
 ) {
 
-    public static @Nullable VigentePaymentsResponseDTO fromModel(
+    public static @Nullable VigentePaymentsTableResponseDTO fromModel(
             VigentePayment vigente,
             List<ColumnHeaderDTO> columns,
             int page,
@@ -21,7 +21,7 @@ public record VigentePaymentsResponseDTO(
     ) {
         if (vigente == null) return null;
 
-        return new VigentePaymentsResponseDTO(
+        return new VigentePaymentsTableResponseDTO(
                 vigente.getId(),
                 vigente.getNameList(),
                 TableResponseDTO.fromList(

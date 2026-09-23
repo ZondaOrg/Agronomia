@@ -6,7 +6,7 @@ import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.dto.request.VigentePaymentsRequestDTO;
 import com.agro.feature.payment.dto.request.VigentePaymentsUpdateDTO;
 import com.agro.feature.payment.dto.response.VigentPaymentsResponseSimpleDTO;
-import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
+import com.agro.feature.payment.dto.response.VigentePaymentsTableResponseDTO;
 import com.agro.shared.annotations.role.OwnerEndpoint;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,10 +30,10 @@ public class VigentesPaymentControllerREST {
         this.paymentDataService = paymentDataService;
     }
 
-    @GetMapping("/{providerId}")
+    @GetMapping("table/{providerId}")
     @OwnerEndpoint
-    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
-    public ResponseEntity<VigentePaymentsResponseDTO> getProviderById(
+    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id en formato tabla")
+    public ResponseEntity<VigentePaymentsTableResponseDTO> getProviderById(
             @PathVariable Long providerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "4") int size
@@ -48,7 +48,16 @@ public class VigentesPaymentControllerREST {
                 ColumnHeaderDTO.of("bonusPercentage", "BONIFICACIÓN %")
         );
 
-        return ResponseEntity.ok(VigentePaymentsResponseDTO.fromModel(vigente, columns, page, size));
+        return ResponseEntity.ok(VigentePaymentsTableResponseDTO.fromModel(vigente, columns, page, size));
+    }
+
+    @GetMapping("/{providerId}")
+    @OwnerEndpoint
+    @Operation(summary = "Obtener los metodos de pago vigentes de un proveedor con el id dado")
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> getVigentePayments(@PathVariable Long providerId){
+        VigentePayment vigentes = paymentDataService.getVigentPaymentsById(providerId);
+
+        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigentes));
     }
 
     @PostMapping()

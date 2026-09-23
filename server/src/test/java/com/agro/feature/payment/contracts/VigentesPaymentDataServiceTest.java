@@ -9,6 +9,7 @@ import com.agro.feature.payment.service.VigentesPaymentService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,10 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +52,11 @@ public class VigentesPaymentDataServiceTest {
 
     @Autowired
     private PaymentDAO paymentDAO;
+
+    @Autowired
+    private EntityManager entityManager;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Test
     @DisplayName("Debe retornar el VigentePayment asociado a un proveedor existente")
@@ -258,6 +266,51 @@ public class VigentesPaymentDataServiceTest {
         assertThatThrownBy(() -> vigentesPaymentDataService.updateVigent(999L, null, updateModel))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("No se encontro el metodo de pago");
+    }
+
+    @Test
+    @DisplayName("Debe setear updateAt al crear y actualizarlo al modificar el VigentePayment")
+    void shouldSetAndUpdateTimestampOnUpdate() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Timestamp")
+                .legalName("Proveedor Timestamp S.A.")
+                .cuit("30-66666666-9")
+                .phoneNumber("11-7777-8888")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment created = vigentesPaymentDataService.createVigentePayment(
+                VigentePayment.builder()
+                        .nameList("Lista Timestamp")
+                        .payments(new ArrayList<>())
+                        .build(),
+                savedProvider.getId()
+        );
+
+        assertThat(created.getUpdateAt()).isNotNull();
+
+        LocalDateTime backdated = LocalDateTime.now().minusDays(1);
+
+        transactionTemplate.execute(status -> {
+            entityManager.createQuery("UPDATE vigent_payments v SET v.updateAt = :backdated WHERE v.id = :id")
+                    .setParameter("backdated", backdated)
+                    .setParameter("id", created.getId())
+                    .executeUpdate();
+            return null;
+        });
+        entityManager.clear();
+
+        VigentePayment updateModel = VigentePayment.builder()
+                .nameList("Lista Timestamp Actualizada")
+                .payments(new ArrayList<>())
+                .build();
+
+        VigentePayment updated = vigentesPaymentDataService.updateVigent(created.getId(), null, updateModel);
+
+        assertThat(updated.getUpdateAt()).isNotNull();
+        assertThat(updated.getUpdateAt()).isAfter(backdated);
     }
 
     @AfterEach

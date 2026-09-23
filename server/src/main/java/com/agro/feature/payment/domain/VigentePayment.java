@@ -6,11 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "vigent_payments")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
 @NoArgsConstructor
@@ -30,6 +35,10 @@ public class VigentePayment {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "provider_id")
     private Provider provider;
+
+    @Column(name = "update_at")
+    @LastModifiedDate
+    private LocalDateTime updateAt;
 
     public List<String> getPaymentsMethods() {
         return payments.stream().map(Payment::getDescription).toList();
