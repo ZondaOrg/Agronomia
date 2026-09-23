@@ -5,9 +5,9 @@ import { optionalInputs } from "./optional/inputs";
 import optionalSchema from "./optional/schema";
 import type { OptionalRequest } from "../adapters/request/optional/optional";
 
-export const productSections = [
+export const productSections = (productTypes: string[]) => [
     composeSection({
-        subForms: productSubForms,
+        subForms: productSubForms(productTypes),
         schema: productSchema,
     }),
     tableSection<OptionalRequest, typeof optionalSchema>({
