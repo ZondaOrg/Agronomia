@@ -1,6 +1,7 @@
 import { Tabs } from "@/shared/components/tabs/Tabs";
 import AddProduct from "@/features/add-product/pages/AddProduct";
 import { ROLE } from "@/shared/domain/user/role";
+import ListPrice from "@/features/price-list/pages/PriceList";
 
 const ProductPanel = () => {
     return (
@@ -8,7 +9,7 @@ const ProductPanel = () => {
             [
                 {
                     nameTab: "Todos los productos",
-                    page: <>Listado</>
+                    page: <ListPrice />
                 },
                 {
                     nameTab: "Añadir Productos",
