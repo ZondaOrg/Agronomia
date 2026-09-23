@@ -1,4 +1,3 @@
-import type { IvaPorcents } from "@/shared/domain/iva/iva"
 import type { Details } from "./details"
 
 export interface Product {
@@ -8,7 +7,7 @@ export interface Product {
     bonification: number
     freight: number 
     money: "ARS" | "USD"
-    iva: IvaPorcents
+    iva: "21%" | "10,5%" | "27%"
     updateAt: Date
     details: Details
 }
