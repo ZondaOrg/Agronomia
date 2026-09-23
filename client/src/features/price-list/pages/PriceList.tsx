@@ -2,12 +2,13 @@ import { Searcher } from "@/shared/components/searcher/Sercher";
 import useGetPageOfProducts from "../hooks/get-pages-of-products";
 import Table from "@/shared/components/table/simple-table/Table";
 import type { Product } from "../domain/product";
+import { container } from "./styles";
 
 const ListPrice = () => {
     const { data, search, onSearch, handleChange } = useGetPageOfProducts();
-    
+
     return (
-        <>
+        <div className={container}>
             <Searcher 
                 value={search} 
                 title = "Buscar Producto"
@@ -27,7 +28,7 @@ const ListPrice = () => {
                         </div>
             )}
             />}
-        </>
+        </div>
     )
 }
 
