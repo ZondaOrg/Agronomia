@@ -1,6 +1,8 @@
 import type { Table } from "@/shared/types/table/Table"
 import ProductTable from "../table/ProductTable"
 import type { Product } from "../../domain/product"
+import NoSearchResults from "../no-search-results/NoSearchResults"
+import EmptyProduct from "../empty-product/EmptyProduct"
 
 interface ViewSelectorProps {
     products: Table<Product>
@@ -10,10 +12,10 @@ interface ViewSelectorProps {
 
 const ViewSelector = ({products, search, handleChange}: ViewSelectorProps) => {
     if(products.page.totalElements === 0 && search === "") {
-        return <p>Nunca ingreso una chota</p>
+        return <EmptyProduct />
     }
     else if(products.page.totalElements === 0) {
-        return <p>Busqueda invalida</p>
+        return <NoSearchResults search={search} />
     }
     else {
         return <ProductTable products={products} handleChange={handleChange}/>
