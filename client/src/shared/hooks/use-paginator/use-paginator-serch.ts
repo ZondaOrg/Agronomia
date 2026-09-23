@@ -19,12 +19,17 @@ export const usePaginatedWithSerch = <T, Args extends unknown[]>(
         serviceFunction(page, size, search, ...args);
     }
 
+    function handleChange(page: number) {
+        setCurrentPage(page); 
+        serviceFunction(page, defaultSize, search, ...args);
+    }
+
     useEffect(() => {
         const fn = () => onChangePage(currentPage, defaultSize, search);
         fn();
     }, []);
 
-    return { currentPage, search, onSearch, onChangePage }
+    return { currentPage, search, handleChange, onSearch, onChangePage }
 
 };
 
