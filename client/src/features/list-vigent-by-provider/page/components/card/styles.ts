@@ -23,6 +23,7 @@ export const listItemStyle = css({
     gap: "2",
     fontSize: "sm",
     color: "gray.700",
+    textAlign: "justify",
     width: "100%",
     borderRadius: "md",
     padding: "4",

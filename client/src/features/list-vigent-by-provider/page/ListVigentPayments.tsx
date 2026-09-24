@@ -38,7 +38,8 @@ export const ListVigentPayments = () => {
             title={data.nameList}
             titleSize="xl"
             centered
-            maxHeight="lg"
+            maxWidth="sm"
+            maxHeight="md"
             actions={
                 <FiltrerButton
                     isActive={isFilterVisible}

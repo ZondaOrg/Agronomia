@@ -314,8 +314,8 @@ public class VigentesPaymentDataServiceTest {
     }
 
     @Test
-    @DisplayName("Debe encontrar el VigentePayment cuando la descripción coincide parcialmente")
-    void shouldFindVigentePaymentByPartialDescriptionMatch() {
+    @DisplayName("Debe encontrar los payments cuando la descripción coincide parcialmente")
+    void shouldFindPaymentsByPartialDescriptionMatch() {
         Provider provider = Provider.builder()
                 .tradeName("Proveedor Search")
                 .legalName("Proveedor Search S.A.")
@@ -343,17 +343,16 @@ public class VigentesPaymentDataServiceTest {
 
         vigentesPaymentService.save(vigentePayment);
 
-        VigentePayment result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "cont");
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "cont");
 
-        assertThat(result).isNotNull();
-        assertThat(result.getPayments())
+        assertThat(result)
                 .extracting(Payment::getDescription)
                 .contains("Contado");
     }
 
     @Test
-    @DisplayName("Debe encontrar el VigentePayment sin distinguir mayúsculas y minúsculas")
-    void shouldFindVigentePaymentByDescriptionCaseInsensitive() {
+    @DisplayName("Debe encontrar los payments sin distinguir mayúsculas y minúsculas")
+    void shouldFindPaymentsByDescriptionCaseInsensitive() {
         Provider provider = Provider.builder()
                 .tradeName("Proveedor Search Case")
                 .legalName("Proveedor Search Case S.A.")
@@ -381,17 +380,16 @@ public class VigentesPaymentDataServiceTest {
 
         vigentesPaymentService.save(vigentePayment);
 
-        VigentePayment result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "TRANSFEREN");
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "TRANSFEREN");
 
-        assertThat(result).isNotNull();
-        assertThat(result.getPayments())
+        assertThat(result)
                 .extracting(Payment::getDescription)
                 .contains("Transferencia");
     }
 
     @Test
-    @DisplayName("Debe lanzar EntityNotFoundException cuando ninguna descripción coincide con la búsqueda")
-    void shouldThrowExceptionWhenNoPaymentMatchesDescription() {
+    @DisplayName("Debe retornar una lista vacía cuando ninguna descripción coincide con la búsqueda")
+    void shouldReturnEmptyListWhenNoPaymentMatchesDescription() {
         Provider provider = Provider.builder()
                 .tradeName("Proveedor Search Sin Match")
                 .legalName("Proveedor Search Sin Match S.A.")
@@ -419,10 +417,9 @@ public class VigentesPaymentDataServiceTest {
 
         vigentesPaymentService.save(vigentePayment);
 
-        assertThrows(
-                EntityNotFoundException.class,
-                () -> vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "xyz")
-        );
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "xyz");
+
+        assertThat(result).isEmpty();
     }
 
     @AfterEach
