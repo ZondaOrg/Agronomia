@@ -7,7 +7,7 @@ const useGetAllTypes = () => {
 
     useEffect(() => {
         execute(getAllTypes)();
-    }, []);
+    }, [execute]);
 
 
 

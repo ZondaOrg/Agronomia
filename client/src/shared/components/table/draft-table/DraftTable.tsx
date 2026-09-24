@@ -29,7 +29,7 @@ export function createDraftTable<
 
         useEffect(() => {
             submitRef.current = withPayments(rows.map((r) => r.data));
-        }, [rows, withPayments]);
+        }, [rows, submitRef, withPayments]);
 
         return (
             <FormTable<T, S>
