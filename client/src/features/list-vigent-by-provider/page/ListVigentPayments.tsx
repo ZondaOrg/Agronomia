@@ -7,17 +7,24 @@ import { paymentList } from "./styles";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { FilterIcon } from "@/shared/components/icon/components/icons/FilterIcon";
 import { useGetVigentesPaymentsByProvider } from "../hooks/use-get-payment-by-provider-simple";
+import { useSearchVigentPaymentsByProvider } from "../hooks/use-search-vigent-payments-by-provider";
 import { FiltrerButton } from "@/shared/components/filter/FilterButton";
 import { FilterPanel } from "@/shared/components/filter/FilterPanel";
 import { Searcher } from "@/shared/components/searcher/Sercher";
 
 export const ListVigentPayments = () => {
     const { providerId } = useParams<{ providerId: string }>();
-    const { data, isLoading, search, onSearch } =
+    const { data, isLoading } =
         useGetVigentesPaymentsByProvider(Number(providerId));
+    const {
+        data: payments,
+        isLoading: isLoadingPayments,
+        search,
+        onSearch,
+    } = useSearchVigentPaymentsByProvider(Number(providerId));
     const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-    if (isLoading && !data) {
+    if ((isLoading && !data) || (isLoadingPayments && !payments)) {
         return <Spinner />;
     }
 
@@ -31,7 +38,7 @@ export const ListVigentPayments = () => {
         );
     }
 
-    const hasPayments = data.payments.length > 0;
+    const hasPayments = (payments?.length ?? 0) > 0;
 
     return (
         <SectionPanel
@@ -60,7 +67,7 @@ export const ListVigentPayments = () => {
         >
             {hasPayments ? (
                 <ul className={paymentList}>
-                    {data.payments.map((payment) => (
+                    {payments?.map((payment) => (
                         <PaymentCard
                             key={payment.id}
                             payment={payment}
