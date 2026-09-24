@@ -88,7 +88,7 @@ public class VigentesPaymentDataServiceTest {
 
         vigentesPaymentService.save(vigentePayment);
 
-        VigentePayment result = vigentesPaymentDataService.getVigentePaymentsPaginatedById(savedProvider.getId());
+        VigentePayment result = vigentesPaymentDataService.getVigentPaymentsById(savedProvider.getId());
 
         assertThat(result).isNotNull();
         assertThat(result.getNameList()).isEqualTo("Agosto 2026");
@@ -111,7 +111,7 @@ public class VigentesPaymentDataServiceTest {
         Provider savedProvider = providerService.save(provider);
 
 
-        VigentePayment result = vigentesPaymentDataService.getVigentePaymentsPaginatedById(savedProvider.getId());
+        VigentePayment result = vigentesPaymentDataService.getVigentPaymentsById(savedProvider.getId());
 
         assertThat(result).isNull();
     }

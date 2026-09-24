@@ -39,7 +39,7 @@ public class VigentesPaymentControllerREST {
             @RequestParam(defaultValue = "4") int size
     ) {
 
-        VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId);
+        VigentePayment vigente = paymentDataService.getVigentPaymentsById(providerId);
 
         List<ColumnHeaderDTO> columns = List.of(
                 ColumnHeaderDTO.of("description", "FORMA DE PAGO"),
@@ -52,12 +52,10 @@ public class VigentesPaymentControllerREST {
     }
 
     @GetMapping("/{providerId}")
-    @OwnerEndpoint
-    @Operation(summary = "Obtener los metodos de pago vigentes de un proveedor con el id dado")
-    public ResponseEntity<VigentPaymentsResponseSimpleDTO> getVigentePayments(@PathVariable Long providerId){
-        VigentePayment vigentes = paymentDataService.getVigentPaymentsById(providerId);
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> getVigentPaymentsById(@PathVariable Long providerId) {
+        VigentePayment vigente = paymentDataService.getVigentPaymentsById(providerId);
 
-        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigentes));
+        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigente));
     }
 
     @PostMapping()

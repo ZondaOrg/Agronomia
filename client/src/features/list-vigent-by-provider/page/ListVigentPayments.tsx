@@ -5,7 +5,9 @@ import SectionPanel from "@/shared/components/section/components/section-panel/S
 import Spinner from "@/shared/components/spinner/Spinner";
 import { PaymentCard } from "./components/card/PaymentCard";
 import { paymentList } from "./styles";
-import { FiltrarButton } from "./components/filter/FilterButton";
+import { FiltrarButton } from "../../../shared/components/filter/FilterButton";
+import { EmptyState } from "@/shared/components/empty-state/EmptyState";
+import { PaymentIcon } from "@/shared/components/icon/components/icons/PaymentIcon";
 
 export const ListVigentPayments = () => {
     const { data, isLoading, getVigentPaymentsByProvider } =
@@ -16,9 +18,20 @@ export const ListVigentPayments = () => {
         getVigentPaymentsByProvider(Number(providerId));
     }, [getVigentPaymentsByProvider, providerId]);
 
-    if (isLoading || !data) {
+    if (isLoading) {
         return <Spinner />;
     }
+
+    if (!data) {
+        return (
+            <EmptyState
+                icon={<PaymentIcon />}
+                title="No hay un listado de formas de pago vigente"
+                description="Este proveedor todavía no tiene formas de pago configuradas."
+            />
+        );
+    }
+
     return (
         <SectionPanel
             title={data.nameList}

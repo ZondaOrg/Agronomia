@@ -5,6 +5,7 @@ import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.persistence.dao.PaymentDAO;
 import com.agro.feature.payment.persistence.dao.VigentesPaymentDAO;
 import com.agro.feature.payment.service.VigentesPaymentService;
+
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,12 +27,6 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
         this.vigentesPaymentDAO = vigentesPaymentDAO;
         this.providerDataService = providerDataService;
         this.paymentDAO = paymentDAO;
-    }
-
-    @Override
-    public VigentePayment getVigentePaymentsPaginatedById(Long providerId) {
-        Provider provider = getProvider(providerId);
-        return vigentesPaymentDAO.findByProvider(provider);
     }
 
     private Provider getProvider(Long providerId) {
@@ -69,9 +65,10 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
 
     @Override
     public VigentePayment getVigentPaymentsById(Long providerId) {
-        return this.getVigentById(providerId);
+        Provider provider = getProvider(providerId);
+        return vigentesPaymentDAO.findByProvider(provider)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
     }
-
 
     private VigentePayment getVigentById(Long vigentId) {
         return vigentesPaymentDAO.findById(vigentId).orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
