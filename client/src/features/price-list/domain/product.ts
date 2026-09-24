@@ -1,6 +1,7 @@
 import type { Details } from "./details"
 
 export type Product = {
+    id: number 
     name: string 
     listPrice: number
     bonification: number
