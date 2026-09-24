@@ -52,7 +52,8 @@ public class VigentesPaymentControllerREST {
     }
 
     @GetMapping("/{providerId}")
-    public ResponseEntity<VigentPaymentsResponseSimpleDTO> getVigentPaymentsById(@PathVariable Long providerId, @RequestParam String description) {
+    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id y su descripcion")
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> searchVigentPaymentsByProviderId(@PathVariable Long providerId, @RequestParam String description) {
         VigentePayment vigente = paymentDataService.searchVigentPaymentsByProviderId(providerId, description);
 
         return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigente));

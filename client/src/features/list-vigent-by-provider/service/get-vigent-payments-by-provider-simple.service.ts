@@ -4,12 +4,14 @@ import type { VigentesPayment } from "../types/VigentesPayment";
 
 export const getPaymentsByProviderService = async (
     providerId: number,
+    description = "",
 ): Promise<VigentesPayment> => {
-    const response = await http.get<VigentesPayment>(
+    const { data } = await http.get<VigentesPayment>(
         PAYMENT_PATH_BY_PROVIDER_ID(providerId),
+        { params: { description } },
     );
 
-    return response.data;
+    return data;
 };
 
 export default getPaymentsByProviderService;
