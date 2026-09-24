@@ -70,6 +70,13 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
                 .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
     }
 
+    @Override
+    public VigentePayment searchVigentPaymentsByProviderId(Long providerId, String description) {
+        Provider provider = getProvider(providerId);
+        return vigentesPaymentDAO.findByProviderAndPaymentDescriptionContaining(provider, description)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
+    }
+
     private VigentePayment getVigentById(Long vigentId) {
         return vigentesPaymentDAO.findById(vigentId).orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
     }

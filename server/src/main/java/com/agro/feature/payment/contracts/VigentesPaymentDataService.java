@@ -11,4 +11,6 @@ public interface VigentesPaymentDataService {
     VigentePayment updateVigent(@NotNull Long vigentId, List<Long> deletePayments, VigentePayment model);
 
     VigentePayment getVigentPaymentsById(Long providerId);
+
+    VigentePayment searchVigentPaymentsByProviderId(Long providerId, String description);
 }
