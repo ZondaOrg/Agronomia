@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router";
 import SectionPanel from "@/shared/components/section/components/section-panel/SectionPanel";
 import Spinner from "@/shared/components/spinner/Spinner";
@@ -5,15 +6,18 @@ import { PaymentCard } from "./components/card/PaymentCard";
 import { paymentList } from "./styles";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { FilterIcon } from "@/shared/components/icon/components/icons/FilterIcon";
-import { Searcher } from "@/shared/components/searcher/Sercher";
 import { useGetVigentesPaymentsByProvider } from "../hooks/use-get-payment-by-provider-simple";
+import { FiltrerButton } from "@/shared/components/filter/FilterButton";
+import { FilterPanel } from "@/shared/components/filter/FilterPanel";
+import { Searcher } from "@/shared/components/searcher/Sercher";
 
 export const ListVigentPayments = () => {
     const { providerId } = useParams<{ providerId: string }>();
     const { data, isLoading, search, onSearch } =
         useGetVigentesPaymentsByProvider(Number(providerId));
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-    if (isLoading) {
+    if (isLoading && !data) {
         return <Spinner />;
     }
 
@@ -36,14 +40,22 @@ export const ListVigentPayments = () => {
             centered
             maxHeight="lg"
             actions={
-                <Searcher
-                    value={search}
-                    title="Buscar forma de pago"
-                    placeholder="Ingrese la forma de pago"
-                    onChange={onSearch}
+                <FiltrerButton
+                    isActive={isFilterVisible}
+                    onToggle={() => setIsFilterVisible((prev) => !prev)}
                 />
             }
             description={`última actualización ${data.updateAt}`}
+            filters={
+                <FilterPanel isVisible={isFilterVisible}>
+                    <Searcher
+                        value={search}
+                        title="Buscar"
+                        placeholder="Buscar"
+                        onChange={onSearch}
+                    />
+                </FilterPanel>
+            }
         >
             {hasPayments ? (
                 <ul className={paymentList}>

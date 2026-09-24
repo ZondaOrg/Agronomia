@@ -17,6 +17,7 @@ export const useGetVigentesPaymentsByProvider = (providerId: number) => {
 
     function onSearch(newSearch: string) {
         handleSearch(newSearch);
+        console.log("newSearch", newSearch);
         getVigentPaymentsByProvider(newSearch);
     }
 

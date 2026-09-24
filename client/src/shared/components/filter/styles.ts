@@ -12,3 +12,10 @@ export const filtrarStyle = css({
     textDecoration: "underline",
     _hover: { color: token("colors.primaryColorHover") },
 });
+
+export const filterPanelStyle = css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "1",
+    width: "100%",
+});
