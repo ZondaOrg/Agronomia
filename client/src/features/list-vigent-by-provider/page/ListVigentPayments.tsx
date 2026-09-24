@@ -11,11 +11,13 @@ import { useSearchVigentPaymentsByProvider } from "../hooks/use-search-vigent-pa
 import { FiltrerButton } from "@/shared/components/filter/FilterButton";
 import { FilterPanel } from "@/shared/components/filter/FilterPanel";
 import { Searcher } from "@/shared/components/searcher/Sercher";
+import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 
 export const ListVigentPayments = () => {
     const { providerId } = useParams<{ providerId: string }>();
-    const { data, isLoading } =
-        useGetVigentesPaymentsByProvider(Number(providerId));
+    const { data, isLoading } = useGetVigentesPaymentsByProvider(
+        Number(providerId),
+    );
     const {
         data: payments,
         isLoading: isLoadingPayments,
@@ -75,10 +77,10 @@ export const ListVigentPayments = () => {
                     ))}
                 </ul>
             ) : (
-                <EmptyState
-                    icon={<FilterIcon size={32} />}
-                    title="No hay formas de pago cargadas"
-                    description="Todavía no se agregaron formas de pago para este listado."
+                <NotResults
+                    search={search}
+                    entity="método de pago"
+                    description="Cambiá tu búsqueda o intentá nuevamente."
                 />
             )}
         </SectionPanel>

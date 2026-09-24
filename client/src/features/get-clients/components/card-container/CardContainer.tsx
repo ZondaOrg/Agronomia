@@ -2,7 +2,7 @@ import type { Page } from "@/shared/types/page/Page";
 import type { Client } from "../../domain/client";
 import { css } from "@styled-system/css";
 import ClientCard from "../card/ClientCard";
-import NoSearchResults from "../no-search-results/NoSearchResults";
+import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 import EmptyClient from "../empty-clients/EmptyClients";
 
 interface CardContainerProps {
@@ -21,7 +21,13 @@ const styles = css({
 
 const CardContainer = ({page, search}: CardContainerProps) => {
 
-    if(page.content.length === 0 && search !== "") return <NoSearchResults search={search} /> 
+    if(page.content.length === 0 && search !== "") return (
+        <NotResults
+            search={search}
+            entity="cliente"
+            description="Cambiá tu búsqueda o añade un cliente"
+        />
+    );
     else if(page.content.length === 0) return <EmptyClient />
     return (
         <div className={styles}>
