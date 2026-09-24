@@ -1,5 +1,5 @@
+import type { Iva } from "@/shared/domain/iva/iva"
 import type { OptionalRequest } from "../optional/optional"
-import type { IvaRequest } from "./iva"
 import type { MoneyRequest } from "./money"
 
 export interface AddProductRequest {
@@ -7,7 +7,7 @@ export interface AddProductRequest {
     type: string,
     money: MoneyRequest,
     listPrice: number,
-    iva: IvaRequest,
+    iva: Iva,
     bonification: number,
     freight?: number
     description?: string,

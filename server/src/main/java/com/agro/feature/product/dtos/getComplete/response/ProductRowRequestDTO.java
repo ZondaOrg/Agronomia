@@ -3,7 +3,6 @@ package com.agro.feature.product.dtos.getComplete.response;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record ProductRowRequestDTO(
         Long id,
@@ -14,7 +13,6 @@ public record ProductRowRequestDTO(
         Double freight,
         IVA iva,
         LocalDateTime updateAt,
-        String description,
         DetailsOfProductDTO details
 ) {
 }
