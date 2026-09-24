@@ -1,15 +1,12 @@
-import type { VigentesPayment } from "../types/VigentesPayment";
-import { PAYMENT_PATH_BY_TABLE_PROVIDER_ID } from "@/core/server/urls/payment";
+import { PAYMENT_PATH_BY_PROVIDER_ID } from "@/core/server/urls/payment";
 import http from "@/core/server/http-client";
+import type { VigentesPayment } from "../types/VigentesPayment";
 
 export const getPaymentsByProviderService = async (
     providerId: number,
-    page = 0,
-    size = 4,
 ): Promise<VigentesPayment> => {
     const { data } = await http.get<VigentesPayment>(
-        PAYMENT_PATH_BY_TABLE_PROVIDER_ID(providerId),
-        { params: { page, size } },
+        PAYMENT_PATH_BY_PROVIDER_ID(providerId),
     );
 
     return data;

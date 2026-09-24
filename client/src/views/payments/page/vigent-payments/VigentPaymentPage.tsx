@@ -13,7 +13,7 @@ export const VigentPaymentPage = () => {
         if (providerId) {
             getPayments(Number(providerId));
         }
-    }, [providerId]);
+    }, [getPayments, providerId]);
 
     if (isLoading && !data) {
         return <Spinner centered />;

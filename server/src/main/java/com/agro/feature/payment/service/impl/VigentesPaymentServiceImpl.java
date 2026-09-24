@@ -1,10 +1,12 @@
 package com.agro.feature.payment.service.impl;
 
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.persistence.dao.PaymentDAO;
 import com.agro.feature.payment.persistence.dao.VigentesPaymentDAO;
 import com.agro.feature.payment.service.VigentesPaymentService;
+
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,12 +28,6 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
         this.vigentesPaymentDAO = vigentesPaymentDAO;
         this.providerDataService = providerDataService;
         this.paymentDAO = paymentDAO;
-    }
-
-    @Override
-    public VigentePayment getVigentePaymentsPaginatedById(Long providerId) {
-        Provider provider = getProvider(providerId);
-        return vigentesPaymentDAO.findByProvider(provider);
     }
 
     private Provider getProvider(Long providerId) {
@@ -65,6 +62,19 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
 
 
         return save(vigent);
+    }
+
+    @Override
+    public VigentePayment getVigentPaymentsById(Long providerId) {
+        Provider provider = getProvider(providerId);
+        return vigentesPaymentDAO.findByProvider(provider)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
+    }
+
+    @Override
+    public List<Payment> searchVigentPaymentsByProviderId(Long providerId, String description) {
+        Provider provider = getProvider(providerId);
+        return paymentDAO.findAllByProviderAndDescriptionContainingIgnoreCase(provider, description);
     }
 
     private VigentePayment getVigentById(Long vigentId) {

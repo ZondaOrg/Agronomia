@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSearch from "../use-search";
 
 export const usePaginatedWithSerch = <T, Args extends unknown[]>(
@@ -15,20 +15,17 @@ export const usePaginatedWithSerch = <T, Args extends unknown[]>(
         handleSearch(search);
     }
 
-    function onChangePage(page: number, size: number, search: string) {
-        setCurrentPage(page); 
-        serviceFunction(page, size, search, ...args);
-    }
+    const onChangePage = useCallback((page: number) => {
+        setCurrentPage(page);
+    }, []);
 
-    function handleChange(page: number) {
-        setCurrentPage(page); 
-        serviceFunction(page, defaultSize, search, ...args);
-    }
+    const handleChange = useCallback((page: number) => {
+        setCurrentPage(page);
+    }, []);
 
     useEffect(() => {
-        const fn = () => onChangePage(currentPage, defaultSize, search);
-        fn();
-    }, []);
+        serviceFunction(currentPage, defaultSize, search, ...args);
+    }, [args, currentPage, defaultSize, search, serviceFunction]);
 
     return { currentPage, search, handleChange, onSearch, onChangePage }
 

@@ -1,12 +1,15 @@
 package com.agro.feature.payment.dto.response;
 
 import com.agro.feature.payment.domain.Payment;
+import com.agro.shared.annotations.format.FixedTwoDecimals;
 
 public record PaymentResponseDTO(
         long id,
         String description,
         String application,
+        @FixedTwoDecimals
         int percentage,
+        @FixedTwoDecimals
         int bonusPercentage
 ) {
     public static PaymentResponseDTO fromModel(Payment payments) {

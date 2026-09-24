@@ -2,11 +2,13 @@ package com.agro.feature.payment.controller;
 
 import com.agro.core.api.Api;
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.dto.request.VigentePaymentsRequestDTO;
 import com.agro.feature.payment.dto.request.VigentePaymentsUpdateDTO;
+import com.agro.feature.payment.dto.response.PaymentResponseDTO;
 import com.agro.feature.payment.dto.response.VigentPaymentsResponseSimpleDTO;
-import com.agro.feature.payment.dto.response.VigentePaymentsResponseDTO;
+import com.agro.feature.payment.dto.response.VigentePaymentsTableResponseDTO;
 import com.agro.shared.annotations.role.OwnerEndpoint;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,16 +32,16 @@ public class VigentesPaymentControllerREST {
         this.paymentDataService = paymentDataService;
     }
 
-    @GetMapping("/{providerId}")
+    @GetMapping("table/{providerId}")
     @OwnerEndpoint
-    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
-    public ResponseEntity<VigentePaymentsResponseDTO> getProviderById(
+    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id en formato tabla")
+    public ResponseEntity<VigentePaymentsTableResponseDTO> getProviderById(
             @PathVariable Long providerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "4") int size
     ) {
 
-        VigentePayment vigente = paymentDataService.getVigentePaymentsPaginatedById(providerId);
+        VigentePayment vigente = paymentDataService.getVigentPaymentsById(providerId);
 
         List<ColumnHeaderDTO> columns = List.of(
                 ColumnHeaderDTO.of("description", "FORMA DE PAGO"),
@@ -48,7 +50,23 @@ public class VigentesPaymentControllerREST {
                 ColumnHeaderDTO.of("bonusPercentage", "BONIFICACIÓN %")
         );
 
-        return ResponseEntity.ok(VigentePaymentsResponseDTO.fromModel(vigente, columns, page, size));
+        return ResponseEntity.ok(VigentePaymentsTableResponseDTO.fromModel(vigente, columns, page, size));
+    }
+
+    @GetMapping("/{providerId}")
+    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id")
+    public ResponseEntity<VigentPaymentsResponseSimpleDTO> getVigentPaymentsByProviderId(@PathVariable Long providerId) {
+        VigentePayment vigente = paymentDataService.getVigentPaymentsById(providerId);
+
+        return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigente));
+    }
+
+    @GetMapping("/{providerId}/search")
+    @Operation(summary = "Obtener los metodos de pago de un proveedor por un id y su descripcion")
+    public ResponseEntity<List<PaymentResponseDTO>> searchVigentPaymentsByProviderId(@PathVariable Long providerId, @RequestParam String description) {
+        List<Payment> payments = paymentDataService.searchVigentPaymentsByProviderId(providerId, description);
+
+        return ResponseEntity.ok(payments.stream().map(PaymentResponseDTO::fromModel).toList());
     }
 
     @PostMapping()

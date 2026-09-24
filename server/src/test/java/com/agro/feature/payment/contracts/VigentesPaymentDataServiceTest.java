@@ -9,6 +9,7 @@ import com.agro.feature.payment.service.VigentesPaymentService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,16 +17,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Testcontainers
@@ -49,6 +53,11 @@ public class VigentesPaymentDataServiceTest {
 
     @Autowired
     private PaymentDAO paymentDAO;
+
+    @Autowired
+    private EntityManager entityManager;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Test
     @DisplayName("Debe retornar el VigentePayment asociado a un proveedor existente")
@@ -80,7 +89,7 @@ public class VigentesPaymentDataServiceTest {
 
         vigentesPaymentService.save(vigentePayment);
 
-        VigentePayment result = vigentesPaymentDataService.getVigentePaymentsPaginatedById(savedProvider.getId());
+        VigentePayment result = vigentesPaymentDataService.getVigentPaymentsById(savedProvider.getId());
 
         assertThat(result).isNotNull();
         assertThat(result.getNameList()).isEqualTo("Agosto 2026");
@@ -103,9 +112,8 @@ public class VigentesPaymentDataServiceTest {
         Provider savedProvider = providerService.save(provider);
 
 
-        VigentePayment result = vigentesPaymentDataService.getVigentePaymentsPaginatedById(savedProvider.getId());
+        assertThrows(EntityNotFoundException.class ,() -> vigentesPaymentDataService.getVigentPaymentsById(savedProvider.getId()));
 
-        assertThat(result).isNull();
     }
 
     @Test
@@ -258,6 +266,160 @@ public class VigentesPaymentDataServiceTest {
         assertThatThrownBy(() -> vigentesPaymentDataService.updateVigent(999L, null, updateModel))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("No se encontro el metodo de pago");
+    }
+
+    @Test
+    @DisplayName("Debe setear updateAt al crear y actualizarlo al modificar el VigentePayment")
+    void shouldSetAndUpdateTimestampOnUpdate() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Timestamp")
+                .legalName("Proveedor Timestamp S.A.")
+                .cuit("30-66666666-9")
+                .phoneNumber("11-7777-8888")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment created = vigentesPaymentDataService.createVigentePayment(
+                VigentePayment.builder()
+                        .nameList("Lista Timestamp")
+                        .payments(new ArrayList<>())
+                        .build(),
+                savedProvider.getId()
+        );
+
+        assertThat(created.getUpdateAt()).isNotNull();
+
+        LocalDateTime backdated = LocalDateTime.now().minusDays(1);
+
+        transactionTemplate.execute(status -> {
+            entityManager.createQuery("UPDATE vigent_payments v SET v.updateAt = :backdated WHERE v.id = :id")
+                    .setParameter("backdated", backdated)
+                    .setParameter("id", created.getId())
+                    .executeUpdate();
+            return null;
+        });
+        entityManager.clear();
+
+        VigentePayment updateModel = VigentePayment.builder()
+                .nameList("Lista Timestamp Actualizada")
+                .payments(new ArrayList<>())
+                .build();
+
+        VigentePayment updated = vigentesPaymentDataService.updateVigent(created.getId(), null, updateModel);
+
+        assertThat(updated.getUpdateAt()).isNotNull();
+        assertThat(updated.getUpdateAt()).isAfter(backdated);
+    }
+
+    @Test
+    @DisplayName("Debe encontrar los payments cuando la descripción coincide parcialmente")
+    void shouldFindPaymentsByPartialDescriptionMatch() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Search")
+                .legalName("Proveedor Search S.A.")
+                .cuit("30-77777777-9")
+                .phoneNumber("11-9999-0000")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment vigentePayment = VigentePayment.builder()
+                .nameList("Lista Search")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Contado")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
+        vigentePayment.getPayments().add(payment);
+
+        vigentesPaymentService.save(vigentePayment);
+
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "cont");
+
+        assertThat(result)
+                .extracting(Payment::getDescription)
+                .contains("Contado");
+    }
+
+    @Test
+    @DisplayName("Debe encontrar los payments sin distinguir mayúsculas y minúsculas")
+    void shouldFindPaymentsByDescriptionCaseInsensitive() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Search Case")
+                .legalName("Proveedor Search Case S.A.")
+                .cuit("30-88888888-9")
+                .phoneNumber("11-1111-9999")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment vigentePayment = VigentePayment.builder()
+                .nameList("Lista Search Case")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Transferencia")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
+        vigentePayment.getPayments().add(payment);
+
+        vigentesPaymentService.save(vigentePayment);
+
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "TRANSFEREN");
+
+        assertThat(result)
+                .extracting(Payment::getDescription)
+                .contains("Transferencia");
+    }
+
+    @Test
+    @DisplayName("Debe retornar una lista vacía cuando ninguna descripción coincide con la búsqueda")
+    void shouldReturnEmptyListWhenNoPaymentMatchesDescription() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Search Sin Match")
+                .legalName("Proveedor Search Sin Match S.A.")
+                .cuit("30-99999999-9")
+                .phoneNumber("11-2222-3333")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment vigentePayment = VigentePayment.builder()
+                .nameList("Lista Sin Match")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Contado")
+                .application(Application.NOAPLICA)
+                .percentage(0)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
+        vigentePayment.getPayments().add(payment);
+
+        vigentesPaymentService.save(vigentePayment);
+
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "xyz");
+
+        assertThat(result).isEmpty();
     }
 
     @AfterEach
