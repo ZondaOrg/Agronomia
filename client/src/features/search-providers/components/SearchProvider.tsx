@@ -1,4 +1,5 @@
 import { SearchInput } from "@/shared/components/searcher/components/SearchInput";
+import { css } from "@styled-system/css";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 
@@ -23,7 +24,7 @@ export const SearchProvider = () => {
     }, [value, setSearchParams]);
 
     return (
-        <div>
+        <div className={css({w: "100%"})}>
             <h2>Buscar</h2>
             <SearchInput
                 value={value}
