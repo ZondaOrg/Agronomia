@@ -13,4 +13,6 @@ export const paymentList = css({
     display: "flex",
     flexDirection: "column",
     gap: "3",
+    width: "100%",
+    alignSelf: "stretch",
 });

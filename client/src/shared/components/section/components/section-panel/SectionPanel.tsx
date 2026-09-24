@@ -20,6 +20,7 @@ const SectionPanel = ({
     titleSize = "md",
     maxWidth = "lg",
     maxHeight = "none",
+    filters,
 }: {
     title: string;
     centered?: boolean;
@@ -29,6 +30,7 @@ const SectionPanel = ({
     titleSize?: TitleSize;
     maxWidth?: PanelMaxWidth;
     maxHeight?: BodyMaxHeight;
+    filters?: React.ReactNode;
 }) => (
     <section className={panel({ maxWidth })}>
         <div className={header}>
@@ -38,6 +40,7 @@ const SectionPanel = ({
             </div>
             {description && <p className={descriptionStyle}>{description}</p>}
         </div>
+        {filters}
         <div className={body({ centered, maxHeight })}>{children}</div>
     </section>
 );

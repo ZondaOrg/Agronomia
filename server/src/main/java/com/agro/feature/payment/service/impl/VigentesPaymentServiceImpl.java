@@ -1,6 +1,7 @@
 package com.agro.feature.payment.service.impl;
 
 import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.persistence.dao.PaymentDAO;
 import com.agro.feature.payment.persistence.dao.VigentesPaymentDAO;
@@ -68,6 +69,12 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
         Provider provider = getProvider(providerId);
         return vigentesPaymentDAO.findByProvider(provider)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
+    }
+
+    @Override
+    public List<Payment> searchVigentPaymentsByProviderId(Long providerId, String description) {
+        Provider provider = getProvider(providerId);
+        return paymentDAO.findAllByProviderAndDescriptionContainingIgnoreCase(provider, description);
     }
 
     private VigentePayment getVigentById(Long vigentId) {

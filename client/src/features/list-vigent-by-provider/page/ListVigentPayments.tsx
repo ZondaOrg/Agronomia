@@ -1,54 +1,88 @@
-import { useEffect } from "react";
-import { useGetVigentesPaymentsByProvider } from "../hooks/use-get-payment-by-provider-simple";
+import { useState } from "react";
 import { useParams } from "react-router";
 import SectionPanel from "@/shared/components/section/components/section-panel/SectionPanel";
 import Spinner from "@/shared/components/spinner/Spinner";
 import { PaymentCard } from "./components/card/PaymentCard";
 import { paymentList } from "./styles";
-import { FiltrarButton } from "../../../shared/components/filter/FilterButton";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
-import { PaymentIcon } from "@/shared/components/icon/components/icons/PaymentIcon";
+import { FilterIcon } from "@/shared/components/icon/components/icons/FilterIcon";
+import { useGetVigentesPaymentsByProvider } from "../hooks/use-get-payment-by-provider-simple";
+import { useSearchVigentPaymentsByProvider } from "../hooks/use-search-vigent-payments-by-provider";
+import { FiltrerButton } from "@/shared/components/filter/FilterButton";
+import { FilterPanel } from "@/shared/components/filter/FilterPanel";
+import { Searcher } from "@/shared/components/searcher/Sercher";
+import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 
 export const ListVigentPayments = () => {
-    const { data, isLoading, getVigentPaymentsByProvider } =
-        useGetVigentesPaymentsByProvider();
     const { providerId } = useParams<{ providerId: string }>();
+    const { data, isLoading } = useGetVigentesPaymentsByProvider(
+        Number(providerId),
+    );
+    const {
+        data: payments,
+        isLoading: isLoadingPayments,
+        search,
+        onSearch,
+    } = useSearchVigentPaymentsByProvider(Number(providerId));
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-    useEffect(() => {
-        getVigentPaymentsByProvider(Number(providerId));
-    }, [getVigentPaymentsByProvider, providerId]);
-
-    if (isLoading) {
+    if ((isLoading && !data) || (isLoadingPayments && !payments)) {
         return <Spinner />;
     }
 
     if (!data) {
         return (
             <EmptyState
-                icon={<PaymentIcon />}
-                title="No hay un listado de formas de pago vigente"
+                icon={<FilterIcon size={32} />}
+                title="No hay un listado de formas de pago"
                 description="Este proveedor todavía no tiene formas de pago configuradas."
             />
         );
     }
+
+    const hasPayments = (payments?.length ?? 0) > 0;
 
     return (
         <SectionPanel
             title={data.nameList}
             titleSize="xl"
             centered
-            maxHeight="lg"
-            actions={<FiltrarButton />}
+            maxWidth="sm"
+            maxHeight="md"
+            actions={
+                <FiltrerButton
+                    isActive={isFilterVisible}
+                    onToggle={() => setIsFilterVisible((prev) => !prev)}
+                />
+            }
             description={`última actualización ${data.updateAt}`}
-        >
-            <ul className={paymentList}>
-                {data.payments.map((payment) => (
-                    <PaymentCard
-                        key={payment.id}
-                        payment={payment}
+            filters={
+                <FilterPanel isVisible={isFilterVisible}>
+                    <Searcher
+                        value={search}
+                        title="Buscar"
+                        placeholder="Buscar"
+                        onChange={onSearch}
                     />
-                ))}
-            </ul>
+                </FilterPanel>
+            }
+        >
+            {hasPayments ? (
+                <ul className={paymentList}>
+                    {payments?.map((payment) => (
+                        <PaymentCard
+                            key={payment.id}
+                            payment={payment}
+                        />
+                    ))}
+                </ul>
+            ) : (
+                <NotResults
+                    search={search}
+                    entity="método de pago"
+                    description="Cambiá tu búsqueda o intentá nuevamente."
+                />
+            )}
         </SectionPanel>
     );
 };

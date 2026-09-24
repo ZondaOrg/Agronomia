@@ -1,5 +1,6 @@
 package com.agro.feature.payment.contracts;
 
+import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,4 +12,6 @@ public interface VigentesPaymentDataService {
     VigentePayment updateVigent(@NotNull Long vigentId, List<Long> deletePayments, VigentePayment model);
 
     VigentePayment getVigentPaymentsById(Long providerId);
+
+    List<Payment> searchVigentPaymentsByProviderId(Long providerId, String description);
 }

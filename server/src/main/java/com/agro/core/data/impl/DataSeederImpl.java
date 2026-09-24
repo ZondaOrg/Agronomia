@@ -36,6 +36,23 @@ import java.util.List;
 @Profile("dev")
 public class DataSeederImpl implements DataSeeder {
 
+    private static final List<String> PAYMENT_TEMPLATES = List.of(
+            "PD%d: 30%% seña en pesos. 10%% a 180 días en pesos. 10%% a 360 días en pesos. 50%% a 540 días en dólares",
+            "PD%d: 30%% seña en pesos. 10%% a 180 días en pesos. 10%% a 360 días en pesos. 25%% a 540 días en dólares. 25%% a 720 días en dólares",
+            "DOL%d: 50%% seña – 50%% a 180 días",
+            "DOL%d: 30%% seña – 35%% a 180 días – 35%% a 360 días",
+            "USD%d: Contado con documento a 90 días",
+            "USD%d: 20%% anticipo – 40%% a 90 días – 40%% a 180 días",
+            "ARS%d: Pago contado en efectivo",
+            "ARS%d: Cheque a 30 días",
+            "ARS%d: Cheque a 60 días",
+            "ARS%d: Transferencia bancaria inmediata",
+            "PD%d: Financiación propia a 120 días con valores anticipados",
+            "PD%d: Canje de granos – entrega post cosecha",
+            "DOL%d: 15%% seña en dólares – saldo a 270 días",
+            "USD%d: Pago anticipado con documento en U$D"
+    );
+
     private final UserService userService;
     private final ProviderService providerService;
     private final ClientService clientService;
@@ -447,11 +464,16 @@ public class DataSeederImpl implements DataSeeder {
                 } else {
                     app = Application.NOAPLICA;
                 }
+
+                String template = PAYMENT_TEMPLATES.get((j - 1) % PAYMENT_TEMPLATES.size());
+                int planNumber = 100 + (j * 20);
+                String description = String.format(template, planNumber);
+
                 Payment p = Payment.builder()
-                        .description("DOL720: Condición " + j + " - Plan " + totalPayments)
+                        .description(description)
                         .application(app)
-                        .percentage(j)
-                        .bonusPercentage(j % 2 == 0 ? 5 : 0)
+                        .percentage(j % 20 + 1)
+                        .bonusPercentage(j % 2 == 0 ? (j % 10) : 0)
                         .vigentePayment(vigentePayment)
                         .build();
 
