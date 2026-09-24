@@ -4,7 +4,7 @@ const wrapper = css.raw({
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    width: { base: "100%", md: "20%", lg: "20%" },
+    width: "100%",
     padding: "10px 14px",
     border: "1.5px solid #E4E4E4",
     borderRadius: "10px",
