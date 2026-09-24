@@ -1,13 +1,9 @@
-import { PRODUCTS } from "@/core/routes/urls/products";
 import Button from "@/shared/components/button/Button";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { TractorIcon } from "@/shared/components/icon/components/icons/Tractor";
 import { token } from "@styled-system/tokens";
-import { useNavigate } from "react-router";
 
-const EmptyProduct = () => {
-    const navigate = useNavigate();
-    
+const EmptyProduct = () => {    
     return (
         <EmptyState
             icon={<TractorIcon />}
@@ -18,7 +14,7 @@ const EmptyProduct = () => {
                     color={token("colors.primaryColor")}
                     hoverColor={token("colors.primaryColorHover")}
                     textColor="white"
-                    onClick={() => navigate("/" + PRODUCTS.BASE)}
+                    onClick={() => ""}
                 >
                     + Añadir producto
                 </Button>

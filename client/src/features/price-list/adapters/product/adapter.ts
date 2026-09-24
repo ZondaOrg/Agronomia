@@ -11,9 +11,8 @@ function adapterProduct(product: ProductResponse): Product {
 }
 
 function adapterIva(iva: Iva) {
-    if(iva === "REDUCIDA")      return ivaKeys["10,5%"]
-    else if(iva === "GENERAL")  return ivaKeys["21%"]
-    else                        return ivaKeys["27%"]
+    if(iva === "REDUCIDA") return ivaKeys["10,5%"]
+    else                   return ivaKeys["21%"]
 }
 
 export default adapterProduct;
