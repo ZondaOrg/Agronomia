@@ -13,7 +13,7 @@ const productSubForms = (productTypes: string[]) => createSubForms([
                 { motive: "Tipo de producto", name: ADD_PRODUCT.type, type: "select", options: createSelectOptions(productTypes) },
             ],
             [
-                { motive: "Descripción", name: ADD_PRODUCT.description, isRequired: false },
+                { motive: "Descripción", type: "counter-chars", limit: 500, name: ADD_PRODUCT.description, isRequired: false },
             ]
         ]
     },
