@@ -19,6 +19,7 @@ class OptionalTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
+                "a",
                 20
         );
         optional = new Optional(product, "opcional 1", 100D);

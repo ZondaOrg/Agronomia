@@ -4,9 +4,9 @@ const wrapper = css.raw({
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    width: { base: "100%", md: "40%", lg: "100%" },
+    width: { base: "100%", md: "20%", lg: "20%" },
     padding: "10px 14px",
-    border: "1px solid #E4E4E4",
+    border: "1.5px solid #E4E4E4",
     borderRadius: "10px",
     backgroundColor: "white",
 });
