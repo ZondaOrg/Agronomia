@@ -18,13 +18,13 @@ export const PaymentCard = ({ payment }: { payment: Payment }) => {
                 {hasApplication && (
                     <>
                         {" — "}
-                        <strong>[{payment.application}]:</strong>{" "}
+                        <strong>{payment.application}:</strong>{" "}
                         <span
                             className={applicationText({
                                 type: payment.application,
                             })}
                         >
-                            [{payment.percentage}%]
+                            {payment.percentage}%
                         </span>
                     </>
                 )}
@@ -33,7 +33,7 @@ export const PaymentCard = ({ payment }: { payment: Payment }) => {
                         {" — "}
                         <strong>Bonificación:</strong>{" "}
                         <span className={bonusStyle}>
-                            [{payment.bonusPercentage}%]
+                            {payment.bonusPercentage}%
                         </span>
                     </>
                 )}
