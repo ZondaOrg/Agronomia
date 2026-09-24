@@ -10,7 +10,8 @@ export const usePaginatedWithSerch = <T, Args extends unknown[]>(
     const { search, handleSearch } = useSearch();
 
     function onSearch(search: string) {
-        serviceFunction(currentPage, defaultSize, search, ...args);
+        setCurrentPage(prev => prev - prev);
+        serviceFunction(0, defaultSize, search, ...args);
         handleSearch(search);
     }
 
