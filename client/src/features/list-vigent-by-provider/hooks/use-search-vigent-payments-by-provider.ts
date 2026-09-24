@@ -19,11 +19,12 @@ export const useSearchVigentPaymentsByProvider = (providerId: number) => {
 
     const onSearch = (description: string) => {
         handleSearch(description);
+        searchPayments(description);
     };
 
     useEffect(() => {
         searchPayments(search);
-    }, [search, searchPayments]);
+    }, [providerId, searchPayments]);
 
     return { data, error, isLoading, search, onSearch };
 };
