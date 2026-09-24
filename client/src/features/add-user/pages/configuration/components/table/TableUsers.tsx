@@ -13,7 +13,7 @@ export const TableUsers = forwardRef<TableUsersRef>((_, ref) => {
 
     useEffect(() => {
         getUsers(0);
-    }, []);
+    }, [getUsers]);
 
     useImperativeHandle(ref, () => ({
         refresh: async () => {
