@@ -23,7 +23,7 @@ const productSubForms = (productTypes: string[]) => createSubForms([
             [
                 { motive: "Moneda", name: ADD_PRODUCT.money, type: "select", options: createSelectOptions(moneys)},
                 { motive: "Precio lista", name: ADD_PRODUCT.listPrice }, 
-                { motive: "Iva", name: ADD_PRODUCT.iva, type: "select", options: createSelectOptions(ivaPorcents) },
+                { motive: "IVA", name: ADD_PRODUCT.iva, type: "select", options: createSelectOptions(ivaPorcents) },
             ],
             [
                 { motive: "Bonificación", name: ADD_PRODUCT.bonification },

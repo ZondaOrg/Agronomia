@@ -9,10 +9,11 @@ export const usePaginatedWithSerch = <T, Args extends unknown[]>(
     const [currentPage, setCurrentPage] = useState(0);
     const { search, handleSearch } = useSearch();
 
-    const onSearch = useCallback(
-        (newSearch: string) => handleSearch(newSearch),
-        [handleSearch],
-    );
+    function onSearch(search: string) {
+        setCurrentPage(prev => prev - prev);
+        serviceFunction(0, defaultSize, search, ...args);
+        handleSearch(search);
+    }
 
     const onChangePage = useCallback((page: number) => {
         setCurrentPage(page);

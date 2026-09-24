@@ -19,7 +19,6 @@ export function productRequestAdapter(productSchema: AddProductSchema, optionals
 }
 
 function adapterIva(iva: string) {
-    if(iva === "27%")      return Iva.INCREMENTADA
-    else if(iva === "21%") return Iva.GENERAL
-    else                   return Iva.REDUCIDA
+    if(iva === "21%") return Iva.GENERAL
+    else              return Iva.REDUCIDA
 }
