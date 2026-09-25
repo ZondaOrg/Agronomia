@@ -8,9 +8,9 @@ public record PaymentResponseDTO(
         String description,
         String application,
         @FixedTwoDecimals
-        int percentage,
+        double percentage,
         @FixedTwoDecimals
-        int bonusPercentage
+        double bonusPercentage
 ) {
     public static PaymentResponseDTO fromModel(Payment payments) {
         return new PaymentResponseDTO(

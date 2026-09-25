@@ -165,7 +165,6 @@ public class ProductionDataSeeder implements CommandLineRunner {
                 .phoneNumber(phoneNumber)
                 .companyId(companyId)
                 .traveler(traveler)
-                .listPrices(new ArrayList<>(listPrices))
                 .build();
     }
 
