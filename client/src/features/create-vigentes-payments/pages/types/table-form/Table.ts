@@ -27,6 +27,10 @@ export const paymentInputs: Record<string, InputData> = {
         title: "VALOR %",
         placeholder: "%",
         defaultValue: "",
+        disabledWhen: {
+            field: ADD_PAYMENT.application,
+            value: "No Aplica",
+        },
         id: 3,
     },
     [ADD_PAYMENT.bonusPercentage]: {
