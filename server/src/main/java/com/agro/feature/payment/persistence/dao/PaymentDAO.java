@@ -16,10 +16,10 @@ public interface PaymentDAO extends JpaRepository<Payment, Long> {
     void softDeleteByIds(@Param("ids") List<Long> ids);
 
     @Query("""
-            SELECT p FROM Payment p
-            WHERE p.vigentePayment.provider = :provider
-            AND p.description ILIKE %:description%
-            """)
+    SELECT p FROM Payment p
+    WHERE p.vigentePayment.provider = :provider
+    AND lower(p.description) LIKE lower(concat('%', :description, '%'))
+    """)
     List<Payment> findAllByProviderAndDescriptionContainingIgnoreCase(
             @Param("provider") Provider provider,
             @Param("description") String description

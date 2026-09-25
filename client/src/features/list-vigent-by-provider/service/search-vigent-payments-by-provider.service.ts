@@ -6,9 +6,9 @@ export const searchVigentPaymentsByProviderService = async (
     providerId: number,
     description: string,
 ): Promise<Payment[]> => {
-    const { data } = await http.get<Payment[]>(
+    const { data } = await http.post<Payment[]>(
         PAYMENT_SEARCH_PATH_BY_PROVIDER_ID(providerId),
-        { params: { description } },
+        { description },
     );
 
     return data;

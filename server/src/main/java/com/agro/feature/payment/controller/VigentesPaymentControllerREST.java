@@ -10,6 +10,7 @@ import com.agro.feature.payment.dto.response.PaymentResponseDTO;
 import com.agro.feature.payment.dto.response.VigentPaymentsResponseSimpleDTO;
 import com.agro.feature.payment.dto.response.VigentePaymentsTableResponseDTO;
 import com.agro.shared.annotations.role.OwnerEndpoint;
+import com.agro.shared.dtos.search.SearchRequest;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,10 +62,13 @@ public class VigentesPaymentControllerREST {
         return ResponseEntity.ok(VigentPaymentsResponseSimpleDTO.fromModel(vigente));
     }
 
-    @GetMapping("/{providerId}/search")
+    @PostMapping("/{providerId}/search")
     @Operation(summary = "Obtener los metodos de pago de un proveedor por un id y su descripcion")
-    public ResponseEntity<List<PaymentResponseDTO>> searchVigentPaymentsByProviderId(@PathVariable Long providerId, @RequestParam String description) {
-        List<Payment> payments = paymentDataService.searchVigentPaymentsByProviderId(providerId, description);
+    public ResponseEntity<List<PaymentResponseDTO>> searchVigentPaymentsByProviderId(
+            @PathVariable Long providerId,
+            @RequestBody SearchRequest request) {
+
+        List<Payment> payments = paymentDataService.searchVigentPaymentsByProviderId(providerId, request.description());
 
         return ResponseEntity.ok(payments.stream().map(PaymentResponseDTO::fromModel).toList());
     }
