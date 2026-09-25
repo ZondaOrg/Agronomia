@@ -81,7 +81,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -137,7 +137,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Transferencia")
                 .application(Application.DESCUENTO)
-                .percentage(10)
+                .percentage(10D)
                 .bonusPercentage(0)
                 .build();
 
@@ -182,7 +182,7 @@ public class VigentesPaymentDataServiceTest {
         Payment newPayment = Payment.builder()
                 .description("Cheque")
                 .application(Application.RECARGO)
-                .percentage(5)
+                .percentage(5D)
                 .bonusPercentage(2)
                 .vigentePayment(existing)
                 .build();
@@ -218,7 +218,7 @@ public class VigentesPaymentDataServiceTest {
         Payment paymentToKeep = Payment.builder()
                 .description("Mantener")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(existing)
                 .build();
@@ -226,7 +226,7 @@ public class VigentesPaymentDataServiceTest {
         Payment paymentToDelete = Payment.builder()
                 .description("Eliminar")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(existing)
                 .build();
@@ -335,7 +335,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -372,7 +372,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Transferencia")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -409,7 +409,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -420,6 +420,43 @@ public class VigentesPaymentDataServiceTest {
         List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "xyz");
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Debe encontrar los payments con tilde en la descripción cuando se busca sin tilde")
+    void shouldFindPaymentsWithAccentedDescriptionUsingUnaccentedSearch() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Search Tilde")
+                .legalName("Proveedor Search Tilde S.A.")
+                .cuit("30-10101010-9")
+                .phoneNumber("11-4444-8888")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment vigentePayment = VigentePayment.builder()
+                .nameList("Lista Search Tilde")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Depósito en dólares")
+                .application(Application.NOAPLICA)
+                .percentage(0D)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
+        vigentePayment.getPayments().add(payment);
+
+        vigentesPaymentService.save(vigentePayment);
+
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "dolares");
+
+        assertThat(result)
+                .extracting(Payment::getDescription)
+                .contains("Depósito en dólares");
     }
 
     @AfterEach

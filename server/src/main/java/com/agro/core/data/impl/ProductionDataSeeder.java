@@ -136,7 +136,7 @@ public class ProductionDataSeeder implements CommandLineRunner {
             Payment p1 = Payment.builder()
                     .description("DOL720: 30% seña - 17,50% a 10 días")
                     .application(Application.NOAPLICA)
-                    .percentage(0)
+                    .percentage(0D)
                     .bonusPercentage(0)
                     .vigentePayment(vigentePayment)
                     .build();
@@ -144,7 +144,7 @@ public class ProductionDataSeeder implements CommandLineRunner {
             Payment p2 = Payment.builder()
                     .description("DOL720: 30% seña - 17,50% a 18 días")
                     .application(Application.DESCUENTO)
-                    .percentage(8)
+                    .percentage(8D)
                     .bonusPercentage(0)
                     .vigentePayment(vigentePayment)
                     .build();
