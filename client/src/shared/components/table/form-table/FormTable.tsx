@@ -85,14 +85,16 @@ export const FormTable = <
             onPageChange={onPageChange}
             renderRowActions={renderRowActions}
             draftRow={
-                <DraftRow
-                    columns={formColumns}
-                    register={register}
-                    errors={errors}
-                    values={values}
-                    addLabel={addLabel}
-                    onSubmit={handleSubmit(handleForm)}
-                />
+                table.page?.first ? (
+                    <DraftRow
+                        columns={formColumns}
+                        register={register}
+                        errors={errors}
+                        values={values}
+                        addLabel={addLabel}
+                        onSubmit={handleSubmit(handleForm)}
+                    />
+                ) : undefined
             }
         />
     );
