@@ -39,12 +39,11 @@ public class Provider {
     @OneToOne(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private VigentePayment vigentePayment;
 
-    private List<Integer> listPrices = new ArrayList<>();
 
     @Builder
     public Provider(String tradeName, String legalName, String cuit, String phoneNumber,
                     Traveler traveler, Long companyId,
-                    VigentePayment vigent, List<Integer> listPrices) {
+                    VigentePayment vigent) {
         this.tradeName = tradeName;
         this.legalName = legalName;
         this.cuit = new CuitValue(cuit);
@@ -52,7 +51,6 @@ public class Provider {
         this.traveler = traveler;
         this.companyId = companyId;
         this.vigentePayment = vigent;
-        this.listPrices = (listPrices != null) ? listPrices : new ArrayList<>();
     }
 
     public Provider(String phoneNumber, Traveler traveler) {

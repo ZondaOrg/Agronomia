@@ -150,7 +150,6 @@ public class DataSeederImpl implements DataSeeder {
                 .cuit("31-87654321-1")
                 .phoneNumber("11-4444-5555")
                 .companyId(companyId)
-                .listPrices(new ArrayList<>(List.of(1500, 2300, 3100)))
                 .build()
         );
 
@@ -160,7 +159,6 @@ public class DataSeederImpl implements DataSeeder {
                 .cuit("37-87654121-6")
                 .phoneNumber("11-4444-5555")
                 .companyId(companyId)
-                .listPrices(new ArrayList<>(List.of(1500, 2300, 3100)))
                 .build()
         );
 
@@ -327,7 +325,6 @@ public class DataSeederImpl implements DataSeeder {
                         .cuit("30-87654321-0")
                         .phoneNumber("11-4444-5555")
                         .companyId(companyId)
-                        .listPrices(new ArrayList<>(List.of(1500, 2300, 3100)))
                         .build(),
 
                 Provider.builder()
@@ -340,7 +337,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Carlos Gomez")
                                 .phoneNumber("11-5566-7788")
                                 .build())
-                        .listPrices(new ArrayList<>(List.of(800, 950)))
                         .build(),
 
                 Provider.builder()
@@ -349,7 +345,6 @@ public class DataSeederImpl implements DataSeeder {
                         .cuit("30-11223344-6")
                         .phoneNumber("11-9999-8888")
                         .companyId(companyId)
-                        .listPrices(new ArrayList<>(List.of(800, 950)))
                         .build(),
 
                 Provider.builder()
@@ -362,7 +357,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Federico Álvarez")
                                 .phoneNumber("+54 9 3492 51-2290")
                                 .build())
-                        .listPrices(new ArrayList<>(List.of(4200, 5100, 6300, 7000)))
                         .build(),
 
                 Provider.builder()
@@ -375,7 +369,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Lucía Fernández")
                                 .phoneNumber("351-6789-012")
                                 .build())
-                        .listPrices(new ArrayList<>(List.of(2100, 2900)))
                         .build(),
 
                 Provider.builder()
@@ -396,7 +389,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Martín Suárez")
                                 .phoneNumber("341-889-5566")
                                 .build())
-                        .listPrices(new ArrayList<>(List.of(1800, 2400, 3000)))
                         .build(),
 
                 Provider.builder()
@@ -417,7 +409,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Sofía Ramírez")
                                 .phoneNumber("341-334-1122")
                                 .build())
-                        .listPrices(new ArrayList<>(List.of(950, 1300, 1750, 2200)))
                         .build(),
 
                 Provider.builder()
@@ -472,8 +463,8 @@ public class DataSeederImpl implements DataSeeder {
                 Payment p = Payment.builder()
                         .description(description)
                         .application(app)
-                        .percentage(j % 20 + 1)
-                        .bonusPercentage(j % 2 == 0 ? (j % 10) : 0)
+                        .percentage((j % 20 + 1) + 0.5)
+                        .bonusPercentage(j % 2 == 0 ? ((j % 10) + 0.25) : 0)
                         .vigentePayment(vigentePayment)
                         .build();
 

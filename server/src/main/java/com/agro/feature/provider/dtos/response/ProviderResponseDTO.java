@@ -25,7 +25,7 @@ public record ProviderResponseDTO(
                 provider.getCompanyId(),
                 TravelerResponseDTO.fromModel(provider.getTraveler()),
                 provider.getPaymentMethods(),
-                provider.getListPrices()
+                List.of(1,2)
         );
     }
 }

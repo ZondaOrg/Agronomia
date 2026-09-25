@@ -25,9 +25,9 @@ public class Payment {
 
     private Application application;
 
-    private int percentage;
+    private double percentage;
 
-    private int bonusPercentage;
+    private double bonusPercentage;
 
     @ManyToOne
     @JoinColumn(name = "vigentePayments_id")

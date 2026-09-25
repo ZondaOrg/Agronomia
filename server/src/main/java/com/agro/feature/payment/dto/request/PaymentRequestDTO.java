@@ -12,10 +12,10 @@ public record PaymentRequestDTO(
         String application,
         @Min(0)
         @Max(100)
-        int percentage,
+        double percentage,
         @Min(0)
         @Max(100)
-        int bonusPercentage
+        double bonusPercentage
 ) {
     public Payment toModel() {
         return Payment.builder()
