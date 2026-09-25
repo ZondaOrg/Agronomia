@@ -337,7 +337,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Carlos Gomez")
                                 .phoneNumber("11-5566-7788")
                                 .build())
-
                         .build(),
 
                 Provider.builder()
@@ -346,7 +345,6 @@ public class DataSeederImpl implements DataSeeder {
                         .cuit("30-11223344-6")
                         .phoneNumber("11-9999-8888")
                         .companyId(companyId)
-
                         .build(),
 
                 Provider.builder()
@@ -359,7 +357,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Federico Álvarez")
                                 .phoneNumber("+54 9 3492 51-2290")
                                 .build())
-
                         .build(),
 
                 Provider.builder()
@@ -372,7 +369,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Lucía Fernández")
                                 .phoneNumber("351-6789-012")
                                 .build())
-
                         .build(),
 
                 Provider.builder()
@@ -393,7 +389,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Martín Suárez")
                                 .phoneNumber("341-889-5566")
                                 .build())
-
                         .build(),
 
                 Provider.builder()
@@ -414,7 +409,6 @@ public class DataSeederImpl implements DataSeeder {
                                 .fullName("Sofía Ramírez")
                                 .phoneNumber("341-334-1122")
                                 .build())
-
                         .build(),
 
                 Provider.builder()
@@ -469,8 +463,8 @@ public class DataSeederImpl implements DataSeeder {
                 Payment p = Payment.builder()
                         .description(description)
                         .application(app)
-                        .percentage(j % 20 + 1)
-                        .bonusPercentage(j % 2 == 0 ? (j % 10) : 0)
+                        .percentage((j % 20 + 1) + 0.5)
+                        .bonusPercentage(j % 2 == 0 ? ((j % 10) + 0.25) : 0)
                         .vigentePayment(vigentePayment)
                         .build();
 
