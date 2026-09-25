@@ -6,4 +6,8 @@ export type BaseInputData = {
     id: number;
     required?: boolean;
     disabled?: boolean;
+    disabledWhen?: {
+        field: string;
+        value: unknown;
+    };
 };

@@ -7,7 +7,7 @@ import {
     type Resolver,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { InferData } from "../../forms/validation-form/shema";
 import type { FormTableProps } from "./types/ValidationForm";
 import { buildTableDefaultValues } from "./types/defaultValues";
@@ -45,6 +45,8 @@ export const FormTable = <
         register,
         handleSubmit,
         reset,
+        setValue,
+        watch,
         formState: { errors },
     } = useForm<InferData<S> & FieldValues>({
         resolver: zodResolver(schema) as unknown as Resolver<
@@ -52,6 +54,20 @@ export const FormTable = <
         >,
         defaultValues,
     });
+
+    const values = watch();
+
+    useEffect(() => {
+        Object.values(inputs).forEach((input) => {
+            if (
+                input.disabledWhen &&
+                values[input.disabledWhen.field] === input.disabledWhen.value &&
+                values[input.name] !== ""
+            ) {
+                setValue(input.name, "" as never);
+            }
+        });
+    }, [inputs, setValue, values]);
 
     const handleForm = (data: InferData<S> & FieldValues) => {
         onAddRow(data as InferData<S>);
@@ -73,6 +89,7 @@ export const FormTable = <
                     columns={formColumns}
                     register={register}
                     errors={errors}
+                    values={values}
                     addLabel={addLabel}
                     onSubmit={handleSubmit(handleForm)}
                 />

@@ -31,6 +31,17 @@ const paymentSchema = z
                 path: [ADD_PAYMENT.percentage],
             });
         }
+
+        if (
+            data[ADD_PAYMENT.application] === "No Aplica" &&
+            data[ADD_PAYMENT.percentage] > 0
+        ) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "No puede ingresar un valor % cuando la aplicación es No Aplica",
+                path: [ADD_PAYMENT.percentage],
+            });
+        }
     });
 
 export type PaymentSchemaType = z.infer<typeof paymentSchema>;

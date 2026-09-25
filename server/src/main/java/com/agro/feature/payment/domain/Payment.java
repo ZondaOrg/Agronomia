@@ -25,7 +25,8 @@ public class Payment {
 
     private Application application;
 
-    private double percentage;
+    @Column(nullable = true)
+    private Double percentage;
 
     private double bonusPercentage;
 

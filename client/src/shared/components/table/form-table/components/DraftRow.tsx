@@ -15,6 +15,7 @@ interface DraftRowProps<TFieldValues extends FieldValues> {
     columns: Array<{ key: string; input?: InputData }>;
     register: UseFormRegister<TFieldValues>;
     errors: FieldErrors<TFieldValues>;
+    values: TFieldValues;
     addLabel: string;
     onSubmit: () => void;
 }
@@ -23,6 +24,7 @@ export const DraftRow = <TFieldValues extends FieldValues>({
     columns,
     register,
     errors,
+    values,
     addLabel,
     onSubmit,
 }: DraftRowProps<TFieldValues>) => (
@@ -34,7 +36,14 @@ export const DraftRow = <TFieldValues extends FieldValues>({
             >
                 {column.input && (
                     <FormTableInput
-                        input={column.input}
+                        input={{
+                            ...column.input,
+                            disabled:
+                                column.input.disabled ||
+                                (column.input.disabledWhen?.field !== undefined &&
+                                    values[column.input.disabledWhen.field] ===
+                                        column.input.disabledWhen.value),
+                        }}
                         registration={register(
                             column.key as Path<TFieldValues>,
                         )}
