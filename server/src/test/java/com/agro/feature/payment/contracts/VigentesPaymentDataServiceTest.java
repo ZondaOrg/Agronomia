@@ -422,6 +422,43 @@ public class VigentesPaymentDataServiceTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    @DisplayName("Debe encontrar los payments con tilde en la descripción cuando se busca sin tilde")
+    void shouldFindPaymentsWithAccentedDescriptionUsingUnaccentedSearch() {
+        Provider provider = Provider.builder()
+                .tradeName("Proveedor Search Tilde")
+                .legalName("Proveedor Search Tilde S.A.")
+                .cuit("30-10101010-9")
+                .phoneNumber("11-4444-8888")
+                .companyId(1L)
+                .build();
+
+        Provider savedProvider = providerService.save(provider);
+
+        VigentePayment vigentePayment = VigentePayment.builder()
+                .nameList("Lista Search Tilde")
+                .provider(savedProvider)
+                .payments(new ArrayList<>())
+                .build();
+
+        Payment payment = Payment.builder()
+                .description("Depósito en dólares")
+                .application(Application.NOAPLICA)
+                .percentage(0D)
+                .bonusPercentage(0)
+                .vigentePayment(vigentePayment)
+                .build();
+        vigentePayment.getPayments().add(payment);
+
+        vigentesPaymentService.save(vigentePayment);
+
+        List<Payment> result = vigentesPaymentDataService.searchVigentPaymentsByProviderId(savedProvider.getId(), "dolares");
+
+        assertThat(result)
+                .extracting(Payment::getDescription)
+                .contains("Depósito en dólares");
+    }
+
     @AfterEach
     void tearDown() {
         resetService.resetAll();
