@@ -81,7 +81,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -137,7 +137,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Transferencia")
                 .application(Application.DESCUENTO)
-                .percentage(10)
+                .percentage(10D)
                 .bonusPercentage(0)
                 .build();
 
@@ -182,7 +182,7 @@ public class VigentesPaymentDataServiceTest {
         Payment newPayment = Payment.builder()
                 .description("Cheque")
                 .application(Application.RECARGO)
-                .percentage(5)
+                .percentage(5D)
                 .bonusPercentage(2)
                 .vigentePayment(existing)
                 .build();
@@ -218,7 +218,7 @@ public class VigentesPaymentDataServiceTest {
         Payment paymentToKeep = Payment.builder()
                 .description("Mantener")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(existing)
                 .build();
@@ -226,7 +226,7 @@ public class VigentesPaymentDataServiceTest {
         Payment paymentToDelete = Payment.builder()
                 .description("Eliminar")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(existing)
                 .build();
@@ -335,7 +335,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -372,7 +372,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Transferencia")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
@@ -409,7 +409,7 @@ public class VigentesPaymentDataServiceTest {
         Payment payment = Payment.builder()
                 .description("Contado")
                 .application(Application.NOAPLICA)
-                .percentage(0)
+                .percentage(0D)
                 .bonusPercentage(0)
                 .vigentePayment(vigentePayment)
                 .build();
