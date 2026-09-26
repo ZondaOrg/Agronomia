@@ -211,9 +211,8 @@ class ProductServiceImplTest {
 
     @Test
     void testSeEditaLosCamposDeUnProducto() {
-        Optional optional = new Optional(product, "optional 1", 5D);
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Long>());
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), new ArrayList<Long>());
         assertEquals(Money.USD, editedProduct.getMoney());
         assertEquals(1025007d, editedProduct.getListPrice());
         assertEquals(IVA.REDUCIDA, editedProduct.getIva());
@@ -223,9 +222,13 @@ class ProductServiceImplTest {
 
     @Test
     void testSeAgregaOpcionalesAlEditarUnProducto() {
-        Optional optional = new Optional(product, "optional 1", 5D);
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Long>());
+
+        Optional optional = new Optional(addedProduct, "optional 1", 5D);
+        List<Optional> toAdd = new ArrayList<Optional>();
+        toAdd.add(optional);
+
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toAdd, new ArrayList<Long>());
         assertTrue(editedProduct.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
@@ -233,9 +236,11 @@ class ProductServiceImplTest {
     void testSeEliminanOpcionalesAlEditarUnProducto() {
         Optional optional = new Optional(product, "optional 1", 5D);
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
+
         List<Long> toDelete = new ArrayList<Long>();
-        toDelete.add(addedProduct.getOptionals().getFirst().getId());
-        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toDelete);
+        toDelete.add(optional.getId());
+
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), toDelete);
         assertTrue(editedProduct.getOptionals().isEmpty());
     }
 

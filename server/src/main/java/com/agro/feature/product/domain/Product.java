@@ -13,10 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "products")
@@ -150,16 +147,12 @@ public class Product {
             IVA iva,
             Integer bonification,
             Double freight,
-            List<Optional> toDelete) {
+            List<String> toDelete) {
         setMoney(money);
         setListPrice(listPrice);
         setIva(iva);
         setBonification(new Porcent(bonification));
         setFreight(freight);
-        toDelete.forEach(Optional::remove);
-    }
-
-    public void deleteOptional(Optional optional) {
-        optionals.remove(optional);
+        optionals.removeIf(o -> toDelete.contains(o.getName()));
     }
 }
