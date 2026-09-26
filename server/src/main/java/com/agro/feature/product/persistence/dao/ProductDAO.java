@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,4 +34,12 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             @Param("search") String search,
             @Param("idProvider") Long idProvider,
             PageRequest pageRequest);
+
+    @Query(
+            "SELECT p " +
+            "FROM Product p " +
+            "LEFT JOIN FETCH p.optionals " +
+            "WHERE p.id = :idProduct"
+    )
+    Optional<Product> findByIdWithOptionals(@Param("idProduct") Long id);
 }

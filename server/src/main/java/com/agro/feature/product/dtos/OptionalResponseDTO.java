@@ -1,4 +1,4 @@
-package com.agro.feature.product.dtos.getComplete.response;
+package com.agro.feature.product.dtos;
 
 public record OptionalResponseDTO(
         Long id,

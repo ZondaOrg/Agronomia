@@ -1,21 +1,21 @@
-package com.agro.feature.product.dtos.getComplete;
+package com.agro.feature.product.dtos.get;
 
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.getComplete.response.ProductRowRequestDTO;
 
-public class GetterProductMapper {
-
-    public static ProductRowRequestDTO getProductRow(Product product) {
-        return new ProductRowRequestDTO(
+public class GetProductMapper {
+    public static GetProductResponseDTO modelToDto(Product product) {
+        return new GetProductResponseDTO(
                 product.getId(),
                 product.getName(),
+                product.getProductType(),
                 product.getMoney(),
                 product.getListPrice(),
                 product.getBonification(),
                 product.getFreight(),
                 product.getIva(),
+                product.getDescription(),
                 product.getCreatedAt(),
-                DetailsMapper.modelToDto(product)
+                GetOptionalMapper.modelsToDto(product.getOptionals())
         );
     }
 }
