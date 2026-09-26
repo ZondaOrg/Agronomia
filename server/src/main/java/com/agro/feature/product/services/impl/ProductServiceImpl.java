@@ -1,6 +1,9 @@
 package com.agro.feature.product.services.impl;
 
+import com.agro.feature.product.domain.IVA;
+import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.persistence.dao.OptionalDAO;
 import com.agro.feature.product.persistence.dao.ProductDAO;
 import com.agro.feature.product.services.ProductService;
 import com.agro.feature.provider.contracts.ProviderDataService;
@@ -10,17 +13,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
     private ProductDAO dao;
+    private OptionalDAO optionalDao;
     private ProviderDataService providerContract;
 
-    public ProductServiceImpl(ProductDAO dao, ProviderDataService providerContract) {
+    public ProductServiceImpl(ProductDAO dao, ProviderDataService providerContract, OptionalDAO optionalDao) {
         this.dao = dao;
         this.providerContract = providerContract;
+        this.optionalDao = optionalDao;
     }
 
     @Override
@@ -41,6 +47,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
+        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
+    }
+
+    @Override
+    public Product edit(Long id, Money money, Double listPrice, IVA iva, Integer bonification, Double freight, List<Long> idOfOptionalsToDelete) {
+        Product product = findBy(id);
+        product.edit(money, listPrice, iva, bonification, freight, optionalDao.findByIdInAndProductId(idOfOptionalsToDelete, id));
+        return dao.save(product);
+    }
+
+    private Product findBy(Long id) {
         return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
     }
 }
