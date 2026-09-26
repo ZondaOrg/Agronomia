@@ -33,4 +33,12 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             @Param("search") String search,
             @Param("idProvider") Long idProvider,
             PageRequest pageRequest);
+
+    @Query(
+            "SELECT p " +
+            "FROM Product p " +
+            "LEFT JOIN FETCH p.optionals " +
+            "WHERE p.id = :idProduct"
+    )
+    Optional<Product> findByIdWithOptionals(@Param("idProduct") Long id);
 }
