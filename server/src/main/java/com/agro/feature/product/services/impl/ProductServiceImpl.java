@@ -38,4 +38,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long idProvider) {
         return dao.searchPagesOfProductsWith(search, idProvider, PageRequest.of(page, size));
     }
+
+    @Override
+    public Product findById(Long id) {
+        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
+    }
 }

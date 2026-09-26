@@ -7,4 +7,6 @@ public interface ProductService {
     Product add(Product product, String productType, Long idProvider);
 
     Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long providerId);
+
+    Product findById(Long id);
 }

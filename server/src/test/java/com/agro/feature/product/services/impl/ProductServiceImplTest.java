@@ -3,6 +3,7 @@ package com.agro.feature.product.services.impl;
 import com.agro.core.ContainerPostgresql;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
+import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
@@ -189,6 +190,21 @@ class ProductServiceImplTest {
         assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Tractorcito 1")));
         assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "tractorcito 2")));
         assertFalse(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Casechadora 3")));
+    }
+
+    @Test
+    void testSeRecuperaUnProductoPorSuId() {
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product pruductFound = service.findById(addedProduct.getId());
+        assertEquals(addedProduct.getId(), pruductFound.getId());
+    }
+
+    @Test
+    void testSeRecuperaUnProductoPorSuIdConSusOpcionales() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product pruductFound = service.findById(addedProduct.getId());
+        assertTrue(pruductFound.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
     @AfterEach
