@@ -14,6 +14,7 @@ public class GetProductMapper {
                 product.getFreight(),
                 product.getIva(),
                 product.getDescription(),
+                product.getCreatedAt(),
                 GetOptionalMapper.modelsToDto(product.getOptionals())
         );
     }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -56,7 +57,7 @@ public class Product {
     private Double freight;
 
     @Getter
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -154,5 +155,6 @@ public class Product {
         setBonification(new Porcent(bonification));
         setFreight(freight);
         optionals.removeIf(o -> toDelete.contains(o.getName()));
+        createdAt = LocalDateTime.now();
     }
 }
