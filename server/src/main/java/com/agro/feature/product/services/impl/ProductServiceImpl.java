@@ -51,9 +51,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product edit(Long id, Money money, Double listPrice, IVA iva, Integer bonification, Double freight, List<Long> idOfOptionalsToDelete) {
-        Product product = findBy(id);
-        product.edit(money, listPrice, iva, bonification, freight, optionalDao.findByIdInAndProductId(idOfOptionalsToDelete, id));
+    public Product edit(Product product, Money money, Double listPrice, IVA iva, Integer bonification, Double freight, List<com.agro.feature.product.domain.Optional> optionalsToAdd, List<Long> idOfOptionalsToDelete) {
+        List<String> optionalsToDelete = optionalDao.findNameByIdInAndProductId(idOfOptionalsToDelete, product.getId());
+        product.edit(
+                money,
+                listPrice,
+                iva,
+                bonification,
+                freight,
+                optionalsToDelete
+        );
+        optionalDao.saveAll(optionalsToAdd);
         return dao.save(product);
     }
 

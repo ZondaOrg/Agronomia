@@ -16,5 +16,13 @@ public interface ProductService {
 
     Product findById(Long id);
 
-    Product edit(Long id, Money money, Double v, IVA iva, Integer bonification, Double freight, List<Long> idOfOptionalsToDelete);
+    Product edit(
+            Product product,
+            Money money,
+            Double listPrice,
+            IVA iva,
+            Integer bonification,
+            Double freight,
+            List<com.agro.feature.product.domain.Optional> optionalsToAdd,
+            List<Long> OptionalsToDelete);
 }
