@@ -22,6 +22,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -205,6 +207,36 @@ class ProductServiceImplTest {
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
         Product pruductFound = service.findById(addedProduct.getId());
         assertTrue(pruductFound.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+    }
+
+    @Test
+    void testSeEditaLosCamposDeUnProducto() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Long>());
+        assertEquals(Money.USD, editedProduct.getMoney());
+        assertEquals(1025007d, editedProduct.getListPrice());
+        assertEquals(IVA.REDUCIDA, editedProduct.getIva());
+        assertEquals(50, editedProduct.getBonification());
+        assertEquals(8D, editedProduct.getFreight());
+    }
+
+    @Test
+    void testSeAgregaOpcionalesAlEditarUnProducto() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Long>());
+        assertTrue(editedProduct.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+    }
+
+    @Test
+    void testSeEliminanOpcionalesAlEditarUnProducto() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        List<Long> toDelete = new ArrayList<Long>();
+        toDelete.add(addedProduct.getOptionals().getFirst().getId());
+        Product editedProduct = service.edit(addedProduct.getId(), Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toDelete);
+        assertTrue(editedProduct.getOptionals().isEmpty());
     }
 
     @AfterEach
