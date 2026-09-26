@@ -35,4 +35,9 @@ public class Optional {
         this.price = price;
         this.money = product.getMoney();
     }
+
+    public void remove() {
+        this.product.deleteOptional(this);
+        this.product = null;
+    }
 }
