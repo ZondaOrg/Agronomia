@@ -1,9 +1,9 @@
-package com.agro.feature.product.dtos.getComplete;
+package com.agro.feature.product.dtos.table;
 
 import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.getComplete.response.DetailsOfProductDTO;
-import com.agro.feature.product.dtos.getComplete.response.OptionalResponseDTO;
+import com.agro.feature.product.dtos.table.response.DetailsOfProductDTO;
+import com.agro.feature.product.dtos.OptionalResponseDTO;
 
 import java.util.List;
 
