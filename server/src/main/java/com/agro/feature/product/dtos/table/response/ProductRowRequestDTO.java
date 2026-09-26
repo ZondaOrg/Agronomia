@@ -1,4 +1,4 @@
-package com.agro.feature.product.dtos.getComplete.response;
+package com.agro.feature.product.dtos.table.response;
 
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;

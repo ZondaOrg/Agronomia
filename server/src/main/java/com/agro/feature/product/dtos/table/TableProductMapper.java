@@ -1,7 +1,7 @@
-package com.agro.feature.product.dtos.getComplete;
+package com.agro.feature.product.dtos.table;
 
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.getComplete.response.ProductRowRequestDTO;
+import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import com.agro.shared.dtos.table.TableResponseDTO;
 import org.springframework.data.domain.Page;

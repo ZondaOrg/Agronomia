@@ -1,7 +1,8 @@
-package com.agro.feature.product.dtos.getComplete;
+package com.agro.feature.product.dtos.table;
 
 import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.dtos.getComplete.response.ProductRowRequestDTO;
+import com.agro.feature.product.dtos.get.GetOptionalMapper;
+import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 
 public class GetterProductMapper {
 
