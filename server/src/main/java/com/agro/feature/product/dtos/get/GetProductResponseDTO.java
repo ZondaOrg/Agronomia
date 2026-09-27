@@ -3,9 +3,9 @@ package com.agro.feature.product.dtos.get;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.dtos.OptionalResponseDTO;
+import com.agro.shared.dtos.table.TableResponseDTO;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record GetProductResponseDTO(
         Long id,
@@ -18,6 +18,6 @@ public record GetProductResponseDTO(
         IVA iva,
         String description,
         LocalDateTime updateAt,
-        List<OptionalResponseDTO> optionals
+        TableResponseDTO<OptionalResponseDTO> optionals
 ) {
 }
