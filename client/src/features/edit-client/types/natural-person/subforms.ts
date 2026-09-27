@@ -4,9 +4,9 @@ import type { SubFormData } from "@/shared/components/forms/types/sub-form"
 import { formatCuit } from "@/shared/domain/cuit-cuil/format"
 import { provinces } from "@/shared/domain/locate/locate"
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options"
-import { withInitialValues } from "../../pages/types/generate-initial-values"
 import { EDIT_NATURAL_PERSON } from "@/features/edit-client/adapter/api-contract"
 import type { NaturalPerson } from "../../domain/natural-person"
+import { withInitialValues } from "@/shared/components/forms/types/sub-form-with-values"
 
 const naturalPersonsubForms = createSubForms([
     {
