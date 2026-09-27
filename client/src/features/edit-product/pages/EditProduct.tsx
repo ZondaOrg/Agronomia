@@ -1,25 +1,28 @@
 import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
+import type { Product } from "../domain/product";
+import useEdit from "../hooks/use-edit";
+import useGetById from "../hooks/use-get-by-id";
+import { productForm } from "../types/multiform";
 
 export const EditProduct = () => {
+    const {notify, action, isCancel, edit, onRefresh, handleCancelNotify } = useEdit();
+    const  { product } = useGetById();
+
     const handleSubmit = (
         formData: unknown[],
         deletedIdsBySection?: (number[] | undefined)[],
     ) => {
-        const [fieldsData, newPayments] = formData as [
+        const [fieldsData, newProducts] = formData as [
             { nameList: string },
-            Payment[],
+            Product,
         ];
 
-        const deletePayments = deletedIdsBySection?.[1] ?? [];
+        const deleteProducts = deletedIdsBySection?.[1] ?? [];
 
-        editProduct({
-            vigentId,
-            nameList: fieldsData.nameList,
-            deletePayments,
-            newPayments,
-        });
+        edit(newProducts, deleteProducts);
     };
+
 
     return (
         <NotifyHandler
@@ -31,7 +34,7 @@ export const EditProduct = () => {
             onCancel={handleCancelNotify}
         >
             <MultiForm
-                sections={sections}
+                sections={productForm(product!)}
                 submitLabel="Guardar cambios"
                 onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
