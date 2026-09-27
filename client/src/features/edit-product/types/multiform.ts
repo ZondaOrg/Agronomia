@@ -10,8 +10,6 @@ export const productForm = (
     product: Product,
 ) => [
     composeSection({
-        title: "Datos del listado",
-        subtitle: "Modificá la referencia de vigencia actual.",
         subForms: productSubForms,
         schema: productSchema,
         initialValues: {...product}
