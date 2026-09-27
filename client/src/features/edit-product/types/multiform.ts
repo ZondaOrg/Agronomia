@@ -5,9 +5,12 @@ import productSubForms from "./product/sub-forms";
 import productSchema from "./product/schema";
 import { optionalInputs } from "./optionals/inputs";
 import optionalSchema from "./optionals/schema";
+import type { Table } from "@/shared/types/table/Table";
 
 export const productForm = (
-    product: Product,
+    product: Product, 
+    handlePageChange: (newPage: number) => void,
+    optionals?: Table<Optional>, 
 ) => [
     composeSection({
         subForms: productSubForms,
@@ -20,7 +23,7 @@ export const productForm = (
         schema: optionalSchema,
         nameElements: "opcionales",
         addLabel: "+ Añadir opcional",
-        initialValues: product.optionals,
-        //onPageChange: onPageChange,
+        initialValues: optionals ?? product.optionals,
+        onPageChange: handlePageChange,
     }),
 ];

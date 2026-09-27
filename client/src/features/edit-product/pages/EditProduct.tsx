@@ -5,10 +5,12 @@ import useGetById from "../hooks/use-get-by-id";
 import { productForm } from "../types/multiform";
 import type { EditProductSchema } from "../types/product/schema";
 import type { OptionalSchema } from "../types/optionals/schema";
+import useOptionalPage from "../hooks/use-optional-pages";
 
 export const EditProduct = () => {
-    const {notify, action, isCancel, edit, onRefresh, handleCancelNotify } = useEdit();
-    const  { product } = useGetById();
+    const { notify, action, isCancel, edit, onRefresh, handleCancelNotify } = useEdit();
+    const { product } = useGetById();
+    const { onChangeOptionalPage, optionals } = useOptionalPage();
 
     const handleSubmit = (
         formData: unknown[],
@@ -35,7 +37,7 @@ export const EditProduct = () => {
             onCancel={handleCancelNotify}
         >
             {product && <MultiForm
-                sections={productForm(product)}
+                sections={productForm(product, onChangeOptionalPage, optionals)}
                 submitLabel="Guardar cambios"
                 onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
