@@ -2,8 +2,11 @@ import { ivaPorcents, type Iva } from "@/shared/domain/iva/iva";
 import type { ProductResponse } from "./product";
 
 export function responseAdapter(product: ProductResponse) {
-    const {iva, ...rest} = product;
+    const {iva, listPrice, bonification, freight, ...rest} = product;
     return {
+        listPrice: listPrice.toString(),
+        bonification: bonification.toString(),
+        freight: freight.toString(),
         iva: adapterIva(iva),
         ...rest
     }
