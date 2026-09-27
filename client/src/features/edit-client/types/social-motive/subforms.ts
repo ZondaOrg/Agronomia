@@ -5,7 +5,7 @@ import { createSelectOptions } from "@/shared/types/input/input-data/create-sele
 import type { SubFormData } from "@/shared/components/forms/types/sub-form";
 import { EDIT_LEGAL_NAME } from "@/features/edit-client/adapter/api-contract";
 import type { RazonSocial } from "../../domain/razon-social";
-import { withInitialValues } from "../../pages/types/generate-initial-values";
+import { withInitialValues } from "@/shared/components/forms/types/sub-form-with-values";
 
 const socialMotiveSubform = createSubForms([
     {

@@ -23,7 +23,7 @@ const ActionContainer = ({product}: ActionContainerProps) => {
         <div className={styles}>
             <DetailsButton onActive={onActive}/>
             <QuoteButton />
-            <EditButton />
+            <EditButton product={product} />
             {isActive && <DetailsModal product={product} onActive={onActive} />}
         </div>
     )
