@@ -13,6 +13,7 @@ import com.agro.feature.product.dtos.get.GetProductMapper;
 import com.agro.feature.product.dtos.get.GetProductResponseDTO;
 import com.agro.feature.product.dtos.table.TableProductMapper;
 import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
+import com.agro.feature.product.services.OptionalService;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
 import com.agro.shared.dtos.table.TableResponseDTO;
@@ -27,13 +28,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(Api.PRODUCT)
-@Tag(name = "Metodos de pagos", description = "Operaciones relacionadas a la gestión de metodos de pago")
+@Tag(name = "Productos", description = "Operaciones relacionadas a la gestión de productos")
 public class ProductController {
 
     private final ProductService productService;
+    private final OptionalService optionalService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OptionalService optionalService) {
         this.productService = productService;
+        this.optionalService = optionalService;
     }
 
     @PostMapping("/add/{providerId}")
@@ -69,7 +72,7 @@ public class ProductController {
             @RequestBody @Valid EditProductRequestDTO request,
             @PathVariable Long productId
     ){
-        Product addedProduct = productService.findById(productId);
+        Product addedProduct = productService.findByIdWithinOptionals(productId);
         List<Optional> optionals = EditOptionalMapper.dtosToModels(request.optionalsToAdd(), addedProduct);
         Product editedProduct = productService.edit(
                 addedProduct,
@@ -78,6 +81,7 @@ public class ProductController {
                 request.iva(),
                 request.bonification(),
                 request.freight(),
+                request.description(),
                 optionals,
                 request.optionalsToDelete()
         );
@@ -86,12 +90,13 @@ public class ProductController {
     }
 
     @GetMapping("find/{productId}")
-    @Operation(summary = "Buscar un Producto por su id")
+    @Operation(summary = "Buscar un Producto por su id con la primera página de sus opcionales")
     public ResponseEntity<GetProductResponseDTO> get(
             @PathVariable Long productId
     ) {
-        Product product = productService.findById(productId);
-        GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product);
+        Product product = productService.findByIdWithinOptionals(productId);
+        Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 4);
+        GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product, pageOffOptionals);
         return ResponseEntity.ok(productResponseDto);
     }
 }

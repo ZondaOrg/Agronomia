@@ -46,12 +46,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
-        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
+    public Product findByIdWithinOptionals(Long id) {
+        return dao.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
     }
 
     @Override
-    public Product edit(Product product, Money money, Double listPrice, IVA iva, Integer bonification, Double freight, List<com.agro.feature.product.domain.Optional> optionalsToAdd, List<Long> idOfOptionalsToDelete) {
+    public Product edit(Product product, Money money, Double listPrice, IVA iva, Integer bonification, Double freight, String desription, List<com.agro.feature.product.domain.Optional> optionalsToAdd, List<Long> idOfOptionalsToDelete) {
         List<String> optionalsToDelete = optionalDao.findNameByIdInAndProductId(idOfOptionalsToDelete, product.getId());
         product.edit(
                 money,
@@ -59,13 +59,10 @@ public class ProductServiceImpl implements ProductService {
                 iva,
                 bonification,
                 freight,
+                desription,
                 optionalsToDelete
         );
         optionalDao.saveAll(optionalsToAdd);
         return dao.save(product);
-    }
-
-    private Product findBy(Long id) {
-        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
     }
 }

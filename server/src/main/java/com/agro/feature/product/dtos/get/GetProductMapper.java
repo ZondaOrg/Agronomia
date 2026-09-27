@@ -1,9 +1,11 @@
 package com.agro.feature.product.dtos.get;
 
+import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
+import org.springframework.data.domain.Page;
 
 public class GetProductMapper {
-    public static GetProductResponseDTO modelToDto(Product product) {
+    public static GetProductResponseDTO modelToDto(Product product, Page<Optional> pageOffOptionals) {
         return new GetProductResponseDTO(
                 product.getId(),
                 product.getName(),
@@ -15,7 +17,7 @@ public class GetProductMapper {
                 product.getIva(),
                 product.getDescription(),
                 product.getCreatedAt(),
-                GetOptionalMapper.modelsToDto(product.getOptionals())
+                GetOptionalTable.modelsToDto(pageOffOptionals)
         );
     }
 }

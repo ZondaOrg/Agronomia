@@ -1,6 +1,6 @@
 import z from "zod";
 import { ADD_PRODUCT } from "../../adapters/request/api-contract";
-import { moneyKeys } from "../../domain/money";
+import { moneyKeys } from "../../../../shared/domain/money/money";
 import { ivaKeys } from "@/shared/domain/iva/iva";
 
 const productSchema = z.object({

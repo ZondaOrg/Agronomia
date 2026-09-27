@@ -1,25 +1,7 @@
-import { Tabs } from "@/shared/components/tabs/Tabs";
-import AddProduct from "@/features/add-product/pages/AddProduct";
-import { ROLE } from "@/shared/domain/user/role";
-import ListPrice from "@/features/price-list/pages/PriceList";
+import { Outlet } from "react-router";
 
 const ProductPanel = () => {
-    return (
-        <Tabs tabs={
-            [
-                {
-                    nameTab: "Todos los productos",
-                    page: <ListPrice />
-                },
-                {
-                    nameTab: "Añadir Productos",
-                    page: <AddProduct />,
-                    allowedRoles: [ROLE.OWNER]
-                }
-            ]
-        }
-        />
-    )
+    return <Outlet />
 }
 
 export default ProductPanel;

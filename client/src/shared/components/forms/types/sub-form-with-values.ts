@@ -1,4 +1,4 @@
-import type { SubFormData } from "@/shared/components/forms/types/sub-form";
+import type { SubFormData } from "./sub-form";
 
 export function withInitialValues(
     subForms: SubFormData[],

@@ -1,7 +1,7 @@
 import { createSubForms } from "@/shared/components/forms/types/factory";
 import { ADD_PRODUCT } from "../../adapters/request/api-contract";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
-import { moneys } from "../../domain/money";
+import { moneys } from "../../../../shared/domain/money/money";
 import { ivaPorcents } from "@/shared/domain/iva/iva";
 
 const productSubForms = (productTypes: string[]) => createSubForms([

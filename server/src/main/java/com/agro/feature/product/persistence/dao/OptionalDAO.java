@@ -1,6 +1,9 @@
 package com.agro.feature.product.persistence.dao;
 
 import com.agro.feature.product.domain.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +17,11 @@ public interface OptionalDAO extends JpaRepository<Optional, Long> {
     List<String> findNameByIdInAndProductId(
             @Param("ids") List<Long> ids,
             @Param("productId") Long productId);
+
+    @Query(
+            "SELECT o " +
+            "FROM Optional o " +
+            "WHERE o.product.id = :idProduct"
+    )
+    Page<Optional> findByProductId(@Param("idProduct") Long idProduct, Pageable of);
 }
