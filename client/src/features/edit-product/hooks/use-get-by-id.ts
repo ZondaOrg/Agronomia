@@ -10,7 +10,7 @@ const useGetById = () => {
 
     useEffect(() => {
         execute(getProduct)(idProduct!);
-    }, []);
+    }, [execute, idProduct]);
 
     return { product: data }
 }
