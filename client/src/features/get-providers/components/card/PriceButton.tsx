@@ -8,17 +8,23 @@ import { PRODUCTS } from "@/core/routes/urls/products";
 
 type PricesButtonProps = {
     hasPrices: boolean;
-    idProvider: number 
-    nameProvider: string
+    idProvider: number;
+    nameProvider: string;
 };
 
-export const PricesButton = ({ hasPrices, idProvider, nameProvider }: PricesButtonProps) => {
-    const navegate = useNavigate()
+export const PricesButton = ({
+    hasPrices,
+    idProvider,
+    nameProvider,
+}: PricesButtonProps) => {
+    const navegate = useNavigate();
 
     if (hasPrices) {
         return (
             <Button
-                onClick={() => navegate(PRODUCTS.PATH(idProvider, nameProvider))}
+                onClick={() =>
+                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                }
                 color={token("colors.primaryColor")}
                 hoverColor={token("colors.primaryColorHover")}
                 textColor="white"
@@ -32,6 +38,9 @@ export const PricesButton = ({ hasPrices, idProvider, nameProvider }: PricesButt
     return (
         <RoleGuard allowedRoles={[ROLE.OWNER]}>
             <Button
+                onClick={() =>
+                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                }
                 color="transparent"
                 hoverColor={token("colors.primaryColor")}
                 borderColor={token("colors.primaryColor")}
