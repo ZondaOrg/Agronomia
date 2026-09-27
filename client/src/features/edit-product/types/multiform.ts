@@ -14,6 +14,7 @@ export const productForm = (
         subtitle: "Modificá la referencia de vigencia actual.",
         subForms: productSubForms,
         schema: productSchema,
+        initialValues: {...product}
     }),
     tableSection<Optional, typeof optionalSchema>({
         title: "Opcionales",

@@ -12,8 +12,8 @@ const productSubForms = createSubForms([
         name: "Identificación",
         fields: [
             [
-                { motive: "Producto", name: "name" },
-                { motive: "Tipo de producto", name: "type" },
+                { motive: "Producto", name: "name", disable: true },
+                { motive: "Tipo de producto", name: "type", disable: true },
             ],
             [
                 { motive: "Descripción", type: "counter-chars", limit: 500, name: EDIT_PRODUCT.description, isRequired: false },
@@ -42,13 +42,13 @@ export function generateProductSubForms(
     return withInitialValues(productSubForms, {
         name: product.name,
         type: product.type,
-        listPrice: product.listPrice.toString(),
-        bonification: product.bonification.toString(),
-        money: product.money.ARS === "ARS" ? "ARS" : "USD",  // hacerlo en un adapter response
-        freight: product.freight.toString(),
-        iva: product.iva,  // hacerlo en un adapter response
+        listPrice: product.listPrice,
+        bonification: product.bonification,
+        money: product.money,
+        freight: product.freight,
+        iva: product.iva,
         description: product.description ?? "",
-        updateAt: product.updateAt.toString(),
+        updateAt: product.updateAt,
     });
 }
 
