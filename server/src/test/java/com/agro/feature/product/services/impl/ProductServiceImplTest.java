@@ -7,6 +7,7 @@ import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
+import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
@@ -46,6 +47,9 @@ class ProductServiceImplTest {
     private ResetService resetService;
 
     @Autowired
+    private ProviderDataService providerService;
+
+    @Autowired
     private ProviderService addedProviderService;
 
     private Product product;
@@ -77,7 +81,11 @@ class ProductServiceImplTest {
     @Test
     void testSeAgregaUnProducto() {
         Product addedProduct = service.add(product, "type", provider.getId());
+
+        Provider recovered = providerService.getProviderById(provider.getId());
+
         assertNotNull(addedProduct.getId());
+        assertTrue(recovered.getPriceList().contains(addedProduct.getId()));
     }
 
     @Test
