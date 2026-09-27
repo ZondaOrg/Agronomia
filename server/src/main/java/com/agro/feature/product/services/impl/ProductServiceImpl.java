@@ -46,8 +46,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
-        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
+    public Product findByIdWithinOptionals(Long id) {
+        return dao.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
     }
 
     @Override
@@ -63,9 +63,5 @@ public class ProductServiceImpl implements ProductService {
         );
         optionalDao.saveAll(optionalsToAdd);
         return dao.save(product);
-    }
-
-    private Product findBy(Long id) {
-        return dao.findByIdWithOptionals(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
     }
 }

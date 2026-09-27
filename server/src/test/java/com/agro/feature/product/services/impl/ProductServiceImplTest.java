@@ -197,7 +197,7 @@ class ProductServiceImplTest {
     @Test
     void testSeRecuperaUnProductoPorSuId() {
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product pruductFound = service.findById(addedProduct.getId());
+        Product pruductFound = service.findByIdWithinOptionals(addedProduct.getId());
         assertEquals(addedProduct.getId(), pruductFound.getId());
     }
 
@@ -205,7 +205,7 @@ class ProductServiceImplTest {
     void testSeRecuperaUnProductoPorSuIdConSusOpcionales() {
         Optional optional = new Optional(product, "optional 1", 5D);
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product pruductFound = service.findById(addedProduct.getId());
+        Product pruductFound = service.findByIdWithinOptionals(addedProduct.getId());
         assertTrue(pruductFound.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
