@@ -1,11 +1,13 @@
 package com.agro.feature.product.domain;
 
-import com.agro.feature.product.domain.exceptions.AssignedProductTypeException;
 import com.agro.feature.product.domain.exceptions.ListPriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.shared.valueObjects.porcent.PorcentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -171,5 +173,33 @@ class ProductTest {
         Optional optional = new Optional(product, "opcional 1", 100D);
         product.addOptional(optional);
         assertEquals(optional.getMoney(), product.getMoney());
+    }
+
+    @Test
+    void testUnProductoEditaSusValoresExceptoSuNombreYSuTipo() {
+        Product product = new Product(
+                "ProductSS",
+                "product nsnns",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                "a",
+                20
+        );
+        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Optional>());
+        assertEquals(Money.USD, product.getMoney());
+        assertEquals(1025007d, product.getListPrice());
+        assertEquals(IVA.REDUCIDA, product.getIva());
+        assertEquals(50, product.getBonification());
+        assertEquals(8D, product.getFreight());
+    }
+
+    @Test
+    void testSeAgreganNuevosOpcionalesAlEditarUnProducto() {
+        List<Optional> toDelete = new ArrayList<>();
+        toDelete.add(new Optional(product, "optional 1", 5D));
+        toDelete.add(new Optional(product, "optional 2", 3D));
+        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toDelete);
+        assertTrue(product.getOptionals().isEmpty());
     }
 }

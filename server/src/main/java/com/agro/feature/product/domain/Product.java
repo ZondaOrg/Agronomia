@@ -8,10 +8,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "products")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter(AccessLevel.PRIVATE)
 public class Product {
 
     @Getter
@@ -139,5 +142,24 @@ public class Product {
 
     public List<Optional> getOptionals() {
         return optionals.stream().toList();
+    }
+
+    public void edit(
+            Money money,
+            Double listPrice,
+            IVA iva,
+            Integer bonification,
+            Double freight,
+            List<Optional> toDelete) {
+        setMoney(money);
+        setListPrice(listPrice);
+        setIva(iva);
+        setBonification(new Porcent(bonification));
+        setFreight(freight);
+        toDelete.forEach(Optional::remove);
+    }
+
+    public void deleteOptional(Optional optional) {
+        optionals.remove(optional);
     }
 }
