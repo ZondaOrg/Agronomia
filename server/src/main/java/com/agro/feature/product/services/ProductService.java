@@ -21,6 +21,7 @@ public interface ProductService {
             IVA iva,
             Integer bonification,
             Double freight,
+            String description,
             List<com.agro.feature.product.domain.Optional> optionalsToAdd,
             List<Long> OptionalsToDelete);
 }

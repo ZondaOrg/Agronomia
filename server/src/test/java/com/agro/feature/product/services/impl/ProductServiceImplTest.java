@@ -212,12 +212,13 @@ class ProductServiceImplTest {
     @Test
     void testSeEditaLosCamposDeUnProducto() {
         Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), new ArrayList<Long>());
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "nueva descripción", new ArrayList<>(), new ArrayList<Long>());
         assertEquals(Money.USD, editedProduct.getMoney());
         assertEquals(1025007d, editedProduct.getListPrice());
         assertEquals(IVA.REDUCIDA, editedProduct.getIva());
         assertEquals(50, editedProduct.getBonification());
         assertEquals(8D, editedProduct.getFreight());
+        assertEquals("nueva descripción", editedProduct.getDescription());
     }
 
     @Test
@@ -228,7 +229,7 @@ class ProductServiceImplTest {
         List<Optional> toAdd = new ArrayList<Optional>();
         toAdd.add(optional);
 
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toAdd, new ArrayList<Long>());
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", toAdd, new ArrayList<Long>());
         assertTrue(editedProduct.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
@@ -240,7 +241,7 @@ class ProductServiceImplTest {
         List<Long> toDelete = new ArrayList<Long>();
         toDelete.add(optional.getId());
 
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), toDelete);
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", new ArrayList<>(), toDelete);
         assertTrue(editedProduct.getOptionals().isEmpty());
     }
 

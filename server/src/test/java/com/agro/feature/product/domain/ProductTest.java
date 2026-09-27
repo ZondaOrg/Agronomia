@@ -186,12 +186,13 @@ class ProductTest {
                 "a",
                 20
         );
-        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<String>());
+        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "nueva descripción", new ArrayList<String>());
         assertEquals(Money.USD, product.getMoney());
         assertEquals(1025007d, product.getListPrice());
         assertEquals(IVA.REDUCIDA, product.getIva());
         assertEquals(50, product.getBonification());
         assertEquals(8D, product.getFreight());
+        assertEquals("nueva descripción", product.getDescription());
     }
 
     @Test
@@ -199,7 +200,7 @@ class ProductTest {
         List<String> toDelete = new ArrayList<>();
         toDelete.add("optional 1");
         toDelete.add("optional 2");
-        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toDelete);
+        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", toDelete);
         assertTrue(product.getOptionals().isEmpty());
     }
 }

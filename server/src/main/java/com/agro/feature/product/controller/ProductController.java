@@ -81,6 +81,7 @@ public class ProductController {
                 request.iva(),
                 request.bonification(),
                 request.freight(),
+                request.description(),
                 optionals,
                 request.optionalsToDelete()
         );
@@ -89,7 +90,7 @@ public class ProductController {
     }
 
     @GetMapping("find/{productId}")
-    @Operation(summary = "Buscar un Producto por su id")
+    @Operation(summary = "Buscar un Producto por su id con la primera página de sus opcionales")
     public ResponseEntity<GetProductResponseDTO> get(
             @PathVariable Long productId
     ) {

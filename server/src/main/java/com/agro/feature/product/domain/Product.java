@@ -148,12 +148,14 @@ public class Product {
             IVA iva,
             Integer bonification,
             Double freight,
+            String description,
             List<String> toDelete) {
         setMoney(money);
         setListPrice(listPrice);
         setIva(iva);
         setBonification(new Porcent(bonification));
         setFreight(freight);
+        setDescription(description);
         optionals.removeIf(o -> toDelete.contains(o.getName()));
         createdAt = LocalDateTime.now();
     }
