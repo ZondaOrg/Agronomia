@@ -1,17 +1,15 @@
-import type { IvaPorcents } from "@/shared/domain/iva/iva"
-import type { Money } from "@/shared/domain/money/money"
 import type { Optional } from "./optional"
 
 export interface Product {
     id: number 
     name: string
     type: string 
-    money: Money
-    listPrice: number 
-    bonification: number 
-    freight: number
-    iva: IvaPorcents
+    money: "USD" | "ARS"
+    listPrice: string 
+    bonification: string 
+    freight: string
+    iva: "21%" | "10,5%"
     description?: string
-    updateAt: Date 
+    updateAt: string 
     optionals: Optional[]
 }

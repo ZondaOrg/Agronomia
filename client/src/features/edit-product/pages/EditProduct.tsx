@@ -34,12 +34,12 @@ export const EditProduct = () => {
             refresh={onRefresh}
             onCancel={handleCancelNotify}
         >
-            <MultiForm
-                sections={productForm(product!)}
+            {product && <MultiForm
+                sections={productForm(product)}
                 submitLabel="Guardar cambios"
                 onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
-            />
+            />}
         </NotifyHandler>
     );
 };
