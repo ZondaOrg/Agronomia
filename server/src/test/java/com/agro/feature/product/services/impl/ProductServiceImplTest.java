@@ -3,6 +3,7 @@ package com.agro.feature.product.services.impl;
 import com.agro.core.ContainerPostgresql;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
+import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
@@ -21,6 +22,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -189,6 +192,56 @@ class ProductServiceImplTest {
         assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Tractorcito 1")));
         assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "tractorcito 2")));
         assertFalse(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Casechadora 3")));
+    }
+
+    @Test
+    void testSeRecuperaUnProductoPorSuId() {
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product pruductFound = service.findById(addedProduct.getId());
+        assertEquals(addedProduct.getId(), pruductFound.getId());
+    }
+
+    @Test
+    void testSeRecuperaUnProductoPorSuIdConSusOpcionales() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product pruductFound = service.findById(addedProduct.getId());
+        assertTrue(pruductFound.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+    }
+
+    @Test
+    void testSeEditaLosCamposDeUnProducto() {
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), new ArrayList<Long>());
+        assertEquals(Money.USD, editedProduct.getMoney());
+        assertEquals(1025007d, editedProduct.getListPrice());
+        assertEquals(IVA.REDUCIDA, editedProduct.getIva());
+        assertEquals(50, editedProduct.getBonification());
+        assertEquals(8D, editedProduct.getFreight());
+    }
+
+    @Test
+    void testSeAgregaOpcionalesAlEditarUnProducto() {
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+
+        Optional optional = new Optional(addedProduct, "optional 1", 5D);
+        List<Optional> toAdd = new ArrayList<Optional>();
+        toAdd.add(optional);
+
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toAdd, new ArrayList<Long>());
+        assertTrue(editedProduct.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+    }
+
+    @Test
+    void testSeEliminanOpcionalesAlEditarUnProducto() {
+        Optional optional = new Optional(product, "optional 1", 5D);
+        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+
+        List<Long> toDelete = new ArrayList<Long>();
+        toDelete.add(optional.getId());
+
+        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<>(), toDelete);
+        assertTrue(editedProduct.getOptionals().isEmpty());
     }
 
     @AfterEach

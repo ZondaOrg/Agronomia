@@ -186,7 +186,7 @@ class ProductTest {
                 "a",
                 20
         );
-        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<Optional>());
+        product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, new ArrayList<String>());
         assertEquals(Money.USD, product.getMoney());
         assertEquals(1025007d, product.getListPrice());
         assertEquals(IVA.REDUCIDA, product.getIva());
@@ -196,9 +196,9 @@ class ProductTest {
 
     @Test
     void testSeAgreganNuevosOpcionalesAlEditarUnProducto() {
-        List<Optional> toDelete = new ArrayList<>();
-        toDelete.add(new Optional(product, "optional 1", 5D));
-        toDelete.add(new Optional(product, "optional 2", 3D));
+        List<String> toDelete = new ArrayList<>();
+        toDelete.add("optional 1");
+        toDelete.add("optional 2");
         product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, toDelete);
         assertTrue(product.getOptionals().isEmpty());
     }

@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name = "optionals")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,10 +37,5 @@ public class Optional {
         this.name = name;
         this.price = price;
         this.money = product.getMoney();
-    }
-
-    public void remove() {
-        this.product.deleteOptional(this);
-        this.product = null;
     }
 }
