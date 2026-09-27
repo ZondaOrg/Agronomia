@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(Api.PRODUCT)
-@Tag(name = "Metodos de pagos", description = "Operaciones relacionadas a la gestión de metodos de pago")
+@Tag(name = "Productos", description = "Operaciones relacionadas a la gestión de productos")
 public class ProductController {
 
     private final ProductService productService;
@@ -94,7 +94,7 @@ public class ProductController {
             @PathVariable Long productId
     ) {
         Product product = productService.findByIdWithinOptionals(productId);
-        Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 5);
+        Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 4);
         GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product, pageOffOptionals);
         return ResponseEntity.ok(productResponseDto);
     }
