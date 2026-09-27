@@ -19,6 +19,6 @@ const productSchema = z.object({
 });
 
 
-export type AddProductSchema = z.infer<typeof productSchema>;
+export type EditProductSchema = z.infer<typeof productSchema>;
 
 export default productSchema;

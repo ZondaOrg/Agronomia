@@ -1,5 +1,5 @@
 import type { InputData } from "@/shared/types/input/input";
-import { OPTIONAL } from "../../adapters/request/api-contract";
+import { OPTIONAL } from "../../adapters/api-contract";
 
 export const optionalInputs: Record<string, InputData> = {
     [OPTIONAL.name]: {

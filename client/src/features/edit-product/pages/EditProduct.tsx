@@ -1,9 +1,10 @@
 import MultiForm from "@/shared/components/forms/multi-form/MultiForm";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
-import type { Product } from "../domain/product";
 import useEdit from "../hooks/use-edit";
 import useGetById from "../hooks/use-get-by-id";
 import { productForm } from "../types/multiform";
+import type { EditProductSchema } from "../types/product/schema";
+import type { OptionalSchema } from "../types/optionals/schema";
 
 export const EditProduct = () => {
     const {notify, action, isCancel, edit, onRefresh, handleCancelNotify } = useEdit();
@@ -13,14 +14,14 @@ export const EditProduct = () => {
         formData: unknown[],
         deletedIdsBySection?: (number[] | undefined)[],
     ) => {
-        const [fieldsData, newProducts] = formData as [
-            { nameList: string },
-            Product,
+        const [fieldsData, optionalsToAdd] = formData as [
+            EditProductSchema,
+            OptionalSchema[],
         ];
 
         const deleteProducts = deletedIdsBySection?.[1] ?? [];
 
-        edit(newProducts, deleteProducts);
+        edit(fieldsData, optionalsToAdd, deleteProducts);
     };
 
 
