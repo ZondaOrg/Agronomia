@@ -11,9 +11,10 @@ import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Client } from "@/views/client/Client";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Payments } from "@/views/payments/Payments";
-import { Outlet } from "react-router";
 import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
+import EditProduct from "@/features/edit-product/pages/EditProduct";
+import ProductTabs from "@/views/provider/pages/product/ProductTabs";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -62,7 +63,7 @@ export const AdminRoutes: RouteData[] = [
                     },
                     {
                         path: ADMIN_ROUTES.PRODUCTS.BASE,
-                        element: <Outlet />,
+                        element: <ProductPanel />,
                         handle: {
                             breadcrumb: (params) =>
                                 params.providerName ?? "Proveedor",
@@ -70,9 +71,12 @@ export const AdminRoutes: RouteData[] = [
                         children: [
                             {
                                 index: true,
-                                element: <ProductPanel />,
-                                handle: { breadcrumb: "Lista de precios" },
+                                element: <ProductTabs />,
                             },
+                            {
+                                path: `${ADMIN_ROUTES.PRODUCTS.EDIT}`,
+                                element: <EditProduct />
+                            }
                         ],
                     },
                 ],
