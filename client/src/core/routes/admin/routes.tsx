@@ -3,7 +3,6 @@ import { ADMIN_ROUTES } from "./paths";
 import AdminLayout from "../../auth/layout/roles/admin/AdminLayout";
 import Configuration from "@/features/add-user/pages/configuration/Configuration";
 import ClientPanel from "@/views/client/pages/ClientPanel";
-import AddClient from "@/features/add-client/pages/AddClient";
 import { ProviderPanel } from "@/views/provider/ProviderPanel";
 import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
 import AddProvider from "@/features/add-provider/pages/AddProvider";
@@ -17,6 +16,9 @@ import EditProduct from "@/features/edit-product/pages/EditProduct";
 import ProductTabs from "@/views/provider/pages/product/ProductTabs";
 import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
 import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentPaymentPage"; // ajustá el path real
+import ListPrice from "@/features/price-list/pages/PriceList";
+import AddProduct from "@/features/add-product/pages/AddProduct";
+import AddClient from "@/features/add-client/pages/AddClient";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -57,6 +59,7 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
+                                // Layout route sin path: tabs + <Outlet />
                                 element: <VigentPaymentsPanel />,
                                 children: [
                                     {
@@ -69,9 +72,7 @@ export const AdminRoutes: RouteData[] = [
                                     {
                                         path: ADMIN_ROUTES.PAYMENT.UPDATE,
                                         element: <VigentPaymentPage />,
-                                        handle: {
-                                            breadcrumb: "Formas de Pago",
-                                        },
+                                        handle: { breadcrumb: "Actualizar" },
                                     },
                                 ],
                             },
@@ -86,12 +87,28 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
-                                index: true,
                                 element: <ProductTabs />,
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <ListPrice />,
+                                        handle: {
+                                            breadcrumb: "Lista de precios",
+                                        },
+                                    },
+                                    {
+                                        path: ADMIN_ROUTES.PRODUCTS.ADD,
+                                        element: <AddProduct />,
+                                        handle: {
+                                            breadcrumb: "Lista de precios",
+                                        },
+                                    },
+                                ],
                             },
                             {
-                                path: `${ADMIN_ROUTES.PRODUCTS.EDIT}`,
+                                path: ADMIN_ROUTES.PRODUCTS.EDIT,
                                 element: <EditProduct />,
+                                handle: { breadcrumb: "Lista de precios" },
                             },
                         ],
                     },

@@ -4,6 +4,6 @@ export const PAYMENT = {
     PANEL_PATH: (providerId: number, providerName: string) =>
         `formas-de-pago/${providerId}/${encodeURIComponent(providerName)}`,
     UPDATE: "actualizar",
-    UPDATE_PATH: (providerId: number) =>
-        `formas-de-pago/${providerId}/actualizar`,
+    UPDATE_PATH: (providerId: number, providerName: string) =>
+        `formas-de-pago/${providerId}/${encodeURIComponent(providerName)}/actualizar`,
 };
