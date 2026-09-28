@@ -1,16 +1,12 @@
-import type { Tab } from "@/shared/components/tabs/types/Tabs";
+import type { RouteTab } from "@/shared/components/tabs/types/Tabs";
 import { ROLE } from "@/shared/domain/user/role";
-import { VigentPaymentPage } from "../../vigent-payments/VigentPaymentPage";
-import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
+import { PAYMENT } from "@/core/routes/urls/payments";
 
-export const tabs: Tab[] = [
+export const tabs: RouteTab[] = [
+    { nameTab: "Ver", to: ".", end: true },
     {
-        page: <ListVigentPayments />,
-        nameTab: "Ver",
-    },
-    {
-        page: <VigentPaymentPage />,
-        allowedRoles: [ROLE.OWNER],
         nameTab: "Actualizar",
+        to: PAYMENT.UPDATE,
+        allowedRoles: [ROLE.OWNER],
     },
 ];

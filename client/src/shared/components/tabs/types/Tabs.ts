@@ -5,3 +5,10 @@ export type Tab = {
     allowedRoles?: Role[];
     nameTab: string;
 };
+
+export type RouteTab = {
+    nameTab: string;
+    to: string;
+    end?: boolean;
+    allowedRoles?: Role[];
+};
