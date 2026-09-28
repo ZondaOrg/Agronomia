@@ -67,9 +67,11 @@ export const AdminRoutes: RouteData[] = [
                                         },
                                     },
                                     {
-                                        path: "actualizar",
+                                        path: ADMIN_ROUTES.PAYMENT.UPDATE,
                                         element: <VigentPaymentPage />,
-                                        handle: { breadcrumb: "Actualizar" },
+                                        handle: {
+                                            breadcrumb: "Formas de Pago",
+                                        },
                                     },
                                 ],
                             },
