@@ -1,11 +1,12 @@
 package com.agro.feature.client.domain;
 
 import com.agro.shared.entities.province.Province;
-import com.agro.shared.valueObjects.cuit.CuitException;
+import com.agro.shared.valueObjects.cuit.CuitFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ClientTest {
 
@@ -35,7 +36,7 @@ class ClientTest {
 
     @Test
     void testSiSeIngresaUnCuitSinNumero_LanzaExcepcion() {
-        assertThrows(CuitException.class, () -> new NaturalPerson(
+        assertThrows(CuitFormatException.class, () -> new NaturalPerson(
                 "Nicolás",
                 "Bossi",
                 "a1-11111111-1",
@@ -49,7 +50,7 @@ class ClientTest {
 
     @Test
     void testSiSeIngresaUnCuitGuionesMedios_LanzaExcepcion() {
-        assertThrows(CuitException.class, () -> new NaturalPerson(
+        assertThrows(CuitFormatException.class, () -> new NaturalPerson(
                 "Nicolás",
                 "Bossi",
                 "11111111111",
@@ -63,7 +64,7 @@ class ClientTest {
 
     @Test
     void testSiElCuitDifiereDeOnceNumeros_LanzaExcepcion() {
-        assertThrows(CuitException.class, () -> new NaturalPerson(
+        assertThrows(CuitFormatException.class, () -> new NaturalPerson(
                 "Nicolás",
                 "Bossi",
                 "1111111111133",

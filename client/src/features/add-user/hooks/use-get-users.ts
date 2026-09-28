@@ -1,25 +1,30 @@
+import { usePaginatedFetch } from "@/shared/hooks/use-paginator/use-paginator";
 import { useCallback } from "react";
-import type { TablePaginator } from "@/shared/types/table/Table";
-import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 import type { User } from "../types/User";
 import getUsersService from "../services/get-users.service";
+import type { Table } from "@/shared/types/table/Table";
 
-export const UseGetUsers = () => {
-    const { data, execute, isLoading, error } =
-        useFetch<TablePaginator<User>>();
+export const useGetUsers = () => {
+    const adapterService = useCallback(
+        (page: number, size: number) => getUsersService(page, size),
+        [],
+    );
+
+    const { data, error, isLoading, fetchPage, handlePageChange } =
+        usePaginatedFetch<Table<User>, []>(adapterService, 5);
 
     const getUsers = useCallback(
-        (page: number = 0, size: number = 5) =>
-            execute(getUsersService)(page, size),
-        [execute],
+        (page = 0, size = 5) => fetchPage(page, size),
+        [fetchPage],
     );
 
     return {
         users: data,
+        error,
         usersLoading: isLoading,
         getUsers,
-        error,
+        onPageChange: handlePageChange,
     };
 };
 
-export default UseGetUsers;
+export default useGetUsers;

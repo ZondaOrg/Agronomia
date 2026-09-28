@@ -20,6 +20,13 @@ public final class Api {
 
     public static final String PROVIDER = MAIN_NAME + V + "/provider";
 
+    public static final String PAYMENT = MAIN_NAME + V + "/payment";
+
     public static final String CLIENT = MAIN_NAME + V + "/client";
 
+    public static final String PRODUCT = MAIN_NAME + V + "/product";
+
+    public static final String PRODUCT_TYPE = MAIN_NAME + V + "/product-type";
+
+    public static final String OPTIONAL = MAIN_NAME + V + "/optional"; ;
 }

@@ -2,12 +2,12 @@ package com.agro.feature.user.controller;
 
 import com.agro.core.api.Api;
 import com.agro.feature.user.domain.User;
-import com.agro.feature.user.dtos.UserMapper;
 import com.agro.feature.user.dtos.request.UserRequest;
 import com.agro.feature.user.dtos.response.UserResponseSimple;
 import com.agro.feature.user.dtos.response.UserWithCompanyLogo;
 import com.agro.feature.user.orchestrator.RegisterOrchestrator;
 import com.agro.feature.user.services.UserService;
+import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import com.agro.shared.dtos.table.TableResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -87,12 +87,12 @@ public class UserControllerREST {
                 Page<User> users = userService.findAll(page, size, adminId);
                 Page<UserResponseSimple> response = users.map(UserResponseSimple::fromModel);
 
-                List<TableResponseDTO.ColumnHeader> columns = List.of(
-                        new TableResponseDTO.ColumnHeader("id", "ID"),
-                        new TableResponseDTO.ColumnHeader("name", "Nombre"),
-                        new TableResponseDTO.ColumnHeader("email", "Email"),
-                        new TableResponseDTO.ColumnHeader("role", "Rol"),
-                        new TableResponseDTO.ColumnHeader("branchDirection", "Sucursales")
+                List<ColumnHeaderDTO> columns = List.of(
+                        new ColumnHeaderDTO("id", "ID"),
+                        new ColumnHeaderDTO("name", "Nombre"),
+                        new ColumnHeaderDTO("email", "Email"),
+                        new ColumnHeaderDTO("role", "Rol"),
+                        new ColumnHeaderDTO("branchDirection", "Sucursales")
                 );
 
                 return ResponseEntity.ok(

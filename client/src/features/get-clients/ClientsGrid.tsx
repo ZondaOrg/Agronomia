@@ -21,7 +21,7 @@ export const ClientsGrid = () => {
 
     useEffect(() => {
         getClients(page, search);
-    }, [page, search]);
+    }, [getClients, page, search]);
 
     return (
         <div className={container}>

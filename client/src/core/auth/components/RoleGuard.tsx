@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import { useHasRole } from "../hooks/use-has-role";
+import type { Role } from "@/shared/domain/user/role";
 
 interface RoleGuardProps {
-    allowedRoles: string[];
+    allowedRoles: Role[];
     children: ReactNode;
     fallback?: ReactNode;
 }

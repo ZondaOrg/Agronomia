@@ -2,12 +2,10 @@ package com.agro.feature.company.controller;
 
 import com.agro.core.api.Api;
 import com.agro.feature.company.contracts.CompanyDataService;
-
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.dtos.response.CompanyEditDTO;
 import com.agro.feature.company.dtos.response.CompanyResponse;
 import com.agro.feature.company.orchestrador.EditCompany;
-import com.agro.feature.company.service.CompanyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

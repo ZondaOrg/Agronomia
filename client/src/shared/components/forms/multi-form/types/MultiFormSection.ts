@@ -1,0 +1,30 @@
+import type { z } from "zod";
+import type { SubFormData } from "../../types/sub-form";
+import type { Schema, InferData } from "../../validation-form/shema";
+import type { InputData } from "@/shared/types/input/input";
+import type { Table } from "@/shared/types/table/Table";
+
+export type ComposeSectionConfig<S extends Schema> = {
+    type: "compose";
+    title?: string;
+    subtitle?: string;
+    subForms: SubFormData[];
+    schema: S;
+    initialValues?: Partial<InferData<S>>;
+};
+
+export type TableSectionConfig<T, S> = {
+    type: "table";
+    title: string;
+    subtitle?: string;
+    inputs: Record<string, InputData>;
+    schema: S;
+    nameElements: string;
+    addLabel?: string;
+    initialValues?: Table<T>;
+    onPageChange?: (page: number) => void;
+};
+
+export type MultiFormSectionConfig =
+    | ComposeSectionConfig<Schema>
+    | TableSectionConfig<Record<string, unknown>, z.ZodObject<z.ZodRawShape>>;

@@ -7,7 +7,7 @@ import { styles } from "./style";
 import { useSearchParams } from "react-router";
 import { Pagination } from "@/shared/components/pagination/Pagination";
 import { NoProviders } from "./emptyState/NoProviders";
-import { NoSearchResults } from "./emptyState/NoSearchResults";
+import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 
 export const ProvidersGrid = () => {
     const { data, loading, getProviders } = useGetProviders();
@@ -49,7 +49,11 @@ export const ProvidersGrid = () => {
                 data.content.length === 0 &&
                 !loading &&
                 (search ? (
-                    <NoSearchResults search={search} />
+                    <NotResults
+                        search={search}
+                        entity="proveedor"
+                        description="Cambiá tu búsqueda o añade un proveedor"
+                    />
                 ) : (
                     <NoProviders />
                 ))}

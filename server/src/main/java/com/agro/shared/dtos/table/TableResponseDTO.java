@@ -1,37 +1,58 @@
 package com.agro.shared.dtos.table;
 
+import com.agro.shared.dtos.page.PageInfoDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+
 import java.util.List;
 import java.util.function.Function;
 
 public record TableResponseDTO<T>(
-        List<ColumnHeader> columns,
-        List<Row<T>> rows,
-        int page,
-        int size,
-        long totalElements,
-        int totalPages,
-        boolean last
+        List<ColumnHeaderDTO> columns,
+        List<RowDTO<T>> rows,
+        PageInfoDTO page
 ) {
-    public record ColumnHeader(String key, String header) {}
 
-    public record Row<T>(Long id, T data) {}
+    private static final int DEFAULT_PAGE_SIZE = 4;
 
     public static <T> TableResponseDTO<T> fromPage(
-            List<ColumnHeader> columns,
+            List<ColumnHeaderDTO> columns,
             Page<T> page,
             Function<T, Long> idExtractor
     ) {
         return new TableResponseDTO<>(
                 columns,
                 page.getContent().stream()
-                        .map(item -> new Row<>(idExtractor.apply(item), item))
+                        .map(item -> new RowDTO<>(idExtractor.apply(item), item))
                         .toList(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast()
+                PageInfoDTO.of(page)
         );
+    }
+
+
+    public static <S, T> TableResponseDTO<T> fromList(
+            List<ColumnHeaderDTO> columns,
+            List<S> source,
+            Function<S, T> mapper,
+            Function<T, Long> idExtractor,
+            int page,
+            int size
+    ) {
+        List<S> safeSource = source == null ? List.of() : source;
+        int safeSize = size <= 0 ? DEFAULT_PAGE_SIZE : size;
+        int safePage = Math.max(page, 0);
+
+        int total = safeSource.size();
+        int from = Math.min(safePage * safeSize, total);
+        int to = Math.min(from + safeSize, total);
+
+        List<T> items = safeSource.subList(from, to).stream()
+                .map(mapper)
+                .toList();
+
+        Page<T> pagedItems = new PageImpl<>(items, PageRequest.of(safePage, safeSize), total);
+
+        return fromPage(columns, pagedItems, idExtractor);
     }
 }

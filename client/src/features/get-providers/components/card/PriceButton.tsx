@@ -1,16 +1,30 @@
 import Button from "@/shared/components/button/Button";
 import { RoleGuard } from "@/core/auth/components/RoleGuard";
+import { ROLE } from "@/shared/domain/user/role";
 import { token } from "@styled-system/tokens";
 import * as styles from "./styles";
+import { useNavigate } from "react-router";
+import { PRODUCTS } from "@/core/routes/urls/products";
 
 type PricesButtonProps = {
     hasPrices: boolean;
+    idProvider: number;
+    nameProvider: string;
 };
 
-export const PricesButton = ({ hasPrices }: PricesButtonProps) => {
+export const PricesButton = ({
+    hasPrices,
+    idProvider,
+    nameProvider,
+}: PricesButtonProps) => {
+    const navegate = useNavigate();
+
     if (hasPrices) {
         return (
             <Button
+                onClick={() =>
+                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                }
                 color={token("colors.primaryColor")}
                 hoverColor={token("colors.primaryColorHover")}
                 textColor="white"
@@ -22,8 +36,11 @@ export const PricesButton = ({ hasPrices }: PricesButtonProps) => {
     }
 
     return (
-        <RoleGuard allowedRoles={["DUENIO"]}>
+        <RoleGuard allowedRoles={[ROLE.OWNER]}>
             <Button
+                onClick={() =>
+                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                }
                 color="transparent"
                 hoverColor={token("colors.primaryColor")}
                 borderColor={token("colors.primaryColor")}

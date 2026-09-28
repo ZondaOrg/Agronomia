@@ -1,0 +1,88 @@
+package com.agro.feature.payment.service.impl;
+
+import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Payment;
+import com.agro.feature.payment.domain.VigentePayment;
+import com.agro.feature.payment.persistence.dao.PaymentDAO;
+import com.agro.feature.payment.persistence.dao.VigentesPaymentDAO;
+import com.agro.feature.payment.service.VigentesPaymentService;
+
+import com.agro.feature.provider.contracts.ProviderDataService;
+import com.agro.feature.provider.domain.Provider;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@Transactional
+public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, VigentesPaymentService {
+
+    private final VigentesPaymentDAO vigentesPaymentDAO;
+    private final ProviderDataService providerDataService;
+    private final PaymentDAO  paymentDAO;
+
+    public VigentesPaymentServiceImpl(VigentesPaymentDAO vigentesPaymentDAO, ProviderDataService providerDataService, PaymentDAO paymentDAO) {
+        this.vigentesPaymentDAO = vigentesPaymentDAO;
+        this.providerDataService = providerDataService;
+        this.paymentDAO = paymentDAO;
+    }
+
+    private Provider getProvider(Long providerId) {
+        return providerDataService.getProviderById(providerId);
+    }
+
+    @Override
+    public VigentePayment createVigentePayment(VigentePayment model, Long idProvider) {
+        Provider provider = getProvider(idProvider);
+        model.setProvider(provider);
+        provider.setVigentePayment(model);
+        if (model.getPayments() != null) {
+            model.getPayments().forEach(payment -> payment.setVigentePayment(model));
+        }
+
+        return save(model);
+    }
+
+    @Override
+    public VigentePayment updateVigent(Long vigentId, List<Long> deletePayments, VigentePayment model) {
+        VigentePayment vigent = getVigentById(vigentId);
+
+        vigent.update(model);
+
+        if (deletePayments != null && !deletePayments.isEmpty()) {
+            paymentDAO.softDeleteByIds(deletePayments);
+        }
+
+        if (model.getPayments() != null) {
+            model.getPayments().forEach(payment -> payment.setVigentePayment(vigent));
+        }
+
+
+        return save(vigent);
+    }
+
+    @Override
+    public VigentePayment getVigentPaymentsById(Long providerId) {
+        Provider provider = getProvider(providerId);
+        return vigentesPaymentDAO.findByProvider(provider)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
+    }
+
+    @Override
+    public List<Payment> searchVigentPaymentsByProviderId(Long providerId, String description) {
+        Provider provider = getProvider(providerId);
+        return paymentDAO.findAllByProviderAndDescriptionContainingIgnoreCase(provider, description);
+    }
+
+    private VigentePayment getVigentById(Long vigentId) {
+        return vigentesPaymentDAO.findById(vigentId).orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
+    }
+
+    @Override
+    public VigentePayment save(VigentePayment vigentePayment) {
+        return vigentesPaymentDAO.save(vigentePayment);
+    }
+}

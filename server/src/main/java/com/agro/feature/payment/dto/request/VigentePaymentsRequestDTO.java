@@ -1,0 +1,26 @@
+package com.agro.feature.payment.dto.request;
+
+import com.agro.feature.payment.domain.VigentePayment;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
+
+public record VigentePaymentsRequestDTO(
+        @NotNull
+        Long providerId,
+        @NotNull
+        String nameList,
+        @NotEmpty(message = "Debe agregar al menos una forma de pago al listado")
+        @Valid
+        List<PaymentRequestDTO> payments
+) {
+
+    public VigentePayment toModel() {
+        return VigentePayment.builder()
+                .nameList(nameList)
+                .payments(payments.stream().map(PaymentRequestDTO::toModel).toList())
+                .build();
+    }
+}

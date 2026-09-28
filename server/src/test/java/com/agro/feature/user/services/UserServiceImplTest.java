@@ -6,12 +6,12 @@ import com.agro.feature.branch.persistence.BranchDAO;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
 import com.agro.feature.image.domain.Imagen;
-import com.agro.shared.valueObjects.email.EmailValue;
+import com.agro.feature.user.domain.User;
 import com.agro.feature.user.orchestrator.RegisterOrchestrator;
 import com.agro.shared.entities.rol.Role;
-import com.agro.feature.user.domain.User;
 import com.agro.shared.entities.userAuthenticate.UserAuthenticate;
 import com.agro.shared.service.ResetService;
+import com.agro.shared.valueObjects.email.EmailValue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Testcontainers

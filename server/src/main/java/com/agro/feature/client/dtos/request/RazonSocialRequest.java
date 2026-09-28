@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record RazonSocialRequest(
         @NotBlank String razonSocial,
-        @NotBlank String cuit,
+        @NotBlank @NotNull String cuit,
         String address,
         @NotBlank String location,
         @NotBlank String province,

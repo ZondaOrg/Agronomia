@@ -6,6 +6,7 @@ import { IconList } from "@/shared/components/icon/components/iconList/IconList"
 import { InitialsName } from "@/shared/components/avatar/components/initialsName/InitialsName";
 import DataField from "@/shared/components/dataField/DataField";
 import { RoleGuard } from "@/core/auth/components/RoleGuard";
+import { ROLE } from "@/shared/domain/user/role";
 import { EditIcon } from "@/shared/components/icon/components/icons/EditIcon";
 import { PricesButton } from "./PriceButton";
 import { PaymentsMethods } from "./PaymentsMethods";
@@ -37,12 +38,12 @@ export const ProviderCard = ({ provider }: { provider: Provider }) => {
                 />
             </div>
 
-            <RoleGuard allowedRoles={["DUENIO"]}>
+            <RoleGuard allowedRoles={[ROLE.OWNER]}>
                 <button
                     type="button"
                     className={styles.editLink}
                 >
-                    <Link to={ADMIN_ROUTES.EDIT_PROVIDER_PATH(provider.id)}>
+                    <Link to={ADMIN_ROUTES.PROVIDERS.EDIT_PATH(provider.id)}>
                         Editar
                     </Link>
                     <EditIcon className={styles.editIcon} />
@@ -57,8 +58,8 @@ export const ProviderCard = ({ provider }: { provider: Provider }) => {
                         {...section}
                     />
                 ))}
-                <PaymentsMethods payments={provider.payments} />
-                <PricesButton hasPrices={hasPrices} />
+                <PaymentsMethods provider={provider} />
+                <PricesButton hasPrices={hasPrices} idProvider = {provider.id} nameProvider = {provider.legalName} />
             </section>
         </article>
     );

@@ -1,22 +1,23 @@
 import * as z from "zod";
+import { ADD_PROVIDER } from "../../adapter/api-contract";
 
 const providerSchema = z
     .object({
-        legalName: z
+        [ADD_PROVIDER.legalName]: z
             .string()
             .nonempty({ message: "La razón social es obligatoria" }),
-        cuit: z
+        [ADD_PROVIDER.cuit]: z
             .string()
             .nonempty({ message: "El CUIT/CUIL es obligatorio" })
             .length(13, { message: "El CUIT/CUIL debe tener 11 números" }),
-        tradeName: z
+        [ADD_PROVIDER.tradeName]: z
             .string()
             .nonempty({ message: "El nombre comercial es obligatorio" }),
-        phoneNumber: z
+        [ADD_PROVIDER.phoneNumber]: z
             .string()
             .nonempty({ message: "El teléfono de fábrica es obligatorio" }),
-        travelerName: z.string().optional(),
-        travelerPhoneNumber: z.string().optional(),
+        [ADD_PROVIDER.travelerName]: z.string().optional(),
+        [ADD_PROVIDER.travelerPhoneNumber]: z.string().optional(),
     })
     .refine(
         (data) => {
@@ -29,7 +30,7 @@ const providerSchema = z
         {
             message:
                 "Si completa un dato del viajante, debe completar también el otro.",
-            path: ["travelerPhoneNumber"],
+            path: [ADD_PROVIDER.travelerPhoneNumber],
         },
     );
 

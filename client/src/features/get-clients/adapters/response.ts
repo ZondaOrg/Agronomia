@@ -48,6 +48,7 @@ function razonSocialAdapter(client: RazonSocialResponse): RazonSocial {
         surname: client.associateSurname,
         associatePhone: client.associatePhone,
         email: client.email,
+        type: "RAZON_SOCIAL",
         ubication: {
             location: client.location,
             province: client.province,
@@ -63,6 +64,7 @@ function naturalPersonAdapter(client: NaturalPersonResponse): NaturalPerson {
         surname: client.surname,
         phone: client.phone,
         email: client.email,
+        type: "NATURAL_PERSON",
         ubication: {
             location: client.location,
             province: client.province,

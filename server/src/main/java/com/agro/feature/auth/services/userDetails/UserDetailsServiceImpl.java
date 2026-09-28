@@ -3,7 +3,6 @@ package com.agro.feature.auth.services.userDetails;
 import com.agro.feature.user.contracts.UserCredentialsService;
 import com.agro.shared.entities.userAuthenticate.UserAuthenticate;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

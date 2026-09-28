@@ -1,7 +1,6 @@
 package com.agro.feature.client.persistence.daos;
 
 import com.agro.feature.client.domain.Client;
-import com.agro.shared.valueObjects.cuit.CuitValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

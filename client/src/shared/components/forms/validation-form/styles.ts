@@ -26,9 +26,10 @@ const row = css.raw({
     },
 });
 
-const input = css.raw({
+const input = (maxWidth: string = "100%") => ({
     ...elementContainer,
     width: "100%",
+    maxWidth,
     padding: "8px",
     border: "1px solid #A1A1AA",
     boxShadow: "0px 1px 2px rgba(2, 6, 23, 0.05)",
@@ -53,9 +54,11 @@ export const styles = sva({
     slots: ["form", "input", "elementContainer", "row", "actions"],
     base: {
         form: form,
-        input: input,
+        input: css.raw(input()),
         elementContainer: elementContainer,
         row: row,
         actions: actions,
     },
 }).raw();
+
+export const inputWithMaxWidth = (maxWidth: string) => css.raw(input(maxWidth));

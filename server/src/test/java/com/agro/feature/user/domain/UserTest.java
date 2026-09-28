@@ -1,11 +1,12 @@
 package com.agro.feature.user.domain;
 
-import com.agro.shared.valueObjects.email.EmailException;
 import com.agro.shared.entities.rol.Role;
+import com.agro.shared.valueObjects.email.EmailException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserTest {
 

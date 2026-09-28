@@ -1,4 +1,4 @@
-import { Link, useMatches } from "react-router";
+import { Link, useMatches, type Params } from "react-router";
 import {
     breadcrumbList,
     breadcrumbItem,
@@ -8,13 +8,28 @@ import {
 
 interface Match {
     pathname: string;
-    handle?: { breadcrumb?: string };
+    params: Params<string>;
+    handle?: {
+        breadcrumb?: string | ((params: Params<string>) => string);
+    };
 }
 
 const Breadcrumb = () => {
     const matches = useMatches() as Match[];
 
-    const crumbs = matches.filter((match) => match.handle?.breadcrumb);
+    const crumbs = matches
+        .map((match) => {
+            const breadcrumb = match.handle?.breadcrumb;
+
+            return {
+                pathname: match.pathname,
+                label:
+                    typeof breadcrumb === "function"
+                        ? breadcrumb(match.params)
+                        : breadcrumb,
+            };
+        })
+        .filter((crumb) => crumb.label);
 
     return (
         <nav className={breadcrumbList}>
@@ -27,14 +42,14 @@ const Breadcrumb = () => {
                         className={breadcrumbItem}
                     >
                         {isLast ? (
-                            <span>{crumb.handle?.breadcrumb}</span>
+                            <span>{crumb.label}</span>
                         ) : (
                             <>
                                 <Link
                                     to={crumb.pathname}
                                     className={breadcrumbLink}
                                 >
-                                    {crumb.handle?.breadcrumb}
+                                    {crumb.label}
                                 </Link>
                                 <span className={separator}> {">"}</span>
                             </>

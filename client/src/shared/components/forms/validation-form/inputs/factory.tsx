@@ -1,4 +1,10 @@
-import type { DeepRequired, FieldError, FieldErrorsImpl, Merge, UseFormRegister } from "react-hook-form";
+import type {
+    DeepRequired,
+    FieldError,
+    FieldErrorsImpl,
+    Merge,
+    UseFormRegister,
+} from "react-hook-form";
 import type { InferData, Schema } from "../shema";
 import type { output } from "zod";
 import type { InputData } from "@/shared/types/input/input";
@@ -7,6 +13,7 @@ import FileInput from "./file/FileInput";
 import TextInput from "./text/TextInput";
 import type { SystemStyleObject } from "@styled-system/types";
 import DynamicInput from "./dynamic/DynamicInput";
+import CounterCharsInput from "./counter-chars/CounterCharsInput";
 
 export type FieldErrorType<T extends Schema> =
     | FieldError
@@ -49,7 +56,17 @@ function Input<T extends Schema>({
             );
         case "dynamic":
             return (
-                <DynamicInput 
+                <DynamicInput
+                    key={input.id}
+                    input={input}
+                    inputStyles={styles}
+                    error={error}
+                    register={register}
+                />
+            );
+        case "counter-chars":
+            return (
+                <CounterCharsInput
                     key={input.id}
                     input={input}
                     inputStyles={styles}

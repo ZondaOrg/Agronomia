@@ -1,6 +1,6 @@
 import http from "@/core/server/http-client";
-import type { ProviderRequest } from "../types/ProviderRequest";
-import type { Provider } from "../types/Provider";
+import type { ProviderRequest } from "../adapter/ProviderRequest";
+import type { Provider } from "../domain/Provider";
 import { PROVIDER_PATH } from "@/core/server/urls/provider";
 
 async function addProvider(provider: ProviderRequest): Promise<Provider> {

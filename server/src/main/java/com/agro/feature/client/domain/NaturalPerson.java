@@ -1,13 +1,9 @@
 package com.agro.feature.client.domain;
 
 import com.agro.shared.entities.province.Province;
-import com.agro.shared.valueObjects.email.EmailValue;
 import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("NATURAL_PERSON")

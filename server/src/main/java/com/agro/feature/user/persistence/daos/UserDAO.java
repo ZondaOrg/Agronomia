@@ -1,7 +1,6 @@
 package com.agro.feature.user.persistence.daos;
 
 import com.agro.feature.user.domain.User;
-
 import com.agro.shared.valueObjects.email.EmailValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

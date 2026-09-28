@@ -1,8 +1,6 @@
 package com.agro.feature.provider.contracts;
 
 import com.agro.feature.provider.domain.Provider;
-import com.agro.feature.provider.dtos.request.ProviderEditRequestDTO;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 
 public interface ProviderDataService {
@@ -14,4 +12,7 @@ public interface ProviderDataService {
 
     Provider getProviderById(Long providerId);
 
+    Boolean existProvider(Long providerId);
+
+    void addProduct(Long idProvider, Long idProduct);
 }
