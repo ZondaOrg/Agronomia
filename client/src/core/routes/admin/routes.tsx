@@ -59,7 +59,6 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
-                                // Layout route sin path: tabs + <Outlet />
                                 element: <VigentPaymentsPanel />,
                                 children: [
                                     {
@@ -72,7 +71,9 @@ export const AdminRoutes: RouteData[] = [
                                     {
                                         path: ADMIN_ROUTES.PAYMENT.UPDATE,
                                         element: <VigentPaymentPage />,
-                                        handle: { breadcrumb: "Actualizar" },
+                                        handle: {
+                                            breadcrumb: "Formas de Pago",
+                                        },
                                     },
                                 ],
                             },
