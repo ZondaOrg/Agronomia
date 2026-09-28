@@ -7,5 +7,8 @@ export type InputType =
     | "dynamic"
     | "counter-chars";
 
-export type TextInputType = Exclude<InputType, "select" | "dynamic" | "counter-chars">;
+export type TextInputType = Exclude<
+    InputType,
+    "select" | "dynamic" | "counter-chars"
+>;
 export type SelectInputType = Extract<InputType, "select">;
