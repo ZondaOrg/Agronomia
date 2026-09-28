@@ -1,6 +1,4 @@
-import { Tabs } from "@/shared/components/tabs/Tabs";
+import { RouteTabs } from "@/shared/components/tabs/routeTabs/RouteTabs";
 import { tabs } from "./tabs/Tabs";
 
-export const VigentPaymentsPanel = () => {
-    return <Tabs tabs={tabs} />;
-};
+export const VigentPaymentsPanel = () => <RouteTabs tabs={tabs} />;

@@ -15,6 +15,8 @@ import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
 import EditProduct from "@/features/edit-product/pages/EditProduct";
 import ProductTabs from "@/views/provider/pages/product/ProductTabs";
+import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
+import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentPaymentPage"; // ajustá el path real
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -55,9 +57,21 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
-                                index: true,
                                 element: <VigentPaymentsPanel />,
-                                handle: { breadcrumb: "Formas de Pago" },
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <ListVigentPayments />,
+                                        handle: {
+                                            breadcrumb: "Formas de Pago",
+                                        },
+                                    },
+                                    {
+                                        path: "actualizar",
+                                        element: <VigentPaymentPage />,
+                                        handle: { breadcrumb: "Actualizar" },
+                                    },
+                                ],
                             },
                         ],
                     },
@@ -75,8 +89,8 @@ export const AdminRoutes: RouteData[] = [
                             },
                             {
                                 path: `${ADMIN_ROUTES.PRODUCTS.EDIT}`,
-                                element: <EditProduct />
-                            }
+                                element: <EditProduct />,
+                            },
                         ],
                     },
                 ],
