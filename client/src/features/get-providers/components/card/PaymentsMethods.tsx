@@ -33,7 +33,7 @@ export const PaymentsMethods = ({ provider }: { provider: Provider }) => {
                     ) : (
                         <RoleGuard allowedRoles={[ROLE.OWNER]}>
                             <Link
-                                to={ADMIN_ROUTES.PAYMENT.PANEL_PATH(
+                                to={ADMIN_ROUTES.PAYMENT.UPDATE_PATH(
                                     provider.id,
                                     provider.tradeName,
                                 )}

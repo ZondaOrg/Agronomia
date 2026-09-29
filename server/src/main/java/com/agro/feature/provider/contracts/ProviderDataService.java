@@ -14,4 +14,5 @@ public interface ProviderDataService {
 
     Boolean existProvider(Long providerId);
 
+    void addProduct(Long idProvider, Long idProduct);
 }

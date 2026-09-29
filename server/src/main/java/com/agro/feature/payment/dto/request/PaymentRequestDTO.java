@@ -26,7 +26,7 @@ public record PaymentRequestDTO(
     public boolean isPercentageValidForApplication() {
         Application selectedApplication = Application.fromLabel(application);
 
-        return selectedApplication != Application.NOAPLICA || percentage == null;
+        return selectedApplication != Application.NOAPLICA || percentage == null || percentage == 0;
     }
 
     public Payment toModel() {

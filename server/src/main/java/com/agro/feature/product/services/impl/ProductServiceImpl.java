@@ -37,7 +37,10 @@ public class ProductServiceImpl implements ProductService {
         product.assocIdProvider(idProvider);
         Optional<String> name = dao.findNameByProvider(idProvider, product.getFormatName());
         name.ifPresent(product::validateName);
-        return dao.save(product);
+        Product saved = dao.save(product);
+
+        providerContract.addProduct(idProvider, saved.getId());
+        return saved;
     }
 
     @Override

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import SectionPanel from "@/shared/components/section/components/section-panel/SectionPanel";
 import Spinner from "@/shared/components/spinner/Spinner";
 import { PaymentCard } from "./components/card/PaymentCard";
@@ -12,8 +12,13 @@ import { FilterPanel } from "@/shared/components/filter/FilterPanel";
 import { Searcher } from "@/shared/components/searcher/Sercher";
 import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 import { PaymentIcon } from "@/shared/components/icon/components/icons/PaymentIcon";
+import Button from "@/shared/components/button/Button";
+import { token } from "@styled-system/tokens";
+import { PAYMENT } from "@/core/routes/urls/payments";
 
 export const ListVigentPayments = () => {
+    const navigate = useNavigate();
+
     const { providerId } = useParams<{ providerId: string }>();
     const { data, isLoading } = useGetVigentesPaymentsByProvider(
         Number(providerId),
@@ -36,6 +41,16 @@ export const ListVigentPayments = () => {
                 icon={<PaymentIcon />}
                 title="Todavía no hay formas de pago vigentes"
                 description="Este proveedor no tiene formas de pago configuradas."
+                action={
+                    <Button
+                        color={token("colors.primaryColor")}
+                        hoverColor={token("colors.primaryColorHover")}
+                        textColor="white"
+                        onClick={() => navigate(PAYMENT.UPDATE)}
+                    >
+                        + Agregar forma de pago
+                    </Button>
+                }
             />
         );
     }

@@ -13,7 +13,7 @@ public record ProviderResponseDTO(
         Long companyId,
         TravelerResponseDTO traveler,
         List<String> payments,
-        List<Integer> listPrices
+        List<Long> listPrices
 ){
     public static ProviderResponseDTO fromModel(Provider provider) {
         return new ProviderResponseDTO(
@@ -25,7 +25,7 @@ public record ProviderResponseDTO(
                 provider.getCompanyId(),
                 TravelerResponseDTO.fromModel(provider.getTraveler()),
                 provider.getPaymentMethods(),
-                List.of(1,2)
+                provider.getPriceList()
         );
     }
 }
