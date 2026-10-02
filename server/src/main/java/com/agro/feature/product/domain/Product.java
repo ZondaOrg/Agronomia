@@ -1,12 +1,12 @@
 package com.agro.feature.product.domain;
 
 import com.agro.feature.product.domain.exceptions.ListPriceException;
+import com.agro.feature.product.domain.exceptions.NegativePriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -72,12 +72,12 @@ public class Product {
             Integer bonification) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
-        this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
         this.productType = productType;
         this.money = money;
         this.description = description;
         this.freight = 0d;
+        validateListPrice(listPrice);
     }
 
     public Product(
@@ -91,23 +91,31 @@ public class Product {
             Double freight) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
-        this.listPrice = validateListPrice(listPrice);
         this.iva = iva;
         this.productType = productType;
         this.money = money;
         this.description = description;
+        validateListPrice(listPrice);
+        validateFreight(freight);
+    }
+
+    private void validateFreight(Double freight) {
+        if(freight < 0) {
+            throw new NegativePriceException(freight);
+        }
         this.freight = freight;
     }
 
-    private Double validateListPrice(Double listPrice) {
+    private void validateListPrice(Double listPrice) {
         double abs = Math.abs(listPrice);
 
-         if(abs < 100_000_000d) {
-             return listPrice;
-         }
-         else {
-             throw new ListPriceException();
-         }
+        if(abs >= 100_000_000d) {
+            throw new ListPriceException();
+        }
+        else if(listPrice < 0) {
+            throw new NegativePriceException(listPrice);
+        }
+        this.listPrice = listPrice;
     }
 
     public void validateName(String productName) {

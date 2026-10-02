@@ -25,12 +25,12 @@ const productSubForms = createSubForms([
         fields: [
             [
                 { motive: "Moneda", name: EDIT_PRODUCT.money, type: "select", options: createSelectOptions(moneys)},
-                { motive: "Precio lista", name: EDIT_PRODUCT.listPrice }, 
+                { motive: "Precio lista", type: "number", name: EDIT_PRODUCT.listPrice }, 
                 { motive: "IVA", name: EDIT_PRODUCT.iva, type: "select", options: createSelectOptions(ivaPorcents) },
             ],
             [
-                { motive: "Bonificación", name: EDIT_PRODUCT.bonification },
-                { motive: "Flete", name: EDIT_PRODUCT.freight, isRequired: false }
+                { motive: "Bonificación", type: "number", name: EDIT_PRODUCT.bonification },
+                { motive: "Flete", type: "number", name: EDIT_PRODUCT.freight, isRequired: false }
             ]
         ]
     },

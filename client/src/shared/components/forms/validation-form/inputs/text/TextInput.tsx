@@ -14,9 +14,10 @@ import ErrorMessage from "../error/ErrorMessage";
 import type { TextInputData } from "@/shared/types/input/input";
 import { fieldStyles } from "../styles";
 import type { InferData, Schema } from "../../shema";
+import type { NumberInputData } from "@/shared/types/input/number";
 
-interface TextInputProps<T extends Schema> {
-    input: TextInputData;
+interface BasicInputProps<T extends Schema> {
+    input: TextInputData | NumberInputData;
     inputStyles: SystemStyleObject;
     register: UseFormRegister<InferData<T>>;
     error:
@@ -25,12 +26,12 @@ interface TextInputProps<T extends Schema> {
         | Merge<FieldError, FieldErrorsImpl<DeepRequired<output<T>>>>;
 }
 
-function TextInput<T extends Schema>({
+function BasicInput<T extends Schema>({
     input,
     inputStyles,
     register,
     error,
-}: TextInputProps<T>) {
+}: BasicInputProps<T>) {
     return (
         <div className={css(fieldStyles.container)}>
             <label
@@ -60,4 +61,4 @@ function TextInput<T extends Schema>({
     );
 }
 
-export default TextInput;
+export default BasicInput;
