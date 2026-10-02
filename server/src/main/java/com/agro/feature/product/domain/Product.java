@@ -7,7 +7,6 @@ import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -102,7 +101,7 @@ public class Product {
 
     private void validateFreight(Double freight) {
         if(freight < 0) {
-            throw new NegativePriceException("El precio del flete " + freight + " debe ser mayor a 0");
+            throw new NegativePriceException(freight);
         }
         this.freight = freight;
     }
@@ -112,6 +111,9 @@ public class Product {
 
         if(abs >= 100_000_000d) {
             throw new ListPriceException();
+        }
+        else if(listPrice < 0) {
+            throw new NegativePriceException(listPrice);
         }
         this.listPrice = listPrice;
     }

@@ -32,7 +32,7 @@ public class NegativePriceHandler extends BuisnessHandlerException<NegativePrice
 
     @Override
     protected String message() {
-        return "El valor del flete debe ser mayor a 0";
+        return "El valor debe ser mayor a 0";
     }
 
     @Override
