@@ -10,20 +10,19 @@ const productSchema = z.object({
     [ADD_PRODUCT.type]: z.string().nonempty({ message: "Seleccione una tipo de producto" }),
     [ADD_PRODUCT.money]: z.enum(moneyKeys, {error: "Seleccione una moneda"}),
     [ADD_PRODUCT.iva]: z.enum(ivaKeys, {error: "Seleccione el IVA"}),
-    [ADD_PRODUCT.freight]: z.
-        string().
-        refine(
-            (value: string) => Number(value) > 0,
-            { message: "El valor del flete debe ser mayor a 0"}
-        )
-        .optional(),
+    [ADD_PRODUCT.freight]: 
+        z.coerce
+            .number()
+            .nonnegative({ message: "El valor del flete debe ser un número positivo" })
+            .optional(),
     [ADD_PRODUCT.description]: 
-        z.string()
-        .refine(
-            (value: string) => value.length <= 500,
-            { message: "Se superaron los 500 caracteres, reduzca la cantidad de caracteres"}
-        )
-        .optional()
+        z
+            .string()
+            .refine(
+                (value: string) => value.length <= 500,
+                { message: "Se superaron los 500 caracteres, reduzca la cantidad de caracteres"}
+            )
+            .optional()
 });
 
 
