@@ -14,9 +14,9 @@ import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
 import EditProduct from "@/features/edit-product/pages/EditProduct";
 import ProductTabs from "@/views/provider/pages/product/ProductTabs";
+import ListPrice from "@/features/price-list/pages/PriceList";
 import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
 import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentPaymentPage"; // ajustá el path real
-import ListPrice from "@/features/price-list/pages/PriceList";
 import AddProduct from "@/features/add-product/pages/AddProduct";
 import AddClient from "@/features/add-client/pages/AddClient";
 
@@ -107,10 +107,9 @@ export const AdminRoutes: RouteData[] = [
                                 ],
                             },
                             {
-                                path: ADMIN_ROUTES.PRODUCTS.EDIT,
-                                element: <EditProduct />,
-                                handle: { breadcrumb: "Lista de precios" },
-                            },
+                                path: `${ADMIN_ROUTES.PRODUCTS.EDIT}`,
+                                element: <EditProduct />
+                            }
                         ],
                     },
                 ],
