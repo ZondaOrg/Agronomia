@@ -5,6 +5,7 @@ import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,6 +38,8 @@ public class Product {
     @Getter
     private String productType;
 
+    @Column(length = 500)
+    @Size(max = 500)
     @Getter
     private String description;
 
