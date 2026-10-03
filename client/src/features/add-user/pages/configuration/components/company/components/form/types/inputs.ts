@@ -1,4 +1,4 @@
-import type { InputRow } from "@/shared/components/form/insert-form";
+import type { InputRow } from "@/shared/types/input/input";
 
 const createUserInputs: InputRow[] = [
     [
