@@ -25,7 +25,7 @@ const AddProvider = () => {
 
     const onSubmit = async (data: ProviderRequest) => {
         const created = await addProvider(data);
-        if (created) onOpenIs(!!created, "confirm");
+        if (created) onOpenIs(!!created, "success");
     };
 
     return (
@@ -68,7 +68,7 @@ const AddProvider = () => {
             />
 
             <ModalCreateProvider
-                isOpen={isOpen("confirm")}
+                isOpen={isOpen("success")}
                 onClose={backToPrev}
                 title="Proveedor agregado"
                 message="El proveedor ha sido agregado correctamente."

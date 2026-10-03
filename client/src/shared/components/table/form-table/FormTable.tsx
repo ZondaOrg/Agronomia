@@ -64,7 +64,7 @@ export const FormTable = <
                 values[input.disabledWhen.field] === input.disabledWhen.value &&
                 values[input.name] !== ""
             ) {
-                setValue(input.name, "" as never);
+                setValue(input.name as never, "" as never);
             }
         });
     }, [inputs, setValue, values]);
