@@ -5,7 +5,7 @@ import {
     ROLE_HOME_ROUTES,
 } from "@/core/routes/role-routes";
 import { useAuth } from "@/core/auth/hooks/use-auth";
-import type { Credentials } from "@/core/auth/types/Credentials";
+import type { Credentials } from "@/core/auth/types/credentials";
 
 const useLogin = () => {
     const { refresh, error, login: log, isLoading } = useAuth();

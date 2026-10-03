@@ -1,4 +1,4 @@
-import type { ErrorCause } from "./error-cause";
+import type { ErrorCauseType } from "./error-cause";
 import type { ErrorMotive } from "./error-motive";
 
 export interface ErrorResponse {
@@ -7,6 +7,6 @@ export interface ErrorResponse {
     message: string;
     path: string;
     timestamp: Date;
-    cause: ErrorCause;
+    cause: ErrorCauseType;
     motives?: ErrorMotive[]
 }

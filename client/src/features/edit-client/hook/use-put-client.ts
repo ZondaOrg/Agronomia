@@ -1,11 +1,11 @@
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 
-import type { ClientToEdit } from "../types/Client";
 import putClient from "../service/put-client.service";
+import type { Client } from "../domain/client";
 
 export const usePutClient = () => {
     const { error, data, isLoading, execute, refresh } =
-        useFetch<ClientToEdit>();
+        useFetch<Client>();
 
     return {
         error,

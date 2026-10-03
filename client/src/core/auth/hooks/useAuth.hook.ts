@@ -1,6 +1,6 @@
 import type { HttpError } from "@/core/server/errors/http-error";
 import type { User } from "@/shared/domain/user/user";
-import type { Credentials } from "../types/Credentials";
+import type { Credentials } from "../types/credentials";
 
 export interface UseAuth {
     user?: User;
