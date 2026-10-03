@@ -29,6 +29,11 @@ export function createInputRow(field: CreateField, index: number, idCounter?: {c
                 limit: field.limit,
                 ...base
             };
+        case "number":
+            return {
+                type: "number",
+                ...base
+            };
         default: 
             return {
                 type: field.type ?? "text",

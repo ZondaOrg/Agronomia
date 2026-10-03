@@ -51,6 +51,7 @@ const productSubForms = (productTypes: string[]) =>
                     { motive: "Bonificación", name: ADD_PRODUCT.bonification },
                     {
                         motive: "Flete",
+                        type: "number",
                         name: ADD_PRODUCT.freight,
                         isRequired: false,
                     },

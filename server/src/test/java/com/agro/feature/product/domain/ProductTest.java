@@ -1,6 +1,7 @@
 package com.agro.feature.product.domain;
 
 import com.agro.feature.product.domain.exceptions.ListPriceException;
+import com.agro.feature.product.domain.exceptions.NegativePriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.shared.valueObjects.porcent.PorcentException;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,5 +203,19 @@ class ProductTest {
         toDelete.add("optional 2");
         product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", toDelete);
         assertTrue(product.getOptionals().isEmpty());
+    }
+
+    @Test
+    void testSiSeAgregaUnPrecioDeFleteNoPositivo_LanzaExcepcion() {
+        assertThrows(NegativePriceException.class, () -> new Product(
+                "ProductSS",
+                "product nsnns",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                "a",
+                20,
+                -1D
+        ));
     }
 }
