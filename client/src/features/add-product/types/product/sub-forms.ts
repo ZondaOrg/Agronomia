@@ -39,7 +39,7 @@ const productSubForms = (productTypes: string[]) =>
                         type: "select",
                         options: createSelectOptions(moneys),
                     },
-                    { motive: "Precio lista", name: ADD_PRODUCT.listPrice },
+                    { motive: "Precio lista", type: "number", name: ADD_PRODUCT.listPrice },
                     {
                         motive: "IVA",
                         name: ADD_PRODUCT.iva,
@@ -48,7 +48,7 @@ const productSubForms = (productTypes: string[]) =>
                     },
                 ],
                 [
-                    { motive: "Bonificación", name: ADD_PRODUCT.bonification },
+                    { motive: "Bonificación", type: "number", name: ADD_PRODUCT.bonification },
                     {
                         motive: "Flete",
                         type: "number",
