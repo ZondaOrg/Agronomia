@@ -25,4 +25,7 @@ public class ProductType {
 
     private Long idCompany;
 
+    public String getImage() {
+        return imagen.getUrl();
+    }
 }
