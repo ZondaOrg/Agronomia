@@ -20,9 +20,7 @@ import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentP
 import AddProduct from "@/features/add-product/pages/AddProduct";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { Products } from "@/views/product/Products";
-import { ListTypesProduct } from "@/views/product/pages/ListTypesProduct";
-// import { Products } from "@/views/product/Products";
-// import { ListTypesProduct } from "@/views/product/pages/ListTypesProduct";
+import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -125,7 +123,7 @@ export const AdminRoutes: RouteData[] = [
                 children: [
                     {
                         index: true,
-                        element: <ListTypesProduct />,
+                        element: <ListTypesProductsPage />,
                     },
                 ],
             },

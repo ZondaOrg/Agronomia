@@ -5,7 +5,7 @@ import type { ProductType } from "../types/ProductType";
 
 async function getTypesProducts(
     page = 0,
-    size = 8,
+    size = 9,
 ): Promise<Page<ProductType>> {
     const response = await http.get<Page<ProductType>>(
         GET_ALL_WITH_IMAGES_PATH,
