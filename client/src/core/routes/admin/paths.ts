@@ -5,6 +5,10 @@ import { PRICE_LIST } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
 
+const PRODUCTS = {
+    ROOT: "productos",
+};
+
 export const ADMIN_ROUTES = {
     BASE: "/admin",
     PROVIDERS,
@@ -12,5 +16,6 @@ export const ADMIN_ROUTES = {
     CONFIGURATION,
     SALE,
     PRICE_LIST,
-    PAYMENT
-}
+    PRODUCTS,
+    PAYMENT,
+};

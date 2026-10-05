@@ -19,6 +19,8 @@ import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/List
 import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentPaymentPage"; // ajustá el path real
 import AddProduct from "@/features/add-product/pages/AddProduct";
 import AddClient from "@/features/add-client/pages/AddClient";
+import { Products } from "@/views/product/Products";
+import { ListTypesProduct } from "@/views/product/pages/ListTypesProduct";
 // import { Products } from "@/views/product/Products";
 // import { ListTypesProduct } from "@/views/product/pages/ListTypesProduct";
 
@@ -116,17 +118,17 @@ export const AdminRoutes: RouteData[] = [
                     },
                 ],
             },
-            // {
-            //     path: `${ADMIN_ROUTES.PRICE_LIST.ROOT}`,
-            //     element: <Products />,
-            //     handle: { breadcrumb: "Productos" },
-            //     children: [
-            //         {
-            //             index: true,
-            //             element: <ListTypesProduct />,
-            //         },
-            //     ],
-            // },
+            {
+                path: `${ADMIN_ROUTES.PRODUCTS.ROOT}`,
+                element: <Products />,
+                handle: { breadcrumb: "Productos" },
+                children: [
+                    {
+                        index: true,
+                        element: <ListTypesProduct />,
+                    },
+                ],
+            },
             {
                 path: `${ADMIN_ROUTES.CLIENTS.BASE}`,
                 element: <Client />,
