@@ -41,7 +41,7 @@ class ProductTypeServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        productType = new ProductType("Tractorcito");
+        productType = ProductType.builder().name("Tractorcito").build();
     }
 
     @Test
@@ -52,8 +52,8 @@ class ProductTypeServiceImplTest {
 
     @Test
     void testSeRecuperanTodosLosTiposDeProductos() {
-        service.add(new ProductType("Pala"));
-        service.add(new ProductType("Cosechadora"));
+        service.add(ProductType.builder().name("Pala").build());
+        service.add(ProductType.builder().name("Cosechadora").build());
         List<ProductType> productTypes = service.getAll();
         assertTrue(productTypes.stream().anyMatch(productType -> Objects.equals(productType.getName(), "Tractorcito")));
         assertTrue(productTypes.stream().anyMatch(productType -> Objects.equals(productType.getName(), "Cosechadora")));

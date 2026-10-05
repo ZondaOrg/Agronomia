@@ -26,4 +26,10 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public ProductType add(ProductType productType) {
         return dao.save(productType);
     }
+
+    @Override
+    public void addAllInCompany(List<ProductType> productTypes, long idCompany) {
+        productTypes.forEach(productType -> productType.setIdCompany(idCompany));
+        dao.saveAll(productTypes);
+    }
 }

@@ -11,7 +11,7 @@ class ProductTypeTest {
 
     @BeforeEach
     void setUp() {
-        productType = new ProductType("Tractorcito");
+        productType = ProductType.builder().name("Tractorcito").build();
     }
 
     @Test

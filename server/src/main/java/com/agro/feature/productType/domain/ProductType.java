@@ -1,14 +1,16 @@
 package com.agro.feature.productType.domain;
 
+import com.agro.feature.image.domain.Imagen;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "product_types")
-@Getter
+@Data
 public class ProductType {
 
     @Id
@@ -18,7 +20,9 @@ public class ProductType {
     @Column(unique = true)
     private String name;
 
-    public ProductType(String name) {
-        this.name = name;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    private Imagen imagen;
+
+    private Long idCompany;
+
 }

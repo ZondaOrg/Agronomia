@@ -8,4 +8,6 @@ public interface ProductTypeService {
     List<ProductType> getAll();
 
     ProductType add(ProductType productType);
+
+    void addAllInCompany(List<ProductType> defaultTypes, long idCompany);
 }
