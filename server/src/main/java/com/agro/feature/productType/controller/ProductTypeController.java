@@ -40,7 +40,7 @@ public class ProductTypeController {
     @Operation(summary = "Obtener todos los tipos de productos con su imagen asociada y de la compañia del usuario logeado paginado")
     public ResponseEntity<PageResponseDTO<ProductTypeResponseDTO>> getAllWithImages(@RequestAttribute("userId") Long  userId,
                                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "8") int size){
+                                                                                    @RequestParam(defaultValue = "9") int size){
         Page<ProductType> productTypes = service.getAllPaginated(userId, page, size);
         return ResponseEntity.ok(PageResponseDTO.from(productTypes.map(ProductTypeResponseDTO::fromModel)));
     }
