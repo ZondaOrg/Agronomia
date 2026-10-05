@@ -1,7 +1,8 @@
-export const PRODUCTS = {
-    BASE: `nuevo-producto/:idProvider/:providerName`,
+export const PRICE_LIST = {
+    ROOT: "/lista-precios",
+    BASE: `lista-precios/:idProvider/:providerName`,
     PATH: (idProvider: number, providerName: string) =>
-        `nuevo-producto/${idProvider}/${encodeURIComponent(providerName)}`,
+        `lista-precios/${idProvider}/${encodeURIComponent(providerName)}`,
     ADD: "agregar",
     EDIT: "editar-product/:idProduct",
     EDIT_PATH: (idProduct: number) => `editar-product/${idProduct}`,

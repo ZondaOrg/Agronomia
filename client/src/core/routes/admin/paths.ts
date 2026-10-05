@@ -1,7 +1,7 @@
 import { CLIENTS } from "../urls/clients";
 import { CONFIGURATION } from "../urls/configuration";
 import { PAYMENT } from "../urls/payments";
-import { PRODUCTS } from "../urls/products";
+import { PRICE_LIST } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
 
@@ -11,6 +11,6 @@ export const ADMIN_ROUTES = {
     CLIENTS,
     CONFIGURATION,
     SALE,
-    PRODUCTS,
+    PRICE_LIST,
     PAYMENT
 }

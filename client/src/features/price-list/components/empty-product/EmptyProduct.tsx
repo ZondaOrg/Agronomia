@@ -1,4 +1,4 @@
-import { PRODUCTS } from "@/core/routes/urls/products";
+import { PRICE_LIST } from "@/core/routes/urls/products";
 import Button from "@/shared/components/button/Button";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { TractorIcon } from "@/shared/components/icon/components/icons/Tractor";
@@ -17,7 +17,7 @@ const EmptyProduct = () => {
                     color={token("colors.primaryColor")}
                     hoverColor={token("colors.primaryColorHover")}
                     textColor="white"
-                    onClick={() => navigate(PRODUCTS.ADD)}
+                    onClick={() => navigate(PRICE_LIST.ADD)}
                 >
                     + Añadir producto
                 </Button>
