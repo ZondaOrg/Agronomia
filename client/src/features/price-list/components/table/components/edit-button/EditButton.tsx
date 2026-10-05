@@ -14,7 +14,7 @@ const EditButton = ({product}: EditButtonProps) => {
     
     return (
         <RoleGuard allowedRoles={[ROLE.OWNER]}>
-            <img src={icon} alt="Icono para editar un producto" onClick={() => navigate(ADMIN_ROUTES.PRODUCTS.EDIT_PATH(product.id))}/>
+            <img src={icon} alt="Icono para editar un producto" onClick={() => navigate(ADMIN_ROUTES.PRICE_LIST.EDIT_PATH(product.id))}/>
         </RoleGuard>
     )
 }

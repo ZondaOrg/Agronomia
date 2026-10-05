@@ -5,13 +5,13 @@ import { ROLE } from "@/shared/domain/user/role";
 
 const tabs: RouteTab[] = [
     {
-        nameTab: "Todos los productos",
+        nameTab: "Lista de precios",
         to: ".",
         end: true,
     },
     {
-        nameTab: "Añadir Productos",
-        to: ADMIN_ROUTES.PRODUCTS.ADD,
+        nameTab: "Añadir producto",
+        to: ADMIN_ROUTES.PRICE_LIST.ADD,
         allowedRoles: [ROLE.OWNER],
     },
 ];
