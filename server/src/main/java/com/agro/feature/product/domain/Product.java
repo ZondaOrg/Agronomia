@@ -160,10 +160,10 @@ public class Product {
             String description,
             List<String> toDelete) {
         setMoney(money);
-        setListPrice(listPrice);
+        validateListPrice(listPrice);
         setIva(iva);
         setBonification(new Porcent(bonification));
-        setFreight(freight);
+        validateFreight(freight);
         setDescription(description);
         optionals.removeIf(o -> toDelete.contains(o.getName()));
         createdAt = LocalDateTime.now();
