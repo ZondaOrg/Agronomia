@@ -1,9 +1,13 @@
 import { CLIENTS } from "../urls/clients";
 import { CONFIGURATION } from "../urls/configuration";
 import { PAYMENT } from "../urls/payments";
-import { PRODUCTS } from "../urls/products";
+import { PRICE_LIST } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
+
+const PRODUCTS = {
+    ROOT: "productos",
+};
 
 export const ADMIN_ROUTES = {
     BASE: "/admin",
@@ -11,6 +15,7 @@ export const ADMIN_ROUTES = {
     CLIENTS,
     CONFIGURATION,
     SALE,
+    PRICE_LIST,
     PRODUCTS,
-    PAYMENT
-}
+    PAYMENT,
+};

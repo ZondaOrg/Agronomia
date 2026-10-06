@@ -19,7 +19,7 @@ export type BodyMaxHeight = "sm" | "md" | "lg" | "xl" | "none";
 /** Propiedades del componente {@link SectionPanel}. */
 export interface SectionPanelProps {
     /** Texto que se muestra como encabezado del panel. */
-    title: string;
+    title?: string;
     /** Centra el contenido del panel cuando es `true`. */
     centered?: boolean;
     /** Contenido principal del panel. */
@@ -58,10 +58,14 @@ const SectionPanel = ({
 }: SectionPanelProps) => (
     <section className={panel({ maxWidth })}>
         <div className={header}>
-            <div className={titleGroup}>
-                <h2 className={title({ size: titleSize })}>{titleText}</h2>
-                {actions}
-            </div>
+            {titleText ? (
+                <div className={titleGroup}>
+                    <h2 className={title({ size: titleSize })}>{titleText}</h2>
+                    {actions}
+                </div>
+            ) : (
+                actions
+            )}
             {description && <p className={descriptionStyle}>{description}</p>}
         </div>
         {contentHeader}

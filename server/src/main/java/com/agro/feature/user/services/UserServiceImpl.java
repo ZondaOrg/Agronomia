@@ -7,6 +7,7 @@ import com.agro.feature.user.persistence.daos.UserDAO;
 import com.agro.shared.entities.userAuthenticate.UserAuthenticate;
 import com.agro.shared.persistence.excepitons.NotFoundEntityException;
 import com.agro.shared.valueObjects.email.EmailValue;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,6 +74,13 @@ public class UserServiceImpl implements UserService, UserCredentialsService, Use
     @Override
     public User getUserById(Long id) {
         return userDao.findById(id).orElseThrow(() -> new NotFoundEntityException("Usuario no encontrada"));
+    }
+
+    @Override
+    public Long getIdCompanyOfUserId(Long userId) {
+        return userDao.findCompanyIdByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No se encontró la empresa del usuario con id " + userId));
     }
 
     public void clearAll() {

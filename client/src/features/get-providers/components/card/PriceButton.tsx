@@ -4,7 +4,7 @@ import { ROLE } from "@/shared/domain/user/role";
 import { token } from "@styled-system/tokens";
 import * as styles from "./styles";
 import { useNavigate } from "react-router";
-import { PRODUCTS } from "@/core/routes/urls/products";
+import { PRICE_LIST } from "@/core/routes/urls/products";
 
 type PricesButtonProps = {
     hasPrices: boolean;
@@ -23,7 +23,7 @@ export const PricesButton = ({
         return (
             <Button
                 onClick={() =>
-                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                    navegate(PRICE_LIST.PATH(idProvider, nameProvider))
                 }
                 color={token("colors.primaryColor")}
                 hoverColor={token("colors.primaryColorHover")}
@@ -39,7 +39,7 @@ export const PricesButton = ({
         <RoleGuard allowedRoles={[ROLE.OWNER]}>
             <Button
                 onClick={() =>
-                    navegate(PRODUCTS.PATH(idProvider, nameProvider))
+                    navegate(PRICE_LIST.PATH(idProvider, nameProvider))
                 }
                 color="transparent"
                 hoverColor={token("colors.primaryColor")}

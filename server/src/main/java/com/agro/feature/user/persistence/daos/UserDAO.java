@@ -19,4 +19,7 @@ public interface UserDAO extends JpaRepository<User, Long> {
     boolean existsByEmail(EmailValue email);
 
     Page<User> findAllByCompany_Id(Long companyId, Pageable pageable);
+
+    @Query("SELECT u.company.id FROM User u WHERE u.id = :userId")
+    java.util.Optional<Long> findCompanyIdByUserId(@Param("userId") Long userId);
 }
