@@ -71,7 +71,7 @@ export const ListVigentPayments = () => {
                 />
             }
             description={`última actualización ${data.updateAt}`}
-            filters={
+            contentHeader={
                 <FilterPanel isVisible={isFilterVisible}>
                     <Searcher
                         value={search}

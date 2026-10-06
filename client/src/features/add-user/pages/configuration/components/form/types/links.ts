@@ -1,4 +1,4 @@
-import type { LinkData } from "@/shared/components/credentials-form/types/link/Link";
+import type { LinkData } from "@/shared/components/forms/simple-form/types/link/Link";
 
 const createUserLinks: LinkData[] = [
     {

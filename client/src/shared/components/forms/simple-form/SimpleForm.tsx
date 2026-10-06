@@ -25,7 +25,8 @@ function SimpleForm<T extends Schema>({
             <ValidationForm
                 subForms={[ { inputs: inputs, id: 1 } ]}
                 schema={schema}
-                onSubmit={onSubmit}>
+                onSubmit={onSubmit}
+                onCancel={() => cancelOption?.onSubmit()}>
             </ValidationForm>
             <ButtonsContainer buttonData={buttonData} cancelOption={cancelOption} /> 
             {links && <Footer links={links} />}
