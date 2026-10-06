@@ -9,11 +9,7 @@ export const styles = sva({
             gap: "6",
             width: "100%",
         },
-        empty: {
-            margin: 0,
-            color: "gray.600",
-            textAlign: "center",
-        },
+
         spinnerWrapper: {
             display: "flex",
             justifyContent: "center",
