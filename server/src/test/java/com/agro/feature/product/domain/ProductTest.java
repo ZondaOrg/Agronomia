@@ -218,4 +218,18 @@ class ProductTest {
                 -1D
         ));
     }
+
+    @Test
+    void testSiElPrecioDeListaEsNegativo_LanzaExcepcion() {
+        assertThrows(NegativePriceException.class, () -> new Product(
+                "ProductSS",
+                "product nsnns",
+                Money.ARS,
+                -100000d,
+                IVA.GENERAL,
+                "a",
+                20,
+                1D
+        ));
+    }
 }

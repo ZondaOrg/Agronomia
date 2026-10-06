@@ -2,9 +2,10 @@ import z from "zod";
 import { moneyKeys } from "../../../../shared/domain/money/money";
 import { ivaKeys } from "@/shared/domain/iva/iva";
 import { EDIT_PRODUCT } from "../../adapters/api-contract";
+import positiveFieldNumber from "@/shared/types/field-validation/positive-field-number";
 
 const productSchema = z.object({
-    [EDIT_PRODUCT.listPrice]: z.string().nonempty({ message: "La lista de precio es obligatorio"}),
+    [EDIT_PRODUCT.listPrice]: positiveFieldNumber("El precio de lista"),
     [EDIT_PRODUCT.bonification]: z.string().nonempty({ message: "La bonificación es obligatorio"}),
     [EDIT_PRODUCT.money]: z.enum(moneyKeys, {error: "Seleccione una moneda"}),
     [EDIT_PRODUCT.iva]: z.enum(ivaKeys, {error: "Seleccione el IVA"}),
