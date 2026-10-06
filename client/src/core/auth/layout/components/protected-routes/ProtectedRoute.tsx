@@ -46,7 +46,7 @@ export const ProtectedRoute = ({
     if (!hasRequiredRole(userRole, allowedRoles))
         return (
             <Navigate
-                to="/unauthorized"
+                to="/login"
                 replace
             />
         );
