@@ -17,14 +17,13 @@ import java.util.List;
 @Service
 @Transactional
 public class ProductTypeServiceImpl implements ProductTypeService {
+    private static final String DEFAULT_IMAGE_URL =
+            "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Default_rjsfk7.png";
+    private static final String DEFAULT_IMAGE_PUBLIC_ID = "Default_rjsfk7";
+
     private final ProductTypeDAO dao;
 
     private final UserDataService userDataService;
-
-    private static final Imagen DEFAULT_IMAGE = Imagen.builder()
-            .url("https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Default_rjsfk7.png")
-            .publicId("Default_rjsfk7")
-            .build();
 
     public ProductTypeServiceImpl(ProductTypeDAO dao, UserDataService userDataService) {
         this.dao = dao;
@@ -55,17 +54,27 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Override
     public ProductType addTypeInCompany(ProductType model, Long userId) {
-        if(dao.existsByName(model.getName())) throw new NameDuplicated("No se puede crear tipos con nombres duplicadas");
+        if (dao.existsByName(model.getName())) {
+            throw new NameDuplicated("No se puede crear tipos con nombres duplicadas");
+        }
         Long idCompany = userDataService.getIdCompanyOfUserId(userId);
 
-        model.setImagen(DEFAULT_IMAGE);
+        model.setImagen(defaultImage());
         model.setIdCompany(idCompany);
 
-        return add(model);
+        return dao.save(model);
     }
 
     @Override
     public ProductType getProductTypeById(Long id) {
-        return dao.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontró el tipo con el id: "+id));
+        return dao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el tipo con el id: " + id));
+    }
+
+    private static Imagen defaultImage() {
+        return Imagen.builder()
+                .url(DEFAULT_IMAGE_URL)
+                .publicId(DEFAULT_IMAGE_PUBLIC_ID)
+                .build();
     }
 }
