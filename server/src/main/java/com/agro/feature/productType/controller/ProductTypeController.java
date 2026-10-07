@@ -49,7 +49,7 @@ public class ProductTypeController {
     @PostMapping
     @OwnerEndpoint
     @Operation(summary = "Crear un tipo de producto asociado a la compañia del usuario logeado")
-    public ResponseEntity<ProductTypeResponseDTO> create(@RequestAttribute("userId") Long  userId, @RequestBody ProductTypeRequestDTO request) {
+    public ResponseEntity<ProductTypeResponseDTO> addTypeInCompany(@RequestAttribute("userId") Long  userId, @RequestBody ProductTypeRequestDTO request) {
         ProductType productType = service.addTypeInCompany(request.toModel(), userId);
 
         return ResponseEntity.ok(ProductTypeResponseDTO.fromModel(productType));
