@@ -7,6 +7,7 @@ import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
 import com.agro.feature.image.domain.Imagen;
 import com.agro.feature.productType.domain.ProductType;
+import com.agro.feature.productType.domain.exceptions.NameDuplicated;
 import com.agro.feature.productType.persistence.ProductTypeDAO;
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.orchestrator.RegisterOrchestrator;
@@ -60,16 +61,26 @@ class ProductTypeServiceImplTest {
     @Autowired
     private CompanyService companyService;
 
+    private static  Imagen DEFAULT_IMAGE;
+
     private ProductType productType;
 
     private Company company;
+
     private Company otherCompany;
+
     private User owner;
+
     private User otherOwner;
 
     @BeforeEach
     void setUp() {
         productType = ProductType.builder().name("Tractorcito").build();
+
+        DEFAULT_IMAGE = Imagen.builder()
+                .url("https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Default_rjsfk7.png")
+                .publicId("Default_rjsfk7")
+                .build();
 
         Branch branch = branchDAO.save(Branch.builder()
                 .city("Berlin")
@@ -162,6 +173,24 @@ class ProductTypeServiceImplTest {
     @Test
     void testGetAllPaginated_ConUsuarioInexistenteLanzaExcepcion() {
         assertThrows(EntityNotFoundException.class, () -> service.getAllPaginated(0L, 0, 10));
+    }
+
+    @Test
+    void testCreateNewTypeProduct() {
+        ProductType newProductType = service.addTypeInCompany(ProductType.builder().name("Camioncito").build(), owner.getId());
+        ProductType recovered = service.getProductTypeById(newProductType.getId());
+
+        assertNotNull(newProductType.getId());
+        assertEquals(newProductType.getName(), recovered.getName());
+        assertEquals(recovered.getImagen(), newProductType.getImagen());
+        assertEquals(owner.getCompany().getId(), recovered.getIdCompany());
+    }
+
+    @Test
+    void testDuplicatedTypeProductWithName() {
+        service.addTypeInCompany(productType, owner.getId());
+
+        assertThrows(NameDuplicated.class,  () -> service.addTypeInCompany(productType, owner.getId()));
     }
 
     @AfterEach

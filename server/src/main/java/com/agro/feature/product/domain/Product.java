@@ -6,8 +6,8 @@ import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.domain.valueObjects.ProductName;
 import com.agro.shared.valueObjects.porcent.Porcent;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -38,6 +38,8 @@ public class Product {
     @Getter
     private String productType;
 
+    @Column(length = 500)
+    @Size(max = 500)
     @Getter
     private String description;
 
@@ -102,7 +104,7 @@ public class Product {
 
     private void validateFreight(Double freight) {
         if(freight < 0) {
-            throw new NegativePriceException("El precio del flete " + freight + " debe ser mayor a 0");
+            throw new NegativePriceException(freight);
         }
         this.freight = freight;
     }
@@ -112,6 +114,9 @@ public class Product {
 
         if(abs >= 100_000_000d) {
             throw new ListPriceException();
+        }
+        else if(listPrice < 0) {
+            throw new NegativePriceException(listPrice);
         }
         this.listPrice = listPrice;
     }
@@ -155,10 +160,10 @@ public class Product {
             String description,
             List<String> toDelete) {
         setMoney(money);
-        setListPrice(listPrice);
+        validateListPrice(listPrice);
         setIva(iva);
         setBonification(new Porcent(bonification));
-        setFreight(freight);
+        validateFreight(freight);
         setDescription(description);
         optionals.removeIf(o -> toDelete.contains(o.getName()));
         createdAt = LocalDateTime.now();
