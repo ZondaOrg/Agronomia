@@ -4,6 +4,7 @@ import com.agro.core.api.Api;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.productType.dtos.getAll.GetProductTypeMapper;
 import com.agro.feature.productType.dtos.getAll.GetProductTypeResponseDTO;
+import com.agro.feature.productType.dtos.request.ProductTypeRequestDTO;
 import com.agro.feature.productType.dtos.response.ProductTypeResponseDTO;
 import com.agro.feature.productType.services.ProductTypeService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping(Api.PRODUCT_TYPE)
 public class ProductTypeController {
 
-    private ProductTypeService service;
+    private final ProductTypeService service;
 
     public ProductTypeController(ProductTypeService service) {
         this.service = service;
@@ -43,6 +44,15 @@ public class ProductTypeController {
                                                                                     @RequestParam(defaultValue = "9") int size){
         Page<ProductType> productTypes = service.getAllPaginated(userId, page, size);
         return ResponseEntity.ok(PageResponseDTO.from(productTypes.map(ProductTypeResponseDTO::fromModel)));
+    }
+
+    @PostMapping
+    @OwnerEndpoint
+    @Operation(summary = "Crear un tipo de producto asociado a la compañia del usuario logeado")
+    public ResponseEntity<ProductTypeResponseDTO> create(@RequestAttribute("userId") Long  userId, @RequestBody ProductTypeRequestDTO request) {
+        ProductType productType = service.addTypeInCompany(request.toModel(), userId);
+
+        return ResponseEntity.ok(ProductTypeResponseDTO.fromModel(productType));
     }
 
 }

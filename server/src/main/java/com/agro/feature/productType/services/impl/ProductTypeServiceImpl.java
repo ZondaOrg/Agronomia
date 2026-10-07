@@ -1,13 +1,15 @@
 package com.agro.feature.productType.services.impl;
 
+import com.agro.feature.image.domain.Imagen;
 import com.agro.feature.productType.domain.ProductType;
+import com.agro.feature.productType.domain.exceptions.NameDuplicated;
 import com.agro.feature.productType.persistence.ProductTypeDAO;
 import com.agro.feature.productType.services.ProductTypeService;
 import com.agro.feature.user.contracts.UserDataService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     private final ProductTypeDAO dao;
 
     private final UserDataService userDataService;
+
+    private static final Imagen DEFAULT_IMAGE = Imagen.builder()
+            .url("https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Default_rjsfk7.png")
+            .publicId("Default_rjsfk7")
+            .build();
 
     public ProductTypeServiceImpl(ProductTypeDAO dao, UserDataService userDataService) {
         this.dao = dao;
@@ -44,5 +51,21 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public Page<ProductType> getAllPaginated(Long userId, int page, int size) {
         Long idCompany = userDataService.getIdCompanyOfUserId(userId);
         return dao.findAllByIdCompany(PageRequest.of(page, size), idCompany);
+    }
+
+    @Override
+    public ProductType addTypeInCompany(ProductType model, Long userId) {
+        if(dao.existsByName(model.getName())) throw new NameDuplicated("No se puede crear tipos con nombres duplicadas");
+        Long idCompany = userDataService.getIdCompanyOfUserId(userId);
+
+        model.setImagen(DEFAULT_IMAGE);
+        model.setIdCompany(idCompany);
+
+        return add(model);
+    }
+
+    @Override
+    public ProductType getProductTypeById(Long id) {
+        return dao.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontró el tipo con el id: "+id));
     }
 }

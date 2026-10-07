@@ -13,4 +13,8 @@ public interface ProductTypeService {
     void addAllInCompany(List<ProductType> defaultTypes, long idCompany);
 
     Page<ProductType> getAllPaginated(Long userId, int page, int size);
+
+    ProductType addTypeInCompany(ProductType model, Long userId);
+
+    ProductType getProductTypeById(Long id);
 }
