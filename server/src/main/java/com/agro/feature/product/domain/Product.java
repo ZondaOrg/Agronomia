@@ -36,7 +36,7 @@ public class Product {
     private Porcent bonification;
 
     @Getter
-    private String productType;
+    private Long idType;
 
     @Column(length = 500)
     @Size(max = 500)
@@ -62,7 +62,7 @@ public class Product {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
     private Set<Optional> optionals = new HashSet<>();
 
     public Product(
@@ -71,12 +71,12 @@ public class Product {
             Money money,
             Double listPrice,
             IVA iva,
-            String productType,
+            Long idType,
             Integer bonification) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.iva = iva;
-        this.productType = productType;
+        this.idType = idType;
         this.money = money;
         this.description = description;
         this.freight = 0d;
@@ -89,13 +89,13 @@ public class Product {
             Money money,
             Double listPrice,
             IVA iva,
-            String productType,
+            Long idType,
             Integer bonification,
             Double freight) {
         this.name = new ProductName(name);
         this.bonification = new Porcent(bonification);
         this.iva = iva;
-        this.productType = productType;
+        this.idType = idType;
         this.money = money;
         this.description = description;
         validateListPrice(listPrice);
@@ -151,6 +151,10 @@ public class Product {
         return optionals.stream().toList();
     }
 
+    public boolean hasName(String productName) {
+        return name.toEquals(productName);
+    }
+
     public void edit(
             Money money,
             Double listPrice,
@@ -167,5 +171,9 @@ public class Product {
         setDescription(description);
         optionals.removeIf(o -> toDelete.contains(o.getName()));
         createdAt = LocalDateTime.now();
+    }
+
+    public void assocIdType(Long idType) {
+        this.idType =idType;
     }
 }

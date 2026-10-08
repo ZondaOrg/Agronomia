@@ -1,15 +1,16 @@
 package com.agro.feature.product.services.impl;
 
 import com.agro.core.ContainerPostgresql;
+import com.agro.core.TestFixtures;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
+import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
-import com.agro.feature.provider.service.ProviderService;
 import com.agro.shared.service.ResetService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Container;
@@ -25,6 +27,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,55 +35,39 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
+@Import(TestFixtures.class)
 class ProductServiceImplTest {
 
     @Container
     private static PostgreSQLContainer postgres = ContainerPostgresql.getContainer();
 
-    @Autowired
-    private ProductServiceImpl service;
+    @Autowired private ProductServiceImpl service;
+    @Autowired private ProductDAO dao;
+    @Autowired private ResetService resetService;
+    @Autowired private ProviderDataService providerService;
+    @Autowired private TestFixtures fixtures;
 
-    @Autowired
-    private ProductDAO dao;
-
-    @Autowired
-    private ResetService resetService;
-
-    @Autowired
-    private ProviderDataService providerService;
-
-    @Autowired
-    private ProviderService addedProviderService;
-
-    private Product product;
-
+    private TestFixtures.Tenant tenant;
+    private Map<String, ProductType> types;
+    private ProductType semillero;
+    private ProductType tractor;
     private Provider provider;
+    private Product product;
 
     @BeforeEach
     void setUp() {
-        product = new Product(
-                "Product Same",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        );
-        Provider newProvider = Provider.builder()
-                .tradeName("Proveedor Test")
-                .legalName("Proveedor Test S.A.")
-                .cuit("30-11111111-9")
-                .phoneNumber("11-1234-5678")
-                .companyId(1L)
-                .build();
+        tenant = fixtures.tenant("Empresa 1", "30-11111111-1", "owner@gmail.com");
+        types = fixtures.defaultTypes(tenant.owner().getId());
+        semillero = types.get("Semillero");
+        tractor = types.get("Tractor");
 
-        provider = addedProviderService.save(newProvider);
+        provider = fixtures.provider(tenant.company().getId());
+        product = fixtures.product("Product Same", semillero.getId());
     }
 
     @Test
     void testSeAgregaUnProducto() {
-        Product addedProduct = service.add(product, "type", provider.getId());
+        Product addedProduct = service.add(product, semillero.getId(), provider.getId());
 
         Provider recovered = providerService.getProviderById(provider.getId());
 
@@ -90,171 +77,116 @@ class ProductServiceImplTest {
 
     @Test
     void testSiSeIntentaCrearUnProductoParaUnProvedorInexistente_LanzaExcepcion() {
-        assertThrows(EntityNotFoundException.class, () -> service.add(product, "type", 0L));
+        assertThrows(EntityNotFoundException.class,
+                () -> service.add(product, semillero.getId(), 0L));
     }
 
     @Test
     void testAlCrearUnProductoConNombreYaRegistradoParaUnProvedor_LanzaExcepcion() {
-        Product failProduct = new Product(
-                "Product Same",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        );
-        service.add(product, "type", provider.getId());
-        assertThrows(SameProductNameException.class, () -> service.add(failProduct, "type", provider.getId()));
+        Product failProduct = fixtures.product("Product Same", semillero.getId());
+        service.add(product, semillero.getId(), provider.getId());
+
+        assertThrows(SameProductNameException.class,
+                () -> service.add(failProduct, semillero.getId(), provider.getId()));
     }
 
     @Test
     void testUnaBusquedaPaginaTraeTodosLosProductosDelProveedor() {
-        service.add(
-                new Product(
-                "Product 1",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                        "a",
-                20
-                ), "type", provider.getId());
-        service.add(new Product(
-                "Product 2",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        service.add(new Product(
-                "Product 3",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        service.add(new Product(
-                "Product 4",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, "", provider.getId());
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 1")));
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 2")));
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 3")));
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Product 4")));
+        addProducts("Product 1", "Product 2", "Product 3", "Product 4");
+
+        Page<Product> page = service.getPageOfProducts(0, 5, "", provider.getId());
+
+        assertTrue(hasProduct(page, "Product 1"));
+        assertTrue(hasProduct(page, "Product 2"));
+        assertTrue(hasProduct(page, "Product 3"));
+        assertTrue(hasProduct(page, "Product 4"));
     }
 
     @Test
     void testUnaBusquedaPaginaFiltraLosProductosDelProveedor() {
-        String filter = "Tractor";
+        addProducts("Tractorcito 1", "tractorcito 2", "Casechadora 3", "Casechadora 4");
 
-        service.add(new Product(
-                "Tractorcito 1",
-                        "product nss",
-                        Money.ARS,
-                        10000000d,
-                        IVA.GENERAL,
-                        "a",
-                        20
-                ),
-                "type",
-                provider.getId());
-        service.add(new Product(
-                "tractorcito 2",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        service.add(new Product(
-                "Casechadora 3",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        service.add(new Product(
-                "Casechadora 4",
-                "product nss",
-                Money.ARS,
-                10000000d,
-                IVA.GENERAL,
-                "a",
-                20
-        ), "type", provider.getId());
-        Page<Product> pageOfProducts = service.getPageOfProducts(0, 5, filter, provider.getId());
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Tractorcito 1")));
-        assertTrue(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "tractorcito 2")));
-        assertFalse(pageOfProducts.stream().anyMatch(page -> Objects.equals(page.getName(), "Casechadora 3")));
+        Page<Product> page = service.getPageOfProducts(0, 5, "Tractor", provider.getId());
+
+        assertTrue(hasProduct(page, "Tractorcito 1"));
+        assertTrue(hasProduct(page, "tractorcito 2"));
+        assertFalse(hasProduct(page, "Casechadora 3"));
     }
 
     @Test
     void testSeRecuperaUnProductoPorSuId() {
-        Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product pruductFound = service.findByIdWithinOptionals(addedProduct.getId());
-        assertEquals(addedProduct.getId(), pruductFound.getId());
+        Product addedProduct = service.add(product, tractor.getId(), provider.getId());
+
+        Product found = service.findByIdWithinOptionals(addedProduct.getId());
+
+        assertEquals(addedProduct.getId(), found.getId());
     }
 
     @Test
     void testSeRecuperaUnProductoPorSuIdConSusOpcionales() {
         Optional optional = new Optional(product, "optional 1", 5D);
-        Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product pruductFound = service.findByIdWithinOptionals(addedProduct.getId());
-        assertTrue(pruductFound.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+        Product addedProduct = service.add(product, tractor.getId(), provider.getId());
+
+        Product found = service.findByIdWithinOptionals(addedProduct.getId());
+
+        assertTrue(found.getOptionals().stream()
+                .anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
     @Test
     void testSeEditaLosCamposDeUnProducto() {
-        Product addedProduct = service.add(product, "Camionetita", provider.getId());
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "nueva descripción", new ArrayList<>(), new ArrayList<Long>());
-        assertEquals(Money.USD, editedProduct.getMoney());
-        assertEquals(1025007d, editedProduct.getListPrice());
-        assertEquals(IVA.REDUCIDA, editedProduct.getIva());
-        assertEquals(50, editedProduct.getBonification());
-        assertEquals(8D, editedProduct.getFreight());
-        assertEquals("nueva descripción", editedProduct.getDescription());
+        Product addedProduct = service.add(product, tractor.getId(), provider.getId());
+
+        Product edited = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D,
+                "nueva descripción", new ArrayList<>(), new ArrayList<Long>());
+
+        assertEquals(Money.USD, edited.getMoney());
+        assertEquals(1025007d, edited.getListPrice());
+        assertEquals(IVA.REDUCIDA, edited.getIva());
+        assertEquals(50, edited.getBonification());
+        assertEquals(8D, edited.getFreight());
+        assertEquals("nueva descripción", edited.getDescription());
     }
 
     @Test
     void testSeAgregaOpcionalesAlEditarUnProducto() {
-        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product addedProduct = service.add(product, tractor.getId(), provider.getId());
 
         Optional optional = new Optional(addedProduct, "optional 1", 5D);
-        List<Optional> toAdd = new ArrayList<Optional>();
-        toAdd.add(optional);
+        List<Optional> toAdd = new ArrayList<>(List.of(optional));
 
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", toAdd, new ArrayList<Long>());
-        assertTrue(editedProduct.getOptionals().stream().anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
+        Product edited = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D,
+                "", toAdd, new ArrayList<Long>());
+
+        assertTrue(edited.getOptionals().stream()
+                .anyMatch(o -> Objects.equals(o.getName(), optional.getName())));
     }
 
     @Test
     void testSeEliminanOpcionalesAlEditarUnProducto() {
         Optional optional = new Optional(product, "optional 1", 5D);
-        Product addedProduct = service.add(product, "Camionetita", provider.getId());
+        Product addedProduct = service.add(product, tractor.getId(), provider.getId());
 
-        List<Long> toDelete = new ArrayList<Long>();
-        toDelete.add(optional.getId());
+        List<Long> toDelete = new ArrayList<>(List.of(optional.getId()));
 
-        Product editedProduct = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", new ArrayList<>(), toDelete);
-        assertTrue(editedProduct.getOptionals().isEmpty());
+        Product edited = service.edit(addedProduct, Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D,
+                "", new ArrayList<>(), toDelete);
+
+        assertTrue(edited.getOptionals().isEmpty());
     }
 
     @AfterEach
     void tearDown() {
         resetService.resetAll();
+    }
+
+    private void addProducts(String... names) {
+        for (String name : names) {
+            service.add(fixtures.product(name, semillero.getId()), semillero.getId(), provider.getId());
+        }
+    }
+
+    private boolean hasProduct(Page<Product> page, String name) {
+        return page.stream().anyMatch(p -> p.hasName(name));
     }
 }

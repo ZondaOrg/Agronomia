@@ -1,6 +1,7 @@
 package com.agro.feature.productType.services.impl;
 
 import com.agro.feature.image.domain.Imagen;
+import com.agro.feature.productType.contract.ProductTypeDataService;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.productType.domain.exceptions.NameDuplicated;
 import com.agro.feature.productType.persistence.ProductTypeDAO;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ProductTypeServiceImpl implements ProductTypeService {
+public class ProductTypeServiceImpl implements ProductTypeService, ProductTypeDataService {
     private static final String DEFAULT_IMAGE_URL =
             "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Default_rjsfk7.png";
     private static final String DEFAULT_IMAGE_PUBLIC_ID = "Default_rjsfk7";
@@ -71,10 +72,20 @@ public class ProductTypeServiceImpl implements ProductTypeService {
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el tipo con el id: " + id));
     }
 
+    @Override
+    public List<ProductType> findAllByCompanyId(Long companyId) {
+        return dao.findAllByIdCompany(companyId);
+    }
+
     private static Imagen defaultImage() {
         return Imagen.builder()
                 .url(DEFAULT_IMAGE_URL)
                 .publicId(DEFAULT_IMAGE_PUBLIC_ID)
                 .build();
+    }
+
+    @Override
+    public boolean existType(Long idType) {
+        return dao.existsById(idType);
     }
 }
