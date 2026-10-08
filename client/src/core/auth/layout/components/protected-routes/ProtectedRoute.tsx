@@ -1,4 +1,3 @@
-import { VISITANT } from "@/core/routes/visitant/paths";
 import Spinner from "@/shared/components/spinner/Spinner";
 import { Navigate } from "react-router";
 
@@ -22,7 +21,7 @@ export const ProtectedRoute = ({
     children,
     userRole,
     allowedRoles,
-    redirectTo = VISITANT.LOGIN,
+    redirectTo = "/login",
 }: Props) => {
     const isRoleCheckPending =
         isAuthenticated &&
@@ -47,7 +46,7 @@ export const ProtectedRoute = ({
     if (!hasRequiredRole(userRole, allowedRoles))
         return (
             <Navigate
-                to={VISITANT.LOGIN}
+                to="/login"
                 replace
             />
         );

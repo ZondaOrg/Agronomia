@@ -2,7 +2,7 @@ import { useMatches } from "react-router";
 
 interface Match {
     pathname: string;
-    handle?: { breadcrumb?: string };
+    handle?: { breadcrumb?: string; pageTitle?: string | false };
 }
 
 export const usePageTitle = () => {
@@ -10,5 +10,11 @@ export const usePageTitle = () => {
     const crumbs = matches.filter((match) => match.handle?.breadcrumb);
     const lastCrumb = crumbs[crumbs.length - 1];
 
-    return lastCrumb?.handle?.breadcrumb ?? "";
+    if (lastCrumb?.handle?.pageTitle === false) return "";
+
+    return (
+        lastCrumb?.handle?.pageTitle ??
+        lastCrumb?.handle?.breadcrumb ??
+        ""
+    );
 };

@@ -8,7 +8,7 @@ import {
 } from "./styles";
 
 /** Tamaños disponibles para el título del panel. */
-export type TitleSize = "sm" | "md" | "xl";
+export type TitleSize = "sm" | "md" | "xl" | "xxl" | "xxxl";
 
 /** Anchos máximos disponibles para el panel. */
 export type PanelMaxWidth = "sm" | "md" | "lg" | "xl" | "full";

@@ -31,7 +31,7 @@ const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
             />
             <div className={bodyWrapper}>
                 <Breadcrumb />
-                <h1 className={h1}>{title}</h1>
+                {title && <h1 className={h1}>{title}</h1>}
                 <div>
                     <Outlet />
                 </div>
