@@ -119,7 +119,7 @@ export const AdminRoutes: RouteData[] = [
             {
                 path: `${ADMIN_ROUTES.PRODUCTS.ROOT}`,
                 element: <Products />,
-                handle: { breadcrumb: "Productos" },
+                handle: { breadcrumb: "Productos", pageTitle: false },
                 children: [
                     {
                         index: true,

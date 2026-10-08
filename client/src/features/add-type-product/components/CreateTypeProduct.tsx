@@ -30,13 +30,13 @@ export const CreateTypeProduct = ({
     const handleSubmit = useCallback(
         async (data: InferData<typeof typeProductSchema>) => {
             await addTypeProduct(data);
+            onCreated?.();
         },
-        [addTypeProduct],
+        [addTypeProduct, onCreated],
     );
 
     const handleNotificationClose = () => {
         if (action === "success") {
-            onCreated?.();
             onClose();
         }
         onRefresh();
