@@ -1,8 +1,8 @@
 import type { User } from "@/shared/domain/user/user";
-import type { Credentials } from "../types/credentials";
+import { removeToken } from "@/core/server/services/jwt/jwt";
 
-function logout(user: Credentials): Promise<User | undefined> {
-    void user;
+function logout(email: string): Promise<User | undefined> {
+    removeToken();
     return Promise.resolve(undefined);
 }
 

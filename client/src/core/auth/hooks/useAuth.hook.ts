@@ -9,5 +9,5 @@ export interface UseAuth {
     error?: HttpError;
     refresh: () => void;
     login: (credentials: Credentials) => Promise<User | undefined>;
-    logout: (credentials: Credentials) => Promise<User | undefined>;
+    logout: (email: string) => Promise<User | undefined>;
 }

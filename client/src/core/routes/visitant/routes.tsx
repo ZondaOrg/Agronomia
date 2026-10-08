@@ -1,13 +1,13 @@
 import Login from "@/features/login/pages/init/Login";
 import type { RouteData } from "../route-data";
-import { LOGIN } from "./paths";
+import { VISITANT } from "./paths";
 
-const loginRoutes: RouteData[] = [
+const VisitantRoutes: RouteData[] = [
     {
-        path: LOGIN.INIT,
+        path: VISITANT.LOGIN,
         element: <Login />,
         children: []
     }
 ];
 
-export default loginRoutes;
+export default VisitantRoutes;
