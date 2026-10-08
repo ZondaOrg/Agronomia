@@ -9,7 +9,7 @@ public class GetProductMapper {
         return new GetProductResponseDTO(
                 product.getId(),
                 product.getName(),
-                product.getProductType(),
+                product.getIdType(),
                 product.getMoney(),
                 product.getListPrice(),
                 product.getBonification(),

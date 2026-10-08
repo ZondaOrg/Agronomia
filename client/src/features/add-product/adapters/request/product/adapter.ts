@@ -7,7 +7,7 @@ import { Iva } from "./iva";
 export function productRequestAdapter(productSchema: AddProductSchema, optionalsSchema: OptionalSchema[]): AddProductRequest {
     return {
         name: productSchema.name,
-        type: productSchema.type,
+        type: Number(productSchema.type),
         money: productSchema.money,
         listPrice: Number(productSchema.listPrice),
         iva: adapterIva(productSchema.iva),

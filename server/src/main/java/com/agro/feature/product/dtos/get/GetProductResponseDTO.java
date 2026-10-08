@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public record GetProductResponseDTO(
         Long id,
         String name,
-        String type,
+        Long idType,
         Money money,
         Double listPrice,
         Integer bonification,

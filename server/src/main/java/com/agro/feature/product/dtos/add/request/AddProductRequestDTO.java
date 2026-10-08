@@ -10,7 +10,7 @@ import java.util.Set;
 
 public record AddProductRequestDTO(
         @NotNull @NotBlank @NotEmpty String name,
-        @NotNull @NotBlank @NotEmpty String type,
+        @NotNull @NotBlank @NotEmpty Long idType,
         @NotNull Money money,
         @NotNull Double listPrice,
         @NotNull IVA iva,

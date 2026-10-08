@@ -22,7 +22,7 @@ public class ProductTypeSeeder implements EntitySeeder {
 
     static {
         DEFAULT_TYPES.put("Tractor", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166429/Tractor_gygv6c.png");
-        DEFAULT_TYPES.put("Tolva auto descartable", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Tolva_py7063.png");
+        DEFAULT_TYPES.put("Tolva", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Tolva_py7063.png");
         DEFAULT_TYPES.put("Semillero", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166429/Semilleros_tejmoc.png");
         DEFAULT_TYPES.put("Acoplado", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166428/Acoplados_cvuvmu.png");
         DEFAULT_TYPES.put("Desmalezadora", "https://res.cloudinary.com/dvkvlpq07/image/upload/v1791166429/Desmalezadoras_kzz3xg.png");

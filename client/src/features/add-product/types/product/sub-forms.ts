@@ -3,8 +3,9 @@ import { ADD_PRODUCT } from "../../adapters/request/api-contract";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
 import { moneys } from "../../../../shared/domain/money/money";
 import { ivaPorcents } from "@/shared/domain/iva/iva";
+import type { ProductType } from "../../domain/product-type";
 
-const productSubForms = (productTypes: string[]) =>
+const productSubForms = (productTypes: ProductType[]) =>
     createSubForms([
         {
             name: "Identificación",
@@ -15,7 +16,11 @@ const productSubForms = (productTypes: string[]) =>
                         motive: "Tipo de producto",
                         name: ADD_PRODUCT.type,
                         type: "select",
-                        options: createSelectOptions(productTypes),
+                        options: productTypes.map(({ id, name }) => ({
+                            id,
+                            label: name,
+                            value: String(id),
+                        })),
                     },
                 ],
                 [

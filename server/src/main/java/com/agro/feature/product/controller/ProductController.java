@@ -48,7 +48,7 @@ public class ProductController {
     ){
         Product product = AddProductMapper.dtoToModel(request);
         Product productWithOptionals = AddedOptionalsMapper.dtosToModels(product, request.optionals());
-        Product addedProduct = productService.add(productWithOptionals, request.type(), providerId);
+        Product addedProduct = productService.add(productWithOptionals, request.idType(), providerId);
         AddProductResponseDTO productResponseDto = AddProductMapper.modelToDto(addedProduct);
         return ResponseEntity.ok(productResponseDto);
     }

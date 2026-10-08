@@ -6,6 +6,7 @@ import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.persistence.dao.OptionalDAO;
 import com.agro.feature.product.persistence.dao.ProductDAO;
 import com.agro.feature.product.services.ProductService;
+import com.agro.feature.productType.contract.ProductTypeDataService;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,25 +20,29 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
-    private ProductDAO dao;
-    private OptionalDAO optionalDao;
-    private ProviderDataService providerContract;
+    private final ProductDAO dao;
+    private final OptionalDAO optionalDao;
+    private final ProviderDataService providerContract;
+    private final ProductTypeDataService typeContract;
 
-    public ProductServiceImpl(ProductDAO dao, ProviderDataService providerContract, OptionalDAO optionalDao) {
+    public ProductServiceImpl(ProductDAO dao, ProviderDataService providerContract, OptionalDAO optionalDao, ProductTypeDataService typeContract) {
         this.dao = dao;
         this.providerContract = providerContract;
         this.optionalDao = optionalDao;
+        this.typeContract = typeContract;
     }
 
     @Override
-    public Product add(Product product, String productType, Long idProvider) {
-        if(!providerContract.existProvider(idProvider)) {
-            throw new EntityNotFoundException("No se puede crear un producto sin asignar un provedor");
-        }
+    public Product add(Product product, Long idType, Long idProvider) {
+        if(!providerContract.existProvider(idProvider)) throw new EntityNotFoundException("No se puede crear un producto sin asignar un provedor");
+        if(!typeContract.existType(idType)) throw new EntityNotFoundException("No se puede crear un tipo de producto");
+
         product.assocIdProvider(idProvider);
         Optional<String> name = dao.findNameByProvider(idProvider, product.getFormatName());
         name.ifPresent(product::validateName);
+        product.assocIdType(idType);
         Product saved = dao.save(product);
+
 
         providerContract.addProduct(idProvider, saved.getId());
         return saved;

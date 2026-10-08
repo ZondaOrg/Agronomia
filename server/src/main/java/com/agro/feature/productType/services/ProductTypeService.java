@@ -3,6 +3,7 @@ package com.agro.feature.productType.services;
 import com.agro.feature.productType.domain.ProductType;
 import org.springframework.data.domain.Page;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ProductTypeService {
@@ -17,4 +18,6 @@ public interface ProductTypeService {
     ProductType addTypeInCompany(ProductType model, Long userId);
 
     ProductType getProductTypeById(Long id);
+
+    List<ProductType> findAllByCompanyId(Long companyId);
 }

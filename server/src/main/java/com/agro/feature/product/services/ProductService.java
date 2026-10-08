@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ProductService {
-    Product add(Product product, String productType, Long idProvider);
+    Product add(Product product, Long idType, Long idProvider);
 
     Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long providerId);
 

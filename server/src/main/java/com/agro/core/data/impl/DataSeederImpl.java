@@ -2,6 +2,7 @@ package com.agro.core.data.impl;
 
 import com.agro.core.data.DataSeeder;
 import com.agro.core.data.seeder.entity.SeedContext;
+import com.agro.core.data.seeder.impl.ProductSeeder;
 import com.agro.core.data.seeder.impl.ProductTypeSeeder;
 import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.client.domain.Client;
@@ -14,10 +15,6 @@ import com.agro.feature.payment.domain.Application;
 import com.agro.feature.payment.domain.Payment;
 import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.payment.service.VigentesPaymentService;
-import com.agro.feature.product.domain.IVA;
-import com.agro.feature.product.domain.Money;
-import com.agro.feature.product.domain.Product;
-import com.agro.feature.product.services.ProductService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.domain.Traveler;
 import com.agro.feature.provider.service.ProviderService;
@@ -57,23 +54,23 @@ public class DataSeederImpl implements DataSeeder {
     private final ProviderService providerService;
     private final ClientService clientService;
     private final VigentesPaymentService vigentesPaymentService;
-    private final ProductService productService;
     private final ProductTypeSeeder productTypeSeeder;
+    private final ProductSeeder productSeeder;
 
     public DataSeederImpl(
             UserService userService,
             ProviderService providerService,
             ClientService clientService,
             VigentesPaymentService vigentesPaymentService,
-            ProductService productService,
-            ProductTypeSeeder productTypeSeeder
+            ProductTypeSeeder productTypeSeeder,
+            ProductSeeder productSeeder
     ) {
         this.userService = userService;
         this.providerService = providerService;
         this.clientService = clientService;
         this.vigentesPaymentService = vigentesPaymentService;
-        this.productService = productService;
         this.productTypeSeeder = productTypeSeeder;
+        this.productSeeder = productSeeder;
     }
 
     @Override
@@ -140,185 +137,12 @@ public class DataSeederImpl implements DataSeeder {
         SeedContext context = new SeedContext();
         context.setCompanyId(company.getId());
         context.setOwnerUserId(user.getId());
-        productTypeSeeder.seed(context);
 
-        createProducts(company.getId());
+        productTypeSeeder.seed(context);
+        productSeeder.seed(context);
+
         createProviders(company.getId());
         createClients(company.getId(), user.getId());
-    }
-
-    private void createProducts(Long companyId) {
-        Provider provider1 = providerService.save(Provider.builder()
-                .tradeName("Agroinsumos del Norte")
-                .legalName("Agroinsumos del Norte S.R.L.")
-                .cuit("31-87654321-1")
-                .phoneNumber("11-4444-5555")
-                .companyId(companyId)
-                .build()
-        );
-
-        Provider provider2 = providerService.save(Provider.builder()
-                .tradeName("Agroinsumos del Norte")
-                .legalName("Agroinsumos del Norte S.R.L.")
-                .cuit("37-87654121-6")
-                .phoneNumber("11-4444-5555")
-                .companyId(companyId)
-                .build()
-        );
-
-
-        List<Product> products1 = List.of(
-                new Product(
-                        "Tractorzote",
-                        "Tractor Mega grande",
-                        Money.ARS,
-                        1330D,
-                        IVA.GENERAL,
-                        "Tractor",
-                        50,
-                        10D
-                ),
-                new Product(
-                        "Tractocito",
-                        "Tractor chiquito",
-                        Money.ARS,
-                        50D,
-                        IVA.GENERAL,
-                        "Tractor",
-                        50
-                ),
-                new Product(
-                        "Camioncito",
-                        "Camion chiquito",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Camión",
-                        50,
-                        30D
-                ),
-                new Product(
-                        "Camionzote",
-                        "Camion grande",
-                        Money.ARS,
-                        20D,
-                        IVA.REDUCIDA,
-                        "Camión",
-                        50,
-                        30D
-                ),
-                new Product(
-                        "Cosechadora 1",
-                        "Cosechadora mediana",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Cosechadora",
-                        50,
-                        40D
-                ),
-                new Product(
-                        "Cosechadora 2",
-                        "Cosechadora chica",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Cosechadora",
-                        50,
-                        40D
-                ),
-                new Product(
-                        "Palota",
-                        "Pala para salir a laburar",
-                        Money.ARS,
-                        8000D,
-                        IVA.GENERAL,
-                        "Pala",
-                        99,
-                        800D
-                ),
-                new Product(
-                        "PalotITA",
-                        "Pala para salir a laburar poco",
-                        Money.ARS,
-                        800D,
-                        IVA.GENERAL,
-                        "Pala",
-                        50,
-                        60D
-                )
-        );
-
-        List<Product> products2 = List.of(
-                new Product(
-                        "Tractorzote",
-                        "Tractor Mega grande",
-                        Money.ARS,
-                        1330D,
-                        IVA.GENERAL,
-                        "Tractor",
-                        50,
-                        10D
-                ),
-                new Product(
-                        "Tractocito",
-                        "Tractor chiquito",
-                        Money.ARS,
-                        50D,
-                        IVA.GENERAL,
-                        "Tractor",
-                        50
-                ),
-                new Product(
-                        "Camioncito",
-                        "Camion chiquito",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Camión",
-                        50,
-                        30D
-                ),
-                new Product(
-                        "Camionzote",
-                        "Camion grande",
-                        Money.ARS,
-                        20D,
-                        IVA.REDUCIDA,
-                        "Camión",
-                        50,
-                        30D
-                ),
-                new Product(
-                        "Cosechadora 1",
-                        "Cosechadora mediana",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Cosechadora",
-                        50,
-                        40D
-                ),
-                new Product(
-                        "Cosechadora 2",
-                        "Cosechadora chica",
-                        Money.USD,
-                        1D,
-                        IVA.REDUCIDA,
-                        "Cosechadora",
-                        50,
-                        40D
-                )
-        );
-
-        products1.forEach(product ->
-                productService.add(product, "Cosechadora", provider1.getId())
-        );
-
-        products2.forEach(product ->
-                productService.add(product, "Cosechadora", provider2.getId())
-        );
-
     }
 
     private void createProviders(Long companyId) {
