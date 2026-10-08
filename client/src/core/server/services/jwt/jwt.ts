@@ -24,6 +24,13 @@ export function isAuthenticate(): boolean {
 }
 
 /* 
+    PROPÓSITO: Elimina el token JWT de localStorage
+*/
+export function removeToken() {
+    localStorage.removeItem(TOKEN_KEY);
+}
+
+/* 
     PROPÓSITO: Obtiene el claim sub del payload de un token JWT.
     PRECONDICIÓN: El usuario debe estar authenticado
 */
