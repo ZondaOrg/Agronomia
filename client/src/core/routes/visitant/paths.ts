@@ -1,4 +1,4 @@
 export const VISITANT = {
-    LOGIN: '/',
-    ACCOUNT_LOCKED: '/account-locked'
-}
+    LOGIN: "/login",
+    ACCOUNT_LOCKED: "/account-locked",
+};
