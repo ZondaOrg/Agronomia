@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import ModalForm from "@/shared/components/modal/ModalForm";
+import NotifyHandler from "@/shared/components/notify/NotifyHandler";
 import type { InferData } from "@/shared/components/forms/validation-form/shema";
 import { useAddTypeProduct } from "../hooks/use-add-type-product";
 import { typeProductSchema } from "../types/type-product-schema";
@@ -16,28 +17,51 @@ export const CreateTypeProduct = ({
     onClose,
     onCreated,
 }: CreateTypeProductProps) => {
-    const { addTypeProduct, error, loading } = useAddTypeProduct();
+    const {
+        addTypeProduct,
+        action,
+        isCancel,
+        loading,
+        notify,
+        onRefresh,
+        handleCancelNotify,
+    } = useAddTypeProduct();
 
     const handleSubmit = useCallback(
         async (data: InferData<typeof typeProductSchema>) => {
             await addTypeProduct(data);
-            onCreated?.();
-            onClose();
         },
-        [addTypeProduct, onClose, onCreated],
+        [addTypeProduct],
     );
 
+    const handleNotificationClose = () => {
+        if (action === "success") {
+            onCreated?.();
+            onClose();
+        }
+        onRefresh();
+    };
+
     return (
-        <ModalForm
-            isOpen={isOpen}
-            onCancel={onClose}
-            onSubmit={handleSubmit}
-            subForms={typeProductSubForms}
-            schema={typeProductSchema}
-            buttonData={{ text: "Añadir tipo" }}
-            title="Añadir tipo de producto"
-            loading={loading}
-            error={error?.getMessage}
-        />
+        <NotifyHandler
+            notify={notify}
+            action={action}
+            isCancel={isCancel}
+            isBack={false}
+            refresh={handleNotificationClose}
+            onCancel={handleCancelNotify}
+            onSuccess={handleNotificationClose}
+        >
+            <ModalForm
+                isOpen={isOpen}
+                onCancel={onClose}
+                onSubmit={handleSubmit}
+                subForms={typeProductSubForms}
+                schema={typeProductSchema}
+                buttonData={{ text: "Añadir tipo" }}
+                title="Añadir tipo de producto"
+                loading={loading}
+            />
+        </NotifyHandler>
     );
 };
