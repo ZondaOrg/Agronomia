@@ -26,6 +26,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(name = "provider_id", nullable = false)
     private Long provider_id;
 

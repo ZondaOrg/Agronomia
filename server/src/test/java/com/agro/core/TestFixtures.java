@@ -120,6 +120,16 @@ public class TestFixtures {
                 .build());
     }
 
+    public Provider provider(Long companyId, String tradeName, String cuit) {
+        return providerService.save(Provider.builder()
+                .tradeName(tradeName)
+                .legalName(tradeName + " S.A.")
+                .cuit(cuit)
+                .phoneNumber("11-1234-5678")
+                .companyId(companyId)
+                .build());
+    }
+
     public Product product(String name, Long typeId) {
         return new Product(name, "product nss", Money.ARS, 10000000d, IVA.GENERAL, typeId, 20);
     }
