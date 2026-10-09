@@ -108,13 +108,14 @@ public class ProductController {
     }
 
     @GetMapping("/{typeId}")
-    @Operation(summary = "Buscar Productos por su tipo")
+    @Operation(summary = "Buscar Productos por su tipo y un termino")
     public ResponseEntity<TableResponseDTO<ProductRowSimpleResponse>> getProductsByType(
             @PathVariable Long typeId,
             @RequestAttribute("userId") Long  userId,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "5") Integer size){
-        Page<ProductWithProvider> productPage = findProductsWithProvider.getPageOfProductsByType(typeId, page, size, userId);
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "") String search){
+        Page<ProductWithProvider> productPage = findProductsWithProvider.getPageOfProductsByType(typeId, page, size,search, userId);
 
         return ResponseEntity.ok(TableProductByTypeMapper.modelToDto(productPage));
     }

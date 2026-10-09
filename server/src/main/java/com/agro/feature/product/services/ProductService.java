@@ -7,13 +7,12 @@ import org.springframework.data.domain.Page;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ProductService {
     Product add(Product product, Long idType, Long idProvider);
 
     Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long providerId);
-
-    Page<Product> getPageOfProducts(Integer page, Integer size, Long idType, Collection<Long> providerIds);
 
     Product findByIdWithinOptionals(Long id);
 
@@ -28,4 +27,5 @@ public interface ProductService {
             List<com.agro.feature.product.domain.Optional> optionalsToAdd,
             List<Long> OptionalsToDelete);
 
+    Page<Product> getPageOfProducts(Integer page, Integer size, Long typeId, String search, Set<Long> longs);
 }

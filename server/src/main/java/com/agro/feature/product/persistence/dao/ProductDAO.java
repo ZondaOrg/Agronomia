@@ -53,8 +53,14 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
     )
     Page<Product> findAllBYIdType(@Param("idType") Long idType, PageRequest pageRequest);
 
-    @Query("SELECT p FROM Product p WHERE p.idType = :idType AND p.provider_id IN :providerIds")
+    @Query("""
+            FROM Product p 
+            WHERE p.idType = :idType 
+                AND p.provider_id IN :providerIds
+                AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%')) 
+            """)
     Page<Product> findAllByIdTypeAndProviderIds(@Param("idType") Long idType,
                                                 @Param("providerIds") Collection<Long> providerIds,
+                                                @Param("search")  String search,
                                                 Pageable pageable);
 }

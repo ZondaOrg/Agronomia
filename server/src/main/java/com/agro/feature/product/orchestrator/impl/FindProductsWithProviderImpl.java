@@ -30,14 +30,14 @@ public class FindProductsWithProviderImpl implements FindProductsWithProvider {
     }
 
     @Override
-    public Page<ProductWithProvider> getPageOfProductsByType(Long typeId, Integer page, Integer size, Long userId) {
+    public Page<ProductWithProvider> getPageOfProductsByType(Long typeId, Integer page, Integer size, String search, Long userId) {
         Long idCompany = userDataService.getIdCompanyOfUserId(userId);
         List<Provider> providers = providerDataService.getProvidersByCompany(idCompany);
 
         Map<Long, String> providerNameById = providers.stream()
                 .collect(Collectors.toMap(Provider::getId, Provider::getLegalName, (a, b) -> a));
 
-        Page<Product> productPage = productService.getPageOfProducts(page, size, typeId, providerNameById.keySet());
+        Page<Product> productPage = productService.getPageOfProducts(page, size, typeId, search, providerNameById.keySet());
 
         return productPage.map(product -> new ProductWithProvider(
                 product.getId(),

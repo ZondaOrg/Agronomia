@@ -59,6 +59,8 @@ class FindProductsWithProviderTest {
         provider2 = fixtures.provider(tenant.company().getId(), "Proveedor Dos", "30-22222222-9");
     }
 
+    // ---------- tipo, proveedor y paginación ----------
+
     @Test
     void testDevuelveLosProductosDelTipoConElNombreDeSuProveedor() {
         addProduct("Semilla A", semillero, provider1);
@@ -117,11 +119,11 @@ class FindProductsWithProviderTest {
         assertEquals(1, last.getContent().size());
     }
 
+    // ---------- aislamiento entre empresas ----------
+
     @Test
     void testNoMuestraProductosDeProveedoresDeOtraEmpresa() {
-        TestFixtures.Tenant other = fixtures.tenant("Empresa 2", "30-22222222-2", "owner2@gmail.com");
-        ProductType otherSemillero = fixtures.savedType("Semillero Ajeno", other.owner().getId());
-        Provider otherProvider = fixtures.provider(other.company().getId(), "Proveedor Ajeno", "30-33333333-9");
+        Provider otherProvider = otherCompanyProvider();
 
         addProduct("Semilla Propia", semillero, provider1);
         addProduct("Semilla Ajena", semillero, otherProvider);
@@ -132,18 +134,88 @@ class FindProductsWithProviderTest {
         assertFalse(namesOf(page).contains("Semilla Ajena"));
     }
 
+    // ---------- búsqueda ----------
+
+    @Test
+    void testLaBusquedaFiltraLosProductosPorNombre() {
+        addProduct("Semilla Maiz", semillero, provider1);
+        addProduct("Semilla Soja", semillero, provider1);
+        addProduct("Girasol", semillero, provider2);
+
+        Page<ProductWithProvider> page = find(semillero, 0, 10, "Semilla");
+
+        assertEquals(Set.of("Semilla Maiz", "Semilla Soja"), namesOf(page));
+    }
+
+    @Test
+    void testLaBusquedaNoDistingueMayusculasDeMinusculas() {
+        addProduct("Semilla Maiz", semillero, provider1);
+        addProduct("Girasol", semillero, provider1);
+
+        Page<ProductWithProvider> page = find(semillero, 0, 10, "sEMILLA");
+
+        assertEquals(Set.of("Semilla Maiz"), namesOf(page));
+    }
+
+    @Test
+    void testLaBusquedaSinCoincidenciasDevuelveUnaPaginaVacia() {
+        addProduct("Semilla Maiz", semillero, provider1);
+
+        Page<ProductWithProvider> page = find(semillero, 0, 10, "Inexistente");
+
+        assertTrue(page.isEmpty());
+        assertEquals(0, page.getTotalElements());
+    }
+
+    @Test
+    void testLaBusquedaNoMuestraProductosDeOtraEmpresaAunqueCoincidanEnNombre() {
+        Provider otherProvider = otherCompanyProvider();
+
+        addProduct("Semilla Propia", semillero, provider1);
+        addProduct("Semilla Ajena", semillero, otherProvider);
+
+        Page<ProductWithProvider> page = find(semillero, 0, 10, "Semilla");
+
+        assertEquals(Set.of("Semilla Propia"), namesOf(page));
+    }
+
+    @Test
+    void testLaBusquedaMantieneLosTotalesDeLaPaginacion() {
+        addProduct("Semilla 1", semillero, provider1);
+        addProduct("Semilla 2", semillero, provider1);
+        addProduct("Semilla 3", semillero, provider2);
+        addProduct("Girasol", semillero, provider2);
+
+        Page<ProductWithProvider> page = find(semillero, 0, 2, "Semilla");
+
+        assertEquals(2, page.getContent().size());
+        assertEquals(3, page.getTotalElements());
+        assertEquals(2, page.getTotalPages());
+    }
+
     @AfterEach
     void tearDown() {
         resetService.resetAll();
     }
 
+    // ---------- helpers ----------
 
     private Product addProduct(String name, ProductType type, Provider provider) {
         return productService.add(fixtures.product(name, type.getId()), type.getId(), provider.getId());
     }
 
+    private Provider otherCompanyProvider() {
+        TestFixtures.Tenant other = fixtures.tenant("Empresa 2", "30-22222222-2", "owner2@gmail.com");
+        return fixtures.provider(other.company().getId(), "Proveedor Ajeno", "30-33333333-9");
+    }
+
     private Page<ProductWithProvider> find(ProductType type, int page, int size) {
-        return orchestrator.getPageOfProductsByType(type.getId(), page, size, tenant.owner().getId());
+        return find(type, page, size, "");
+    }
+
+    private Page<ProductWithProvider> find(ProductType type, int page, int size, String search) {
+        return orchestrator.getPageOfProductsByType(
+                type.getId(), page, size, search, tenant.owner().getId());
     }
 
     private Set<String> namesOf(Page<ProductWithProvider> page) {
