@@ -1,10 +1,6 @@
 package com.agro.feature.product.dtos.table.type;
 
-import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.ProductWithProvider;
-import com.agro.feature.product.dtos.table.GetterProductMapper;
-import com.agro.feature.product.dtos.table.TableProductMapper;
-import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 import com.agro.feature.product.dtos.table.response.ProductRowSimpleResponse;
 import com.agro.shared.dtos.table.ColumnHeaderDTO;
 import com.agro.shared.dtos.table.TableResponseDTO;

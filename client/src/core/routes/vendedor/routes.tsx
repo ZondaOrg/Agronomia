@@ -12,6 +12,9 @@ import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsP
 import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 import ProductTabs from "@/views/provider/pages/product/ProductTabs";
 import ListPrice from "@/features/price-list/pages/PriceList";
+import { Products } from "@/views/product/Products";
+import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
+import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -64,6 +67,25 @@ export const VendedorRoutes: RouteData[] = [
                                 ],
                             },
                         ],
+                    },
+                ],
+            },
+            {
+                path: VENDEDOR_ROUTES.PRODUCTS.ROOT,
+                element: <Products />,
+                handle: { breadcrumb: "Productos", pageTitle: false },
+                children: [
+                    {
+                        index: true,
+                        element: <ListTypesProductsPage />,
+                    },
+                    {
+                        path: VENDEDOR_ROUTES.PRODUCTS.BY_TYPE,
+                        element: <ListProductByTypePage />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.typeName ?? "Tipo de producto",
+                        },
                     },
                 ],
             },
