@@ -13,10 +13,11 @@ const getProductsWithProviderByType = async (
     typeId: number,
     page = 0,
     size = 5,
+    search = "",
 ): Promise<Table<ProductWithProvider>> => {
     const response = await http.get<Table<ProductWithProviderResponse>>(
         PRODUCTS_BY_TYPE(typeId),
-        { params: { page, size } },
+        { params: { page, size, search } },
     );
 
     return {
