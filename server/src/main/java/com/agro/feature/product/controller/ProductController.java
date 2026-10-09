@@ -20,6 +20,7 @@ import com.agro.feature.product.orchestrator.FindProductsWithProvider;
 import com.agro.feature.product.services.OptionalService;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
+import com.agro.shared.annotations.role.VendedorOrOwnerEndpoint;
 import com.agro.shared.dtos.page.PageResponseDTO;
 import com.agro.shared.dtos.table.TableResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -108,6 +109,7 @@ public class ProductController {
     }
 
     @GetMapping("/{typeId}")
+    @VendedorOrOwnerEndpoint
     @Operation(summary = "Buscar Productos por su tipo y un termino")
     public ResponseEntity<TableResponseDTO<ProductRowSimpleResponse>> getProductsByType(
             @PathVariable Long typeId,
