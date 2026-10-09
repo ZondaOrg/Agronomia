@@ -3,11 +3,13 @@ package com.agro.feature.product.persistence.dao;
 import com.agro.feature.product.domain.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,4 +44,23 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             "WHERE p.id = :idProduct"
     )
     Optional<Product> findByIdWithOptionals(@Param("idProduct") Long id);
+
+    @Query(
+            """
+            FROM Product p
+            WHERE p.idType = :idType
+            """
+    )
+    Page<Product> findAllBYIdType(@Param("idType") Long idType, PageRequest pageRequest);
+
+    @Query("""
+            FROM Product p 
+            WHERE p.idType = :idType 
+                AND p.provider_id IN :providerIds
+                AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%')) 
+            """)
+    Page<Product> findAllByIdTypeAndProviderIds(@Param("idType") Long idType,
+                                                @Param("providerIds") Collection<Long> providerIds,
+                                                @Param("search")  String search,
+                                                Pageable pageable);
 }

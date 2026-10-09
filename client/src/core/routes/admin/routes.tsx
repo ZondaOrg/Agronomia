@@ -21,6 +21,7 @@ import AddProduct from "@/features/add-product/pages/AddProduct";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { Products } from "@/views/product/Products";
 import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
+import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -124,6 +125,14 @@ export const AdminRoutes: RouteData[] = [
                     {
                         index: true,
                         element: <ListTypesProductsPage />,
+                    },
+                    {
+                        path: ADMIN_ROUTES.PRODUCTS.BY_TYPE,
+                        element: <ListProductByTypePage />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.typeName ?? "Tipo de producto",
+                        },
                     },
                 ],
             },

@@ -1,5 +1,6 @@
 import type { ProductType } from "../../types/ProductType";
 import { styles } from "./styles";
+import { Link } from "react-router";
 
 type ProductTypeCardProps = {
     productType: ProductType;
@@ -9,7 +10,12 @@ export const ProductTypeCard = ({ productType }: ProductTypeCardProps) => {
     const { card, image, imagePlaceholder, cardFooter, name, arrow } = styles();
 
     return (
-        <article className={card}>
+        <Link
+            className={card}
+            to={`./${productType.id}/${encodeURIComponent(productType.name)}`}
+            relative="path"
+            aria-label={`Ver productos de ${productType.name}`}
+        >
             {productType.image ? (
                 <img
                     className={image}
@@ -31,6 +37,6 @@ export const ProductTypeCard = ({ productType }: ProductTypeCardProps) => {
                     ›
                 </span>
             </div>
-        </article>
+        </Link>
     );
 };

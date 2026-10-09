@@ -7,3 +7,8 @@ export const PRICE_LIST = {
     EDIT: "editar-product/:idProduct",
     EDIT_PATH: (idProduct: number) => `editar-product/${idProduct}`,
 };
+
+export const PRODUCTS = {
+    ROOT: "productos",
+    BY_TYPE: ":typeId/:typeName",
+};

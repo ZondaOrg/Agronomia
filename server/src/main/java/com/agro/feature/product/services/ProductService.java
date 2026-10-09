@@ -5,7 +5,9 @@ import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
 import org.springframework.data.domain.Page;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ProductService {
     Product add(Product product, Long idType, Long idProvider);
@@ -24,4 +26,6 @@ public interface ProductService {
             String description,
             List<com.agro.feature.product.domain.Optional> optionalsToAdd,
             List<Long> OptionalsToDelete);
+
+    Page<Product> getPageOfProducts(Integer page, Integer size, Long typeId, String search, Set<Long> longs);
 }

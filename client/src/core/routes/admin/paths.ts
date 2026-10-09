@@ -4,10 +4,7 @@ import { PAYMENT } from "../urls/payments";
 import { PRICE_LIST } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
-
-const PRODUCTS = {
-    ROOT: "productos",
-};
+import { PRODUCTS } from "../urls/products";
 
 export const ADMIN_ROUTES = {
     BASE: "/admin",

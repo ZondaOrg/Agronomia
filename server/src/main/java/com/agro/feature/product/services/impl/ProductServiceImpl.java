@@ -14,8 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -53,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
         return dao.searchPagesOfProductsWith(search, idProvider, PageRequest.of(page, size));
     }
 
+
     @Override
     public Product findByIdWithinOptionals(Long id) {
         return dao.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontró el producto con el id " + id));
@@ -73,4 +76,13 @@ public class ProductServiceImpl implements ProductService {
         optionalDao.saveAll(optionalsToAdd);
         return dao.save(product);
     }
+
+    @Override
+    public Page<Product> getPageOfProducts(Integer page, Integer size, Long idType, String search, Set<Long> providerIds) {
+        if (providerIds.isEmpty()) {
+            return Page.empty(PageRequest.of(page, size));
+        }
+        return dao.findAllByIdTypeAndProviderIds(idType, providerIds,search, PageRequest.of(page, size));
+    }
+
 }

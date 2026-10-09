@@ -3,6 +3,7 @@ package com.agro.feature.product.controller;
 import com.agro.core.api.Api;
 import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.domain.ProductWithProvider;
 import com.agro.feature.product.dtos.add.AddProductMapper;
 import com.agro.feature.product.dtos.add.AddedOptionalsMapper;
 import com.agro.feature.product.dtos.add.request.AddProductRequestDTO;
@@ -13,9 +14,14 @@ import com.agro.feature.product.dtos.get.GetProductMapper;
 import com.agro.feature.product.dtos.get.GetProductResponseDTO;
 import com.agro.feature.product.dtos.table.TableProductMapper;
 import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
+import com.agro.feature.product.dtos.table.response.ProductRowSimpleResponse;
+import com.agro.feature.product.dtos.table.type.TableProductByTypeMapper;
+import com.agro.feature.product.orchestrator.FindProductsWithProvider;
 import com.agro.feature.product.services.OptionalService;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
+import com.agro.shared.annotations.role.VendedorOrOwnerEndpoint;
+import com.agro.shared.dtos.page.PageResponseDTO;
 import com.agro.shared.dtos.table.TableResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,10 +39,12 @@ public class ProductController {
 
     private final ProductService productService;
     private final OptionalService optionalService;
+    private final FindProductsWithProvider findProductsWithProvider;
 
-    public ProductController(ProductService productService, OptionalService optionalService) {
+    public ProductController(ProductService productService, OptionalService optionalService, FindProductsWithProvider findProductsWithProvider) {
         this.productService = productService;
         this.optionalService = optionalService;
+        this.findProductsWithProvider = findProductsWithProvider;
     }
 
     @PostMapping("/add/{providerId}")
@@ -98,5 +106,19 @@ public class ProductController {
         Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 4);
         GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product, pageOffOptionals);
         return ResponseEntity.ok(productResponseDto);
+    }
+
+    @GetMapping("/{typeId}")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Buscar Productos por su tipo y un termino")
+    public ResponseEntity<TableResponseDTO<ProductRowSimpleResponse>> getProductsByType(
+            @PathVariable Long typeId,
+            @RequestAttribute("userId") Long  userId,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "") String search){
+        Page<ProductWithProvider> productPage = findProductsWithProvider.getPageOfProductsByType(typeId, page, size,search, userId);
+
+        return ResponseEntity.ok(TableProductByTypeMapper.modelToDto(productPage));
     }
 }

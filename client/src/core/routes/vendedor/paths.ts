@@ -1,7 +1,7 @@
 import { CLIENTS } from "../urls/clients";
 import { CONFIGURATION } from "../urls/configuration";
 import { PAYMENT } from "../urls/payments";
-import { PRICE_LIST } from "../urls/products";
+import { PRICE_LIST, PRODUCTS } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
 
@@ -17,7 +17,8 @@ export const VENDEDOR_ROUTES = {
         EDIT: CLIENTS.EDIT,
     },
     PRODUCTS: {
-        ROOT: PRICE_LIST.ROOT,
+        ROOT: PRODUCTS.ROOT,
+        BY_TYPE: PRODUCTS.BY_TYPE,
         BASE: PRICE_LIST.BASE,
     },
     PAYMENT: {
