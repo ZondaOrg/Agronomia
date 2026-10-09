@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "seed"})
 @Order(2)
 public class ProductTypeSeeder implements EntitySeeder {
 
