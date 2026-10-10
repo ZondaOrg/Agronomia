@@ -7,5 +7,5 @@ export interface InsertFormProps<T extends Schema> {
     schema: T;
     onSubmit: (data: InferData<T>) => void;
     onCancel: (isCancel: boolean) => void;
-    ref: React.Ref<ValidationFormHandleProps>
+    ref?: React.Ref<ValidationFormHandleProps>
 }

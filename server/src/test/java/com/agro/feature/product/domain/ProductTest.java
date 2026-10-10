@@ -1,6 +1,7 @@
 package com.agro.feature.product.domain;
 
 import com.agro.feature.product.domain.exceptions.ListPriceException;
+import com.agro.feature.product.domain.exceptions.NegativePriceException;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.shared.valueObjects.porcent.PorcentException;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +24,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 20
         );
     }
@@ -58,7 +59,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 20,
                 30d
         );
@@ -78,7 +79,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 0,
                 30d
         ));
@@ -92,7 +93,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 101,
                 30d
         ));
@@ -112,7 +113,7 @@ class ProductTest {
                 Money.ARS,
                 listPrice,
                 IVA.GENERAL,
-                "a",
+                1L,
                 20,
                 30d
         );
@@ -128,7 +129,7 @@ class ProductTest {
                 Money.ARS,
                 listPrice,
                 IVA.GENERAL,
-                "a",
+                1L,
                 20,
                 30d
         );
@@ -143,7 +144,7 @@ class ProductTest {
                 Money.ARS,
                 100000020d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 100
         ));
     }
@@ -165,7 +166,7 @@ class ProductTest {
 
     @Test
     void testInicialmenteUnProductNoTieneTipoDeProductoAsociado() {
-        assertEquals("a", product.getProductType());
+        assertEquals(1L, product.getIdType());
     }
 
     @Test
@@ -183,7 +184,7 @@ class ProductTest {
                 Money.ARS,
                 10000000d,
                 IVA.GENERAL,
-                "a",
+                1L,
                 20
         );
         product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "nueva descripción", new ArrayList<String>());
@@ -202,5 +203,33 @@ class ProductTest {
         toDelete.add("optional 2");
         product.edit(Money.USD, 1025007d, IVA.REDUCIDA, 50, 8D, "", toDelete);
         assertTrue(product.getOptionals().isEmpty());
+    }
+
+    @Test
+    void testSiSeAgregaUnPrecioDeFleteNoPositivo_LanzaExcepcion() {
+        assertThrows(NegativePriceException.class, () -> new Product(
+                "ProductSS",
+                "product nsnns",
+                Money.ARS,
+                10000000d,
+                IVA.GENERAL,
+                1L,
+                20,
+                -1D
+        ));
+    }
+
+    @Test
+    void testSiElPrecioDeListaEsNegativo_LanzaExcepcion() {
+        assertThrows(NegativePriceException.class, () -> new Product(
+                "ProductSS",
+                "product nsnns",
+                Money.ARS,
+                -100000d,
+                IVA.GENERAL,
+                1L,
+                20,
+                1D
+        ));
     }
 }

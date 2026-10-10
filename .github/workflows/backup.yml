@@ -1,0 +1,38 @@
+name: Backup Neon
+
+on:
+    schedule:
+        - cron: "0 3 * * *"
+    workflow_dispatch:
+
+jobs:
+    backup:
+        runs-on: ubuntu-latest
+        env:
+            PG_VERSION: 18
+        steps:
+            - name: Instalar cliente de PostgreSQL
+              run: |
+                  sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+                  wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc
+                  sudo apt-get update
+                  sudo apt-get install -y postgresql-client-$PG_VERSION
+
+            - name: Crear dump
+              run: |
+                  echo "DATE=$(date +%Y-%m-%d_%H-%M)" >> $GITHUB_ENV
+                  /usr/lib/postgresql/$PG_VERSION/bin/pg_dump -Fc -v --no-owner --no-acl -d "${{ secrets.DATABASE_URL }}" -f backup.dump
+
+            - name: Cifrar dump
+              env:
+                  PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+              run: |
+                  gpg --batch --yes --pinentry-mode loopback --passphrase "$PASS" --symmetric --cipher-algo AES256 -o backup.dump.gpg backup.dump
+                  rm backup.dump
+
+            - name: Guardar como artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: neon-backup-${{ env.DATE }}
+                  path: backup.dump.gpg
+                  retention-days: 30

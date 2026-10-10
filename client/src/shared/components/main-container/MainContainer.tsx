@@ -3,10 +3,10 @@ import { Outlet } from "react-router";
 import type { linkNavbar } from "../../../core/auth/layout/components/protected-routes/link";
 import { authLayout, bodyWrapper, h1 } from "./styles";
 import Brand from "../brand/Brand";
-import Avatar from "../avatar/Avatar";
 import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import NavBar from "./components/nav-bar/NavBar";
 import { usePageTitle } from "@/shared/hooks/use-page-title";
+import UserDetails from "./components/nav-bar/components/user-details/UserDetails";
 
 interface MainContainerProps {
     links: linkNavbar[];
@@ -22,8 +22,8 @@ const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
             <NavBar
                 brand={<Brand companyLogo={user.companyLogo} />}
                 avatar={
-                    <Avatar
-                        avatar={user}
+                    <UserDetails
+                        user={user}
                         to={avatarTo}
                     />
                 }
@@ -31,7 +31,7 @@ const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
             />
             <div className={bodyWrapper}>
                 <Breadcrumb />
-                <h1 className={h1}>{title}</h1>
+                {title && <h1 className={h1}>{title}</h1>}
                 <div>
                     <Outlet />
                 </div>

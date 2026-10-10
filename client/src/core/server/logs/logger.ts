@@ -1,4 +1,4 @@
-import type { ErrorCause } from "../types/error-cause";
+import type { ErrorCauseType } from "../types/error-cause";
 import type { ErrorResponse } from "../types/error-response";
 
 const logger = {
@@ -34,6 +34,6 @@ type SuccessType<T> = {
     path?: string
 }
 
-const isField = (field?: number | string | ErrorCause) => field ? field : '';
+const isField = (field?: number | string | ErrorCauseType) => field ? field : '';
 
 export default logger;

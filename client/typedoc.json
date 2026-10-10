@@ -1,0 +1,12 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": ["src"],
+    "entryPointStrategy": "expand",
+    "out": "docs",
+    "tsconfig": "tsconfig.json",
+    "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"],
+    "excludePrivate": true,
+    "excludeInternal": true,
+    "readme": "README.md",
+    "name": "Agro"
+}

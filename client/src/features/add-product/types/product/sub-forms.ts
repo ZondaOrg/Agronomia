@@ -3,8 +3,9 @@ import { ADD_PRODUCT } from "../../adapters/request/api-contract";
 import { createSelectOptions } from "@/shared/types/input/input-data/create-select-options";
 import { moneys } from "../../../../shared/domain/money/money";
 import { ivaPorcents } from "@/shared/domain/iva/iva";
+import type { ProductType } from "../../domain/product-type";
 
-const productSubForms = (productTypes: string[]) =>
+const productSubForms = (productTypes: ProductType[]) =>
     createSubForms([
         {
             name: "Identificación",
@@ -15,7 +16,11 @@ const productSubForms = (productTypes: string[]) =>
                         motive: "Tipo de producto",
                         name: ADD_PRODUCT.type,
                         type: "select",
-                        options: createSelectOptions(productTypes),
+                        options: productTypes.map(({ id, name }) => ({
+                            id,
+                            label: name,
+                            value: String(id),
+                        })),
                     },
                 ],
                 [
@@ -39,7 +44,7 @@ const productSubForms = (productTypes: string[]) =>
                         type: "select",
                         options: createSelectOptions(moneys),
                     },
-                    { motive: "Precio lista", name: ADD_PRODUCT.listPrice },
+                    { motive: "Precio lista", type: "number", name: ADD_PRODUCT.listPrice },
                     {
                         motive: "IVA",
                         name: ADD_PRODUCT.iva,
@@ -48,9 +53,10 @@ const productSubForms = (productTypes: string[]) =>
                     },
                 ],
                 [
-                    { motive: "Bonificación", name: ADD_PRODUCT.bonification },
+                    { motive: "Bonificación", type: "number", name: ADD_PRODUCT.bonification },
                     {
                         motive: "Flete",
+                        type: "number",
                         name: ADD_PRODUCT.freight,
                         isRequired: false,
                     },

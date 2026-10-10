@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ProviderServiceImpl implements ProviderService, ProviderDataService {
@@ -67,6 +69,12 @@ public class ProviderServiceImpl implements ProviderService, ProviderDataService
 
         provider.addProductIntoListPrices(idProduct);
     }
+
+    @Override
+    public List<Provider> getProvidersByCompany(Long idCompany) {
+        return providerDAO.findAllByCompanyId(idCompany);
+    }
+
 
     @Override
     public Provider save(Provider provider) {

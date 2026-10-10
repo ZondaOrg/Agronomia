@@ -3,7 +3,6 @@ import { ADMIN_ROUTES } from "./paths";
 import AdminLayout from "../../auth/layout/roles/admin/AdminLayout";
 import Configuration from "@/features/add-user/pages/configuration/Configuration";
 import ClientPanel from "@/views/client/pages/ClientPanel";
-import AddClient from "@/features/add-client/pages/AddClient";
 import { ProviderPanel } from "@/views/provider/ProviderPanel";
 import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
 import AddProvider from "@/features/add-provider/pages/AddProvider";
@@ -15,6 +14,14 @@ import ProductPanel from "@/views/provider/pages/product/ProductPanel";
 import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
 import EditProduct from "@/features/edit-product/pages/EditProduct";
 import ProductTabs from "@/views/provider/pages/product/ProductTabs";
+import ListPrice from "@/features/price-list/pages/PriceList";
+import { ListVigentPayments } from "@/features/list-vigent-by-provider/page/ListVigentPayments";
+import { VigentPaymentPage } from "@/views/payments/page/vigent-payments/VigentPaymentPage"; // ajustá el path real
+import AddProduct from "@/features/add-product/pages/AddProduct";
+import AddClient from "@/features/add-client/pages/AddClient";
+import { Products } from "@/views/product/Products";
+import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
+import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -55,14 +62,28 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
-                                index: true,
                                 element: <VigentPaymentsPanel />,
-                                handle: { breadcrumb: "Formas de Pago" },
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <ListVigentPayments />,
+                                        handle: {
+                                            breadcrumb: "Formas de Pago",
+                                        },
+                                    },
+                                    {
+                                        path: ADMIN_ROUTES.PAYMENT.UPDATE,
+                                        element: <VigentPaymentPage />,
+                                        handle: {
+                                            breadcrumb: "Formas de Pago",
+                                        },
+                                    },
+                                ],
                             },
                         ],
                     },
                     {
-                        path: ADMIN_ROUTES.PRODUCTS.BASE,
+                        path: ADMIN_ROUTES.PRICE_LIST.BASE,
                         element: <ProductPanel />,
                         handle: {
                             breadcrumb: (params) =>
@@ -70,14 +91,48 @@ export const AdminRoutes: RouteData[] = [
                         },
                         children: [
                             {
-                                index: true,
                                 element: <ProductTabs />,
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <ListPrice />,
+                                        handle: {
+                                            breadcrumb: "Lista de precios",
+                                        },
+                                    },
+                                    {
+                                        path: ADMIN_ROUTES.PRICE_LIST.ADD,
+                                        element: <AddProduct />,
+                                        handle: {
+                                            breadcrumb: "Añadir producto",
+                                        },
+                                    },
+                                ],
                             },
                             {
-                                path: `${ADMIN_ROUTES.PRODUCTS.EDIT}`,
-                                element: <EditProduct />
-                            }
+                                path: `${ADMIN_ROUTES.PRICE_LIST.EDIT}`,
+                                element: <EditProduct />,
+                            },
                         ],
+                    },
+                ],
+            },
+            {
+                path: `${ADMIN_ROUTES.PRODUCTS.ROOT}`,
+                element: <Products />,
+                handle: { breadcrumb: "Productos", pageTitle: false },
+                children: [
+                    {
+                        index: true,
+                        element: <ListTypesProductsPage />,
+                    },
+                    {
+                        path: ADMIN_ROUTES.PRODUCTS.BY_TYPE,
+                        element: <ListProductByTypePage />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.typeName ?? "Tipo de producto",
+                        },
                     },
                 ],
             },

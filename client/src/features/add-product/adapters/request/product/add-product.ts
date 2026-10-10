@@ -4,7 +4,7 @@ import type { MoneyRequest } from "./money"
 
 export interface AddProductRequest {
     name: string,
-    type: string,
+    type: number,
     money: MoneyRequest,
     listPrice: number,
     iva: Iva,

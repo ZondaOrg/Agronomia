@@ -36,7 +36,9 @@ export const header = css({
 export const titleGroup = css({
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: "2",
+    width: "100%",
 });
 
 export const title = cva({
@@ -50,6 +52,8 @@ export const title = cva({
             sm: { fontSize: "sm" },
             md: { fontSize: "md" },
             xl: { fontSize: "xl" },
+            xxl: { fontSize: "2xl" },
+            xxxl: { fontSize: "3xl" },
         },
     },
     defaultVariants: {

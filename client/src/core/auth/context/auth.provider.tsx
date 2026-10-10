@@ -13,7 +13,8 @@ interface AuthProviderProps {
 }
 
 function AuthProvider({ children }: AuthProviderProps) {
-    const { data, error, isLoading, execute, refresh } = useFetch<User>();
+    const { data, error, isLoading, execute, refresh } =
+        useFetch<User | undefined>();
 
     useEffect(() => {
         function fn() {

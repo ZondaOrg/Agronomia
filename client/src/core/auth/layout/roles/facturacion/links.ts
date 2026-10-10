@@ -5,6 +5,5 @@ export const links: linkNavbar[] = [
     { name: "Inicio", path: FACTURACION_ROUTES.BASE },
     { name: "Proveedores", path: FACTURACION_ROUTES.PROVEEDORES },
     { name: "Clientes", path: FACTURACION_ROUTES.CLIENTES },
-    { name: "Productos", path: FACTURACION_ROUTES.PRODUCTOS },
     { name: "Ventas", path: FACTURACION_ROUTES.VENTAS },
 ];

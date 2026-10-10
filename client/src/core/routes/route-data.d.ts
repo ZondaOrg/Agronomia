@@ -3,6 +3,7 @@ import type { Params } from "react-router";
 
 type Handle = {
     breadcrumb?: string | ((params: Params<string>) => string);
+    pageTitle?: string | false;
 };
 
 type IndexRouteData = {

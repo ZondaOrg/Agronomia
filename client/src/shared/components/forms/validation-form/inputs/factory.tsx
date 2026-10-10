@@ -10,7 +10,7 @@ import type { output } from "zod";
 import type { InputData } from "@/shared/types/input/input";
 import SelectInput from "./select/SelectInput";
 import FileInput from "./file/FileInput";
-import TextInput from "./text/TextInput";
+import BasicInput from "./text/TextInput";
 import type { SystemStyleObject } from "@styled-system/types";
 import DynamicInput from "./dynamic/DynamicInput";
 import CounterCharsInput from "./counter-chars/CounterCharsInput";
@@ -75,10 +75,11 @@ function Input<T extends Schema>({
                 />
             )
         case "text":
+        case "number":
         case "email":
         case "password":
             return (
-                <TextInput
+                <BasicInput
                     key={input.id}
                     input={input}
                     inputStyles={styles}

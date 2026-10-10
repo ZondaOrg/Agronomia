@@ -9,6 +9,12 @@ import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Outlet } from "react-router";
 import { VigentPaymentsPanel } from "@/views/payments/page/panel/VigentPaymentsPanel";
+import ProductPanel from "@/views/provider/pages/product/ProductPanel";
+import ProductTabs from "@/views/provider/pages/product/ProductTabs";
+import ListPrice from "@/features/price-list/pages/PriceList";
+import { Products } from "@/views/product/Products";
+import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
+import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -39,6 +45,47 @@ export const VendedorRoutes: RouteData[] = [
                                 handle: { breadcrumb: "Formas de Pago" },
                             },
                         ],
+                    },
+                    {
+                        path: VENDEDOR_ROUTES.PRODUCTS.BASE,
+                        element: <ProductPanel />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.providerName ?? "Proveedor",
+                        },
+                        children: [
+                            {
+                                element: <ProductTabs />,
+                                children: [
+                                    {
+                                        index: true,
+                                        element: <ListPrice />,
+                                        handle: {
+                                            breadcrumb: "Lista de precios",
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                path: VENDEDOR_ROUTES.PRODUCTS.ROOT,
+                element: <Products />,
+                handle: { breadcrumb: "Productos", pageTitle: false },
+                children: [
+                    {
+                        index: true,
+                        element: <ListTypesProductsPage />,
+                    },
+                    {
+                        path: VENDEDOR_ROUTES.PRODUCTS.BY_TYPE,
+                        element: <ListProductByTypePage />,
+                        handle: {
+                            breadcrumb: (params) =>
+                                params.typeName ?? "Tipo de producto",
+                        },
                     },
                 ],
             },

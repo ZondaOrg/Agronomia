@@ -16,6 +16,7 @@ interface NotifyHandlerProps {
     isBack?: boolean;
     onCancel: (isData: boolean) => void;
     refresh: () => void;
+    onSuccess?: () => void;
 }
 
 function NotifyHandler({
@@ -26,6 +27,7 @@ function NotifyHandler({
     children,
     onCancel,
     refresh,
+    onSuccess,
 }: NotifyHandlerProps) {
     const navigate = useNavigate();
 
@@ -58,7 +60,7 @@ function NotifyHandler({
             {notify && notify.modal && (
                 <SuccessModal
                     isOpen={action === "success"}
-                    onClose={backToPrev}
+                    onClose={onSuccess ?? backToPrev}
                     title={notify.modal.title}
                     message={notify.modal.message}
                 />
