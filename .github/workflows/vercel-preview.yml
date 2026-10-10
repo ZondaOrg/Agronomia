@@ -1,0 +1,61 @@
+name: Vercel Preview
+
+on:
+    pull_request:
+        branches:
+            - main
+            - preview
+            - dev
+        types: [opened, synchronize, reopened]
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    deploy-preview:
+        name: Deploy frontend preview
+        runs-on: ubuntu-latest
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9.15.5
+                  run_install: false
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            - name: Install Vercel CLI
+              run: npm install --global vercel@latest
+
+            - name: Pull Vercel environment
+              run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Build
+              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+              env:
+                  VERCEL_ENV: preview
+                  VERCEL_GIT_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+
+            - name: Deploy
+              id: deploy
+              run: |
+                  URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+                  echo "url=$URL" >> $GITHUB_OUTPUT
+
+            - name: Comment preview URLs
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  message: |
+                      **Preview del front:** ${{ steps.deploy.outputs.url }}
+                      **API (Render):** https://agronomia-pr-${{ github.event.pull_request.number }}.onrender.com
