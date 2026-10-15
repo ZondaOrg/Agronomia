@@ -22,6 +22,8 @@ import AddClient from "@/features/add-client/pages/AddClient";
 import { Products } from "@/views/product/Products";
 import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
 import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
+import { Cotizar } from "@/views/cotizar/Cotizar";
+import { CotizarPanel } from "@/views/cotizar/pages/CotizarPanel";
 
 export const AdminRoutes: RouteData[] = [
     {
@@ -154,6 +156,17 @@ export const AdminRoutes: RouteData[] = [
                         path: ADMIN_ROUTES.CLIENTS.EDIT,
                         element: <EditClient />,
                         handle: { breadcrumb: "Editar Cliente" },
+                    },
+                ],
+            },
+            {
+                path: `${ADMIN_ROUTES.COTIZAR.BAESE}`,
+                element: <Cotizar />,
+                handle: { breadcrumb: "Cotizar" },
+                children: [
+                    {
+                        index: true,
+                        element: <CotizarPanel />,
                     },
                 ],
             },
