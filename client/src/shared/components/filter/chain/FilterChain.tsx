@@ -14,7 +14,6 @@ export default function FilterChain({
     values,
     enabled,
     onChange,
-    completo,
 }: Props) {
     return (
         <div>
@@ -27,9 +26,6 @@ export default function FilterChain({
                     onChange={(v) => onChange(f.id, v)}
                 />
             ))}
-            {completo !== undefined && (
-                <p>Completo: {completo ? "sí" : "no"}</p>
-            )}
         </div>
     );
 }
