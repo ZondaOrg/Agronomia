@@ -1,9 +1,12 @@
-import type { RootState } from "../..";
+import type { RootState } from "../../../../core/store";
 
 const EMPTY_VALUES: Record<string, string> = {};
+const EMPTY_ENABLED: Record<string, boolean> = {};
 
-export const selectFilterValues = (state: RootState, stepId: string) =>
+export const selectStepValues = (state: RootState, stepId: string) =>
     state.filterChain.steps[stepId]?.values ?? EMPTY_VALUES;
+
+export const selectFilterValues = selectStepValues;
 
 export const selectFilterValue = (
     state: RootState,
@@ -28,3 +31,16 @@ export const selectIsFilterEnabled = (
 
     return !!step.values[step.config[index - 1].id];
 };
+
+export const selectStepEnable = (state: RootState, stepId: string) => {
+    const step = state.filterChain.steps[stepId];
+    if (!step) return EMPTY_ENABLED;
+
+    return step.config.reduce<Record<string, boolean>>((enabled, filter, index) => {
+        enabled[filter.id] =
+            index === 0 || !!step.values[step.config[index - 1].id];
+        return enabled;
+    }, {});
+};
+
+export const selectStepEnabled = selectStepEnable;

@@ -1,38 +1,35 @@
-import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
-import { selectFiltersCompleto } from "@/core/store/slices/filterChain/filter-chain.selectors";
-import { initStep } from "@/core/store/slices/filterChain/filter-chain.slice";
-import { useEffect } from "react";
-import type { FilterFieldConfig } from "./types/filter-chain";
 import FilterField from "./field/FilterField";
+import type { FilterFieldConfig } from "./types/filter-chain";
 
 interface Props {
-    stepId: string;
     filters: FilterFieldConfig[];
+    values: Record<string, string | null>;
+    enabled: Record<string, boolean>;
+    onChange: (filterId: string, value: string | null) => void;
+    completo?: boolean;
 }
 
-export default function FilterChain({ stepId, filters }: Props) {
-    const dispatch = useAppDispatch();
-    const completo = useAppSelector((s) => selectFiltersCompleto(s, stepId));
-
-    useEffect(() => {
-        dispatch(
-            initStep({
-                stepId,
-                filters: filters.map(({ id, required }) => ({ id, required })),
-            }),
-        );
-    }, [dispatch, stepId]);
-
+export default function FilterChain({
+    filters,
+    values,
+    enabled,
+    onChange,
+    completo,
+}: Props) {
     return (
         <div>
             {filters.map((f) => (
                 <FilterField
                     key={f.id}
-                    stepId={stepId}
                     filter={f}
+                    value={values[f.id] ?? null}
+                    enabled={enabled[f.id] ?? true}
+                    onChange={(v) => onChange(f.id, v)}
                 />
             ))}
-            <p>Completo: {completo ? "sí" : "no"}</p>
+            {completo !== undefined && (
+                <p>Completo: {completo ? "sí" : "no"}</p>
+            )}
         </div>
     );
 }
