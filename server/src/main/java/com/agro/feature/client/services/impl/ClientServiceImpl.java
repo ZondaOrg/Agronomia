@@ -1,6 +1,10 @@
 package com.agro.feature.client.services.impl;
 
+import com.agro.feature.client.contracts.ClientDataService;
 import com.agro.feature.client.domain.Client;
+import com.agro.feature.client.domain.NaturalPerson;
+import com.agro.feature.client.domain.RazonSocial;
+import com.agro.feature.client.dtos.ClientType;
 import com.agro.feature.client.persistence.daos.ClientDAO;
 import com.agro.feature.client.services.ClientService;
 import com.agro.feature.user.contracts.UserDataService;
@@ -14,9 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
-public class ClientServiceImpl implements ClientService {
+public class ClientServiceImpl implements ClientService, ClientDataService {
 
     private ClientDAO dao;
     private UserDataService userDataService;
@@ -58,5 +64,21 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findById(Long id) {
         return dao.findById(id).orElseThrow(() -> new EntityNotFoundException("El cliente con id " + id + " no fue encontrado"));
+    }
+
+    public List<Client> findByTypeAndName(ClientType clientType, String name) {
+        Class<? extends Client> entityClass = null;
+        if (clientType != null) {
+            entityClass = switch (clientType) {
+                case RAZON_SOCIAL -> RazonSocial.class;
+                case NATURAL_PERSON -> NaturalPerson.class;
+            };
+        }
+
+        String normalizedSearch = (name != null && !name.isBlank())
+                ? NormaliceText.normalize(name)
+                : null;
+
+        return dao.findAllByClassAndName(entityClass, normalizedSearch);
     }
 }
