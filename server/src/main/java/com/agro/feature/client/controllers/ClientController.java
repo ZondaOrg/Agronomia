@@ -1,10 +1,12 @@
 package com.agro.feature.client.controllers;
 
 import com.agro.core.api.Api;
+import com.agro.feature.client.contracts.ClientDataService;
 import com.agro.feature.client.domain.Client;
 import com.agro.feature.client.dtos.ClientFactory;
 import com.agro.feature.client.dtos.request.ClientEditRequest;
 import com.agro.feature.client.dtos.request.ClientRequest;
+import com.agro.feature.client.dtos.request.ClientRequestFilterDTO;
 import com.agro.feature.client.dtos.response.ClientResponse;
 import com.agro.feature.client.services.ClientService;
 import com.agro.shared.dtos.page.PageResponseDTO;
@@ -15,16 +17,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(Api.CLIENT)
 @Tag(name = "Clientes", description = "Operaciones relacionadas a la gestión de clientes")
 public class ClientController {
     private ClientService service;
     private ClientFactory factory;
+    private final ClientDataService data;
 
-    public ClientController(ClientService service, ClientFactory factory) {
+    public ClientController(ClientService service, ClientFactory factory, ClientDataService data) {
         this.service = service;
         this.factory = factory;
+        this.data = data;
     }
 
     @PostMapping("/add")
@@ -74,4 +80,16 @@ public class ClientController {
         return ResponseEntity.ok(factory.createToResponse(client));
     }
 
+    @PostMapping("/filter")
+    @PreAuthorize("hasAnyRole('DUENIO', 'VENDEDOR')")
+    @Operation(summary = "Filtrar clientes por tipo y nombre", description = "Devuelve una lista de clientes filtrados por su tipo y nombre")
+    public ResponseEntity<List<ClientResponse>> getClientByTypeAndName(
+            @RequestBody ClientRequestFilterDTO request){
+        return ResponseEntity.ok(
+                data.findByTypeAndName(request.type(), request.name())
+                        .stream()
+                        .map(client -> factory.createToResponse(client))
+                        .toList()
+        );
+    }
 }
