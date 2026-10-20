@@ -1,20 +1,19 @@
 import { CardCheckClient } from "../components/checks/CardCheckClient";
 import { useGetClientsByNameAndType } from "../hooks/use-get-clients-by-name-and-type";
 import { FilterClient } from "../components/filter/FilterClient";
-import { Index } from "@/shared/components/step/components/index/Index";
+import { StepIndex } from "@/shared/components/step/components/index/StepIndex";
+
+const STEPS = ["Cliente", "Producto", "Formas de pago"];
 
 export const StepClient = () => {
     const { clients } = useGetClientsByNameAndType();
 
     return (
         <>
-            <Index
-                indexes={[
-                    "Clientes",
-                    "Productos",
-                    "Formas de pago",
-                    "Vista previa",
-                ]}
+            <StepIndex
+                steps={STEPS}
+                currentStep={0}
+                onStepClick={() => {}}
             />
             <FilterClient />
             <CardCheckClient clients={clients} />
