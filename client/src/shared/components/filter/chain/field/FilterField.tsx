@@ -1,25 +1,22 @@
-import {
-    selectFilterValue,
-    selectIsFilterEnabled,
-} from "@/core/store/slices/filterChain/filter-chain.selectors";
 import type { FilterFieldConfig } from "../types/filter-chain";
-import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
-import { setFilterValue } from "@/core/store/slices/filterChain/filter-chain.slice";
 import { filterFieldStyles } from "./styles";
 
 interface Props {
-    stepId: string;
     filter: FilterFieldConfig;
+    value: string | null;
+    enabled: boolean;
+    onChange: (value: string | null) => void;
 }
 
-export default function FilterField({ stepId, filter }: Props) {
-    const dispatch = useAppDispatch();
-    const value = useAppSelector((s) =>
-        selectFilterValue(s, stepId, filter.id),
-    );
-    const enabled = useAppSelector((s) =>
-        selectIsFilterEnabled(s, stepId, filter.id),
-    );
+export default function FilterField({
+    filter,
+    value,
+    enabled,
+    onChange,
+}: Props) {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
+    ) => onChange(e.target.value || null);
 
     return (
         <label className={filterFieldStyles.container}>
@@ -32,15 +29,7 @@ export default function FilterField({ stepId, filter }: Props) {
                     className={filterFieldStyles.control}
                     disabled={!enabled}
                     value={value ?? ""}
-                    onChange={(e) =>
-                        dispatch(
-                            setFilterValue({
-                                stepId,
-                                filterId: filter.id,
-                                value: e.target.value || null,
-                            }),
-                        )
-                    }
+                    onChange={handleChange}
                 >
                     <option value="">Seleccionar...</option>
                     {filter.options.map((o) => (
@@ -58,15 +47,7 @@ export default function FilterField({ stepId, filter }: Props) {
                     disabled={!enabled}
                     type="text"
                     value={value ?? ""}
-                    onChange={(e) =>
-                        dispatch(
-                            setFilterValue({
-                                stepId,
-                                filterId: filter.id,
-                                value: e.target.value || null,
-                            }),
-                        )
-                    }
+                    onChange={handleChange}
                 />
             )}
         </label>
