@@ -5,6 +5,8 @@ import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.branch.persistence.BranchDAO;
 import com.agro.feature.client.domain.Client;
 import com.agro.feature.client.domain.NaturalPerson;
+import com.agro.feature.client.domain.RazonSocial;
+import com.agro.feature.client.dtos.ClientType;
 import com.agro.feature.client.persistence.daos.ClientDAO;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
@@ -26,6 +28,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -45,8 +49,6 @@ class ClientServiceImplTest {
     @Autowired
     private ResetService resetService;
 
-    private Client client;
-
     @Autowired
     private CompanyService companyService;
 
@@ -57,10 +59,11 @@ class ClientServiceImplTest {
     private RegisterOrchestrator orchestrator;
 
     private Company company;
-
     private User user;
-
     private Branch branch;
+
+    private Client naturalPersonClient;
+    private Client razonSocialClient;
 
     @BeforeEach
     void setup() {
@@ -82,16 +85,25 @@ class ClientServiceImplTest {
                 .build();
 
         user = orchestrator.register(newUser, company.getId(), branch.getId());
-    }
 
-    @BeforeEach
-    void setUp() {
-        client = new NaturalPerson(
+        naturalPersonClient = new NaturalPerson(
                 "Nicolás",
                 "Bossi",
                 "11-11111111-1",
                 "1162870692",
-                "n@gmail.com",
+                "nicolas@gmail.com",
+                "Lavalle 123",
+                "Florencio Varela",
+                Province.Cordoba
+        );
+
+        razonSocialClient = new RazonSocial(
+                "Empresa S.A.",
+                "Nicolás",
+                "Bossi",
+                "1162870692",
+                "empresa@gmail.com",
+                "20-22222222-2",
                 "Lavalle 123",
                 "Florencio Varela",
                 Province.Cordoba
@@ -100,29 +112,29 @@ class ClientServiceImplTest {
 
     @Test
     void testSePersisteUnClient() {
-        Client addedClient = service.save(client, user.getId());
+        Client addedClient = service.save(naturalPersonClient, user.getId());
         assertNotNull(addedClient.getId());
     }
 
     @Test
     void testSiSePersisteOtroClienteConMismoCuit_LanzaExcepcion() {
-        Client client1 = new NaturalPerson(
+        Client duplicateCuitClient = new NaturalPerson(
                 "Nicolás",
                 "Bossi",
                 "11-11111111-1",
                 "1162870692",
-                "n@gmail.com",
+                "otro@gmail.com",
                 "Lavalle 123",
                 "Florencio Varela",
                 Province.Cordoba
         );
-        service.save(client, user.getId());
-        assertThrows(CuitDuplicatedException.class, () -> service.save(client1, user.getId()));
+        service.save(naturalPersonClient, user.getId());
+        assertThrows(CuitDuplicatedException.class, () -> service.save(duplicateCuitClient, user.getId()));
     }
 
     @Test
     void testSeRecuperaUnClientePorSuId() {
-        Client addedClient = service.save(client, user.getId());
+        Client addedClient = service.save(naturalPersonClient, user.getId());
         Client findClient = service.findById(addedClient.getId());
         assertEquals(addedClient.getId(), findClient.getId());
     }
@@ -130,6 +142,46 @@ class ClientServiceImplTest {
     @Test
     void testSiSeBuscaUnClieneNoRegistrado_LanzaExcepcion() {
         assertThrows(EntityNotFoundException.class, () -> service.findById(1L));
+    }
+
+    @Test
+    public void testSeRecuperaLosClientesPorTipoYNameRazonSocial() {
+        Client addedRazonSocial = service.save(razonSocialClient, user.getId());
+        Client addedNaturalPerson = service.save(naturalPersonClient, user.getId());
+
+        List<Client> clients = service.findByTypeAndName(ClientType.RAZON_SOCIAL, "Empresa");
+
+        assertNotNull(addedRazonSocial);
+        assertNotNull(addedRazonSocial.getId());
+        assertFalse(clients.isEmpty());
+
+        boolean isClientInList = clients.stream()
+                .anyMatch(c -> c.getId().equals(addedRazonSocial.getId()));
+        assertTrue(isClientInList);
+
+        boolean containsNaturalPerson = clients.stream()
+                .anyMatch(c -> c instanceof NaturalPerson);
+        assertFalse(containsNaturalPerson, "La lista no debe contener clientes de tipo NaturalPerson");
+    }
+
+    @Test
+    public void testSeRecuperaLosClientesPorTipoYNamePersonaNatural() {
+        Client addedNaturalPerson = service.save(naturalPersonClient, user.getId());
+        Client addedRazonSocial = service.save(razonSocialClient, user.getId());
+
+        List<Client> clients = service.findByTypeAndName(ClientType.NATURAL_PERSON, "Nicolás");
+
+        assertNotNull(addedNaturalPerson);
+        assertNotNull(addedNaturalPerson.getId());
+        assertFalse(clients.isEmpty());
+
+        boolean isClientInList = clients.stream()
+                .anyMatch(c -> c.getId().equals(addedNaturalPerson.getId()));
+        assertTrue(isClientInList);
+
+        boolean containsRazonSocial = clients.stream()
+                .anyMatch(c -> c instanceof RazonSocial);
+        assertFalse(containsRazonSocial, "La lista no debe contener clientes de tipo RazonSocial");
     }
 
     @AfterEach

@@ -7,7 +7,9 @@
 // import type { FilterFieldConfig } from "@/shared/components/filter/chain/types/filter-chain";
 // import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
 
+import { Container } from "@/features/cotizar/components/Container";
 import { StepClient } from "@/features/cotizar/step-client/page/StepClient";
+import { StepManager } from "@/shared/components/step/StepManager";
 
 // import {
 //     initStep,
@@ -140,5 +142,12 @@ import { StepClient } from "@/features/cotizar/step-client/page/StepClient";
 // };
 
 export const CotizarPanel = () => {
-    return <StepClient />;
+    return (
+        <StepManager
+            indexes={["Cliente", "Producto", "Formas de pago"]}
+            steps={[StepClient /*StepProduct, StepPayment, StepPreview*/]}
+            Container={Container}
+            title="Nueva cotización"
+        />
+    );
 };

@@ -7,7 +7,7 @@ export const clientFilters: FilterFieldConfig[] = [
         required: true,
         variant: "select",
         options: [
-            { value: "PERSONANATURAL", label: "Persona Natural" },
+            { value: "NATURAL_PERSON", label: "Persona Natural" },
             { value: "RAZON_SOCIAL", label: "Razón Social" },
         ],
     },

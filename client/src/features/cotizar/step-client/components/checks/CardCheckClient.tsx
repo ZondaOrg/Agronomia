@@ -1,16 +1,19 @@
+// CardCheckClient.tsx
 import {
     CardCheckInput,
     type CardCheckOption,
 } from "@/shared/components/card-check-input";
 import type { Client } from "../../types/client";
-import { useState } from "react";
 import { IconList } from "@/shared/components/icon/components/iconList/IconList";
 import { clientItems } from "./client-data";
+import type { HydrationInputProps } from "@/shared/components/step/components/form/HydratationForm";
 
-export const CardCheckClient = ({ clients }: { clients: Client[] }) => {
-    const [detailedValue, setDetailedValue] = useState<string | null>(null);
-
-    const clientOptions: CardCheckOption[] = clients.map((client) => ({
+export const CardCheckClient = ({
+    items,
+    value,
+    onChange,
+}: HydrationInputProps<Client>) => {
+    const clientOptions: CardCheckOption[] = items.map((client) => ({
         value: `client-${client.id}`,
         label:
             client.type === "RAZON_SOCIAL"
@@ -28,8 +31,8 @@ export const CardCheckClient = ({ clients }: { clients: Client[] }) => {
     return (
         <CardCheckInput
             options={clientOptions}
-            value={detailedValue}
-            onChange={setDetailedValue}
+            value={value}
+            onChange={onChange}
             variant="CardDetailed"
             emptyMessage="No hay clientes disponibles"
         />

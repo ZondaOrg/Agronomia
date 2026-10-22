@@ -5,6 +5,7 @@ const tokenBorder = defineTokens.borders({
         sm: { value: "4px" },
         md: { value: "8px" },
         lg: { value: "16px" },
+        xl: { value: "24px" },
     },
     borderWidth: {
         thin: { value: "1px" },
