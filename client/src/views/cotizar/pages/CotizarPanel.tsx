@@ -147,6 +147,7 @@ export const CotizarPanel = () => {
             indexes={["Cliente", "Producto", "Formas de pago"]}
             steps={[StepClient /*StepProduct, StepPayment, StepPreview*/]}
             Container={Container}
+            title="Nueva cotización"
         />
     );
 };

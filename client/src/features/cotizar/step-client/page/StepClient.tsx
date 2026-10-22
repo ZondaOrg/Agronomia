@@ -28,7 +28,7 @@ export const StepClient = () => {
     return (
         <Step
             stepId={STEP_ID}
-            filter={<FilterClient />}
+            filter={<FilterClient title="Selecciona el cliente" />}
             service={searchClients}
             form={{
                 items: clients,

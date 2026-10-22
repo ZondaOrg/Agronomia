@@ -12,3 +12,9 @@ export const container = css({
     borderRadius: "16px",
     boxShadow: "0 4px 16px rgba(0, 0, 0, 0.12)",
 });
+
+export const title = css({
+    fontSize: "xl",
+    fontWeight: "semibold",
+    color: "#18181B",
+});

@@ -14,7 +14,7 @@ import {
 
 const STEP_ID = "1";
 
-export const FilterClient = () => {
+export const FilterClient = ({ title }: { title?: string }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -29,12 +29,8 @@ export const FilterClient = () => {
         );
     }, [dispatch]);
 
-    const filterValues = useAppSelector((s) =>
-        selectStepValues(s, STEP_ID),
-    );
-    const filterEnabled = useAppSelector((s) =>
-        selectStepEnable(s, STEP_ID),
-    );
+    const filterValues = useAppSelector((s) => selectStepValues(s, STEP_ID));
+    const filterEnabled = useAppSelector((s) => selectStepEnable(s, STEP_ID));
     const filtersCompleto = useAppSelector((s) =>
         selectFiltersCompleto(s, STEP_ID),
     );
@@ -47,6 +43,7 @@ export const FilterClient = () => {
 
     return (
         <FilterChain
+            title={title}
             filters={clientFilters}
             values={filterValues}
             enabled={filterEnabled}
