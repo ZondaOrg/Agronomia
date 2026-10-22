@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { UseFetch } from "./use-fetch";
 import { HttpError } from "@/core/server/errors/http-error";
 
@@ -6,34 +6,41 @@ function useFetch<D>(): UseFetch<D> {
     const [data, setData] = useState<D>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<HttpError>();
+    const requestId = useRef(0);
 
     const execute = useCallback(
         <Args extends unknown[]>(request: (...args: Args) => Promise<D>) => {
             return async (...args: Args) => {
+                const id = ++requestId.current;
                 setIsLoading(true);
                 setError(undefined);
 
                 try {
-                    const data = await request(...args);
-                    setData(data);
-                    return data;
+                    const result = await request(...args);
+                    if (id === requestId.current) setData(result);
+                    return result;
                 } catch (error: unknown) {
-                    if (error instanceof HttpError) {
+                    if (
+                        id === requestId.current &&
+                        error instanceof HttpError
+                    ) {
                         setError(error);
                     }
                     throw error;
                 } finally {
-                    setIsLoading(false);
+                    if (id === requestId.current) setIsLoading(false);
                 }
             };
         },
         [],
     );
 
-    function refresh() {
+    const refresh = useCallback(() => {
+        requestId.current++;
         setData(undefined);
         setError(undefined);
-    }
+        setIsLoading(false);
+    }, []);
 
     return { data, isLoading, error, execute, refresh };
 }

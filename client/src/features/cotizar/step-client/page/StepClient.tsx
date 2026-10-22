@@ -6,15 +6,14 @@ import {
 } from "@/shared/components/step/components/step/Step";
 import { useCallback } from "react";
 import { CardCheckClient } from "../components/checks/CardCheckClient";
+import type { Client } from "../types/client";
 
 const STEP_ID = "1";
+const EMPTY_CLIENTS: Client[] = [];
 
 export const StepClient = () => {
-    const {
-        data: clients = [],
-        loading,
-        getClientsByTypeAndName,
-    } = useGetClientsByTypeAndName();
+    const { data, loading, getClientsByTypeAndName, refresh } =
+        useGetClientsByTypeAndName();
 
     const searchClients = useCallback(
         ({ tipoCliente, datosClients }: FilterValues) =>
@@ -30,8 +29,9 @@ export const StepClient = () => {
             stepId={STEP_ID}
             filter={<FilterClient title="Selecciona el cliente" />}
             service={searchClients}
+            onClear={refresh}
             form={{
-                items: clients,
+                items: data ?? EMPTY_CLIENTS,
                 loading,
                 Input: CardCheckClient,
                 loadingMessage: "Cargando clientes...",

@@ -5,7 +5,7 @@ import type { Client } from "../types/client";
 import getClientsByTypeAndNameService from "../service/get-clientes-by-type-and-name.service";
 
 export const useGetClientsByTypeAndName = () => {
-    const { data, error, isLoading, execute, refresh } = useFetch<Client[]>();
+    const { data, error, isLoading, refresh, execute } = useFetch<Client[]>();
 
     const getClientsByTypeAndName = useCallback(
         (filter: ClientFilterPayload) =>
