@@ -1,11 +1,8 @@
 import FilterField from "./field/FilterField";
 import type { FilterFieldConfig } from "./types/filter-chain";
-import { title as titleStyle } from "./style";
 
 /** Propiedades del componente {@link FilterChain}. */
 interface Props {
-    /** Título que se muestra sobre la cadena de filtros. */
-    title?: string;
     /** Configuración de cada filtro, en el orden en que se renderizan. */
     filters: FilterFieldConfig[];
     /** Valor actual de cada filtro, indexado por id. `null` o ausente equivale a "sin selección". */
@@ -40,7 +37,6 @@ interface Props {
  * ```
  */
 export default function FilterChain({
-    title,
     filters,
     values,
     enabled,
@@ -48,7 +44,6 @@ export default function FilterChain({
 }: Props) {
     return (
         <div>
-            <h1 className={titleStyle}>{title}</h1>
             {filters.map((f) => (
                 <FilterField
                     key={f.id}

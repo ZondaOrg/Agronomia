@@ -7,6 +7,7 @@ import {
 import { useCallback } from "react";
 import { CardCheckClient } from "../components/checks/CardCheckClient";
 import type { Client } from "../types/client";
+import { AddClientAction } from "../components/actions/AddClient";
 
 const STEP_ID = "1";
 const EMPTY_CLIENTS: Client[] = [];
@@ -27,7 +28,8 @@ export const StepClient = () => {
     return (
         <Step
             stepId={STEP_ID}
-            filter={<FilterClient title="Selecciona el cliente" />}
+            filter={<FilterClient />}
+            title="Selecciona el cliente"
             service={searchClients}
             onClear={refresh}
             form={{
@@ -36,6 +38,8 @@ export const StepClient = () => {
                 Input: CardCheckClient,
                 loadingMessage: "Cargando clientes...",
             }}
+            actionsPosition="aside"
+            actions={<AddClientAction onClick={() => {}} />}
         />
     );
 };
