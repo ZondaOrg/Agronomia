@@ -21,13 +21,15 @@ public class CredentialsLoginOrchestratorImpl implements LoginOrchestrator {
     @Override
     public Auth login(Credentials credentials) {
         UserCredentials userCredentials = authService.login(credentials);
-        String token = jwtService.generate(userCredentials);
+        String accessToken = jwtService.generateAccessToken(userCredentials);
+        String refreshToken = jwtService.generateRefreshToken(userCredentials);
         return new Auth(
                 userCredentials.getName(),
                 userCredentials.getSurname(),
                 userCredentials.getEmail(),
                 userCredentials.getRole(),
-                token,
+                accessToken,
+                refreshToken,
                 userCredentials.getId(),
                 userCredentials.getLogo()
         );

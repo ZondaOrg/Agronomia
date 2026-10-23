@@ -7,7 +7,8 @@ public record Auth(
         String surname,
         String email,
         Role role,
-        String token,
+        String accessToken,
+        String refreshToken,
         Long id,
         String companyLogo
 ) {

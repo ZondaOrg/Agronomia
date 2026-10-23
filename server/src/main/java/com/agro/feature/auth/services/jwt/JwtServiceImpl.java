@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,22 +24,26 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generate(UserCredentials credentials) {
+    public String generateAccessToken(UserCredentials credentials) {
         return Jwts.builder()
                 .subject(credentials.getId().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .claims(claims(credentials))
+                .expiration(new Date(Duration.ofMinutes(10).toMillis()))
+                .claim("role", credentials.getRole())
+                .claim("jti", UUID.randomUUID().toString())
                 .signWith(getKey())
                 .compact();
     }
 
-    private Map<String, Object> claims(UserCredentials credentials) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("name", credentials.getName());
-        claims.put("role", credentials.getRole());
-        claims.put("jti", UUID.randomUUID().toString());
-        return claims;
+    @Override
+    public String generateRefreshToken(UserCredentials credentials) {
+        return Jwts.builder()
+                .subject(credentials.getId().toString())
+                .issuedAt(new Date())
+                .expiration(new Date(Duration.ofHours(8).toMillis()))
+                .claim("jti", UUID.randomUUID().toString())
+                .signWith(getKey())
+                .compact();
     }
 
     @Override
@@ -51,16 +54,16 @@ public class JwtServiceImpl implements JwtService {
             return Long.parseLong(sub);
         }
         catch(ExpiredJwtException e) {
-            throw new TokenException("El token se encuentra expirado");
+            throw new TokenException("El accessToken se encuentra expirado");
         }
         catch(MalformedJwtException | IllegalArgumentException e) {
-            throw new TokenException("El token está mal formado");
+            throw new TokenException("El accessToken está mal formado");
         }
         catch(UnsupportedJwtException e) {
-            throw new TokenException("El formato del token no es soportado");
+            throw new TokenException("El formato del accessToken no es soportado");
         }
         catch(StringIndexOutOfBoundsException | NullPointerException e) {
-            throw new TokenException("El token se encuentra vacio");
+            throw new TokenException("El accessToken se encuentra vacio");
         }
     }
 
