@@ -28,7 +28,7 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .subject(credentials.getId().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(Duration.ofMinutes(10).toMillis()))
+                .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(10).toMillis()))
                 .claim("role", credentials.getRole())
                 .claim("jti", UUID.randomUUID().toString())
                 .signWith(getKey())
@@ -40,7 +40,7 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .subject(credentials.getId().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(Duration.ofHours(8).toMillis()))
+                .expiration(new Date(System.currentTimeMillis() + Duration.ofHours(8).toMillis()))
                 .claim("jti", UUID.randomUUID().toString())
                 .signWith(getKey())
                 .compact();
