@@ -30,6 +30,5 @@ export const FormClient = ({ items, loading = false }: FormClientProps) => (
         items={items}
         loading={loading}
         Input={CardCheckClient}
-        loadingMessage="Cargando clientes..."
     />
 );

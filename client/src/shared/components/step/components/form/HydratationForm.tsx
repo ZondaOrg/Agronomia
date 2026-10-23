@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { form, title as titleStyle, subTitle as subTitleStyle } from "./styles";
+import Spinner from "@/shared/components/spinner/Spinner";
 /** Props que recibe el input que renderiza un {@link HydrationForm}. */
 export interface HydrationInputProps<TItem> {
     /** Elementos con los que se hidrata el input. */
@@ -25,8 +26,6 @@ export interface HydrationFormProps<TItem> {
 
     /** Input que renderiza los elementos y maneja la selección. */
     Input: React.ComponentType<HydrationInputProps<TItem>>;
-    /** Texto que se muestra mientras carga. */
-    loadingMessage?: string;
 }
 
 interface HydrationFormValues {
@@ -46,7 +45,6 @@ export const HydrationForm = <TItem,>({
     items,
     loading,
     Input,
-    loadingMessage = "Cargando...",
 }: HydrationFormProps<TItem>) => {
     const { control, reset } = useForm<HydrationFormValues>({
         defaultValues: { selected: null },
@@ -56,7 +54,7 @@ export const HydrationForm = <TItem,>({
         reset({ selected: null });
     }, [items, reset]);
 
-    if (loading) return <p>{loadingMessage}</p>;
+    if (loading) return <Spinner centered />;
 
     return (
         <form className={form}>
