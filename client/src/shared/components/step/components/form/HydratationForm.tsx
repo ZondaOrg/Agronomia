@@ -1,7 +1,7 @@
 // HydrationForm.tsx
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { form } from "./styles";
+import { form, title as titleStyle, subTitle as subTitleStyle } from "./styles";
 /** Props que recibe el input que renderiza un {@link HydrationForm}. */
 export interface HydrationInputProps<TItem> {
     /** Elementos con los que se hidrata el input. */
@@ -18,6 +18,11 @@ export interface HydrationFormProps<TItem> {
     items: TItem[];
     /** `true` mientras se ejecuta la búsqueda. */
     loading: boolean;
+    /** Título del formulario. */
+    title?: string;
+    /** Subtítulo del formulario. */
+    subtitle?: string;
+
     /** Input que renderiza los elementos y maneja la selección. */
     Input: React.ComponentType<HydrationInputProps<TItem>>;
     /** Texto que se muestra mientras carga. */
@@ -36,6 +41,8 @@ interface HydrationFormValues {
  * supera la altura máxima.
  */
 export const HydrationForm = <TItem,>({
+    title,
+    subtitle,
     items,
     loading,
     Input,
@@ -53,6 +60,8 @@ export const HydrationForm = <TItem,>({
 
     return (
         <form className={form}>
+            <h1 className={titleStyle}>{title}</h1>
+            <p className={subTitleStyle}>{subtitle}</p>
             <Controller
                 name="selected"
                 control={control}

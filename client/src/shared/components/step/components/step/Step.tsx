@@ -4,19 +4,21 @@ import {
     selectFiltersCompleto,
     selectStepValues,
 } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
-import { HydrationForm } from "../form/HydratationForm";
 import type { StepProps } from "./Step.types";
 import { actionsRecipe, asideRowRecipe } from "./step.style";
 
 export type { ActionsPosition, FilterValues, StepProps } from "./Step.types";
 
 /**
- * Renderiza un paso del formulario: filtro + formulario de hidratación,
+ * Renderiza un paso del formulario: filtro + formulario de resultados,
  * con un bloque opcional de acciones.
  *
  * Cuando el slice del filtro indica que está completo, ejecuta `service`
  * con los valores actuales. Cuando deja de estar completo, ejecuta `onClear`
  * para que quien usa el paso limpie los datos que hidratan el formulario.
+ *
+ * `filter` y `form` se reciben ya armados, por lo que el paso no depende
+ * de ningún formulario en particular.
  *
  * El bloque `actions` se ubica según `actionsPosition`:
  * - `top`: arriba de todo.
@@ -24,31 +26,28 @@ export type { ActionsPosition, FilterValues, StepProps } from "./Step.types";
  * - `between`: entre el filtro y el formulario.
  * - `bottom`: debajo de todo.
  *
- * Se estiliza con las variantes `actionsAlign` y `actionsGap`.
- *
  * @example
  * <Step
  *     stepId="cliente"
  *     filter={<FilterClient />}
+ *     form={<FormClient items={data} loading={loading} />}
  *     service={buscarClientes}
  *     onClear={limpiarClientes}
- *     form={formProps}
  *     actionsPosition="aside"
  *     actions={<AddClientAction onClick={handleAddClient} />}
  * />
  */
-export const Step = <TItem,>({
+export const Step = ({
     stepId,
     filter,
+    form,
     service,
     onClear,
-    form,
     actions,
     actionsPosition = "bottom",
     actionsAlign,
     actionsGap,
-    title,
-}: StepProps<TItem>) => {
+}: StepProps) => {
     const completo = useAppSelector((s) => selectFiltersCompleto(s, stepId));
     const values = useAppSelector((s) => selectStepValues(s, stepId));
 
@@ -74,7 +73,6 @@ export const Step = <TItem,>({
 
     return (
         <>
-            {title && <h1 className={title}>{title}</h1>}
             {actionsPosition === "top" && actionsBlock}
             {actionsPosition === "aside" ? (
                 <div className={asideRowRecipe()}>
@@ -85,7 +83,7 @@ export const Step = <TItem,>({
                 filter
             )}
             {actionsPosition === "between" && actionsBlock}
-            <HydrationForm {...form} />
+            {form}
             {actionsPosition === "bottom" && actionsBlock}
         </>
     );

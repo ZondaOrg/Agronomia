@@ -73,6 +73,12 @@ export const title = css({
     color: "#18181B",
 });
 
+export const subtitle = css({
+    fontSize: "sm",
+    fontWeight: "normal",
+    color: "#6B7280",
+});
+
 /** Variantes aceptadas por {@link actionsRecipe}. */
 export type ActionsVariants = NonNullable<
     RecipeVariantProps<typeof actionsRecipe>
