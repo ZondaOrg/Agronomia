@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { HydrationFormProps } from "../form/HydratationForm";
 import type { ActionsVariants } from "./step.style";
 
 /** Valores de los filtros de un paso, indexados por id de filtro. */
@@ -10,21 +9,24 @@ export type FilterValues = Record<string, string>;
  *
  * - `top`: arriba de todo, antes del filtro.
  * - `aside`: a la derecha del filtro, en la misma fila.
- * - `between`: entre el filtro y el formulario de hidratación.
+ * - `between`: entre el filtro y el formulario.
  * - `bottom`: debajo de todo, después del formulario.
  */
 export type ActionsPosition = "top" | "aside" | "between" | "bottom";
 
 /** Propiedades del componente `Step`. */
-export interface StepProps<TItem> {
+export interface StepProps {
     /** Id del paso en el slice `filterChain`. Debe coincidir con el del filtro. */
     stepId: string;
 
     /** Filtro del paso. */
     filter: ReactNode;
 
-    /** Título del paso. */
-    title?: string;
+    /**
+     * Formulario que muestra los resultados del paso (por ejemplo, un
+     * `HydrationForm` ya configurado).
+     */
+    form: ReactNode;
 
     /**
      * Se ejecuta con los valores del filtro cuando está completo.
@@ -38,9 +40,6 @@ export interface StepProps<TItem> {
      * Debe tener una referencia estable.
      */
     onClear?: () => void;
-
-    /** Props del `HydrationForm` que muestra los resultados del paso. */
-    form: HydrationFormProps<TItem>;
 
     /**
      * Contenido del bloque de acciones (por ejemplo, botones).
