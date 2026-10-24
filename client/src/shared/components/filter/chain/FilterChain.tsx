@@ -16,6 +16,8 @@ interface Props {
      * @deprecated Declarada en `Props` pero nunca leída; se puede eliminar.
      */
     completo?: boolean;
+    /** Indica si cada filtro tiene un error, indexado por id. Si falta el id, se asume que no hay error. */
+    errors?: Record<string, boolean>;
 }
 
 /**
@@ -36,11 +38,13 @@ interface Props {
  * />
  * ```
  */
+
 export default function FilterChain({
     filters,
     values,
     enabled,
     onChange,
+    errors,
 }: Props) {
     return (
         <div>
@@ -51,6 +55,7 @@ export default function FilterChain({
                     value={values[f.id] ?? null}
                     enabled={enabled[f.id] ?? true}
                     onChange={(v) => onChange(f.id, v)}
+                    error={errors?.[f.id]}
                 />
             ))}
         </div>

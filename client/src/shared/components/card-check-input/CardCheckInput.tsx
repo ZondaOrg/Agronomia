@@ -61,11 +61,15 @@ export default function CardCheckInput(props: CardCheckInputProps) {
         error,
         result,
     } = props;
+
     const optionsClassName =
         variant === "CardSimple" ? styles.simpleOptions : styles.options;
 
+    const containerClassName =
+        `${styles.container} ${error ? styles.errorContainer : ""}`.trim();
+
     return (
-        <div className={styles.container}>
+        <div className={containerClassName}>
             {options.length === 0 ? (
                 <EmptyState
                     icon={emptyIcon}
@@ -82,9 +86,10 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                             multiple={props.multiple === true}
                             selected={
                                 props.multiple === true
-                                    ? (props.value?.includes(option.value) ??
-                                      false)
-                                    : props.value === option.value
+                                    ? props.value?.includes(option.value) ??
+                                      false
+                                    : String(props.value) ===
+                                      String(option.value)
                             }
                             onSelect={() => {
                                 if (props.multiple === true) {
@@ -108,7 +113,10 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                     ))}
                 </div>
             )}
-            {error && <span className={styles.error}>{error}</span>}
+
+            {error && typeof error === "string" && (
+                <span className={styles.errorMessage}>{error}</span>
+            )}
             {result && <span className={styles.result}>{result}</span>}
         </div>
     );

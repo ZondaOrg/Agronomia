@@ -111,4 +111,15 @@ export const styles = {
     articleDetails: css({
         display: "block",
     }),
+    errorContainer: css({
+        border: "2px solid #ef4444",
+        borderRadius: "8px",
+    }),
+
+    errorMessage: css({
+        color: "#ef4444",
+        fontSize: "14px",
+        marginTop: "8px",
+        display: "block",
+    }),
 };
