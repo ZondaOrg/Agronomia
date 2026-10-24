@@ -9,10 +9,13 @@ import {
 import type { Client } from "../types/client";
 import { AddClientAction } from "../components/actions/AddClient";
 
-const STEP_ID = "1";
 const EMPTY_CLIENTS: Client[] = [];
 
-export const StepClient = () => {
+interface StepClientProps {
+    stepId: string;
+}
+
+export const StepClient = ({ stepId }: StepClientProps) => {
     const { data, loading, getClientsByTypeAndName, refresh } =
         useGetClientsByTypeAndName();
 
@@ -30,10 +33,11 @@ export const StepClient = () => {
 
     return (
         <Step
-            stepId={STEP_ID}
-            filter={<FilterClient />}
+            stepId={stepId}
+            filter={<FilterClient stepId={stepId} />}
             form={
                 <FormClient
+                    stepId={stepId}
                     items={data ?? EMPTY_CLIENTS}
                     loading={loading}
                 />
