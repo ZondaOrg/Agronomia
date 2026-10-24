@@ -5,11 +5,9 @@ import Button from "../button/Button";
 import { actions } from "./stepManager.style";
 
 export interface StepDefinition {
-    /** Texto que aparece en el índice. Si se omite, el paso no se muestra en el índice. */
     label?: string;
-    component: React.ComponentType;
+    component: React.ComponentType<{ stepId: string }>;
 }
-
 export interface StepManagerProps {
     title?: string;
     steps: StepDefinition[];
@@ -41,6 +39,7 @@ export const StepManager = ({
     );
 
     const CurrentStep = steps[currentStep].component;
+    const currentStepId = String(currentStep + 1);
 
     return (
         <Container title={title}>
@@ -49,7 +48,7 @@ export const StepManager = ({
                 currentStep={currentStep}
                 onStepClick={onStepChange}
             />
-            <CurrentStep />
+            <CurrentStep stepId={currentStepId} />
             <div className={actions}>
                 <Button
                     color="white"

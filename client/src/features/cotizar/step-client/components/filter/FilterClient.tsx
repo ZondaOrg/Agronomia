@@ -12,15 +12,13 @@ import {
     selectStepValues,
 } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 
-const STEP_ID = "1";
-
-export const FilterClient = () => {
+export const FilterClient = ({ stepId }: { stepId: string }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(
             initStep({
-                stepId: STEP_ID,
+                stepId: stepId,
                 filters: clientFilters.map(({ id, required }) => ({
                     id,
                     required,
@@ -29,15 +27,15 @@ export const FilterClient = () => {
         );
     }, [dispatch]);
 
-    const filterValues = useAppSelector((s) => selectStepValues(s, STEP_ID));
-    const filterEnabled = useAppSelector((s) => selectStepEnable(s, STEP_ID));
+    const filterValues = useAppSelector((s) => selectStepValues(s, stepId));
+    const filterEnabled = useAppSelector((s) => selectStepEnable(s, stepId));
     const filtersCompleto = useAppSelector((s) =>
-        selectFiltersCompleto(s, STEP_ID),
+        selectFiltersCompleto(s, stepId),
     );
 
     const handleFilterChange = useCallback(
         (filterId: string, value: string | null) =>
-            dispatch(setFilterValue({ stepId: STEP_ID, filterId, value })),
+            dispatch(setFilterValue({ stepId: stepId, filterId, value })),
         [dispatch],
     );
 

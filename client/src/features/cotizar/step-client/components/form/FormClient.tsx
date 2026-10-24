@@ -16,15 +16,13 @@ import {
     selectMostrarFaltantesNonce,
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 
-const STEP_ID = "1";
 const CAMPO_CLIENTE = "cliente";
 const OBLIGATORIOS = [CAMPO_CLIENTE];
 
 interface FormClientProps {
-    /** Clientes encontrados que se muestran para seleccionar. */
     items: Client[];
-    /** @default false */
     loading?: boolean;
+    stepId: string; // Nueva prop obligatoria
 }
 
 /**
@@ -35,21 +33,25 @@ interface FormClientProps {
  * los pedidos del StepManager (`solicitarGuardado`, `mostrarFaltantes`)
  * y el valor ya guardado, para rehidratar al volver al paso.
  */
-export const FormClient = ({ items, loading = false }: FormClientProps) => {
+export const FormClient = ({
+    items,
+    loading = false,
+    stepId,
+}: FormClientProps) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(initForm({ stepId: STEP_ID, obligatorios: OBLIGATORIOS }));
+        dispatch(initForm({ stepId: stepId, obligatorios: OBLIGATORIOS }));
     }, [dispatch]);
 
-    const faltantes = useAppSelector((s) => selectCamposFaltantes(s, STEP_ID));
-    const saveNonce = useAppSelector((s) => selectGuardadoNonce(s, STEP_ID));
+    const faltantes = useAppSelector((s) => selectCamposFaltantes(s, stepId));
+    const saveNonce = useAppSelector((s) => selectGuardadoNonce(s, stepId));
     const highlightNonce = useAppSelector((s) =>
-        selectMostrarFaltantesNonce(s, STEP_ID),
+        selectMostrarFaltantesNonce(s, stepId),
     );
     const valorGuardado = useAppSelector(
         (s) =>
-            (selectFormValores(s, STEP_ID)?.[CAMPO_CLIENTE] as
+            (selectFormValores(s, stepId)?.[CAMPO_CLIENTE] as
                 | string
                 | null
                 | undefined) ?? null,
@@ -59,19 +61,19 @@ export const FormClient = ({ items, loading = false }: FormClientProps) => {
         (value: string | null) =>
             dispatch(
                 setEstadoForm({
-                    stepId: STEP_ID,
+                    stepId: stepId,
                     formCompleto: Boolean(value),
                     camposFaltantes: value ? [] : OBLIGATORIOS,
                 }),
             ),
         [dispatch],
     );
-    const onReset = useCallback(() => dispatch(resetForm(STEP_ID)), [dispatch]);
+    const onReset = useCallback(() => dispatch(resetForm(stepId)), [dispatch]);
     const onSave = useCallback(
         (value: string | null) =>
             dispatch(
                 guardarValores({
-                    stepId: STEP_ID,
+                    stepId: stepId,
                     valores: { [CAMPO_CLIENTE]: value },
                 }),
             ),
