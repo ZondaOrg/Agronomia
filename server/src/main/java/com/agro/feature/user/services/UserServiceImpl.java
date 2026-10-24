@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService, UserCredentialsService, Use
                 user.getPassword(),
                 user.getRole(),
                 user.getName(),
-                user.getLogo(),
                 user.getSurname(),
+                user.getLogo(),
                 user.getId()
         );
     }
