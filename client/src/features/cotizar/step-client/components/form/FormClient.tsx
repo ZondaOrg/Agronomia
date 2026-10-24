@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
 import { HydrationForm } from "@/shared/components/step/components/form/HydratationForm";
 import { CardCheckClient } from "../checks/CardCheckClient";
 import type { Client } from "../../types/client";
+import { stepClientSchema, type StepClientFormValues } from "./client-schema";
 import {
     guardarValores,
     initForm,
@@ -15,24 +16,16 @@ import {
     selectGuardadoNonce,
     selectMostrarFaltantesNonce,
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
+import { validateStepSchema } from "@/shared/components/step/components/form/schema-validator";
 
 const CAMPO_CLIENTE = "cliente";
-const OBLIGATORIOS = [CAMPO_CLIENTE];
 
 interface FormClientProps {
     items: Client[];
     loading?: boolean;
-    stepId: string; // Nueva prop obligatoria
+    stepId: string;
 }
 
-/**
- * Formulario de resultados del paso de cliente, conectado al slice `hidratationForm`.
- *
- * Registra el form al montar y traduce los avisos del `HydrationForm`
- * (cambio de valor, reset, guardado) en acciones del slice. Lee del slice
- * los pedidos del StepManager (`solicitarGuardado`, `mostrarFaltantes`)
- * y el valor ya guardado, para rehidratar al volver al paso.
- */
 export const FormClient = ({
     items,
     loading = false,
@@ -41,8 +34,13 @@ export const FormClient = ({
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(initForm({ stepId: stepId, obligatorios: OBLIGATORIOS }));
-    }, [dispatch]);
+        dispatch(
+            initForm({
+                stepId,
+                obligatorios: Object.keys(stepClientSchema.shape),
+            }),
+        );
+    }, [dispatch, stepId]);
 
     const faltantes = useAppSelector((s) => selectCamposFaltantes(s, stepId));
     const saveNonce = useAppSelector((s) => selectGuardadoNonce(s, stepId));
@@ -58,37 +56,51 @@ export const FormClient = ({
     );
 
     const onValueChange = useCallback(
-        (value: string | null) =>
+        (value: string | null) => {
+            const currentValues = { [CAMPO_CLIENTE]: value ?? "" };
+
+            const { formCompleto, camposFaltantes } = validateStepSchema(
+                stepClientSchema,
+                currentValues,
+            );
+
             dispatch(
                 setEstadoForm({
-                    stepId: stepId,
-                    formCompleto: Boolean(value),
-                    camposFaltantes: value ? [] : OBLIGATORIOS,
+                    stepId,
+                    formCompleto,
+                    camposFaltantes,
                 }),
-            ),
-        [dispatch],
+            );
+        },
+        [dispatch, stepId],
     );
-    const onReset = useCallback(() => dispatch(resetForm(stepId)), [dispatch]);
+
+    const onReset = useCallback(
+        () => dispatch(resetForm(stepId)),
+        [dispatch, stepId],
+    );
+
     const onSave = useCallback(
-        (value: string | null) =>
+        (values: StepClientFormValues) =>
             dispatch(
                 guardarValores({
-                    stepId: stepId,
-                    valores: { [CAMPO_CLIENTE]: value },
+                    stepId,
+                    valores: values,
                 }),
             ),
-        [dispatch],
+        [dispatch, stepId],
     );
 
     return (
-        <HydrationForm
+        <HydrationForm<Client, StepClientFormValues>
             title="Clientes encontrados"
             subtitle="Selecciona uno para continuar"
             items={items}
             loading={loading}
             Input={CardCheckClient}
+            fieldName="cliente"
+            defaultValues={{ cliente: valorGuardado ?? "" }}
             error={highlightNonce > 0 && faltantes.includes(CAMPO_CLIENTE)}
-            initialValue={valorGuardado}
             onValueChange={onValueChange}
             onReset={onReset}
             saveNonce={saveNonce}
