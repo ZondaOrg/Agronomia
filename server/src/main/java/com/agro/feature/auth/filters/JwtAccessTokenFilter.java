@@ -21,18 +21,19 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAccessTokenFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
     private UserDetailsAdapter userDetailsService;
 
-    public JwtFilter(JwtService jwtService, UserDetailsAdapter userDetailsService) {
+    public JwtAccessTokenFilter(JwtService jwtService, UserDetailsAdapter userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
 
     private final List<RequestMatcher> PUBLICS = List.of(
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/" + Api.AUTH + Api.LOGIN),
+            PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/" + Api.SESSION + Api.REFRESH),
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/"),
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, Api.HEALTH),
             PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/"),

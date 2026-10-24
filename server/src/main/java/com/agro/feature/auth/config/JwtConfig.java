@@ -2,7 +2,7 @@ package com.agro.feature.auth.config;
 
 import com.agro.core.api.Api;
 import com.agro.feature.auth.entrypoints.JwtEntryPoint;
-import com.agro.feature.auth.filters.JwtFilter;
+import com.agro.feature.auth.filters.JwtAccessTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,10 +14,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class JwtConfig {
 
-    private JwtFilter filter;
+    private JwtAccessTokenFilter filter;
     private JwtEntryPoint entrypoint;
 
-    public JwtConfig(JwtFilter filter, JwtEntryPoint entrypoint) {
+    public JwtConfig(JwtAccessTokenFilter filter, JwtEntryPoint entrypoint) {
         this.filter = filter;
         this.entrypoint = entrypoint;
 
@@ -39,6 +39,7 @@ public class JwtConfig {
                                 .requestMatchers(Api.HEALTH).permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/" + Api.AUTH + Api.LOGIN).permitAll()
+                                .requestMatchers("/" + Api.SESSION + Api.REFRESH).permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entrypoint))
                 .addFilterAfter(filter, UsernamePasswordAuthenticationFilter.class);
