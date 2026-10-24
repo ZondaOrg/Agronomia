@@ -1,78 +1,108 @@
-// HydrationForm.tsx
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { form, title as titleStyle, subTitle as subTitleStyle } from "./styles";
-/** Props que recibe el input que renderiza un {@link HydrationForm}. */
+import { useEffect, useRef } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import {
+    form,
+    title as titleStyle,
+    subTitle as subTitleStyle,
+    content,
+    loadingBox,
+} from "./styles";
+import Spinner from "@/shared/components/spinner/Spinner";
+
 export interface HydrationInputProps<TItem> {
-    /** Elementos con los que se hidrata el input. */
     items: TItem[];
-    /** Valor seleccionado, o `null` si no hay selección. */
     value: string | null;
-    /** Se llama con el nuevo valor seleccionado. */
     onChange: (value: string | null) => void;
+    /** Si es `true`, el input se resalta como campo faltante. */
+    error?: boolean;
 }
 
-/** Propiedades del componente {@link HydrationForm}. */
 export interface HydrationFormProps<TItem> {
-    /** Resultado de la búsqueda con el que se hidrata el formulario. */
     items: TItem[];
-    /** `true` mientras se ejecuta la búsqueda. */
     loading: boolean;
-    /** Título del formulario. */
     title?: string;
-    /** Subtítulo del formulario. */
     subtitle?: string;
-
-    /** Input que renderiza los elementos y maneja la selección. */
     Input: React.ComponentType<HydrationInputProps<TItem>>;
-    /** Texto que se muestra mientras carga. */
-    loadingMessage?: string;
+
+    /** Resalta el input como faltante. */
+    error?: boolean;
+    /** Se llama cada vez que cambia el valor seleccionado. Debe ser estable. */
+    onValueChange?: (value: string | null) => void;
+    /** Se llama cuando el form se limpia (cambian `items` o `loading`) y al desmontarse. Debe ser estable. */
+    onReset?: () => void;
+    /** Cada cambio de este valor dispara `onSave`. */
+    saveNonce?: number;
+    /** Recibe el valor actual cuando cambia `saveNonce`. Debe ser estable. */
+    onSave?: (value: string | null) => void;
 }
 
 interface HydrationFormValues {
     selected: string | null;
 }
 
-/**
- * Formulario que se hidrata con una lista de elementos.
- *
- * Delega el render de los elementos en `Input`, limpia la selección cada vez
- * que llega un resultado nuevo y activa el scroll interno cuando el contenido
- * supera la altura máxima.
- */
 export const HydrationForm = <TItem,>({
     title,
     subtitle,
     items,
     loading,
     Input,
-    loadingMessage = "Cargando...",
+    error,
+    onValueChange,
+    onReset,
+    saveNonce = 0,
+    onSave,
 }: HydrationFormProps<TItem>) => {
-    const { control, reset } = useForm<HydrationFormValues>({
+    const { control, reset, getValues } = useForm<HydrationFormValues>({
         defaultValues: { selected: null },
     });
+    const selected = useWatch({ control, name: "selected" });
 
+    // 1) Limpieza: llegan resultados nuevos o cambia loading
     useEffect(() => {
         reset({ selected: null });
-    }, [items, reset]);
+        onReset?.();
+    }, [items, loading, reset, onReset]);
 
-    if (loading) return <p>{loadingMessage}</p>;
+    // 1b) Limpieza al desmontar (volver a un paso anterior)
+    useEffect(() => () => onReset?.(), [onReset]);
+
+    // 2) Avisar cambios de valor (declarado después de la limpieza)
+    useEffect(() => {
+        onValueChange?.(selected);
+    }, [selected, onValueChange]);
+
+    // 3) Guardar solo cuando cambia saveNonce
+    const lastSave = useRef(saveNonce);
+    useEffect(() => {
+        if (saveNonce === lastSave.current) return;
+        lastSave.current = saveNonce;
+        onSave?.(getValues("selected"));
+    }, [saveNonce, getValues, onSave]);
 
     return (
         <form className={form}>
             <h1 className={titleStyle}>{title}</h1>
             <p className={subTitleStyle}>{subtitle}</p>
-            <Controller
-                name="selected"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        items={items}
-                        value={field.value}
-                        onChange={field.onChange}
+            <div className={content}>
+                {loading ? (
+                    <div className={loadingBox}>
+                        <Spinner centered />
+                    </div>
+                ) : (
+                    <Controller
+                        name="selected"
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                items={items}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={error}
+                            />
+                        )}
                     />
                 )}
-            />
+            </div>
         </form>
     );
 };

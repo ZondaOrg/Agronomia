@@ -31,7 +31,7 @@ export const StepClient = () => {
     return (
         <Step
             stepId={STEP_ID}
-            filter={<FilterClient title="Selecciona el cliente" />}
+            filter={<FilterClient />}
             form={
                 <FormClient
                     items={data ?? EMPTY_CLIENTS}

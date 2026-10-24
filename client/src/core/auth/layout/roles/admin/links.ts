@@ -10,4 +10,5 @@ export const links: linkNavbar[] = [
         path: `${ADMIN_ROUTES.BASE}/${ADMIN_ROUTES.PRODUCTS.ROOT}`,
     },
     { name: "Ventas", path: ADMIN_ROUTES.SALE.BASE },
+    { name: "Cotizar", path: ADMIN_ROUTES.COTIZAR.BASE },
 ];

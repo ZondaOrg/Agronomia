@@ -14,7 +14,7 @@ import {
 
 const STEP_ID = "1";
 
-export const FilterClient = ({ title }: { title?: string }) => {
+export const FilterClient = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -43,7 +43,6 @@ export const FilterClient = ({ title }: { title?: string }) => {
 
     return (
         <FilterChain
-            title={title}
             filters={clientFilters}
             values={filterValues}
             enabled={filterEnabled}

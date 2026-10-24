@@ -1,8 +1,10 @@
+import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import CardArticleDetailed from "./components/CardArticleDetailed";
 import CardDetailed from "./components/CardDetailed";
 import CardSimple from "./components/CardSimple";
 import { styles } from "./styles";
 import type { CardCheckInputProps, CardCheckOption } from "./types";
+import { SearchIcon } from "../icon/components/icons/Search";
 
 function CardOption({
     option,
@@ -54,6 +56,8 @@ export default function CardCheckInput(props: CardCheckInputProps) {
         options,
         variant,
         emptyMessage = "No hay opciones disponibles",
+        emptyDescription,
+        emptyIcon = <SearchIcon />,
         error,
         result,
     } = props;
@@ -63,7 +67,11 @@ export default function CardCheckInput(props: CardCheckInputProps) {
     return (
         <div className={styles.container}>
             {options.length === 0 ? (
-                <p className={styles.empty}>{emptyMessage}</p>
+                <EmptyState
+                    icon={emptyIcon}
+                    title={emptyMessage}
+                    description={emptyDescription}
+                />
             ) : (
                 <div className={optionsClassName}>
                     {options.map((option) => (
@@ -74,8 +82,8 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                             multiple={props.multiple === true}
                             selected={
                                 props.multiple === true
-                                    ? props.value?.includes(option.value) ??
-                                      false
+                                    ? (props.value?.includes(option.value) ??
+                                      false)
                                     : props.value === option.value
                             }
                             onSelect={() => {
@@ -86,7 +94,8 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                                     )
                                         ? selectedValues.filter(
                                               (selectedValue) =>
-                                                  selectedValue !== option.value,
+                                                  selectedValue !==
+                                                  option.value,
                                           )
                                         : [...selectedValues, option.value];
                                     props.onChange(nextValue);
