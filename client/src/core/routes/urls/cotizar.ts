@@ -1,3 +1,3 @@
 export const COTIZAR = {
-    BAESE: `cotizar`,
+    BASE: `cotizar`,
 };

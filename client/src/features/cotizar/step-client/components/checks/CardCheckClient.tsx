@@ -1,4 +1,3 @@
-// CardCheckClient.tsx
 import {
     CardCheckInput,
     type CardCheckOption,
