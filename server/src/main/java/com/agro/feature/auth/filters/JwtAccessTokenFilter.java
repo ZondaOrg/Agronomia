@@ -55,7 +55,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
         }
 
         String tokenWithoutBearer = authHeader.substring(7);
-        Long id = jwtService.validate(tokenWithoutBearer);
+        Long id = jwtService.validateAccessToken(tokenWithoutBearer);
         UserDetails user = userDetailsService.loadUserById(id);
         request.setAttribute("userId", id);
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

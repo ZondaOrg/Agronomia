@@ -32,7 +32,7 @@ public class AuthControllerREST {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", auth.refreshToken())
                 .httpOnly(true)
                 .secure(true)
-                .path(Api.SESSION)
+                .path("/" + Api.SESSION)
                 .maxAge(Duration.ofHours(8))
                 .sameSite("Strict")
                 .build();
