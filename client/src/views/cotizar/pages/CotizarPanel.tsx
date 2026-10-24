@@ -36,6 +36,7 @@ export const CotizarPanel = () => {
     const valores = useAppSelector((s) => selectFormValores(s, stepId));
 
     const pendingNext = useRef(false);
+
     useEffect(() => {
         if (!pendingNext.current) return;
         pendingNext.current = false;
@@ -51,6 +52,10 @@ export const CotizarPanel = () => {
         dispatch(solicitarGuardado(stepId));
     }, [dispatch, formCompleto, stepId]);
 
+    const handleCancel = useCallback(() => {
+        setCurrentStep((c) => Math.max(c - 1, 0));
+    }, []);
+
     return (
         <StepManager
             steps={STEPS}
@@ -59,6 +64,7 @@ export const CotizarPanel = () => {
             currentStep={currentStep}
             onStepChange={setCurrentStep}
             onNext={handleNext}
+            onCancel={handleCancel}
         />
     );
 };

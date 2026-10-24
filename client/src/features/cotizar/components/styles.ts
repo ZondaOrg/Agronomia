@@ -7,7 +7,7 @@ export const container = css({
     width: "100%",
     maxWidth: "900px",
     height: "100%",
-    maxHeight: "800px",
+    maxHeight: "850px",
     margin: "0 auto",
     padding: "24px",
     background: "#FFFFFF",
