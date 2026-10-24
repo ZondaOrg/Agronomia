@@ -2,6 +2,7 @@ package com.agro.feature.auth.filters;
 
 import com.agro.core.api.Api;
 import com.agro.feature.auth.services.jwt.JwtService;
+import com.agro.feature.auth.services.jwt.exceptions.TokenException;
 import com.agro.feature.auth.services.userDetails.UserDetailsAdapter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,12 +55,16 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String tokenWithoutBearer = authHeader.substring(7);
-        Long id = jwtService.validateAccessToken(tokenWithoutBearer);
-        UserDetails user = userDetailsService.loadUserById(id);
-        request.setAttribute("userId", id);
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            String tokenWithoutBearer = authHeader.substring(7);
+            Long id = jwtService.validateAccessToken(tokenWithoutBearer);
+            UserDetails user = userDetailsService.loadUserById(id);
+            request.setAttribute("userId", id);
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (TokenException e) {
+            SecurityContextHolder.clearContext();
+        }
         filterChain.doFilter(request, response);
     }
 }
