@@ -24,21 +24,20 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateAccessToken(UserCredentials credentials) {
+    public String generateAccessToken(Long userId) {
         return Jwts.builder()
-                .subject(credentials.getId().toString())
+                .subject(userId.toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(10).toMillis()))
-                .claim("role", credentials.getRole())
                 .claim("jti", UUID.randomUUID().toString())
                 .signWith(getKey())
                 .compact();
     }
 
     @Override
-    public String generateRefreshToken(UserCredentials credentials) {
+    public String generateRefreshToken(Long userId) {
         return Jwts.builder()
-                .subject(credentials.getId().toString())
+                .subject(userId.toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + Duration.ofHours(8).toMillis()))
                 .claim("jti", UUID.randomUUID().toString())

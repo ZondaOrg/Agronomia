@@ -5,7 +5,7 @@ import com.agro.feature.auth.domain.Auth;
 import com.agro.feature.auth.dtos.AuthMapper;
 import com.agro.feature.auth.dtos.request.Credentials;
 import com.agro.feature.auth.dtos.response.AuthResponse;
-import com.agro.feature.auth.orchestrator.LoginOrchestrator;
+import com.agro.feature.auth.orchestrator.login.LoginOrchestrator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class AuthControllerREST {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", auth.refreshToken())
                 .httpOnly(true)
                 .secure(true)
-                .path("/session")
+                .path(Api.SESSION)
                 .maxAge(Duration.ofHours(8))
                 .sameSite("Strict")
                 .build();

@@ -1,4 +1,4 @@
-package com.agro.feature.auth.orchestrator;
+package com.agro.feature.auth.orchestrator.login;
 
 import com.agro.feature.auth.domain.Auth;
 import com.agro.feature.auth.dtos.request.Credentials;
@@ -21,8 +21,8 @@ public class CredentialsLoginOrchestratorImpl implements LoginOrchestrator {
     @Override
     public Auth login(Credentials credentials) {
         UserCredentials userCredentials = authService.login(credentials);
-        String accessToken = jwtService.generateAccessToken(userCredentials);
-        String refreshToken = jwtService.generateRefreshToken(userCredentials);
+        String accessToken = jwtService.generateAccessToken(userCredentials.getId());
+        String refreshToken = jwtService.generateRefreshToken(userCredentials.getId());
         return new Auth(
                 userCredentials.getName(),
                 userCredentials.getSurname(),

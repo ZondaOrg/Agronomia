@@ -1,9 +1,7 @@
 package com.agro.feature.auth.services.jwt;
 
-import com.agro.feature.auth.services.userDetails.UserCredentials;
-
 public interface JwtService {
-    String generateAccessToken(UserCredentials credentials);
-    String generateRefreshToken(UserCredentials credentials);
+    String generateAccessToken(Long userId);
+    String generateRefreshToken(Long userId);
     Long validate(String token);
 }
