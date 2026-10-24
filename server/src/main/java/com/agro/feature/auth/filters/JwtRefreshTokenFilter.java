@@ -1,6 +1,7 @@
 package com.agro.feature.auth.filters;
 
 import com.agro.core.api.Api;
+import com.agro.feature.auth.services.cookie.RefreshCookieService;
 import com.agro.feature.auth.services.jwt.JwtService;
 import com.agro.feature.auth.services.jwt.exceptions.TokenException;
 import com.agro.feature.auth.services.userDetails.UserDetailsAdapter;
@@ -43,7 +44,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie refreshCookie = WebUtils.getCookie(request, "refresh_token");
+        Cookie refreshCookie = WebUtils.getCookie(request, RefreshCookieService.REFRESH_COOKIE_NAME);
 
         if (refreshCookie == null) {
             filterChain.doFilter(request, response);

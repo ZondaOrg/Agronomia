@@ -1,6 +1,7 @@
 package com.agro.feature.auth.domain;
 
 import com.agro.shared.entities.rol.Role;
+import org.springframework.http.ResponseCookie;
 
 public record Auth(
         String name,
@@ -8,7 +9,7 @@ public record Auth(
         String email,
         Role role,
         String accessToken,
-        String refreshToken,
+        ResponseCookie refreshCookie,
         Long id,
         String companyLogo
 ) {
