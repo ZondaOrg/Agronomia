@@ -4,6 +4,8 @@ import com.agro.core.api.Api;
 import com.agro.feature.auth.entrypoints.JwtEntryPoint;
 import com.agro.feature.auth.filters.JwtAccessTokenFilter;
 import com.agro.feature.auth.filters.JwtRefreshTokenFilter;
+import com.agro.feature.auth.services.jwt.JwtService;
+import com.agro.feature.auth.services.userDetails.UserDetailsAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,14 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class JwtConfig {
 
-    private JwtAccessTokenFilter accessTokenFilter;
-    private JwtRefreshTokenFilter refreshTokenFilter;
+    private JwtService jwtService;
+    private UserDetailsAdapter userDetailsService;
     private JwtEntryPoint entrypoint;
 
-    public JwtConfig(JwtAccessTokenFilter filter, JwtRefreshTokenFilter refreshTokenFilter, JwtEntryPoint entrypoint) {
-        this.accessTokenFilter = filter;
+    public JwtConfig(JwtService jwtService, UserDetailsAdapter userDetailsService, JwtEntryPoint entrypoint) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
         this.entrypoint = entrypoint;
-        this.refreshTokenFilter = refreshTokenFilter;
     }
 
     @Bean
@@ -37,7 +39,7 @@ public class JwtConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a.anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entrypoint))
-                .addFilterBefore(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtRefreshTokenFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -60,7 +62,7 @@ public class JwtConfig {
                                 .requestMatchers("/" + Api.AUTH + Api.LOGIN).permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entrypoint))
-                .addFilterAfter(accessTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(new JwtAccessTokenFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
