@@ -3,6 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "packageManager": "pnpm@9.15.5",
     "scripts": {
         "dev": "vite",
         "build": "panda codegen && tsc --noEmit && vite build",
@@ -10,6 +11,14 @@
         "preview": "vite preview",
         "prepare": "panda codegen",
         "docs": "typedoc"
+    },
+    "pnpm": {
+        "overrides": {
+            "fast-uri@<3.1.8": "^3.1.8",
+            "nanoid@<3.3.18": "^3.3.18",
+            "source-map-js@<1.2.2": "^1.2.2",
+            "brace-expansion@>=4.0.0 <5.0.12": "^5.0.12"
+        }
     },
     "dependencies": {
         "@hookform/resolvers": "^5.9.1",
