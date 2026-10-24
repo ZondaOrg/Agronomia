@@ -30,9 +30,7 @@ export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
     Input: React.ComponentType<HydrationInputProps<TItem>>;
     fieldName: Path<TFormValues>;
     defaultValues?: DefaultValues<TFormValues>;
-
     error?: boolean;
-
     onValueChange?: (value: string | null) => void;
     onReset?: () => void;
     saveNonce?: number;
@@ -49,26 +47,15 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     fieldName,
     defaultValues,
     onValueChange,
-    onReset,
     saveNonce = 0,
     onSave,
 }: HydrationFormProps<TItem, TFormValues>) => {
-    const { control, reset, getValues } = useForm<TFormValues>({
+    const { control, getValues } = useForm<TFormValues>({
         defaultValues,
+        values: defaultValues as TFormValues,
     });
 
     const fieldValue = useWatch({ control, name: fieldName }) as string | null;
-
-    const prev = useRef({ items, loading });
-    useEffect(() => {
-        if (prev.current.items === items && prev.current.loading === loading) {
-            return;
-        }
-        prev.current = { items, loading };
-
-        reset({ [fieldName]: null } as unknown as TFormValues);
-        onReset?.();
-    }, [items, loading, reset, onReset, fieldName]);
 
     useEffect(() => {
         onValueChange?.(fieldValue);

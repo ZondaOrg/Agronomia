@@ -18,14 +18,14 @@ export const FilterClient = ({ stepId }: { stepId: string }) => {
     useEffect(() => {
         dispatch(
             initStep({
-                stepId: stepId,
+                stepId,
                 filters: clientFilters.map(({ id, required }) => ({
                     id,
                     required,
                 })),
             }),
         );
-    }, [dispatch]);
+    }, [dispatch, stepId]);
 
     const filterValues = useAppSelector((s) => selectStepValues(s, stepId));
     const filterEnabled = useAppSelector((s) => selectStepEnable(s, stepId));
@@ -35,8 +35,8 @@ export const FilterClient = ({ stepId }: { stepId: string }) => {
 
     const handleFilterChange = useCallback(
         (filterId: string, value: string | null) =>
-            dispatch(setFilterValue({ stepId: stepId, filterId, value })),
-        [dispatch],
+            dispatch(setFilterValue({ stepId, filterId, value })),
+        [dispatch, stepId],
     );
 
     return (

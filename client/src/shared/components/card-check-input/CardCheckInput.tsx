@@ -80,11 +80,13 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                             option={option}
                             variant={variant}
                             multiple={props.multiple === true}
+                            // ACÁ ESTÁ EL FIX: Forzamos a String para evitar falsos negativos
                             selected={
                                 props.multiple === true
-                                    ? (props.value?.includes(option.value) ??
-                                      false)
-                                    : props.value === option.value
+                                    ? props.value?.includes(option.value) ??
+                                      false
+                                    : String(props.value) ===
+                                      String(option.value)
                             }
                             onSelect={() => {
                                 if (props.multiple === true) {
