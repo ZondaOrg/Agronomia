@@ -1,12 +1,13 @@
+import { useCallback } from "react";
 import { FilterClient } from "../components/filter/FilterClient";
+import { FormClient } from "../components/form/FormClient";
 import { useGetClientsByTypeAndName } from "../hooks/use-get-clients-by-name-and-type";
 import {
     Step,
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
-import { useCallback } from "react";
-import { CardCheckClient } from "../components/checks/CardCheckClient";
 import type { Client } from "../types/client";
+import { AddClientAction } from "../components/actions/AddClient";
 
 const STEP_ID = "1";
 const EMPTY_CLIENTS: Client[] = [];
@@ -24,18 +25,23 @@ export const StepClient = () => {
         [getClientsByTypeAndName],
     );
 
+    // TODO: navegar al alta de cliente guardando la cotización en curso.
+    const handleAddClient = useCallback(() => {}, []);
+
     return (
         <Step
             stepId={STEP_ID}
             filter={<FilterClient title="Selecciona el cliente" />}
+            form={
+                <FormClient
+                    items={data ?? EMPTY_CLIENTS}
+                    loading={loading}
+                />
+            }
             service={searchClients}
             onClear={refresh}
-            form={{
-                items: data ?? EMPTY_CLIENTS,
-                loading,
-                Input: CardCheckClient,
-                loadingMessage: "Cargando clientes...",
-            }}
+            actionsPosition="aside"
+            actions={<AddClientAction onClick={handleAddClient} />}
         />
     );
 };
