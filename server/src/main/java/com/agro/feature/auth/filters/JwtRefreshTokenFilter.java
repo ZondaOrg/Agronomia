@@ -2,6 +2,7 @@ package com.agro.feature.auth.filters;
 
 import com.agro.core.api.Api;
 import com.agro.feature.auth.services.jwt.JwtService;
+import com.agro.feature.auth.services.jwt.exceptions.TokenException;
 import com.agro.feature.auth.services.userDetails.UserDetailsAdapter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,12 +18,10 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Component
 public class JwtRefreshTokenFilter extends OncePerRequestFilter {
@@ -46,23 +45,22 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Optional<Cookie> sessionCookie =
-                Arrays.stream(
-                        request.getCookies()).
-                        filter(cookie -> Objects.equals(cookie.getName(), "refresh_token")).
-                        findFirst();
+        Cookie refreshCookie = WebUtils.getCookie(request, "refresh_token");
 
-        if (sessionCookie.isEmpty()) {
+        if (refreshCookie == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String refreshToken = sessionCookie.get().getValue();
-        Long id = jwtService.validateRefreshToken(refreshToken);
-        UserDetails user = userDetailsService.loadUserById(id);
-        request.setAttribute("userId", id);
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            Long id = jwtService.validateRefreshToken(refreshCookie.getValue());
+            UserDetails user = userDetailsService.loadUserById(id);
+            request.setAttribute("userId", id);
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (TokenException e) {
+            SecurityContextHolder.clearContext();
+        }
         filterChain.doFilter(request, response);
     }
 }
