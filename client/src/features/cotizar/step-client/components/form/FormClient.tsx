@@ -11,6 +11,7 @@ import {
 } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
 import {
     selectCamposFaltantes,
+    selectFormValores,
     selectGuardadoNonce,
     selectMostrarFaltantesNonce,
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
@@ -27,11 +28,12 @@ interface FormClientProps {
 }
 
 /**
- * Formulario de resultados del paso de cliente, conectado al slice `formChain`.
+ * Formulario de resultados del paso de cliente, conectado al slice `hidratationForm`.
  *
  * Registra el form al montar y traduce los avisos del `HydrationForm`
  * (cambio de valor, reset, guardado) en acciones del slice. Lee del slice
- * los pedidos del StepManager (`solicitarGuardado`, `mostrarFaltantes`).
+ * los pedidos del StepManager (`solicitarGuardado`, `mostrarFaltantes`)
+ * y el valor ya guardado, para rehidratar al volver al paso.
  */
 export const FormClient = ({ items, loading = false }: FormClientProps) => {
     const dispatch = useAppDispatch();
@@ -44,6 +46,13 @@ export const FormClient = ({ items, loading = false }: FormClientProps) => {
     const saveNonce = useAppSelector((s) => selectGuardadoNonce(s, STEP_ID));
     const highlightNonce = useAppSelector((s) =>
         selectMostrarFaltantesNonce(s, STEP_ID),
+    );
+    const valorGuardado = useAppSelector(
+        (s) =>
+            (selectFormValores(s, STEP_ID)?.[CAMPO_CLIENTE] as
+                | string
+                | null
+                | undefined) ?? null,
     );
 
     const onValueChange = useCallback(
@@ -77,6 +86,7 @@ export const FormClient = ({ items, loading = false }: FormClientProps) => {
             loading={loading}
             Input={CardCheckClient}
             error={highlightNonce > 0 && faltantes.includes(CAMPO_CLIENTE)}
+            initialValue={valorGuardado}
             onValueChange={onValueChange}
             onReset={onReset}
             saveNonce={saveNonce}

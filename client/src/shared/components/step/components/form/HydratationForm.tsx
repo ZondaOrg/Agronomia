@@ -26,9 +26,11 @@ export interface HydrationFormProps<TItem> {
 
     /** Resalta el input como faltante. */
     error?: boolean;
+    /** Valor con el que arranca el form (por ejemplo, el ya guardado en el store). */
+    initialValue?: string | null;
     /** Se llama cada vez que cambia el valor seleccionado. Debe ser estable. */
     onValueChange?: (value: string | null) => void;
-    /** Se llama cuando el form se limpia (cambian `items` o `loading`) y al desmontarse. Debe ser estable. */
+    /** Se llama cuando el form se limpia porque cambian `items` o `loading`. Debe ser estable. */
     onReset?: () => void;
     /** Cada cambio de este valor dispara `onSave`. */
     saveNonce?: number;
@@ -47,26 +49,29 @@ export const HydrationForm = <TItem,>({
     loading,
     Input,
     error,
+    initialValue = null,
     onValueChange,
     onReset,
     saveNonce = 0,
     onSave,
 }: HydrationFormProps<TItem>) => {
     const { control, reset, getValues } = useForm<HydrationFormValues>({
-        defaultValues: { selected: null },
+        defaultValues: { selected: initialValue },
     });
     const selected = useWatch({ control, name: "selected" });
 
-    // 1) Limpieza: llegan resultados nuevos o cambia loading
+    // 1) Limpieza: solo cuando items o loading CAMBIAN después del montaje
+    const prev = useRef({ items, loading });
     useEffect(() => {
+        if (prev.current.items === items && prev.current.loading === loading) {
+            return;
+        }
+        prev.current = { items, loading };
         reset({ selected: null });
         onReset?.();
     }, [items, loading, reset, onReset]);
 
-    // 1b) Limpieza al desmontar (volver a un paso anterior)
-    useEffect(() => () => onReset?.(), [onReset]);
-
-    // 2) Avisar cambios de valor (declarado después de la limpieza)
+    // 2) Avisar cambios de valor
     useEffect(() => {
         onValueChange?.(selected);
     }, [selected, onValueChange]);
