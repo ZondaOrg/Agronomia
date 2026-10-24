@@ -11,6 +11,7 @@ export const CardCheckClient = ({
     items,
     value,
     onChange,
+    error,
 }: HydrationInputProps<Client>) => {
     const clientOptions: CardCheckOption[] = items.map((client) => ({
         value: `${client.id}`,
@@ -34,6 +35,7 @@ export const CardCheckClient = ({
             onChange={onChange}
             variant="CardDetailed"
             emptyMessage="No hay clientes disponibles"
+            error={error}
         />
     );
 };

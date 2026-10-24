@@ -21,7 +21,7 @@ interface BaseCardCheckInputProps {
     emptyDescription?: ReactNode;
     /** Ícono del estado vacío. Por defecto se usa `SearchX`. */
     emptyIcon?: ReactNode;
-    error?: string;
+    error?: string | boolean;
     result?: string;
 }
 
