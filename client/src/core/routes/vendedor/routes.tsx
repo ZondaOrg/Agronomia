@@ -15,6 +15,8 @@ import ListPrice from "@/features/price-list/pages/PriceList";
 import { Products } from "@/views/product/Products";
 import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPage";
 import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
+import { Cotizar } from "@/views/cotizar/Cotizar";
+import { CotizarPanel } from "@/views/cotizar/pages/CotizarPanel";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -107,6 +109,22 @@ export const VendedorRoutes: RouteData[] = [
                         path: VENDEDOR_ROUTES.CLIENT.EDIT,
                         element: <EditClient />,
                         handle: { breadcrumb: "Editar Cliente" },
+                    },
+                ],
+            },
+            {
+                path: `${VENDEDOR_ROUTES.COTIZAR.BASE}`,
+                element: <Cotizar />,
+                handle: { breadcrumb: "Cotizar" },
+                children: [
+                    {
+                        index: true,
+                        element: <CotizarPanel />,
+                    },
+                    {
+                        path: "nuevo-cliente",
+                        element: <AddClient />,
+                        handle: { breadcrumb: "Nuevo Cliente" },
                     },
                 ],
             },

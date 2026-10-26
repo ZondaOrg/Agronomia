@@ -4,6 +4,7 @@ import { PAYMENT } from "../urls/payments";
 import { PRICE_LIST, PRODUCTS } from "../urls/products";
 import { PROVIDERS } from "../urls/providers";
 import { SALE } from "../urls/sale";
+import { COTIZAR } from "../urls/cotizar";
 
 export const VENDEDOR_ROUTES = {
     BASE: "/vendedor",
@@ -27,5 +28,8 @@ export const VENDEDOR_ROUTES = {
     },
     SALES: {
         BASE: SALE.BASE,
+    },
+    COTIZAR: {
+        BASE: COTIZAR.BASE,
     },
 };
