@@ -1,11 +1,7 @@
 import { cva } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
+import Button from "@/shared/components/button/Button"; // Ajustá si la ruta de tu Button es otra
 
-/**
- * Estilos del contenedor de {@link AddClientAction}.
- *
- * Apila el texto de ayuda sobre el botón y los alinea a la derecha,
- * para que queden pegados al borde del bloque `aside` del `Step`.
- */
 const addClientRecipe = cva({
     base: {
         display: "flex",
@@ -15,9 +11,6 @@ const addClientRecipe = cva({
     },
 });
 
-/**
- * Estilos del texto de ayuda que aclara qué pasa al crear el cliente.
- */
 const addClientHintRecipe = cva({
     base: {
         fontSize: "xs",
@@ -26,43 +19,13 @@ const addClientHintRecipe = cva({
     },
 });
 
-/** Propiedades del componente `AddClientAction`. */
 export interface AddClientActionProps {
-    /** Se ejecuta al presionar "Añadir cliente". */
     onClick: () => void;
-
-    /**
-     * Texto de ayuda que se muestra sobre el botón.
-     * @default "Al crear el cliente, volvés a la cotización."
-     */
     hint?: string;
-
-    /**
-     * Texto del botón.
-     * @default "Añadir cliente"
-     */
     label?: string;
-
-    /**
-     * Deshabilita el botón.
-     * @default false
-     */
     disabled?: boolean;
 }
 
-import Button from "@/shared/components/button/Button";
-import { token } from "@styled-system/tokens";
-
-/**
- * Acción para crear un cliente nuevo.
- *
- * Muestra un texto de ayuda que aclara que, al terminar el alta, se vuelve
- * a la cotización, y debajo el botón "Añadir cliente". Pensada para usarse
- * como `actions` del `Step` con `actionsPosition="aside"`.
- *
- * @example
- * <AddClientAction onClick={handleAddClient} />
- */
 export const AddClientAction = ({
     onClick,
     hint = "Al crear el cliente, volvés a la cotización.",

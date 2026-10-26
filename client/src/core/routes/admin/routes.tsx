@@ -168,6 +168,11 @@ export const AdminRoutes: RouteData[] = [
                         index: true,
                         element: <CotizarPanel />,
                     },
+                    {
+                        path: "nuevo-cliente",
+                        element: <AddClient />,
+                        handle: { breadcrumb: "Nuevo Cliente" },
+                    },
                 ],
             },
         ],
