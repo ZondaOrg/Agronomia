@@ -4,9 +4,11 @@ import {
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
 
-const STEP_ID = "2";
+interface StepProductProps {
+    stepId: string;
+}
 
-export const StepProduct = () => {
+export const StepProduct = ({ stepId }: StepProductProps) => {
     const handleSearch = useCallback((filters: FilterValues) => {
         // TODO: Implementar la lógica de búsqueda o llamada al servicio
     }, []);
@@ -17,7 +19,7 @@ export const StepProduct = () => {
 
     return (
         <Step
-            stepId={STEP_ID}
+            stepId={stepId}
             filter={<div>{/* Coloca aquí tu componente de filtro */}</div>}
             form={
                 <div>
