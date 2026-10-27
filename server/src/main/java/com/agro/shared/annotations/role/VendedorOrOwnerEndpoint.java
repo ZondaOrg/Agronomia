@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
                           "message": "No se pudo realizar la autenticación",
                           "path": "/api/v1/recurso",
                           "timestamp": "2026-09-16T14:42:47.493",
-                          "cause": "INVALID_TOKEN",
+                          "cause": "INVALID_SESSION",
                           "motives": null
                         }
                         """)
