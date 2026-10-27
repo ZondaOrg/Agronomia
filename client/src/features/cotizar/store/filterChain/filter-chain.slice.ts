@@ -1,9 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type {
-    FilterChainState,
-    FilterConfig,
-    StepFiltersState,
-} from "../../types/filter-chain";
+import type { FilterChainState, FilterConfig, StepFiltersState } from "../types/filter-chain";
 
 const initialState: FilterChainState = {
     steps: {},
