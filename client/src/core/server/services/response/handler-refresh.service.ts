@@ -3,6 +3,7 @@ import type { ErrorResponse } from "../../types/error-response";
 import { ErrorCause } from "../../types/error-cause";
 import { REFRESH_SESSION_PATH } from "../../urls/session";
 import { removeToken } from "../jwt/jwt";
+import { notifySessionExpired } from "../session/session-expired";
 
 async function handlerRefreshService(http: AxiosInstance, error: AxiosError<ErrorResponse>) {
     if (error.response?.data?.cause !== ErrorCause.EXPIRED_SESSION || !error.config)
@@ -12,6 +13,7 @@ async function handlerRefreshService(http: AxiosInstance, error: AxiosError<Erro
         await http.post(REFRESH_SESSION_PATH);
     } catch {
         removeToken();
+        notifySessionExpired();
         return Promise.reject(error);
     }
 
