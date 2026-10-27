@@ -15,6 +15,8 @@ import java.io.IOException;
 
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {
+    public static final String CAUSE_ATTRIBUTE = "authErrorCause";
+
     private final ObjectMapper objectMapper;
 
     public JwtEntryPoint(ObjectMapper objectMapper) {
@@ -29,7 +31,7 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
                 "Usuario no autenticado",
                 "No se pudo realizar la autenticación",
                 request.getRequestURI(),
-                CauseError.INVALID_TOKEN
+                (CauseError) request.getAttribute(CAUSE_ATTRIBUTE)
         );
         objectMapper.writeValue(response.getOutputStream(), error);
     }
