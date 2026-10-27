@@ -1,6 +1,7 @@
 package com.agro.feature.auth.services.jwt;
 
 import com.agro.feature.auth.services.jwt.exceptions.TokenException;
+import com.agro.shared.dtos.error.CauseError;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,28 +53,28 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public Long validateAccessToken(String token) {
-        return validate(token, getAccessKey());
+        return validate(token, getAccessKey(), CauseError.EXPIRED_SESSION);
     }
 
     @Override
     public Long validateRefreshToken(String token) {
-        return validate(token, getRefreshKey());
+        return validate(token, getRefreshKey(), CauseError.INVALID_SESSION);
     }
 
-    private Long validate(String token, SecretKey keys) {
+    private Long validate(String token, SecretKey keys, CauseError expiredCause) {
         try {
             Jws<Claims> claims = getClaims(token, keys);
             String sub = claims.getPayload().getSubject();
             return Long.parseLong(sub);
         }
         catch(ExpiredJwtException e) {
-            throw new TokenException("El token se encuentra expirado");
+            throw new TokenException("El token se encuentra expirado", expiredCause);
         }
         catch (JwtException | IllegalArgumentException e) {
-            throw new TokenException("El token es invalido");
+            throw new TokenException("El token es invalido", CauseError.INVALID_SESSION);
         }
         catch(StringIndexOutOfBoundsException | NullPointerException e) {
-            throw new TokenException("El token se encuentra vacio");
+            throw new TokenException("El token se encuentra vacio", CauseError.INVALID_SESSION);
         }
     }
 
