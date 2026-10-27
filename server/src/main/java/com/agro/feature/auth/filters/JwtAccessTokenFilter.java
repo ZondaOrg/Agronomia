@@ -1,9 +1,11 @@
 package com.agro.feature.auth.filters;
 
 import com.agro.core.api.Api;
+import com.agro.feature.auth.entrypoints.JwtEntryPoint;
 import com.agro.feature.auth.services.jwt.JwtService;
 import com.agro.feature.auth.services.jwt.exceptions.TokenException;
 import com.agro.feature.auth.services.userDetails.UserDetailsAdapter;
+import com.agro.shared.dtos.error.CauseError;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +51,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            request.setAttribute(JwtEntryPoint.CAUSE_ATTRIBUTE, CauseError.INVALID_SESSION);
             filterChain.doFilter(request, response);
             return;
         }
@@ -61,6 +64,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
             Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (TokenException e) {
+            request.setAttribute(JwtEntryPoint.CAUSE_ATTRIBUTE, e.getCauseError());
             SecurityContextHolder.clearContext();
         }
         filterChain.doFilter(request, response);
