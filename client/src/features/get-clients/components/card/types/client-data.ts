@@ -19,7 +19,7 @@ function naturalPersonItems(client: NaturalPerson) {
         },
         {
             icon: EmailIcon,
-            value: client.email ?? "No indicado",
+            value: client.email?.length === 0 ? "No indicado" : client.email!,
         },
         {
             icon: UbicationIcon,
@@ -49,7 +49,7 @@ function legalPersonItems(client: RazonSocial) {
         },
         {
             icon: EmailIcon,
-            value: client.email ?? "No indicado",
+            value: client.email?.length === 0 ? "No indicado" : client.email!,
         },
     ];
 }
