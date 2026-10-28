@@ -7,6 +7,10 @@ const VisitantRoutes: RouteData[] = [
         path: VISITANT.LOGIN,
         element: <Login />,
         children: []
+    },
+    {
+        path: VISITANT.SERVER_ERROR,
+        element: <div></div>,
     }
 ];
 
