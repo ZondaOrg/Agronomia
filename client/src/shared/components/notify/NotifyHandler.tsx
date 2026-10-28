@@ -2,7 +2,6 @@ import { SuccessModal } from "../modal/variants/success/ModalCreateClient";
 import ErrorToast from "../toast/error/ErrorToast";
 import SuccessToast from "../toast/success/SuccessToast";
 import { ConfirmModal } from "../modal/variants/commit/ConfirmModalProps";
-import type React from "react";
 import { useNavigate } from "react-router";
 import type { NotifyMessage } from "./types/notify-message";
 import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";

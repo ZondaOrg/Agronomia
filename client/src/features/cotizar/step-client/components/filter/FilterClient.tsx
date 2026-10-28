@@ -1,7 +1,7 @@
 import FilterChain from "@/shared/components/filter/chain/FilterChain";
 import { clientFilters } from "./types/inputs";
 import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
     initStep,
     setFilterValue,
@@ -12,43 +12,59 @@ import {
     selectStepValues,
 } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 
-const STEP_ID = "1";
+import { selectMostrarFaltantesNonce } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 
-export const FilterClient = ({ title }: { title?: string }) => {
+export const FilterClient = ({ stepId }: { stepId: string }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(
             initStep({
-                stepId: STEP_ID,
+                stepId,
                 filters: clientFilters.map(({ id, required }) => ({
                     id,
                     required,
                 })),
             }),
         );
-    }, [dispatch]);
+    }, [dispatch, stepId]);
 
-    const filterValues = useAppSelector((s) => selectStepValues(s, STEP_ID));
-    const filterEnabled = useAppSelector((s) => selectStepEnable(s, STEP_ID));
+    const filterValues = useAppSelector((s) => selectStepValues(s, stepId));
+    const filterEnabled = useAppSelector((s) => selectStepEnable(s, stepId));
     const filtersCompleto = useAppSelector((s) =>
-        selectFiltersCompleto(s, STEP_ID),
+        selectFiltersCompleto(s, stepId),
     );
+
+    const highlightNonce = useAppSelector((s) =>
+        selectMostrarFaltantesNonce(s, stepId),
+    );
+
+    const filterErrors = useMemo(() => {
+        if (highlightNonce === 0) return {};
+
+        const errors: Record<string, boolean> = {};
+        clientFilters.forEach((filter) => {
+            if (filter.required && !filterValues[filter.id]) {
+                errors[filter.id] = true;
+            }
+        });
+        return errors;
+    }, [highlightNonce, filterValues]);
 
     const handleFilterChange = useCallback(
         (filterId: string, value: string | null) =>
-            dispatch(setFilterValue({ stepId: STEP_ID, filterId, value })),
-        [dispatch],
+            dispatch(setFilterValue({ stepId, filterId, value })),
+        [dispatch, stepId],
     );
 
     return (
         <FilterChain
-            title={title}
             filters={clientFilters}
             values={filterValues}
             enabled={filterEnabled}
             onChange={handleFilterChange}
             completo={filtersCompleto}
+            errors={filterErrors}
         />
     );
 };

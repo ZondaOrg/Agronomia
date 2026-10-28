@@ -6,6 +6,8 @@ export const container = css({
     gap: "24px",
     width: "100%",
     maxWidth: "900px",
+    height: "100%",
+    maxHeight: "850px",
     margin: "0 auto",
     padding: "24px",
     background: "#FFFFFF",

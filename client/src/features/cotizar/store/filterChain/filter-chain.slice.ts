@@ -1,5 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { FilterChainState, FilterConfig, StepFiltersState } from "../types/filter-chain";
+import type {
+    FilterChainState,
+    FilterConfig,
+    StepFiltersState,
+} from "../types/filter-chain";
 
 const initialState: FilterChainState = {
     steps: {},
@@ -17,11 +21,16 @@ const filterChainSlice = createSlice({
             action: PayloadAction<{ stepId: string; filters: FilterConfig[] }>,
         ) => {
             const { stepId, filters } = action.payload;
-            state.steps[stepId] = {
-                config: filters,
-                values: {},
-                completo: false,
-            };
+
+            if (state.steps[stepId]) {
+                state.steps[stepId].config = filters;
+            } else {
+                state.steps[stepId] = {
+                    config: filters,
+                    values: {},
+                    completo: false,
+                };
+            }
         },
         setFilterValue: (
             state,

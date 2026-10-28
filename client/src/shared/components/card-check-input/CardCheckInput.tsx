@@ -1,8 +1,10 @@
+import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import CardArticleDetailed from "./components/CardArticleDetailed";
 import CardDetailed from "./components/CardDetailed";
 import CardSimple from "./components/CardSimple";
 import { styles } from "./styles";
 import type { CardCheckInputProps, CardCheckOption } from "./types";
+import { SearchIcon } from "../icon/components/icons/Search";
 
 function CardOption({
     option,
@@ -54,16 +56,26 @@ export default function CardCheckInput(props: CardCheckInputProps) {
         options,
         variant,
         emptyMessage = "No hay opciones disponibles",
+        emptyDescription,
+        emptyIcon = <SearchIcon />,
         error,
         result,
     } = props;
+
     const optionsClassName =
         variant === "CardSimple" ? styles.simpleOptions : styles.options;
 
+    const containerClassName =
+        `${styles.container} ${error ? styles.errorContainer : ""}`.trim();
+
     return (
-        <div className={styles.container}>
+        <div className={containerClassName}>
             {options.length === 0 ? (
-                <p className={styles.empty}>{emptyMessage}</p>
+                <EmptyState
+                    icon={emptyIcon}
+                    title={emptyMessage}
+                    description={emptyDescription}
+                />
             ) : (
                 <div className={optionsClassName}>
                     {options.map((option) => (
@@ -76,7 +88,8 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                                 props.multiple === true
                                     ? props.value?.includes(option.value) ??
                                       false
-                                    : props.value === option.value
+                                    : String(props.value) ===
+                                      String(option.value)
                             }
                             onSelect={() => {
                                 if (props.multiple === true) {
@@ -86,7 +99,8 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                                     )
                                         ? selectedValues.filter(
                                               (selectedValue) =>
-                                                  selectedValue !== option.value,
+                                                  selectedValue !==
+                                                  option.value,
                                           )
                                         : [...selectedValues, option.value];
                                     props.onChange(nextValue);
@@ -99,7 +113,10 @@ export default function CardCheckInput(props: CardCheckInputProps) {
                     ))}
                 </div>
             )}
-            {error && <span className={styles.error}>{error}</span>}
+
+            {error && typeof error === "string" && (
+                <span className={styles.errorMessage}>{error}</span>
+            )}
             {result && <span className={styles.result}>{result}</span>}
         </div>
     );

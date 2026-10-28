@@ -19,6 +19,7 @@ jobs:
     frontend-check:
         name: Frontend validation
         runs-on: ubuntu-latest
+        if: github.event_name != 'schedule'
         defaults:
             run:
                 working-directory: client
@@ -36,7 +37,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 24
                   cache: "pnpm"
                   cache-dependency-path: client/pnpm-lock.yaml
 
@@ -52,6 +53,7 @@ jobs:
     backend-check:
         name: Backend Docker validation
         runs-on: ubuntu-latest
+        if: github.event_name != 'schedule'
 
         steps:
             - name: Checkout repository
@@ -64,6 +66,7 @@ jobs:
                   file: ./server/Dockerfile
                   target: production
                   push: false
+                  pull: true
 
     api-health-check:
         name: API health check

@@ -1,17 +1,28 @@
+import { useCallback } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { FilterClient } from "../components/filter/FilterClient";
+import { FormClient } from "../components/form/FormClient";
 import { useGetClientsByTypeAndName } from "../hooks/use-get-clients-by-name-and-type";
 import {
     Step,
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
-import { useCallback } from "react";
-import { CardCheckClient } from "../components/checks/CardCheckClient";
+import { AddClientAction } from "../components/actions/AddClient";
 import type { Client } from "../types/client";
+import { useAutoSelectNewClient } from "../../hooks/use-auto-selected-new-client";
 
-const STEP_ID = "1";
 const EMPTY_CLIENTS: Client[] = [];
 
-export const StepClient = () => {
+interface StepClientProps {
+    stepId: string;
+}
+
+export const StepClient = ({ stepId }: StepClientProps) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useAutoSelectNewClient(stepId);
+
     const { data, loading, getClientsByTypeAndName, refresh } =
         useGetClientsByTypeAndName();
 
@@ -23,19 +34,27 @@ export const StepClient = () => {
             }),
         [getClientsByTypeAndName],
     );
+    const handleAddClient = useCallback(() => {
+        navigate("nuevo-cliente", {
+            state: { returnTo: location.pathname },
+        });
+    }, [navigate, location.pathname]);
 
     return (
         <Step
-            stepId={STEP_ID}
-            filter={<FilterClient title="Selecciona el cliente" />}
+            stepId={stepId}
+            filter={<FilterClient stepId={stepId} />}
+            form={
+                <FormClient
+                    stepId={stepId}
+                    items={data ?? EMPTY_CLIENTS}
+                    loading={loading}
+                />
+            }
             service={searchClients}
             onClear={refresh}
-            form={{
-                items: data ?? EMPTY_CLIENTS,
-                loading,
-                Input: CardCheckClient,
-                loadingMessage: "Cargando clientes...",
-            }}
+            actionsPosition="aside"
+            actions={<AddClientAction onClick={handleAddClient} />}
         />
     );
 };

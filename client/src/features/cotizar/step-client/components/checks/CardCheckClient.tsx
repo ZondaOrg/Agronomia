@@ -1,4 +1,3 @@
-// CardCheckClient.tsx
 import {
     CardCheckInput,
     type CardCheckOption,
@@ -12,9 +11,10 @@ export const CardCheckClient = ({
     items,
     value,
     onChange,
+    error,
 }: HydrationInputProps<Client>) => {
     const clientOptions: CardCheckOption[] = items.map((client) => ({
-        value: `client-${client.id}`,
+        value: `${client.id}`,
         label:
             client.type === "RAZON_SOCIAL"
                 ? client.razonSocial
@@ -35,6 +35,7 @@ export const CardCheckClient = ({
             onChange={onChange}
             variant="CardDetailed"
             emptyMessage="No hay clientes disponibles"
+            error={error}
         />
     );
 };

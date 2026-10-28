@@ -160,13 +160,18 @@ export const AdminRoutes: RouteData[] = [
                 ],
             },
             {
-                path: `${ADMIN_ROUTES.COTIZAR.BAESE}`,
+                path: `${ADMIN_ROUTES.COTIZAR.BASE}`,
                 element: <Cotizar />,
                 handle: { breadcrumb: "Cotizar" },
                 children: [
                     {
                         index: true,
                         element: <CotizarPanel />,
+                    },
+                    {
+                        path: "nuevo-cliente",
+                        element: <AddClient />,
+                        handle: { breadcrumb: "Nuevo Cliente" },
                     },
                 ],
             },

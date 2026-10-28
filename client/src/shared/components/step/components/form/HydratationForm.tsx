@@ -1,69 +1,97 @@
-// HydrationForm.tsx
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { form } from "./styles";
-/** Props que recibe el input que renderiza un {@link HydrationForm}. */
+import { useEffect, useRef } from "react";
+import {
+    Controller,
+    useForm,
+    useWatch,
+    type FieldValues,
+    type Path,
+    type DefaultValues,
+} from "react-hook-form";
+import {
+    form,
+    title as titleStyle,
+    subTitle as subTitleStyle,
+    content,
+    loadingBox,
+} from "./styles";
+import Spinner from "@/shared/components/spinner/Spinner";
+
 export interface HydrationInputProps<TItem> {
-    /** Elementos con los que se hidrata el input. */
     items: TItem[];
-    /** Valor seleccionado, o `null` si no hay selección. */
     value: string | null;
-    /** Se llama con el nuevo valor seleccionado. */
     onChange: (value: string | null) => void;
+    error?: boolean;
 }
-
-/** Propiedades del componente {@link HydrationForm}. */
-export interface HydrationFormProps<TItem> {
-    /** Resultado de la búsqueda con el que se hidrata el formulario. */
+export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
     items: TItem[];
-    /** `true` mientras se ejecuta la búsqueda. */
     loading: boolean;
-    /** Input que renderiza los elementos y maneja la selección. */
+    title?: string;
+    subtitle?: string;
     Input: React.ComponentType<HydrationInputProps<TItem>>;
-    /** Texto que se muestra mientras carga. */
-    loadingMessage?: string;
+    fieldName: Path<TFormValues>;
+    defaultValues?: DefaultValues<TFormValues>;
+    error?: boolean;
+    onValueChange?: (value: string | null) => void;
+    onReset?: () => void;
+    saveNonce?: number;
+    onSave?: (values: TFormValues) => void;
 }
 
-interface HydrationFormValues {
-    selected: string | null;
-}
-
-/**
- * Formulario que se hidrata con una lista de elementos.
- *
- * Delega el render de los elementos en `Input`, limpia la selección cada vez
- * que llega un resultado nuevo y activa el scroll interno cuando el contenido
- * supera la altura máxima.
- */
-export const HydrationForm = <TItem,>({
+export const HydrationForm = <TItem, TFormValues extends FieldValues>({
+    title,
+    subtitle,
     items,
     loading,
     Input,
-    loadingMessage = "Cargando...",
-}: HydrationFormProps<TItem>) => {
-    const { control, reset } = useForm<HydrationFormValues>({
-        defaultValues: { selected: null },
+    error,
+    fieldName,
+    defaultValues,
+    onValueChange,
+    saveNonce = 0,
+    onSave,
+}: HydrationFormProps<TItem, TFormValues>) => {
+    const { control, getValues } = useForm<TFormValues>({
+        defaultValues,
+        values: defaultValues as TFormValues,
     });
 
-    useEffect(() => {
-        reset({ selected: null });
-    }, [items, reset]);
+    const fieldValue = useWatch({ control, name: fieldName }) as string | null;
 
-    if (loading) return <p>{loadingMessage}</p>;
+    useEffect(() => {
+        onValueChange?.(fieldValue);
+    }, [fieldValue, onValueChange]);
+
+    const lastSave = useRef(saveNonce);
+    useEffect(() => {
+        if (saveNonce === lastSave.current) return;
+        lastSave.current = saveNonce;
+        onSave?.(getValues());
+    }, [saveNonce, getValues, onSave]);
 
     return (
         <form className={form}>
-            <Controller
-                name="selected"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        items={items}
-                        value={field.value}
-                        onChange={field.onChange}
+            <h1 className={titleStyle}>{title}</h1>
+            <p className={subTitleStyle}>{subtitle}</p>
+            <div className={content}>
+                {loading ? (
+                    <div className={loadingBox}>
+                        <Spinner centered />
+                    </div>
+                ) : (
+                    <Controller
+                        name={fieldName}
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                items={items}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={error}
+                            />
+                        )}
                     />
                 )}
-            />
+            </div>
         </form>
     );
 };
