@@ -4,6 +4,7 @@ import hidratationFormSlice from "../../features/cotizar/store/hidratationForm/h
 
 export const store = configureStore({
     reducer: {
+        auth: authReducer,
         filterChain: filterChainReducer,
         hidratationForm: hidratationFormSlice,
     },
