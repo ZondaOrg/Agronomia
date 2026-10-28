@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "email")
 public class EmailValue {
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     protected EmailValue() {}
@@ -19,7 +19,7 @@ public class EmailValue {
     }
 
     private void validate(String email) {
-        if(isNotArroba(email)) {
+        if(!email.isBlank() && isNotArroba(email)) {
             throw new EmailException();
         }
         this.email = email;
