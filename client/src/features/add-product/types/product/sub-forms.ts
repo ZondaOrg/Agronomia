@@ -5,7 +5,7 @@ import { moneys } from "../../../../shared/domain/money/money";
 import { ivaPorcents } from "@/shared/domain/iva/iva";
 import type { ProductType } from "../../domain/product-type";
 
-const productSubForms = (productTypes: ProductType[]) =>
+const productSubForms = (productTypes: readonly ProductType[]) =>
     createSubForms([
         {
             name: "Identificación",
@@ -16,11 +16,7 @@ const productSubForms = (productTypes: ProductType[]) =>
                         motive: "Tipo de producto",
                         name: ADD_PRODUCT.type,
                         type: "select",
-                        options: productTypes.map(({ id, name }) => ({
-                            id,
-                            label: name,
-                            value: String(id),
-                        })),
+                        options: createSelectOptions(productTypes.map(p => p.name))
                     },
                 ],
                 [
