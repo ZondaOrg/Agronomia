@@ -4,8 +4,8 @@ import com.agro.core.ContainerPostgresql;
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.persistence.daos.UserDAO;
 import com.agro.shared.entities.rol.Role;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
 import com.agro.shared.service.ResetService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ class UserRepositoryImplTest {
 
     @Test
     void testSiElMailNoEstaRegistrado_LanzaExepcion() {
-        assertThrows(NotFoundEntityException.class, () -> repository.findByEmail(user.getEmail()));
+        assertThrows(EntityNotFoundException.class, () -> repository.findByEmail(user.getEmail()));
     }
 
     @AfterEach

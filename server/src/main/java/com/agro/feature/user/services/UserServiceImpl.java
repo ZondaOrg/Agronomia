@@ -5,7 +5,6 @@ import com.agro.feature.user.contracts.UserDataService;
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.persistence.daos.UserDAO;
 import com.agro.shared.entities.userAuthenticate.UserAuthenticate;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
 import com.agro.shared.valueObjects.email.EmailValue;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,7 @@ public class UserServiceImpl implements UserService, UserCredentialsService, Use
 
     @Override
     public UserAuthenticate getCredentialsByEmail(String email) {
-        User user = userDao.findByEmail(email).orElseThrow(() -> new NotFoundEntityException("Entidad no encontrada"));
+        User user = userDao.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Entidad no encontrada"));
         return new UserAuthenticate(
                 user.getEmail(),
                 user.getPassword(),
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService, UserCredentialsService, Use
 
     @Override
     public UserAuthenticate getCredentialsById(Long id) {
-        User user = userDao.findById(id).orElseThrow(() -> new NotFoundEntityException("Entidad no encontrada"));
+        User user = userDao.findById(id).orElseThrow(() -> new EntityNotFoundException("Entidad no encontrada"));
         return new UserAuthenticate(
                 user.getEmail(),
                 user.getPassword(),
@@ -73,7 +72,7 @@ public class UserServiceImpl implements UserService, UserCredentialsService, Use
 
     @Override
     public User getUserById(Long id) {
-        return userDao.findById(id).orElseThrow(() -> new NotFoundEntityException("Usuario no encontrada"));
+        return userDao.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrada"));
     }
 
     @Override

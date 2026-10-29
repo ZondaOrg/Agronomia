@@ -2,7 +2,7 @@ package com.agro.feature.user.persistence.repositories;
 
 import com.agro.feature.user.domain.User;
 import com.agro.feature.user.persistence.daos.UserDAO;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByEmail(String email) {
-        return userDao.findByEmail(email).orElseThrow(() -> new NotFoundEntityException(notFoundUserMessage(email)));
+        return userDao.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(notFoundUserMessage(email)));
     }
 
     private String notFoundUserMessage(String email) {
