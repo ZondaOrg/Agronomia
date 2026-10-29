@@ -37,6 +37,6 @@ public class NegativePriceHandler extends BuisnessHandlerException<NegativePrice
 
     @Override
     protected String title() {
-        return "Precio de Flete negativo";
+        return "Precio Negativo";
     }
 }
