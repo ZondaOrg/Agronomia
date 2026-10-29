@@ -2,6 +2,7 @@ package com.agro.feature.user.persistence.repositories;
 
 import com.agro.core.ContainerPostgresql;
 import com.agro.feature.user.domain.User;
+import com.agro.feature.user.domain.exceptions.UserNotFoundException;
 import com.agro.feature.user.persistence.daos.UserDAO;
 import com.agro.shared.entities.rol.Role;
 import com.agro.shared.service.ResetService;
@@ -52,7 +53,7 @@ class UserRepositoryImplTest {
 
     @Test
     void testSiElMailNoEstaRegistrado_LanzaExepcion() {
-        assertThrows(EntityNotFoundException.class, () -> repository.findByEmail(user.getEmail()));
+        assertThrows(UserNotFoundException.class, () -> repository.findByEmail(user.getEmail()));
     }
 
     @AfterEach
