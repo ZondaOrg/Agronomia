@@ -12,6 +12,7 @@ export const useAddTypeProduct = () => {
         notify,
         isCancel,
         handleNotify,
+        onDirty,
         handleCancelNotify,
         init,
     } = useNotify();
@@ -44,6 +45,7 @@ export const useAddTypeProduct = () => {
         action,
         isCancel,
         onRefresh,
+        onDirty,
         handleCancelNotify,
     };
 };
