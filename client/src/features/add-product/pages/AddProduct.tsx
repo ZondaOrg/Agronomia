@@ -24,7 +24,6 @@ const AddProduct = () => {
             notify={notify}
             action={action}
             isCancel={isCancel}
-            isBack={false}
             refresh={onRefresh}
             onCancel={handleCancelNotify}
         >
