@@ -3,7 +3,6 @@ import type { InferData, Schema } from "./shema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { styles } from "./styles";
 import { css } from "@styled-system/css";
-import { useEffect } from "react";
 import SubForm from "./components/subforms/SubForm";
 import type { ValidationFormProps } from "./validation-form";
 
@@ -16,24 +15,19 @@ function ValidationForm<T extends Schema>({
     const {
         register,
         handleSubmit,
-        formState: { isDirty, errors },
+        formState: { errors },
     } = useForm<InferData<T>>({
         resolver: zodResolver(schema)
     });
 
-    useEffect(() => {
-        if(isDirty) {
-            onDirty();
-        }
-    }, [isDirty, onDirty])
+    const { form, input, row } = styles;
 
     const handleForm = (data: InferData<T>) => onSubmit(data);
-
-    const { form, input, row } = styles;
 
     return (
         <form
             onSubmit={handleSubmit(handleForm)}
+            onChange={onDirty}
             className={css(form)}
             id={"validation-form"}
         >

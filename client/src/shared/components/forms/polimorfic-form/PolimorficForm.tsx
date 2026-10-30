@@ -11,7 +11,7 @@ interface PolimorficFormProps<T extends Schema> {
     options: OptionForm[];
     buttonData: ButtonData;
     onCancel: () => void;
-    onDirty: () => void
+    onDirty?: () => void
     initialSubType?: string;
     initialValues?: Partial<InferData<T>>;
     disableOptions?: boolean;
@@ -61,7 +61,7 @@ function PolimorficForm<T extends Schema>({
 interface SubFormFactoryProps<T extends Schema> {
     subType: string;
     options: OptionForm[];
-    onDirty: () => void;
+    onDirty?: () => void;
     initialValues?: Partial<InferData<T>>;
 }
 
