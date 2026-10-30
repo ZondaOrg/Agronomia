@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { ADD_PROVIDER } from "../../adapter/api-contract";
+import { ADD_PROVIDER } from "../adapter/api-contract";
 
 const providerSchema = z
     .object({
