@@ -1,9 +1,9 @@
 package com.agro.feature.auth.globalExceptions;
 
 import com.agro.core.api.Api;
+import com.agro.feature.user.domain.exceptions.UserNotFoundException;
 import com.agro.shared.dtos.error.CauseError;
 import com.agro.shared.dtos.error.RestErrorResponse;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class LoginExceptionHandler {
 
-    @ExceptionHandler(NotFoundEntityException.class)
-    public ResponseEntity<RestErrorResponse> userNotFoundException(NotFoundEntityException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<RestErrorResponse> userNotFoundException(UserNotFoundException ex) {
         RestErrorResponse error = new RestErrorResponse(
                 "Credenciales invalidas",
                 "El email o la contraseña es invalida",

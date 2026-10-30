@@ -3,6 +3,7 @@ package com.agro.core.handlers;
 import com.agro.shared.dtos.error.CauseError;
 import com.agro.shared.dtos.error.RestErrorResponse;
 import com.agro.shared.exceptions.ConflictException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalHandlerException {
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<RestErrorResponse> handleConflictExcerption(EntityNotFoundException exception, HttpServletRequest request) {
+        RestErrorResponse error = new RestErrorResponse(
+                "Entity Not Found",
+                "The entity has not been found",
+                request.getServletPath(),
+                CauseError.ENTITY_NOT_FOUND
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<RestErrorResponse> handleConflictExcerption(ConflictException exception, HttpServletRequest request) {
         log.warn("Conflict rule violation - URI: {} | Message: {}", request.getRequestURI(), exception.getMessage());
@@ -36,7 +48,7 @@ public class GlobalHandlerException {
     public ResponseEntity<RestErrorResponse> bodyError(MethodArgumentNotValidException exception, BindingResult errorResult, HttpServletRequest request) {
         List<ErrorResponse> errors =  errorResult.getFieldErrors().stream().map(error -> new ErrorResponse(error.getField(), error.getDefaultMessage())).toList();
         RestErrorResponse response = new RestErrorResponse(
-                "Error en el cuerpo de la petición",
+                "Error in the request body",
                 errors.stream()
                         .map(ErrorResponse::message)
                         .collect(Collectors.joining(", ")),
@@ -50,7 +62,7 @@ public class GlobalHandlerException {
     public ResponseEntity<RestErrorResponse> parseJsonError(HttpMessageNotReadableException exception, HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(exception.getCause().getMessage(), exception.getMessage());
         RestErrorResponse response = new RestErrorResponse(
-                "Error en el cuerpo de la petición",
+                "Error in the request body",
                 error.message(),
                 request.getServletPath(),
                 CauseError.BODY_SCHEMA_ERROR

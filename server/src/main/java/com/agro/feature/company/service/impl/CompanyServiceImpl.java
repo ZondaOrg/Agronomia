@@ -5,7 +5,7 @@ import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.domain.exceptions.IsNotAOwnerOfCompany;
 import com.agro.feature.company.persistence.daos.CompanyDAO;
 import com.agro.feature.company.service.CompanyService;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class CompanyServiceImpl implements CompanyService, CompanyDataService {
 
 
     private Company execute(Supplier<Optional<Company>> query){
-        return query.get().orElseThrow(() -> new NotFoundEntityException("Entidad no encontrada"));
+        return query.get().orElseThrow(() -> new EntityNotFoundException("Entidad no encontrada"));
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.agro.feature.branch.service.impl;
 import com.agro.feature.branch.contracts.BranchDataService;
 import com.agro.feature.branch.domain.Branch;
 import com.agro.feature.branch.persistence.BranchDAO;
-import com.agro.shared.persistence.excepitons.NotFoundEntityException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,6 @@ public class BranchService implements BranchDataService {
 
     @Override
     public Branch getBranchById(Long idBranch) {
-        return branchDAO.findById(idBranch).orElseThrow(() -> new NotFoundEntityException("Sucursal no encontrada"));
+        return branchDAO.findById(idBranch).orElseThrow(() -> new EntityNotFoundException("Sucursal no encontrada"));
     }
 }
