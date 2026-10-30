@@ -18,12 +18,19 @@ export const Pagination = ({
 
     const pages = getPageNumbers(currentPage, totalPages);
 
+    const handlePageClick = (page: number | string) => {
+        if (typeof page !== "number") return;
+
+        onPageChange(page);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     return (
         <nav className={nav}>
             <button
                 type="button"
                 className={navButton}
-                onClick={() => onPageChange(currentPage - 1)}
+                onClick={() => handlePageClick(currentPage - 1)}
                 disabled={currentPage === 1}
             >
                 ‹ Anterior
@@ -43,7 +50,7 @@ export const Pagination = ({
                         type="button"
                         className={pageButton}
                         data-active={page === currentPage}
-                        onClick={() => onPageChange(page)}
+                        onClick={() => handlePageClick(page)}
                     >
                         {page}
                     </button>
@@ -53,7 +60,7 @@ export const Pagination = ({
             <button
                 type="button"
                 className={navButton}
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => handlePageClick(currentPage + 1)}
                 disabled={currentPage === totalPages}
             >
                 Siguiente ›
