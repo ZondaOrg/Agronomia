@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 const useNotify = () => {
     const [action, setAction] = useState<NotifyAction>();
     const [notify, setNotify] = useState<NotifyMessage>({});
+    const [isDirty, setIsDirty] = useState(false);
     const [isCancel, setIsCancel] = useState(false);
     const navegate = useNavigate();
 
@@ -35,8 +36,10 @@ const useNotify = () => {
         setNotify(createNotify(title, message));
     }
 
-    const handleCancelNotify = (isData: boolean) => {
-        if(isData) {
+    const onDirty = () => setIsDirty(prev => !prev);
+
+    const handleCancelNotify = () => {
+        if(isDirty) {
             setAction("advertence")
             setIsCancel(true)
         }
@@ -64,7 +67,7 @@ const useNotify = () => {
         } 
     }
 
-    return { notify, action, isCancel, handleNotify, handleCancelNotify, init }
+    return { notify, action, isCancel, handleNotify, onDirty, handleCancelNotify, init }
 }
 
 export default useNotify;

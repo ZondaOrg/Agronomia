@@ -13,6 +13,7 @@ const AddClient = () => {
         action,
         add,
         onRefresh,
+        onDirty,
         handleCancelNotify,
         newClient,
     } = useAddClient();
@@ -66,6 +67,7 @@ const AddClient = () => {
                     },
                 ]}
                 buttonData={{ text: "Agregar cliente" }}
+                onDirty={onDirty}
                 onCancel={handleCancelNotify}
             />
         </NotifyHandler>
