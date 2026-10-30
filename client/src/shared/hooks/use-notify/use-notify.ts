@@ -41,7 +41,7 @@ const useNotify = () => {
     const handleCancelNotify = () => {
         if(isDirty) {
             setAction("advertence")
-            setIsCancel(true)
+            setIsCancel(prev => !prev)
         }
         else {
             navegate(-1)
