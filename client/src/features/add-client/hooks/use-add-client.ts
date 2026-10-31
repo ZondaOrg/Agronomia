@@ -8,7 +8,7 @@ import addClient from "../services/add-client";
 
 export default function useAddClient() {
     const { execute, refresh } = useFetch<Client>();
-    const { action, notify, isCancel, handleNotify, handleCancelNotify, init } =
+    const { action, notify, isCancel, handleNotify, onDirty, handleCancelNotify, init } =
         useNotify();
 
     // Guardamos el objeto cliente completo
@@ -52,6 +52,7 @@ export default function useAddClient() {
         action,
         add,
         onRefresh,
+        onDirty,
         handleCancelNotify,
         newClient,
     };

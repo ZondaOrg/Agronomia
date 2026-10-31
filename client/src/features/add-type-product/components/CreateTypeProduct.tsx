@@ -25,6 +25,7 @@ export const CreateTypeProduct = ({
         notify,
         onRefresh,
         handleCancelNotify,
+        onDirty
     } = useAddTypeProduct();
 
     const handleSubmit = useCallback(
@@ -54,6 +55,7 @@ export const CreateTypeProduct = ({
         >
             <ModalForm
                 isOpen={isOpen}
+                onDirty={onDirty}
                 onCancel={onClose}
                 onSubmit={handleSubmit}
                 subForms={typeProductSubForms}

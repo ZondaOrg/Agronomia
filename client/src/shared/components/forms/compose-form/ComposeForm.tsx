@@ -1,11 +1,10 @@
-import { useRef } from "react";
 import ButtonsContainer from "../components/buttons-container/ButtonsContainer";
 import type { ButtonData } from "../simple-form/types/button/credentials-button";
 import type { SubFormData } from "../types/sub-form";
 import type { InferData, Schema } from "../validation-form/shema";
-import ValidationForm, { type ValidationFormHandleProps } from "../validation-form/ValidationForm";
 import FormContainer from "../components/form-container/FormContainer";
 import type { Size } from "../types/size";
+import ValidationForm from "../validation-form/ValidationForm";
 
 interface FormContainerProps<T> {
     subForms: SubFormData[];
@@ -13,12 +12,11 @@ interface FormContainerProps<T> {
     buttonData: ButtonData
     size?: Size
     onSubmit: (data: InferData<T>) => void;
-    onCancel: (isCancel: boolean) => void;
+    onDirty?: () => void
+    onCancel: () => void;
 }
 
-function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, onSubmit, onCancel}: FormContainerProps<T>) {
-    const form = useRef<ValidationFormHandleProps>(null);
-    const handleCancel = () => form.current?.confirmCancel();
+function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, onSubmit, onDirty, onCancel}: FormContainerProps<T>) {
     
     return (
         <FormContainer size={size}>
@@ -26,10 +24,9 @@ function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, onSu
                 subForms={subForms}
                 schema={schema}
                 onSubmit={onSubmit}
-                onCancel={onCancel}
-                ref={form}
+                onDirty={onDirty}
             />
-            <ButtonsContainer buttonData={buttonData} cancelOption={{onSubmit: handleCancel}} />
+            <ButtonsContainer buttonData={buttonData} cancelOption={{onSubmit: onCancel}} />
         </FormContainer>
     )
 }
