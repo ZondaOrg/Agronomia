@@ -7,6 +7,7 @@ import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import NavBar from "./components/nav-bar/NavBar";
 import { usePageTitle } from "@/shared/hooks/use-page-title";
 import UserDetails from "./components/nav-bar/components/user-details/UserDetails";
+import type { ReactNode } from "react";
 
 type RouteMatch = {
     handle?: {
@@ -18,9 +19,10 @@ interface MainContainerProps {
     links: linkNavbar[];
     avatarTo: string;
     user: User;
+    children?: ReactNode;
 }
 
-const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
+const MainContainer = ({ links, user, avatarTo, children }: MainContainerProps) => {
     const title = usePageTitle();
     const matches = useMatches() as RouteMatch[];
     const hideBreadcrumb = matches.some(
@@ -42,9 +44,7 @@ const MainContainer = ({ links, user, avatarTo }: MainContainerProps) => {
             <div className={bodyWrapper}>
                 {!hideBreadcrumb && <Breadcrumb />}
                 {!hideBreadcrumb && title && <h1 className={h1}>{title}</h1>}
-                <div>
-                    <Outlet />
-                </div>
+                <div>{children ?? <Outlet />}</div>
             </div>
         </main>
     );
