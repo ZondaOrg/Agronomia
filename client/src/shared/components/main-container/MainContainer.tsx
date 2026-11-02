@@ -9,18 +9,18 @@ import { usePageTitle } from "@/shared/hooks/use-page-title";
 import UserDetails from "./components/nav-bar/components/user-details/UserDetails";
 import type { ReactNode } from "react";
 
+type RouteMatch = {
+    handle?: {
+        hideBreadcrumb?: boolean;
+    };
+};
+
 interface MainContainerProps {
     links: linkNavbar[];
     avatarTo: string;
     user: User;
     children?: ReactNode;
 }
-
-type RouteMatch = {
-    handle?: {
-        hideBreadcrumb?: boolean;
-    };
-};
 
 const MainContainer = ({ links, user, avatarTo, children }: MainContainerProps) => {
     const title = usePageTitle();

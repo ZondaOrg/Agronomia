@@ -17,6 +17,7 @@ import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPa
 import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 import { Cotizar } from "@/views/cotizar/Cotizar";
 import { CotizarPanel } from "@/views/cotizar/pages/CotizarPanel";
+import NotFoundPage from "@/views/notFound/NotFoundPage";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -127,6 +128,11 @@ export const VendedorRoutes: RouteData[] = [
                         handle: { breadcrumb: "Nuevo Cliente" },
                     },
                 ],
+            },
+            {
+                path: "*",
+                element: <NotFoundPage />,
+                handle: { hideBreadcrumb: true },
             },
         ],
     },
