@@ -3,8 +3,9 @@ import type { SystemStyleObject } from "@styled-system/types";
 import type { DeepRequired, FieldError, FieldErrorsImpl, Merge, Path, UseFormRegister } from "react-hook-form";
 import type { InferData, Schema } from "../../shema";
 import type { output } from "zod";
-import { css } from "@styled-system/css";
+import { css, cx } from "@styled-system/css";
 import { fieldStyles } from "../styles";
+import { invalidInput } from "../../styles";
 import ErrorMessage from "../error/ErrorMessage";
 import { container, counter, errorsContainer } from "./styles";
 import { useState } from "react";
@@ -51,7 +52,7 @@ function CounterCharsInput<T extends Schema>({
             </label>
             <textarea
                 {...register(input.name as Path<output<T>>)}
-                className={container(inputStyles)}
+                className={cx(container(inputStyles), error && invalidInput)}
                 placeholder={input.placeholder}
                 id={input.name}
                 disabled={input.disabled}

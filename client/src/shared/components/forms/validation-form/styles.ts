@@ -1,4 +1,5 @@
 import { css, sva } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 const form = css.raw({
     display: "grid",
@@ -42,6 +43,11 @@ const input = (maxWidth: string = "100%") => ({
     },
 });
 
+export const invalidInput = css({
+    border: "1px solid",
+    borderColor: token("colors.danger"),
+});
+
 const actions = css.raw({
     ...elementContainer,
     display: "flex",
@@ -61,4 +67,4 @@ export const styles = sva({
     },
 }).raw();
 
-export const inputWithMaxWidth = (maxWidth: string) => css.raw(input(maxWidth));
+export const inputWithMaxWidth = (maxWidth: string) => input(maxWidth);
