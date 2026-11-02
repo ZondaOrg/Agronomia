@@ -1,6 +1,7 @@
 import Login from "@/features/login/pages/init/Login";
 import type { RouteData } from "../route-data";
 import { VISITANT } from "./paths";
+import AuthenticatedServerErrorPage from "@/views/serverError/AuthenticatedServerErrorPage";
 
 const VisitantRoutes: RouteData[] = [
     {
@@ -10,7 +11,8 @@ const VisitantRoutes: RouteData[] = [
     },
     {
         path: VISITANT.SERVER_ERROR,
-        element: <div></div>,
+        element: <AuthenticatedServerErrorPage />,
+        handle: { hideBreadcrumb: true },
     }
 ];
 

@@ -17,7 +17,10 @@ function useErrorFetch() {
                 error.isCause(ErrorCause.INVALID_SESSION)
             ) {
                 navigate(VISITANT.LOGIN, { replace: true });
-            } else if (error.isCause(ErrorCause.INTERNAL_SERVER_ERROR)) {
+            } else if (
+                error.getStatus >= 500 ||
+                error.isCause(ErrorCause.INTERNAL_SERVER_ERROR)
+            ) {
                 navigate(VISITANT.SERVER_ERROR);
             }
         },
