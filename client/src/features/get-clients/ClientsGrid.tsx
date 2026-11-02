@@ -1,6 +1,6 @@
 import Spinner from "@/shared/components/spinner/Spinner";
 import { useGetClients } from "./hooks/use-get-clients";
-import { Pagination } from "@/shared/components/pagination/Pagination";
+import { Pagination } from "@/shared/components/pagination/components/Pagination";
 import { useSearchParams } from "react-router";
 import { styles } from "./style";
 import { useEffect, useState } from "react";
@@ -31,7 +31,12 @@ export const ClientsGrid = () => {
                 </div>
             )}
 
-            {data && <CardContainer page={data} search={search} />}
+            {data && (
+                <CardContainer
+                    page={data}
+                    search={search}
+                />
+            )}
 
             {data && data.totalPages > 1 && (
                 <Pagination

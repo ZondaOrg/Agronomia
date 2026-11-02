@@ -6,37 +6,37 @@ import type { ProviderRequest } from "../adapter/ProviderRequest";
 import type { HttpError } from "@/core/server/errors/http-error";
 
 export const useAddProviders = () => {
-    const { data, error, execute, refresh } = useFetch<Provider>();
-    const { action, notify, isCancel, handleNotify, handleCancelNotify, init } = useNotify()
+    const { execute, refresh } = useFetch<Provider>();
+    const { action, notify, isCancel, handleNotify, onDirty, handleCancelNotify, init } = useNotify();
 
-    async function add(provider: ProviderRequest) {
+    async function add(providerRequest: ProviderRequest) {
         handleNotify(
-            provider, 
+            providerRequest,
             {
                 title: "Proveedor agregado",
-                message: (product: Provider) => `Se registro el proveedor ${product.legalName}`
+                message: (provider: Provider) =>
+                    `Se registro al proveedor ${provider.legalName}`,
             },
             {
                 title: "Error Proveedor",
-                message: (error: HttpError) => error.getMessage
+                message: (error: HttpError) => error.getMessage,
             },
-            execute(addProvider)
-        )
+            execute(addProvider),
+        );
     }
 
     const onRefresh = () => {
-        refresh()
-        init()
-    }
+        refresh();
+        init();
+    };
 
     return {
-        data,
-        error,
-        action, 
-        notify, 
         isCancel,
+        notify,
+        action,
         add,
-        handleCancelNotify,
         onRefresh,
+        onDirty,
+        handleCancelNotify,
     };
 };

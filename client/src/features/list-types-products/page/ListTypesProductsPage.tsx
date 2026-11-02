@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Spinner from "@/shared/components/spinner/Spinner";
-import { Pagination } from "@/shared/components/pagination/Pagination";
+import { Pagination } from "@/shared/components/pagination/components/Pagination";
 import { ProductTypesGrid } from "../components/product-types-grid/ProductTypesGrid";
 import { useGetTypesProducts } from "../hook/use-get-types-products";
 import { styles } from "./styles";

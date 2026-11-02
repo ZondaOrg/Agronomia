@@ -1,11 +1,11 @@
 import ComposeForm from "@/shared/components/forms/compose-form/ComposeForm";
+import providerSchema from "./types/provider-schema";
+import { providerSubForms } from "./types/subforms";
 import { useAddProviders } from "../hook/use-add-provider";
 import NotifyHandler from "@/shared/components/notify/NotifyHandler";
-import { providerSubForms } from "../types/subforms";
-import providerSchema from "../types/provider-schema";
 
 const AddProvider = () => {
-    const { notify, action, isCancel, onRefresh, handleCancelNotify, add } = useAddProviders();
+    const { notify, action, isCancel, onRefresh, onDirty, handleCancelNotify, add } = useAddProviders();
 
     return (
         <NotifyHandler
@@ -21,6 +21,7 @@ const AddProvider = () => {
                 schema={providerSchema}
                 buttonData={{ text: "Agregar proveedor" }}
                 onSubmit={add}
+                onDirty={onDirty}
                 onCancel={handleCancelNotify}
             />
         </NotifyHandler>

@@ -1,67 +1,33 @@
 import { useForm } from "react-hook-form";
-import type { InsertFormProps } from "./validation-form";
 import type { InferData, Schema } from "./shema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { styles } from "./styles";
 import { css } from "@styled-system/css";
-import { useImperativeHandle } from "react";
-import type { SubFormData } from "../types/sub-form";
 import SubForm from "./components/subforms/SubForm";
-
-export interface ValidationFormHandleProps {
-    confirmCancel: () => void;
-}
-
-type ValidationFormProps<T extends Schema> = InsertFormProps<T> & {
-    initialValues?: Partial<InferData<T>>;
-    ref?: React.Ref<ValidationFormHandleProps>;
-};
-
-function buildDefaultValues(subForms: SubFormData[]) {
-    const defaults: Record<string, unknown> = {};
-    subForms.forEach((subForm) => {
-        subForm.inputs.flat().forEach((input) => {
-            defaults[input.name] = input.defaultValue ?? "";
-        });
-    });
-    return defaults;
-}
+import type { ValidationFormProps } from "./validation-form";
 
 function ValidationForm<T extends Schema>({
     subForms,
     schema,
     onSubmit,
-    onCancel,
-    initialValues,
-    ref,
+    onDirty,
 }: ValidationFormProps<T>) {
     const {
         register,
         handleSubmit,
-        formState: { isDirty, errors },
+        formState: { errors },
     } = useForm<InferData<T>>({
-        resolver: zodResolver(schema),
-        defaultValues: {
-            ...buildDefaultValues(subForms),
-            ...initialValues,
-        } as InferData<T>,
+        resolver: zodResolver(schema)
     });
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            confirmCancel: () => onCancel(isDirty),
-        }),
-        [isDirty, onCancel],
-    );
+    const { form, input, row } = styles;
 
     const handleForm = (data: InferData<T>) => onSubmit(data);
-
-    const { form, input, row } = styles;
 
     return (
         <form
             onSubmit={handleSubmit(handleForm)}
+            onChange={onDirty}
             className={css(form)}
             id={"validation-form"}
         >
