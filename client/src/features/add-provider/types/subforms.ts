@@ -1,6 +1,6 @@
 import { createSubForms } from "@/shared/components/forms/types/factory";
 import { formatCuit } from "@/shared/domain/cuit-cuil/format";
-import { ADD_PROVIDER } from "../../adapter/api-contract";
+import { ADD_PROVIDER } from "../adapter/api-contract";
 
 export const providerSubForms = createSubForms([
     {
