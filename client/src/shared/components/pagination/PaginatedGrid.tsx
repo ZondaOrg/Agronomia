@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 import { Pagination } from "./components/Pagination";
 import { ScrollToTopButton } from "./components/button/ScrollToTopButton";
 
-interface PaginatedGridProps<T> {
+/**
+ * Props for a paginated collection rendered as a grid of cards.
+ */
+export interface PaginatedGridProps<T> {
     data: Page<T> | null | undefined;
     loading: boolean;
     currentPage: number;
@@ -15,6 +18,12 @@ interface PaginatedGridProps<T> {
     gridClassName?: string;
 }
 
+/**
+ * Renders loading, empty, card, pagination, and scroll-to-top states for a
+ * paginated collection.
+ *
+ * @typeParam T - Type of each item in the collection.
+ */
 export const PaginatedGrid = <T,>({
     data,
     loading,
