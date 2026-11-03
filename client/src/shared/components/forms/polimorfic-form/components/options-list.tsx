@@ -1,5 +1,5 @@
 import CheckInput from "../../validation-form/inputs/check/CheckInput";
-import { container, formContainer, subtitle, title } from "./styles";
+import { border, container, formContainer, subtitle, title } from "./styles";
 
 interface OptionListProps {
     options: string[];
@@ -17,6 +17,7 @@ const OptionList = ({
     return (
         <section className={container}>
             <h3 className={title}>Tipo de cliente</h3>
+            <hr className={border} />
             <p className={subtitle}>Selecciona el giro del cliente</p>
             <div className={formContainer}>
             {options.map((option) => (

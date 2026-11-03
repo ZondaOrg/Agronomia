@@ -15,11 +15,17 @@ const title = css.raw({
     color: token("colors.textSubtle")
 });
 
+const border = css.raw({
+    width: "100%",
+    borderColor: token("borders.borderColor.line"),
+});
+
 const styles = sva({
-    slots: ["container", "title"],
+    slots: ["container", "title", "border"],
     base: {
         container: container,
-        title: title
+        title: title,
+        border: border
     }
 });
 

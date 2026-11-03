@@ -23,6 +23,11 @@ export const subtitle = css({
     color: token("colors.textSubtle"),
 });
 
+export const border = css({
+    width: "100%",
+    borderColor: token("borders.borderColor.line"),
+});
+
 export const formContainer = css({
     display: "flex",
     flexDirection: {

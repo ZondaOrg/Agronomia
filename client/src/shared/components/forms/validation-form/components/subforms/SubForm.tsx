@@ -12,12 +12,14 @@ function SubForm<T extends Schema>({
     rowStyles,
     inputStyles,
     errors,
+    isLine = false
 }: SubFormProps<T>) {
-    const { container, title: t } = styles();
+    const { container, title: t, border } = styles();
 
     return (
         <div className={container}>
             {title && <p className={t}>{title}</p>}
+            {isLine && <hr className={border} />}
             {inputs.map((row, rowIndex) => {
                 const styleForRow =
                     row.length === 1 ? inputWithMaxWidth("420px") : inputStyles;
