@@ -12,9 +12,9 @@ const container = css.raw({
 const title = css.raw({
     justifySelf: "start",
     paddingLeft: "2rem",
-    fontWeight: "bold",
+    fontWeight: "400",
     fontSize: "22px",
-    color: token("colors.textStrong")
+    color: token("colors.textSubtle")
 })
 
 const styles = sva({
