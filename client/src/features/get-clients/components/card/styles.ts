@@ -44,7 +44,7 @@ export const editLink = css({
     alignSelf: "flex-end",
     alignItems: "center",
     border: 0,
-    paddingBottom: "10px",
+    gap: 1,
     background: "transparent",
     color: token("colors.primaryColor"),
     fontSize: "12px",
