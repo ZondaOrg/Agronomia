@@ -10,11 +10,16 @@ import { css } from "@styled-system/css";
 
 const grid = css({
     display: "grid",
+    placeItems: {
+        base: "center",
+        sm: "start",
+    },
     gridTemplateColumns: {
         base: "1fr",
         sm: "repeat(2, 1fr)",
     },
     gap: "4",
+    maxWidth: 1000,
 });
 
 export const ClientsGrid = () => {
