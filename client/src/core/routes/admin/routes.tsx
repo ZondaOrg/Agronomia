@@ -2,12 +2,12 @@ import type { RouteData } from "@/core/routes/route-data";
 import { ADMIN_ROUTES } from "./paths";
 import AdminLayout from "../../auth/layout/roles/admin/AdminLayout";
 import Configuration from "@/features/add-user/pages/configuration/Configuration";
-import ClientPanel from "@/views/client/pages/ClientPanel";
+import ClientPanel from "@/features/get-clients/pages/ClientPanel";
 import { ProviderPanel } from "@/views/provider/ProviderPanel";
 import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
 import AddProvider from "@/features/add-provider/pages/AddProvider";
 import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
-import { Client } from "@/views/client/Client";
+import { Outlet } from "react-router";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Payments } from "@/views/payments/Payments";
 import ProductPanel from "@/views/provider/pages/product/ProductPanel";
@@ -141,7 +141,7 @@ export const AdminRoutes: RouteData[] = [
             },
             {
                 path: `${ADMIN_ROUTES.CLIENTS.BASE}`,
-                element: <Client />,
+                element: <Outlet />,
                 handle: { breadcrumb: "Clientes" },
                 children: [
                     {
