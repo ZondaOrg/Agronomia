@@ -10,7 +10,7 @@ const form = css.raw({
 });
 
 const elementContainer = css.raw({
-    width: "90%",
+    width: "100%",
     height: "20%",
     minHeight: "38px",
 });
@@ -18,7 +18,7 @@ const elementContainer = css.raw({
 const row = css.raw({
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    width: "100%",
     gap: "1rem",
     "& > *": {
         flex: 1,
