@@ -10,13 +10,14 @@ interface FormContainerProps<T> {
     subForms: SubFormData[];
     schema: T
     buttonData: ButtonData
-    size?: Size
+    size?: Size 
+    isLine?: boolean
     onSubmit: (data: InferData<T>) => void;
     onDirty?: () => void
     onCancel: () => void;
 }
 
-function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, onSubmit, onDirty, onCancel}: FormContainerProps<T>) {
+function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, isLine, onSubmit, onDirty, onCancel}: FormContainerProps<T>) {
     
     return (
         <FormContainer size={size}>
@@ -25,6 +26,7 @@ function ComposeForm<T extends Schema>({subForms, schema, buttonData, size, onSu
                 schema={schema}
                 onSubmit={onSubmit}
                 onDirty={onDirty}
+                isLine={isLine}
             />
             <ButtonsContainer buttonData={buttonData} cancelOption={{onSubmit: onCancel}} />
         </FormContainer>

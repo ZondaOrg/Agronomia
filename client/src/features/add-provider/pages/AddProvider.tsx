@@ -23,6 +23,7 @@ const AddProvider = () => {
                 onSubmit={add}
                 onDirty={onDirty}
                 onCancel={handleCancelNotify}
+                isLine={true}
             />
         </NotifyHandler>
     );

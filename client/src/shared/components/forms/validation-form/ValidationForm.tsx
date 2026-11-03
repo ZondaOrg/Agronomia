@@ -11,6 +11,7 @@ function ValidationForm<T extends Schema>({
     schema,
     onSubmit,
     onDirty,
+    isLine = false
 }: ValidationFormProps<T>) {
     const {
         register,
@@ -40,6 +41,7 @@ function ValidationForm<T extends Schema>({
                     rowStyles={row}
                     inputStyles={input}
                     errors={errors}
+                    isLine={isLine}
                 />
             ))}
         </form>

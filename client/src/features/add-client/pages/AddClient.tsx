@@ -66,6 +66,7 @@ const AddClient = () => {
                         onSubmit: add,
                     },
                 ]}
+                isLine={true}
                 buttonData={{ text: "Agregar cliente" }}
                 onDirty={onDirty}
                 onCancel={handleCancelNotify}
