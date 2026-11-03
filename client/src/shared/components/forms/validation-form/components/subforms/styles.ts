@@ -13,7 +13,7 @@ const title = css.raw({
     fontWeight: "400",
     fontSize: "22px",
     color: token("colors.textSubtle")
-})
+});
 
 const styles = sva({
     slots: ["container", "title"],

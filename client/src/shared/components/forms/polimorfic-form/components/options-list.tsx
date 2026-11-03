@@ -1,5 +1,5 @@
-import { css } from "@styled-system/css";
 import CheckInput from "../../validation-form/inputs/check/CheckInput";
+import { container, formContainer, subtitle, title } from "./styles";
 
 interface OptionListProps {
     options: string[];
@@ -8,20 +8,6 @@ interface OptionListProps {
     disabled?: boolean;
 }
 
-const styles = css({
-    display: "flex",
-    flexDirection: {
-        base: "column",
-        md: "row",
-    },
-    justifyContent: {
-        base: "center",
-        md: "start",
-    },
-    gap: "8",
-    width: "94%",
-});
-
 const OptionList = ({
     options,
     onOption,
@@ -29,7 +15,10 @@ const OptionList = ({
     disabled,
 }: OptionListProps) => {
     return (
-        <div className={styles}>
+        <section className={container}>
+            <h3 className={title}>Tipo de cliente</h3>
+            <p className={subtitle}>Selecciona el giro del cliente</p>
+            <div className={formContainer}>
             {options.map((option) => (
                 <CheckInput
                     onSubmit={onOption}
@@ -40,6 +29,7 @@ const OptionList = ({
                 />
             ))}
         </div>
+        </section>
     );
 };
 
