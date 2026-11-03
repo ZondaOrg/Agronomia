@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css";
+import { css, cx } from "@styled-system/css";
 import type { SystemStyleObject } from "@styled-system/types";
 import type {
     DeepRequired,
@@ -13,6 +13,7 @@ import type { output } from "zod";
 import ErrorMessage from "../error/ErrorMessage";
 import type { TextInputData } from "@/shared/types/input/input";
 import { fieldStyles } from "../styles";
+import { invalidInput } from "../../styles";
 import type { InferData, Schema } from "../../shema";
 import type { NumberInputData } from "@/shared/types/input/number";
 
@@ -50,7 +51,7 @@ function BasicInput<T extends Schema>({
             </label>
             <input
                 {...register(input.name as Path<output<T>>)}
-                className={css(inputStyles)}
+                className={cx(css(inputStyles), error && invalidInput)}
                 type={input.type}
                 placeholder={input.placeholder}
                 id={input.name}

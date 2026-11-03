@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css";
+import { css, cx } from "@styled-system/css";
 import type { SystemStyleObject } from "@styled-system/types";
 import { styles } from "./styles";
 import type {
@@ -14,6 +14,7 @@ import ErrorMessage from "../error/ErrorMessage";
 import { useRef, useState } from "react";
 import type { TextInputData } from "@/shared/types/input/input";
 import { fieldStyles } from "../styles";
+import { invalidInput } from "../../styles";
 import type { InferData, Schema } from "../../shema";
 
 interface FileInputProps<T extends Schema> {
@@ -64,7 +65,7 @@ function FileInput<T extends Schema>({
             </label>
 
             <div
-                className={css(inputStyles, styles.wrapper)}
+                className={cx(css(inputStyles, styles.wrapper), error && invalidInput)}
                 onClick={handleClick}
             >
                 <span className={css(styles.fileName)}>

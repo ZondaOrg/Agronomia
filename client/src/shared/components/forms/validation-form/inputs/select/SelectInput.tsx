@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css";
+import { css, cx } from "@styled-system/css";
 import type { SystemStyleObject } from "@styled-system/types";
 
 import type {
@@ -14,6 +14,7 @@ import type { InferData, Schema } from "../../shema";
 import type { SelectInputData } from "@/shared/types/input/input";
 import ErrorMessage from "../error/ErrorMessage";
 import { fieldStyles } from "../styles";
+import { invalidInput } from "../../styles";
 
 interface SelectInputProps<T extends Schema> {
     input: SelectInputData;
@@ -31,7 +32,7 @@ function SelectInput<T extends Schema>({
     register,
     error,
 }: SelectInputProps<T>) {
-    const className = css(inputStyles);
+    const className = cx(css(inputStyles), error && invalidInput);
     const isSelect = input.type === "select";
     const { container, label } = fieldStyles;
 

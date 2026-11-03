@@ -1,14 +1,25 @@
-import Spinner from "@/shared/components/spinner/Spinner";
 import { useGetClients } from "./hooks/use-get-clients";
-import { Pagination } from "@/shared/components/pagination/components/Pagination";
 import { useSearchParams } from "react-router";
 import { styles } from "./style";
 import { useEffect, useState } from "react";
-import CardContainer from "./components/card-container/CardContainer";
+import ClientCard from "./components/card/ClientCard";
+import EmptyClient from "./components/empty-clients/EmptyClients";
+import { NotResults } from "@/shared/components/empty-state/search/NotResults";
+import { PaginatedGrid } from "@/shared/components/pagination/PaginatedGrid";
+import { css } from "@styled-system/css";
+
+const grid = css({
+    display: "grid",
+    gridTemplateColumns: {
+        base: "1fr",
+        sm: "repeat(2, 1fr)",
+    },
+    gap: "4",
+});
 
 export const ClientsGrid = () => {
     const { data, loading, getClients } = useGetClients();
-    const { container, spinnerWrapper } = styles();
+    const { container } = styles();
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") ?? "";
     const [page, setPage] = useState(0);
@@ -23,29 +34,32 @@ export const ClientsGrid = () => {
         getClients(page, search);
     }, [getClients, page, search]);
 
+    const emptyState = search ? (
+        <NotResults
+            search={search}
+            entity="cliente"
+            description="Cambiá tu búsqueda o añade un cliente"
+        />
+    ) : (
+        <EmptyClient />
+    );
+
     return (
-        <div className={container}>
-            {loading && (
-                <div className={spinnerWrapper}>
-                    <Spinner />
-                </div>
-            )}
-
-            {data && (
-                <CardContainer
-                    page={data}
-                    search={search}
+        <PaginatedGrid
+            data={data}
+            loading={loading}
+            currentPage={page + 1}
+            onPageChange={(newPage) => setPage(newPage - 1)}
+            containerClassName={container}
+            gridClassName={grid}
+            emptyState={emptyState}
+            renderCard={(client) => (
+                <ClientCard
+                    key={client.id}
+                    client={client}
                 />
             )}
-
-            {data && data.totalPages > 1 && (
-                <Pagination
-                    currentPage={page + 1}
-                    totalPages={data.totalPages}
-                    onPageChange={(newPage) => setPage(newPage - 1)}
-                />
-            )}
-        </div>
+        />
     );
 };
 

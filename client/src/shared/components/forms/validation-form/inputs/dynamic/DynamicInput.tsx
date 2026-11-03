@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css";
+import { css, cx } from "@styled-system/css";
 import type { SystemStyleObject } from "@styled-system/types";
 import type {
     DeepRequired,
@@ -13,6 +13,7 @@ import type { output } from "zod";
 import ErrorMessage from "../error/ErrorMessage";
 import type { DynamicInputData } from "@/shared/types/input/input";
 import { fieldStyles } from "../styles";
+import { invalidInput } from "../../styles";
 import type { InferData, Schema } from "../../shema";
 
 interface DynamicInputProps<T extends Schema> {
@@ -51,7 +52,7 @@ function DynamicInput<T extends Schema>({
             </label>
             <input
                 {...rest}
-                className={css(inputStyles)}
+                className={cx(css(inputStyles), error && invalidInput)}
                 type={input.type}
                 placeholder={input.placeholder}
                 id={input.name}
