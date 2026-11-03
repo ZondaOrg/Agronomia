@@ -1,4 +1,4 @@
-import Login from "@/features/login/pages/init/Login";
+import Login from "@/features/login/pages/Login";
 import type { RouteData } from "../route-data";
 import { VISITANT } from "./paths";
 import AuthenticatedServerErrorPage from "@/views/serverError/AuthenticatedServerErrorPage";
