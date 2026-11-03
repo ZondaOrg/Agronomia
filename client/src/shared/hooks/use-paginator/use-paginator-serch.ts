@@ -8,10 +8,14 @@ export const usePaginatedWithSerch = <T, Args extends unknown[]>(
 ) => {
     const [currentPage, setCurrentPage] = useState(0);
     const { search, handleSearch } = useSearch();
+    const [prevSearch, setPrevSearch] = useState(search);
+
+    if (search !== prevSearch) {
+        setPrevSearch(search);
+        setCurrentPage(0);
+    }
 
     function onSearch(search: string) {
-        setCurrentPage(prev => prev - prev);
-        serviceFunction(0, defaultSize, search, ...args);
         handleSearch(search);
     }
 

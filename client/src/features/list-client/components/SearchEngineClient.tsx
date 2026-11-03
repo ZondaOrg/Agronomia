@@ -1,27 +1,17 @@
 import { SearchInput } from "@/shared/components/searcher/components/SearchInput";
 import { container } from "@/shared/components/searcher/styles";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import useSearch from "@/shared/hooks/use-search";
 
 const SearchEngineClient = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [value, setValue] = useState(searchParams.get("search") ?? "");
+    const { search, handleSearch } = useSearch();
+    const [value, setValue] = useState(search);
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setSearchParams((prev) => {
-                const next = new URLSearchParams(prev);
-                if (value) {
-                    next.set("search", value);
-                } else {
-                    next.delete("search");
-                }
-                return next;
-            });
-        }, 400);
+        const timeout = setTimeout(() => handleSearch(value), 400);
 
         return () => clearTimeout(timeout);
-    }, [value, setSearchParams]);
+    }, [value, handleSearch]);
 
     return (
         <div className={container}>
