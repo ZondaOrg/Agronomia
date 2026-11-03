@@ -3,8 +3,7 @@ import { ADMIN_ROUTES } from "./paths";
 import AdminLayout from "../../auth/layout/roles/admin/AdminLayout";
 import Configuration from "@/features/add-user/pages/configuration/Configuration";
 import ClientPanel from "@/features/get-clients/pages/ClientPanel";
-import { ProviderPanel } from "@/views/provider/ProviderPanel";
-import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
+import { ProvidersList } from "@/features/get-providers/pages/ProvidersList";
 import AddProvider from "@/features/add-provider/pages/AddProvider";
 import { EditProvider } from "@/features/edit-provider/pages/EditProvider";
 import { Outlet } from "react-router";
@@ -39,7 +38,7 @@ export const AdminRoutes: RouteData[] = [
             },
             {
                 path: `${ADMIN_ROUTES.PROVIDERS.BASE}`,
-                element: <ProviderPanel />,
+                element: <Outlet />,
                 handle: { breadcrumb: "Proveedores" },
                 children: [
                     {

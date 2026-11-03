@@ -1,8 +1,7 @@
 import type { RouteData } from "@/core/routes/route-data";
 import { VENDEDOR_ROUTES } from "./paths";
 import VendedorLayout from "@/core/auth/layout/roles/vendedor/VendedorLayout";
-import { ProviderPanel } from "@/views/provider/ProviderPanel";
-import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
+import { ProvidersList } from "@/features/get-providers/pages/ProvidersList";
 import ClientPanel from "@/features/get-clients/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
@@ -26,7 +25,7 @@ export const VendedorRoutes: RouteData[] = [
         children: [
             {
                 path: `${VENDEDOR_ROUTES.PROVIDERS.BASE}`,
-                element: <ProviderPanel />,
+                element: <Outlet />,
                 handle: { breadcrumb: "Proveedores" },
                 children: [
                     {
