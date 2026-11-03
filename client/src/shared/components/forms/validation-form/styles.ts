@@ -17,7 +17,10 @@ const elementContainer = css.raw({
 
 const row = css.raw({
     display: "flex",
-    flexDirection: "row",
+    flexDirection: {
+        base: "column",
+        md: "row",
+    },
     width: "100%",
     gap: "1rem",
     "& > *": {

@@ -10,12 +10,16 @@ interface OptionListProps {
 
 const styles = css({
     display: "flex",
+    flexDirection: {
+        base: "column",
+        md: "row",
+    },
     justifyContent: {
         base: "center",
         md: "start",
     },
-    gap: "6%",
-    width: "90%",
+    gap: "8",
+    width: "94%",
 });
 
 const OptionList = ({
