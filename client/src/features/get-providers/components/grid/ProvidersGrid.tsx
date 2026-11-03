@@ -1,7 +1,7 @@
 import { useGetProviders } from "../../hooks/use-get-providers";
 import { ProviderCard } from "../card/ProviderCard";
 import { styles } from "./style";
-import { NoProviders } from "./emptyState/NoProviders";
+import { NoProviders } from "../emptyState/NoProviders";
 import { NotResults } from "@/shared/components/empty-state/search/NotResults";
 import { PaginatedGrid } from "@/shared/components/pagination/PaginatedGrid";
 
