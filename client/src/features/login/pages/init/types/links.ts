@@ -7,12 +7,6 @@ const loginLinks: LinkData[] = [
         title: 'Recuperar contraseña',
         id: 0,
     },
-    {
-        path: '',
-        question: '¿Necesitas ayuda?',
-        title: 'Contactar a Soporte',
-        id: 1
-    }
 ];
 
 export default loginLinks;
