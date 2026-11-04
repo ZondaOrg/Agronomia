@@ -6,8 +6,9 @@ import addProduct from "../services/add";
 import { useParams } from "react-router";
 import type { AddProductSchema } from "../types/product/schema";
 import type { OptionalSchema } from "../types/optional/schema";
+import type { ProductType } from "../domain/product-type";
 
-const useAddProduct = () => {
+const useAddProduct = (productTypes: ProductType[]) => {
     const { execute, refresh } = useFetch<AddedProduct>();
     const { idProvider } = useParams();
 
@@ -24,7 +25,7 @@ const useAddProduct = () => {
                 title: "Error Producto",
                 message: (error: HttpError) => error.getMessage
             },
-            execute(() => addProduct(productData, optionals, idProvider!))
+            execute(() => addProduct(productData, optionals, productTypes, idProvider!))
         )
     }
 
