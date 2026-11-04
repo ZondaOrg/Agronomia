@@ -1,7 +1,9 @@
 package com.agro.feature.auth.services.userDetails;
 
+import com.agro.feature.auth.domain.exceptions.UserNotFound;
 import com.agro.feature.user.contracts.UserCredentialsService;
 import com.agro.shared.entities.userAuthenticate.UserAuthenticate;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,23 @@ public class UserDetailsServiceImpl implements UserDetailsAdapter {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAuthenticate userAuthenticate = userCredentialsService.getCredentialsByEmail(username);
-        return new UserCredentials(userAuthenticate);
+        try {
+            UserAuthenticate userAuthenticate = userCredentialsService.getCredentialsByEmail(username);
+            return new UserCredentials(userAuthenticate);
+        }
+        catch (EntityNotFoundException ex) {
+            throw new UserNotFound();
+        }
     }
 
     @Override
     public UserDetails loadUserById(Long id) {
-        UserAuthenticate userAuthenticate = userCredentialsService.getCredentialsById(id);
-        return new UserCredentials(userAuthenticate);
+        try {
+            UserAuthenticate userAuthenticate = userCredentialsService.getCredentialsById(id);
+            return new UserCredentials(userAuthenticate);
+        }
+        catch (EntityNotFoundException ex) {
+            throw new UserNotFound();
+        }
     }
 }
