@@ -15,6 +15,7 @@ interface PolimorficFormProps<T extends Schema> {
     initialSubType?: string;
     initialValues?: Partial<InferData<T>>;
     disableOptions?: boolean;
+    isLine?: boolean;
 }
 
 function PolimorficForm<T extends Schema>({
@@ -25,6 +26,7 @@ function PolimorficForm<T extends Schema>({
     initialSubType,
     initialValues,
     disableOptions = false,
+    isLine = false
 }: PolimorficFormProps<T>) {
     const [subType, setIsSubtype] = useState<string | undefined>(
         initialSubType,
@@ -48,6 +50,7 @@ function PolimorficForm<T extends Schema>({
                     options={options}
                     onDirty={onDirty}
                     initialValues={initialValues}
+                    isLine={isLine}
                 />
             )}
             <ButtonsContainer
@@ -63,12 +66,14 @@ interface SubFormFactoryProps<T extends Schema> {
     options: OptionForm[];
     onDirty?: () => void;
     initialValues?: Partial<InferData<T>>;
+    isLine?: boolean;
 }
 
 function SubFormFactory<T extends Schema>({
     subType,
     options,
     onDirty,
+    isLine
 }: SubFormFactoryProps<T>) {
     const option = options.find((option) => option.subType === subType)!;
 
@@ -78,6 +83,7 @@ function SubFormFactory<T extends Schema>({
             subForms={option.subforms}
             onSubmit={option.onSubmit}
             onDirty={onDirty}
+            isLine={isLine}
         />
     );
 }

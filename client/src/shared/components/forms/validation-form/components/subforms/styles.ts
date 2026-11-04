@@ -3,25 +3,29 @@ import { token } from "@styled-system/tokens";
 
 const container = css.raw({
     display: "grid",
-    gridTemplateRows: "repeat(auto-fit, 1fr)",
     placeItems: "center",
-    width: "100%",
-    gap: "1rem",
+    width: "94%",
+    gap: "2rem",
 });
 
 const title = css.raw({
     justifySelf: "start",
-    paddingLeft: "2rem",
-    fontWeight: "bold",
+    fontWeight: "400",
     fontSize: "22px",
-    color: token("colors.textStrong")
-})
+    color: token("colors.textSubtle")
+});
+
+const border = css.raw({
+    width: "100%",
+    borderColor: token("borders.borderColor.line"),
+});
 
 const styles = sva({
-    slots: ["container", "title"],
+    slots: ["container", "title", "border"],
     base: {
         container: container,
-        title: title
+        title: title,
+        border: border
     }
 });
 

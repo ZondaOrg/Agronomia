@@ -22,7 +22,10 @@ export const container = css.raw({
 export const smallContainer = css.raw({
     ...baseContainer,
     maxWidth: "800px",
-     placeSelf: "center"
+    placeSelf: {
+        base: "center",
+        lg: "start"
+    }
 });
 
 

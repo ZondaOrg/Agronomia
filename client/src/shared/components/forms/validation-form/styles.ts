@@ -6,19 +6,22 @@ const form = css.raw({
     gridTemplateRows: "repeat(auto-fit, 1fr)",
     placeItems: "center",
     width: "100%",
-    gap: "1rem",
+    gap: "2rem",
 });
 
 const elementContainer = css.raw({
-    width: "90%",
+    width: "100%",
     height: "20%",
     minHeight: "38px",
 });
 
 const row = css.raw({
     display: "flex",
-    flexDirection: "row",
-    width: "90%",
+    flexDirection: {
+        base: "column",
+        md: "row",
+    },
+    width: "100%",
     gap: "1rem",
     "& > *": {
         flex: 1,

@@ -10,4 +10,5 @@ export interface SubFormProps<T extends Schema> {
     rowStyles: SystemStyleObject
     inputStyles: SystemStyleObject
     errors: FieldErrors<InferData<T>>;
+    isLine?: boolean
 }

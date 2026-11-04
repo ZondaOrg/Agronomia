@@ -9,7 +9,7 @@ const tokenColors = defineTokens.colors({
     dangerHover: { value: "#B91C1C" },
     success: { value: "#0C9589" },
     primaryColorSubtle: { value: "#638BAF" },
-    textSubtle: { value: "#71717A" },
+    textSubtle: { value: "#545454" },
     textMuted: { value: "#A1A1AA" },
     textStrong: { value: "#202020" },
 });
