@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router";
-import { SearchProvider } from "@/features/search-providers/components/SearchProvider";
+import { SearchProvider } from "../components/search/SearchProvider";
 import SuccessToast from "@/shared/components/toast/success/SuccessToast";
 import { styles } from "./styles";
-import { ProvidersGrid } from "@/features/get-providers/components/grid/ProvidersGrid";
-import { AddProviderButton } from "@/features/add-provider/components/AddProviderButton";
+import { ProvidersGrid } from "../components/grid/ProvidersGrid";
+import { AddProviderButton } from "../components/add-button/AddProviderButton";
 
 export const ProvidersList = () => {
     const { optionsRow } = styles();
