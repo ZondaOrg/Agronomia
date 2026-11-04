@@ -6,6 +6,7 @@ import Button from "../button/Button";
 const actions = css({
     width: "90%",
     height: "20%",
+    maxWidth: 300,
     minHeight: "38px",
     display: "flex",
     flexDirection: "row",

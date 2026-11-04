@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import Spinner from "@/shared/components/spinner/Spinner";
-import { Pagination } from "@/shared/components/pagination/Pagination";
-import { ProductTypesGrid } from "../components/product-types-grid/ProductTypesGrid";
+import { PaginatedGrid } from "@/shared/components/pagination/PaginatedGrid";
+import { ProductTypeCard } from "../components/product-type-card/ProductTypeCard";
 import { useGetTypesProducts } from "../hook/use-get-types-products";
 import { styles } from "./styles";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { TractorIcon } from "@/shared/components/icon/components/icons/Tractor";
+import { styles as gridStyles } from "../components/product-types-grid/styles";
 
 interface ListTypesProductsPageProps {
     onRefreshReady?: (refresh: () => void) => void;
@@ -16,7 +16,8 @@ export const ListTypesProductsPage = ({
 }: ListTypesProductsPageProps) => {
     const { data, loading, currentPage, getTypes, onPageChange } =
         useGetTypesProducts();
-    const { container, spinnerWrapper } = styles();
+    const { container } = styles();
+    const { grid } = gridStyles();
 
     useEffect(() => {
         getTypes();
@@ -27,31 +28,25 @@ export const ListTypesProductsPage = ({
     }, [currentPage, getTypes, onRefreshReady]);
 
     return (
-        <div className={container}>
-            {loading && (
-                <div className={spinnerWrapper}>
-                    <Spinner />
-                </div>
-            )}
-
-            {data && data.content.length > 0 && (
-                <ProductTypesGrid productTypes={data.content} />
-            )}
-
-            {data && data.content.length === 0 && !loading && (
+        <PaginatedGrid
+            data={data}
+            loading={loading}
+            currentPage={currentPage + 1}
+            onPageChange={(newPage) => onPageChange(newPage - 1)}
+            containerClassName={container}
+            gridClassName={grid}
+            emptyState={
                 <EmptyState
                     icon={<TractorIcon />}
                     title="Todavía no cargaste ningún categorias de productos"
                 />
-            )}
-
-            {data && data.totalPages > 1 && (
-                <Pagination
-                    currentPage={currentPage + 1}
-                    totalPages={data.totalPages}
-                    onPageChange={(newPage) => onPageChange(newPage - 1)}
+            }
+            renderCard={(productType) => (
+                <ProductTypeCard
+                    key={productType.id}
+                    productType={productType}
                 />
             )}
-        </div>
+        />
     );
 };

@@ -1,5 +1,6 @@
 package com.agro.feature.product.domain;
 
+import com.agro.feature.product.domain.exceptions.NegativePriceException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,7 +36,14 @@ public class Optional {
         product.addOptional(this);
         this.product = product;
         this.name = name;
-        this.price = price;
         this.money = product.getMoney();
+        validatePrice(price);
+    }
+
+    private void validatePrice(Double price) {
+        if(price < 0) {
+            throw new NegativePriceException(price);
+        }
+        this.price = price;
     }
 }

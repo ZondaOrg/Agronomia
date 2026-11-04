@@ -1,5 +1,5 @@
 import type { PageInfo } from "@/shared/types/table/Table";
-import { Pagination } from "../../../pagination/Pagination";
+import { Pagination } from "../../../pagination/components/Pagination";
 import { pagination, size, paginationButton } from "../style";
 
 interface TableFooterProps {

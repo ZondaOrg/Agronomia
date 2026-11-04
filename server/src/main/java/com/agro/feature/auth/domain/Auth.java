@@ -1,13 +1,15 @@
 package com.agro.feature.auth.domain;
 
 import com.agro.shared.entities.rol.Role;
+import org.springframework.http.ResponseCookie;
 
 public record Auth(
         String name,
         String surname,
         String email,
         Role role,
-        String token,
+        String accessToken,
+        ResponseCookie refreshCookie,
         Long id,
         String companyLogo
 ) {

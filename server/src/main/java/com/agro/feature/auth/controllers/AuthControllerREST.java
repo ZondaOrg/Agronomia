@@ -5,7 +5,8 @@ import com.agro.feature.auth.domain.Auth;
 import com.agro.feature.auth.dtos.AuthMapper;
 import com.agro.feature.auth.dtos.request.Credentials;
 import com.agro.feature.auth.dtos.response.AuthResponse;
-import com.agro.feature.auth.orchestrator.LoginOrchestrator;
+import com.agro.feature.auth.orchestrator.login.LoginOrchestrator;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +26,10 @@ public class AuthControllerREST {
     @PostMapping(Api.LOGIN)
     public ResponseEntity<AuthResponse> login(@RequestBody Credentials credentials) {
         Auth auth = orchestrator.login(credentials);
+
         return ResponseEntity.ok()
-                .header("Authorization", "Bearer " + auth.token())
+                .header("Authorization", "Bearer " + auth.accessToken())
+                .header(HttpHeaders.SET_COOKIE, auth.refreshCookie().toString())
                 .body(AuthMapper.INSTANCE.modelToDto(auth));
     }
 }

@@ -1,11 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import type { UseFetch } from "./use-fetch";
 import { HttpError } from "@/core/server/errors/http-error";
+import useErrorFetch from "./use-error-fetch";
 
 function useFetch<D>(): UseFetch<D> {
     const [data, setData] = useState<D>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<HttpError>();
+    const { handleError } = useErrorFetch();
     const requestId = useRef(0);
 
     const execute = useCallback(
@@ -24,6 +26,7 @@ function useFetch<D>(): UseFetch<D> {
                         id === requestId.current &&
                         error instanceof HttpError
                     ) {
+                        handleError(error);
                         setError(error);
                     }
                     throw error;
@@ -32,7 +35,7 @@ function useFetch<D>(): UseFetch<D> {
                 }
             };
         },
-        [],
+        [handleError],
     );
 
     const refresh = useCallback(() => {

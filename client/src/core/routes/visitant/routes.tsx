@@ -1,13 +1,24 @@
-import Login from "@/features/login/pages/init/Login";
+import Login from "@/features/login/pages/Login";
 import type { RouteData } from "../route-data";
 import { VISITANT } from "./paths";
+import AuthenticatedServerErrorPage from "@/views/serverError/AuthenticatedServerErrorPage";
+import NotFoundPage from "@/views/notFound/NotFoundPage";
 
 const VisitantRoutes: RouteData[] = [
     {
         path: VISITANT.LOGIN,
         element: <Login />,
-        children: []
-    }
+        children: [],
+    },
+    {
+        path: VISITANT.SERVER_ERROR,
+        element: <AuthenticatedServerErrorPage />,
+        handle: { hideBreadcrumb: true },
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
+    },
 ];
 
 export default VisitantRoutes;

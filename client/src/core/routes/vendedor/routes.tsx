@@ -1,10 +1,8 @@
 import type { RouteData } from "@/core/routes/route-data";
 import { VENDEDOR_ROUTES } from "./paths";
 import VendedorLayout from "@/core/auth/layout/roles/vendedor/VendedorLayout";
-import { ProviderPanel } from "@/views/provider/ProviderPanel";
-import { ProvidersList } from "@/views/provider/pages/list/ProviderList";
-import { Client } from "@/views/client/Client";
-import ClientPanel from "@/views/client/pages/ClientPanel";
+import { ProvidersList } from "@/features/get-providers/pages/ProvidersList";
+import ClientPanel from "@/features/get-clients/pages/ClientPanel";
 import AddClient from "@/features/add-client/pages/AddClient";
 import { EditClient } from "@/features/edit-client/pages/EditClient";
 import { Outlet } from "react-router";
@@ -17,6 +15,7 @@ import { ListTypesProductsPage } from "@/views/product/pages/ListTypesProductsPa
 import { ListProductByTypePage } from "@/views/product/pages/ListProductByTypePage";
 import { Cotizar } from "@/views/cotizar/Cotizar";
 import { CotizarPanel } from "@/views/cotizar/pages/CotizarPanel";
+import NotFoundPage from "@/views/notFound/NotFoundPage";
 
 export const VendedorRoutes: RouteData[] = [
     {
@@ -26,7 +25,7 @@ export const VendedorRoutes: RouteData[] = [
         children: [
             {
                 path: `${VENDEDOR_ROUTES.PROVIDERS.BASE}`,
-                element: <ProviderPanel />,
+                element: <Outlet />,
                 handle: { breadcrumb: "Proveedores" },
                 children: [
                     {
@@ -93,7 +92,7 @@ export const VendedorRoutes: RouteData[] = [
             },
             {
                 path: `${VENDEDOR_ROUTES.CLIENT.BASE}`,
-                element: <Client />,
+                element: <Outlet />,
                 handle: { breadcrumb: "Clientes" },
                 children: [
                     {
@@ -127,6 +126,11 @@ export const VendedorRoutes: RouteData[] = [
                         handle: { breadcrumb: "Nuevo Cliente" },
                     },
                 ],
+            },
+            {
+                path: "*",
+                element: <NotFoundPage />,
+                handle: { hideBreadcrumb: true },
             },
         ],
     },

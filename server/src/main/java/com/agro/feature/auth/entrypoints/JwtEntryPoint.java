@@ -15,6 +15,8 @@ import java.io.IOException;
 
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {
+    public static final String CAUSE_ATTRIBUTE = "authErrorCause";
+
     private final ObjectMapper objectMapper;
 
     public JwtEntryPoint(ObjectMapper objectMapper) {
@@ -23,13 +25,13 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         RestErrorResponse error = new RestErrorResponse(
                 "Usuario no autenticado",
                 "No se pudo realizar la autenticación",
                 request.getRequestURI(),
-                CauseError.INVALID_TOKEN
+                (CauseError) request.getAttribute(CAUSE_ATTRIBUTE)
         );
         objectMapper.writeValue(response.getOutputStream(), error);
     }

@@ -1,6 +1,6 @@
 // FieldsSection.tsx
 import { useForm, useFormState } from "react-hook-form";
-import type { InsertFormProps } from "../../validation-form/validation-form";
+import type { ValidationFormProps } from "../../validation-form/validation-form";
 import type { InferData, Schema } from "../../validation-form/shema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inputWithMaxWidth, styles } from "../../validation-form/styles";
@@ -11,7 +11,7 @@ import SubForm from "../../validation-form/components/subforms/SubForm";
 import type { FormSectionHandle } from "../types/FormSection";
 
 type FieldsSectionProps<T extends Schema> = Pick<
-    InsertFormProps<T>,
+    ValidationFormProps<T>,
     "subForms" | "schema"
 > & {
     initialValues?: Partial<InferData<T>>;

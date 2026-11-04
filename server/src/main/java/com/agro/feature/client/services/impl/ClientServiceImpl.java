@@ -35,7 +35,6 @@ public class ClientServiceImpl implements ClientService, ClientDataService {
     @Override
     public Client save(Client client, Long userId) {
         if(dao.existsByCuit_Cuit(client.getCuit())) throw new CuitDuplicatedException(client.getCuit());
-        if(dao.existsByEmail_Email(client.getEmail())) throw new EmailDuplicatedException(client.getEmail());
 
         User user = userDataService.getUserById(userId);
 

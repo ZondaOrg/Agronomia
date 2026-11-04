@@ -70,7 +70,7 @@ public abstract class Client {
     }
 
     protected void updateContactData(String email, String address, String location, Province province) {
-        this.email = email == null || email.isBlank() ? null : new EmailValue(email);
+        this.email = new EmailValue(email);
         this.address = normalizeNullable(address);
         this.location = normalizeNullable(location);
         this.province = province;

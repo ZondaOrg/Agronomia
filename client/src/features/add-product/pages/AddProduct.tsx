@@ -7,9 +7,8 @@ import type { OptionalSchema } from "../types/optional/schema";
 import useGetAllTypes from "../hooks/get-all-types";
 
 const AddProduct = () => {
-    const { isCancel, notify, action, add, onRefresh, handleCancelNotify } = useAddProduct();
     const { productTypes } = useGetAllTypes();
-
+    const { isCancel, notify, action, add, onRefresh, handleCancelNotify } = useAddProduct(productTypes ?? []);
     const handleSubmit = (data: unknown[]) => {
             const [products, optionals] = data as [
                 AddProductSchema,
