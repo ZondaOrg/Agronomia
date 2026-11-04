@@ -1,9 +1,9 @@
-import SearchEngineClient from "@/features/list-client/components/SearchEngineClient";
+import SearchEngineClient from "../components/search/SearchEngineClient";
 import { useNavigate } from "react-router";
 import { token } from "@styled-system/tokens";
 import Button from "@/shared/components/forms/components/button/Button";
 import { styles } from "./styles";
-import ClientsGrid from "@/features/get-clients/ClientsGrid";
+import ClientsGrid from "../components/grid/ClientsGrid";
 import { CLIENTS } from "@/core/routes/urls/clients";
 
 const ClientPanel = () => {

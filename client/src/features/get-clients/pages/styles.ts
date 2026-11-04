@@ -5,7 +5,6 @@ const optionsRow = css.raw({
     flexDirection: { base: "column", sm: "row" },
     alignItems: { base: "stretch", sm: "center" },
     justifyContent: { base: "flex-start", sm: "space-between" },
-    gap: "12px",
     marginTop: "16px",
 });
 
