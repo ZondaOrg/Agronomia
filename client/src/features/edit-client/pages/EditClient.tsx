@@ -1,115 +1,50 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import PolimorficForm from "@/shared/components/forms/polimorfic-form/PolimorficForm";
 import { useGetClientById } from "../hook/use-get-client-by-id";
 import { usePutClient } from "../hook/use-put-client";
-import Spinner from "@/shared/components/spinner/Spinner";
-import ErrorToast from "@/shared/components/toast/error/ErrorToast";
 import naturalPersonSchema from "../types/natural-person/natural-person-schema";
-import type { ClientRequest } from "../adapter/request/client";
 import { generateForm } from "../types/generate-form";
 import socialMotiveSchema from "../types/social-motive/social-motive-schema";
-import { ConfirmModal } from "@/shared/components/modal/variants/commit/ConfirmModalProps";
+import NotifyHandler from "@/shared/components/notify/NotifyHandler";
 
 export const EditClient = () => {
-    const { clientId } = useParams<{ clientId: string }>();
-    const {
-        data: client,
-        error: getClientError,
-        loading,
-        getClientById,
-        refresh: refreshGetClient,
-    } = useGetClientById();
-    const {
-        editClient,
-        error: editClientError,
-        isLoading: isEditing,
-        refresh: refreshEditClient,
-    } = usePutClient();
-    const [isCancelOpen, setIsCancelOpen] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (clientId) {
-            getClientById(Number(clientId));
-        }
-    }, [clientId, getClientById]);
-
-    if (loading || !client) {
-        return (
-            <>
-                <Spinner
-                    size="lg"
-                    centered
-                />
-                {getClientError && (
-                    <ErrorToast
-                        message={getClientError.message}
-                        onClose={refreshGetClient}
-                    />
-                )}
-            </>
-        );
-    }
-
-    const isLegalClient = "razonSocial" in client;
-    const naturalPersonForms = generateForm(client);
-    const socialMotiveForms = generateForm(client);
-    const handleSubmit = async (data: Omit<ClientRequest, "type">) => {
-        const updatedClient = await editClient(data, client.id);
-
-        if (updatedClient) {
-            navigate("..");
-        }
-    };
+    const { client, isLoading, id } = useGetClientById();
+    const { isCancel, notify, action, edit, onRefresh, handleCancelNotify, onDirty } = usePutClient();
 
     return (
-        <>
-            {isEditing ? (
-                <Spinner
-                    size="lg"
-                    centered
-                />
-            ) : (
-                <PolimorficForm
+        !isLoading && 
+        client && 
+        <NotifyHandler
+            notify={notify}
+            action={action}
+            isCancel={isCancel}
+            isBack={true}
+            refresh={onRefresh}
+            onCancel={handleCancelNotify}
+        >
+            <PolimorficForm
                     options={[
                         {
                             subType: "razon social",
-                            subforms: socialMotiveForms,
+                            subforms: generateForm(client),
                             schema: socialMotiveSchema,
-                            onSubmit: handleSubmit,
+                            onSubmit: (data) => edit(data, id),
                         },
                         {
                             subType: "persona natural",
-                            subforms: naturalPersonForms,
+                            subforms: generateForm(client),
                             schema: naturalPersonSchema,
-                            onSubmit: handleSubmit,
+                            onSubmit: (data) => edit(data, id),
                         },
                     ]}
                     initialSubType={
-                        isLegalClient ? "razon social" : "persona natural"
+                        "razonSocial" in client ? "razon social" : "persona natural"
                     }
                     disableOptions
+                    initialValues={client}
+                    onDirty={onDirty}
                     buttonData={{ text: "Guardar cambios" }}
-                    onCancel={() => setIsCancelOpen(true)}
+                    onCancel={handleCancelNotify}
                 />
-            )}
-            {editClientError && (
-                <ErrorToast
-                    message={editClientError.message}
-                    onClose={refreshEditClient}
-                />
-            )}
-            <ConfirmModal
-                isOpen={isCancelOpen}
-                title="¿Seguro deseas cancelar?"
-                message="Si cancelas perderás los cambios realizados."
-                confirmText="Abandonar"
-                cancelText="Continuar editando"
-                danger
-                onConfirm={() => navigate("..")}
-                onCancel={() => setIsCancelOpen(false)}
-            />
-        </>
+        </NotifyHandler>
     );
 };
