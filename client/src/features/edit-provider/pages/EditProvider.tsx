@@ -25,6 +25,7 @@ export const EditProvider = () => {
                 onSubmit={(provider) => edit(provider, providerId)}
                 onDirty={onDirty}
                 onCancel={handleCancelNotify}
+                isLine={true}
             />
         </NotifyHandler>
     );
