@@ -24,7 +24,8 @@ public class Quote {
 
     public BigDecimal getTotal() {
         BigDecimal optionalsTotal = optionalPrices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        return listPrice.add(optionalsTotal).multiply(BigDecimal.ONE.add(ivaRate));
+        BigDecimal unitPrice = listPrice.add(optionalsTotal).multiply(BigDecimal.ONE.add(ivaRate)).add(freight);
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
     private void validateNotNegative(BigDecimal amount, String field) {
