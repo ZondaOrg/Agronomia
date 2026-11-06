@@ -2,7 +2,11 @@ import { defineConfig } from "@pandacss/dev";
 import tokenColors from './src/core/styles/token/colors'
 import animations from './src/core/styles/animations/animations'
 import { durationsToken } from './src/core/styles/token/durations'
-import tokenBorder from './src/core/styles/token/border'
+import {
+  borderColorTokens,
+  borderRadiusTokens,
+  borderWidthTokens,
+} from './src/core/styles/token/border'
 
 export default defineConfig({
   // Whether to use css reset
@@ -19,9 +23,13 @@ export default defineConfig({
     extend: {
       keyframes: animations,
       tokens: {
-        colors: tokenColors,
+        colors: {
+          ...tokenColors,
+          ...borderColorTokens,
+        },
+        radii: borderRadiusTokens,
+        borderWidths: borderWidthTokens,
         durations: durationsToken,
-        borders: tokenBorder,
       },
     },
   },
