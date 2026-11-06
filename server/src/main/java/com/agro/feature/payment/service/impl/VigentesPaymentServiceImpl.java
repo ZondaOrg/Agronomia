@@ -79,8 +79,8 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
 
     @Override
     public List<Payment> getPayments(Long idProvider) {
-        Provider provider = getProvider(idProvider);
-        return paymentDAO.findAllByProvider(provider);
+        getProvider(idProvider);
+        return paymentDAO.findAllByProviderId(idProvider);
     }
 
     private VigentePayment getVigentById(Long vigentId) {

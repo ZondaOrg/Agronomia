@@ -4,6 +4,7 @@ import {
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
 import DataField from "@/shared/components/dataField/DataField";
+import { FormPayment } from "../components/form/FormPayment";
 import { useStep3Preview } from "../hooks/use-step3-preview";
 import { optionalList, preview, previewFields } from "./styles";
 
@@ -33,6 +34,14 @@ export const StepPayment = ({ stepId }: StepPaymentProps) => {
             stepId={stepId}
             title="Elegí la forma de pago"
             filter={<div>{/* Coloca aquí tu componente de filtro */}</div>}
+            extraPosition="before"
+            form={
+                <FormPayment
+                    stepId={stepId}
+                    items={data?.vigentePayment ?? []}
+                    loading={loading}
+                />
+            }
             extra={
                 <section
                     className={preview}
