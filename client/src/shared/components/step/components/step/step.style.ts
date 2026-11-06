@@ -1,4 +1,5 @@
 import { cva, type RecipeVariantProps } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 /**
  * Recipe del bloque de acciones del {@link Step}.
@@ -68,9 +69,9 @@ export const asideRowRecipe = cva({
 import { css } from "@styled-system/css";
 
 export const title = css({
-    fontSize: "lg",
-    fontWeight: "semibold",
-    color: "#18181B",
+    fontSize: "24px",
+    fontWeight: "500",
+    color: token("colors.textSubtle"),
 });
 
 export const subtitle = css({
