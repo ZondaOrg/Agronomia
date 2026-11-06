@@ -26,8 +26,8 @@ interface QuoteService
 	PROPÓSITO: Describe la cotización del producto para la selección dada.
 	PRECONDICIÓN:
 		- Si el producto no existe, se lanza EntityNotFoundException.
-		- Si algún id de opcional no pertenece al producto o está repetido, se lanza InvalidOptionalException.
-		- Si la cantidad es menor que 1, se lanza InvalidQuantityException.
+		- Si algún id de opcional no pertenece al producto, se lanza InvalidOptionalException.
+		- Si la cantidad es menor que 1, se lanza InvalidQuantityException en la capa de dominio.
 */
 Quote calculate(Long productId, Integer quantity, List<Long> optionalIds, boolean includeFreight)
 
