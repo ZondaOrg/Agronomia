@@ -30,12 +30,17 @@ interface QuoteOptional {
 	price: number               // en la moneda del producto
 }
 
-interface QuoteAmount {
-	amount: number              // preciso, para encadenar
+interface QuoteSelection {
+	productId: number
+	quantity: number            // entero > 0
+	optionalIds: number[]       // [] = sin opcionales
+	includeFreight: boolean
+}
+
+interface QuoteTotal {
 	total: number               // redondeado hacia arriba, para mostrar
 }
 
-type Operation = "SUM" | "MULTIPLY"
 type Freight = "INCLUDED" | "NOT_INCLUDED"
 
 Service:
@@ -57,17 +62,17 @@ searchProducts(providerId: number, search: string): Promise<ProductOption[]>
 getQuoteProduct(productId: number): Promise<QuoteProduct>
 
 /*
-	PROPÓSITO: Describe el monto resultante de aplicar la operación con el operando dado.
-	PRECONDICIÓN: El monto y el operando no deben ser negativos.
+	PROPÓSITO: Describe el precio completo de la selección dada.
+	PRECONDICIÓN: El producto debe estar confirmado y la cantidad debe ser un entero mayor que cero.
 */
-calculate(amount: number, operation: Operation, operand: number): Promise<QuoteAmount>
+calculate(selection: QuoteSelection): Promise<QuoteTotal>
 
 Adapters:
 response/
 type OptionResponse = { id: number, name: string }
 type QuoteOptionalResponse = { id: number, name: string, price: number }
 type QuoteProductResponse = { id: number, name: string, money: "ARS" | "USD", listPrice: number, iva: "GENERAL" | "REDUCIDA", freight: number, optionals: QuoteOptionalResponse[] }
-type CalculateResponse = { amount: number, total: number }
+type CalculateResponse = { total: number }
 /*
 	PROPÓSITO: Describe las opciones de búsqueda a partir de la respuesta.
 */
@@ -77,29 +82,29 @@ optionsAdapter(response: OptionResponse[]): ProviderOption[] | ProductOption[]
 */
 quoteProductAdapter(response: QuoteProductResponse): QuoteProduct
 /*
-	PROPÓSITO: Describe el monto a partir de la respuesta.
+	PROPÓSITO: Describe el total a partir de la respuesta.
 */
-quoteAmountAdapter(response: CalculateResponse): QuoteAmount
+quoteTotalAdapter(response: CalculateResponse): QuoteTotal
 
 request/
-type CalculateRequest = { amount: number, operation: Operation, operand: number }
+type CalculateRequest = { productId: number, quantity: number, optionalIds: number[], includeFreight: boolean }
 /*
-	PROPÓSITO: Describe la request de cálculo.
+	PROPÓSITO: Describe la request de cálculo a partir de la selección.
 */
-calculateRequestAdapter(amount: number, operation: Operation, operand: number): CalculateRequest
+calculateRequestAdapter(selection: QuoteSelection): CalculateRequest
 
 Hooks:
 useSearchProviders()  -> { data, loading, search(text) }          // useFetch
 useSearchProducts()   -> { data, loading, search(providerId, text) }
 useQuoteProduct()     -> { data, loading, get(productId) }
-useCalculateQuote()   -> { loading, calculate(amount, operation, operand) }
+useCalculateQuote()   -> { loading, calculate(selection) }
 
 /*
 	PROPÓSITO: Coordina la selección y el cálculo del paso Producto.
-		- Al confirmar un producto: obtiene su detalle y calcula MULTIPLY (1 + ivaRate) sobre listPrice → unitWithoutFreight.
-		- «Flete incluido» con freight > 0: SUM freight sobre unitWithoutFreight → unitWithFreight.
-		- «No incluye flete» (o freight = 0): usa unitWithoutFreight sin llamar al backend.
-		- Cantidad: MULTIPLY quantity sobre el unitario vigente → quote (total para mostrar).
+		- Al confirmar un producto: obtiene su detalle y calcula con { quantity: 1, optionalIds: [], includeFreight: false }.
+		- Ante cada cambio de cantidad válida, opcionales o condición de flete: recalcula con la selección completa vigente
+		  (includeFreight = freight === "INCLUDED") y guarda el total.
+		- Con cantidad vacía, 0, negativa o fraccionaria no llama al backend y conserva el último total.
 	PRECONDICIÓN: El paso Cliente debe estar completo.
 */
 useStepProduct(stepId: string)
@@ -110,17 +115,16 @@ interface QuoteProductState {
 	product: ProductOption | null
 	detail: QuoteProduct | null
 	freight: Freight | null
-	quantity: number | null           // inicia en 1
-	unitWithoutFreight: QuoteAmount | null
-	unitWithFreight: QuoteAmount | null
-	quote: QuoteAmount | null
+	quantity: number          // inicia en 1
+	optionalIds: number[]             // inicia en []
+	total: number
 }
 /*
 	PROPÓSITO: Selecciona el proveedor y limpia el producto y los campos posteriores del paso y de los pasos siguientes.
 */
 selectProvider(provider: ProviderOption | null)
 /*
-	PROPÓSITO: Selecciona el producto y limpia detalle, flete, cantidad, montos y formas de pago.
+	PROPÓSITO: Selecciona el producto y limpia detalle, flete, cantidad, opcionales, total y formas de pago.
 	PRECONDICIÓN: Debe haber un proveedor seleccionado.
 */
 selectProduct(product: ProductOption | null)
@@ -139,9 +143,14 @@ setFreight(freight: Freight)
 */
 setQuantity(quantity: number | null)
 /*
-	PROPÓSITO: Guarda los montos unitarios y el total calculados.
+	PROPÓSITO: Agrega el opcional a la selección si no está, o lo quita si ya está.
+	PRECONDICIÓN: El opcional debe pertenecer al detalle del producto cargado.
 */
-setUnitWithoutFreight(amount: QuoteAmount) / setUnitWithFreight(amount: QuoteAmount) / setQuote(amount: QuoteAmount)
+toggleOptional(optionalId: number)
+/*
+	PROPÓSITO: Guarda el total calculado.
+*/
+setTotal(total: number)
 /*
 	PROPÓSITO: Limpia todos los datos del paso Producto.
 */
@@ -186,6 +195,13 @@ interface QuantityInputProps {
 }
 QuantityInput({ value, onChange }: QuantityInputProps)
 
+interface OptionalsSelectorProps {
+	optionals: QuoteOptional[]
+	selected: number[]
+	onToggle: (optionalId: number) => void
+}
+OptionalsSelector({ optionals, selected, onToggle }: OptionalsSelectorProps)
+
 interface TotalPriceProps {
 	total: number | null
 }
@@ -217,24 +233,19 @@ interface AutocompleteFilterFieldConfig extends BaseFilterFieldConfig {
 	PROPÓSITO: Deshabilita el botón Siguiente.
 */
 StepManager({ ..., nextDisabled?: boolean })
-
-/*
-	PROPÓSITO: Describe la fracción de IVA del enum (GENERAL → 0.21, REDUCIDA → 0.105).
-*/
-ivaRate(iva: Iva): number      // shared/domain/iva
 ```
 
 ## Desing
-- La lógica vive en `StepProduct` mediante `useStepProduct`. `FilterProduct`, `ProductPriceFields`, `FreightSelector`, `QuantityInput` y `TotalPrice` son componentes sin lógica.
+- La lógica vive en `StepProduct` mediante `useStepProduct`. `FilterProduct`, `ProductPriceFields`, `FreightSelector`, `QuantityInput`, `OptionalsSelector` y `TotalPrice` son componentes sin lógica.
 - Todo el estado del paso vive en el slice `quoteProduct` (registrado en `core/store`). `FilterChain` se usa solo como vista, alimentada desde el slice; Producto está deshabilitado mientras `provider` es null.
-- El monto se calcula de forma incremental contra `api/v1/quote/calculate`: precio de lista → MULTIPLY (1 + IVA) → SUM flete (solo si «Flete incluido» y freight > 0) → MULTIPLY cantidad. Se muestra siempre `total`; para encadenar se usa `amount`.
-- No llaman al backend: elegir «No incluye flete» y elegir «Flete incluido» con freight = 0.
+- El front no calcula: siempre envía la selección completa vigente (`productId`, `quantity`, `optionalIds`, `includeFreight`) a un único `POST api/v1/quote/calculate` y muestra el `total` devuelto.
+- Sin condición de flete elegida se calcula con `includeFreight: false`.
 - `freight = 0` se muestra como campo vacío de solo lectura.
-- La sección Opcionales se oculta cuando `optionals` está vacía.
+- La sección Opcionales (`OptionalsSelector`) se oculta cuando `optionals` está vacía.
 - `nextDisabled = !selectIsStepComplete`; no se usan estados de error por falta de selección.
 - Al cambiar producto o proveedor se limpian también los datos del paso Formas de pago.
 
 ## Shared
 - components: `FilterChain`/`FilterField` (nueva variante autocomplete), `StepManager` (nuevo prop `nextDisabled`), `Step`, `ConfirmModal` (modal de regreso), `CardCheckInput` (opciones de flete), `DataField` (precio, IVA y flete de solo lectura)
-- domain: `Money`, `Iva`, `ivaRate` (nuevo)
+- domain: `Money`, `Iva`
 - hooks: `useFetch`

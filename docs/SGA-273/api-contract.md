@@ -71,22 +71,27 @@ url: api/v1/quote/calculate
 verb: POST
 request:
 {
-	amount: number
-	operation: "SUM" | "MULTIPLY"
-	operand: number
+	productId: number
+	quantity: number            // entero > 0
+	optionalIds: number[]       // [] = sin opcionales
+	includeFreight: boolean
 }
 response: 200
 {
-	amount: number      // monto preciso, se usa para seguir encadenando operaciones
-	total: number       // monto redondeado hacia arriba al entero, se muestra
+	total: number               // precio completo redondeado hacia arriba al entero
 }
 errors:
-	400: ErrorResponse[]
+	400: ErrorResponse[]            // validación del request
+	400: BuisnessErrorResponse      // opcional que no pertenece al producto o repetido
+	404: BuisnessErrorResponse      // producto inexistente
 	401: BuisnessErrorResponse
 	403: BuisnessErrorResponse
 HEADERS:
 	Authorization: Bearer
 ```
+> Calcula siempre con la selección completa vigente:
+> `total = ⌈ quantity × ((listPrice + Σ opcionales) × (1 + IVA) + (includeFreight ? freight : 0)) ⌉`.
+> El flete no recibe IVA. Se llama al confirmar el producto (`quantity: 1, optionalIds: [], includeFreight: false`) y ante cada cambio de cantidad, opcionales o condición de flete.
 
 ```
 ErrorResponse { field: string, message: string }

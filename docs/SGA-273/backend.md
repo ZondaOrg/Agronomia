@@ -6,65 +6,60 @@
 Domain:
 class Quote
 /*
-	PROPÓSITO: Crea una cotización con el monto dado.
-	PRECONDICIÓN: Si el monto es nulo o negativo, se lanza NegativeAmountException.
+	PROPÓSITO: Crea una cotización con los datos del producto y la selección del usuario.
+	PRECONDICIÓN:
+		- Si el precio de lista, el IVA, el flete o algún precio de opcional es negativo, se lanza NegativeAmountException.
+		- Si la cantidad es menor que 1, se lanza InvalidQuantityException.
 */
-Quote(BigDecimal amount)
+Quote(BigDecimal listPrice, BigDecimal ivaRate, BigDecimal freight, List<BigDecimal> optionalPrices, Integer quantity)
 
 /*
-	PROPÓSITO: Describe la cotización resultante de aplicar la operación con el operando dado sobre el monto actual, sin redondear.
-	PRECONDICIÓN: Si el operando es nulo o negativo, se lanza NegativeAmountException.
-*/
-Quote apply(Operation operation, BigDecimal operand)
-
-/*
-	PROPÓSITO: Describe el monto preciso de la cotización.
-*/
-BigDecimal getAmount()
-
-/*
-	PROPÓSITO: Describe el monto de la cotización redondeado hacia arriba al entero (RoundingMode.CEILING).
+	PROPÓSITO: Describe el precio completo redondeado hacia arriba al entero (RoundingMode.CEILING):
+		quantity × ((listPrice + Σ optionalPrices) × (1 + ivaRate) + freight)
+	El flete no recibe IVA. El redondeo se aplica una única vez sobre el total de todas las unidades.
 */
 BigDecimal getTotal()
-
-enum Operation { SUM, MULTIPLY }
-/*
-	PROPÓSITO: Describe el resultado de operar el monto con el operando según la operación.
-*/
-abstract BigDecimal apply(BigDecimal amount, BigDecimal operand)
 
 Service:
 interface QuoteService
 /*
-	PROPÓSITO: Describe la cotización resultante de aplicar la operación con el operando dado.
-	PRECONDICIÓN: Si el operando es negativo, se lanza excepción.
+	PROPÓSITO: Describe la cotización del producto para la selección dada.
+	PRECONDICIÓN:
+		- Si el producto no existe, se lanza EntityNotFoundException.
+		- Si algún id de opcional no pertenece al producto o está repetido, se lanza InvalidOptionalException.
+		- Si la cantidad es menor que 1, se lanza InvalidQuantityException.
 */
-Quote calculate(Quote quote, Operation operation, BigDecimal operand)
+Quote calculate(Long productId, Integer quantity, List<Long> optionalIds, boolean includeFreight)
 
 Controller:
 /*
-	PROPÓSITO: Describe el monto preciso y el total redondeado tras aplicar la operación.
-	PRECONDICIÓN: Si el monto, la operación o el operando son inválidos, se responde 400.
+	PROPÓSITO: Describe el precio completo de la selección del usuario.
+	PRECONDICIÓN:
+		- Si el request es inválido, se responde 400 (ErrorResponse[]).
+		- Si algún opcional no pertenece al producto o está repetido, se responde 400 (BuisnessErrorResponse).
+		- Si el producto no existe, se responde 404.
 */
 @PostMapping(Api.QUOTE + "/calculate")
 @VendedorOrOwnerEndpoint
-ResponseEntity<CalculateQuoteResponse> calculate(CalculateQuoteRequest request)
+ResponseEntity<CalculateQuoteResponse> calculate(@Valid CalculateQuoteRequest request)
 
 Dto:
 dtos/calculate/request:
 record CalculateQuoteRequest(
-	@NotNull @PositiveOrZero BigDecimal amount,
-	@NotNull Operation operation,
-	@NotNull @PositiveOrZero BigDecimal operand
+	@NotNull Long productId,
+	@NotNull @Positive Integer quantity,
+	@NotNull List<Long> optionalIds,
+	@NotNull Boolean includeFreight
 )
 dtos/calculate/response:
-record CalculateQuoteResponse(BigDecimal amount, BigDecimal total)
+record CalculateQuoteResponse(BigDecimal total)
 CalculateQuoteMapper:
-	Quote toModel(CalculateQuoteRequest request)
 	CalculateQuoteResponse toResponse(Quote quote)
 
 ExceptionHandlers:
 	NegativeAmountException -> 400
+	InvalidQuantityException -> 400
+	InvalidOptionalException -> 400
 ```
 
 ## Feature `provider`
@@ -103,6 +98,24 @@ SearchProviderMapper:
 ## Feature `product`
 
 ```
+Domain:
+enum IVA { GENERAL, REDUCIDA }
+/*
+	PROPÓSITO: Describe la fracción del IVA (GENERAL → 0.21, REDUCIDA → 0.105).
+*/
+BigDecimal rate()
+
+Contracts:
+interface ProductQuoteDataService
+/*
+	PROPÓSITO: Describe el precio de lista, la fracción de IVA, el flete y los precios de los opcionales del producto cuyos ids están en la lista dada.
+		Los ids que no pertenecen al producto no se incluyen; los repetidos se incluyen una sola vez.
+	PRECONDICIÓN: Si el producto no existe, se lanza EntityNotFoundException.
+*/
+ProductQuoteData findForQuote(Long productId, List<Long> optionalIds)
+
+record ProductQuoteData(BigDecimal listPrice, BigDecimal ivaRate, BigDecimal freight, List<BigDecimal> optionalPrices)
+
 Persistence:
 interface ProductDAO extends JpaRepository<Product, Long>
 /*
@@ -156,8 +169,9 @@ QuoteProductMapper:
 ```
 
 ## Desing
-- Strategy pattern en `Operation`: enum cuyas constantes `SUM` y `MULTIPLY` implementan `apply(BigDecimal, BigDecimal)`. `Quote.apply` delega en la operación. Agregar una operación (por ejemplo, para opcionales) implica agregar una constante.
-- `Quote` es inmutable: `apply` devuelve una nueva cotización. Usa `BigDecimal` para conservar precisión; el redondeo hacia arriba se hace solo en `getTotal()`.
+- Fórmula directa en `Quote.getTotal()`: un único endpoint recibe la selección completa vigente y siempre aplica el mismo cálculo. `Quote` es inmutable, usa `BigDecimal` para conservar precisión y redondea con `CEILING` solo al final.
+- `QuoteServiceImpl` obtiene los datos con el contrato `ProductQuoteDataService` (no depende del dominio de `product`). El flag `includeFreight` se resuelve en el servicio: si es `false`, construye `Quote` con `freight = BigDecimal.ZERO`; `Quote` no conoce el flag. Si la cantidad de `optionalPrices` devueltos difiere de `optionalIds.size()`, algún id es ajeno al producto o está repetido → `InvalidOptionalException`.
+- `ProductQuoteDataServiceImpl` (en `product`) reutiliza `ProductService.findByIdWithinOptionals` y filtra `product.getOptionals()` por id. Convierte `Double` a `BigDecimal` con `BigDecimal.valueOf`.
 - La pertenencia del producto al proveedor no se valida en el cálculo: la garantiza la cadena de filtros del frontend (los productos se buscan por proveedor).
 - `searchByProvider` valida la existencia del proveedor con `ProviderDataService.existProvider`, igual que `ProductServiceImpl.add`.
 - `ProviderService.search` obtiene la compañía con `UserDataService`, igual que `getProviders`.
