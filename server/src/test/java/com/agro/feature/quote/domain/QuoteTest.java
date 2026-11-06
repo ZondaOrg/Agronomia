@@ -55,7 +55,7 @@ class QuoteTest {
         Quote quote = new Quote(new BigDecimal("1000"), new BigDecimal("0.21"), BigDecimal.ZERO,
                 List.of(new BigDecimal("100"), new BigDecimal("50")), 1);
 
-        assertEquals(0, new BigDecimal("1391.5").compareTo(quote.getTotal()));
+        assertEquals(0, new BigDecimal("1392").compareTo(quote.getTotal()));
     }
 
     @Test
@@ -70,5 +70,19 @@ class QuoteTest {
         Quote quote = new Quote(new BigDecimal("1000"), new BigDecimal("0.21"), new BigDecimal("100"), List.of(), 1);
 
         assertEquals(0, new BigDecimal("1310").compareTo(quote.getTotal()));
+    }
+
+    @Test
+    void testElTotalSeRedondeaHaciaArribaAlEntero() {
+        Quote quote = new Quote(new BigDecimal("100.10"), new BigDecimal("0.21"), BigDecimal.ZERO, List.of(), 1);
+
+        assertEquals(0, new BigDecimal("122").compareTo(quote.getTotal()));
+    }
+
+    @Test
+    void testElRedondeoSeAplicaUnaSolaVezSobreElTotalDeTodasLasUnidades() {
+        Quote quote = new Quote(new BigDecimal("100.10"), new BigDecimal("0.21"), BigDecimal.ZERO, List.of(), 2);
+
+        assertEquals(0, new BigDecimal("243").compareTo(quote.getTotal()));
     }
 }

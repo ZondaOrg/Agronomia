@@ -4,6 +4,7 @@ import com.agro.feature.quote.domain.exceptions.InvalidQuantityException;
 import com.agro.feature.quote.domain.exceptions.NegativeAmountException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class Quote {
@@ -23,9 +24,21 @@ public class Quote {
     }
 
     public BigDecimal getTotal() {
-        BigDecimal optionalsTotal = optionalPrices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal unitPrice = listPrice.add(optionalsTotal).multiply(BigDecimal.ONE.add(ivaRate)).add(freight);
-        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+        return unitPrice()
+                .multiply(BigDecimal.valueOf(quantity))
+                .setScale(0, RoundingMode.CEILING);
+    }
+
+    private BigDecimal unitPrice() {
+        return priceWithIva().add(freight);
+    }
+
+    private BigDecimal priceWithIva() {
+        return (listPrice.add(optionalsTotal())).multiply(BigDecimal.ONE.add(ivaRate));
+    }
+
+    private BigDecimal optionalsTotal() {
+        return optionalPrices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private void validateNotNegative(BigDecimal amount, String field) {
