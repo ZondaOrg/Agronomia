@@ -23,7 +23,8 @@ public class Quote {
     }
 
     public BigDecimal getTotal() {
-        return listPrice.multiply(BigDecimal.ONE.add(ivaRate));
+        BigDecimal optionalsTotal = optionalPrices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        return listPrice.add(optionalsTotal).multiply(BigDecimal.ONE.add(ivaRate));
     }
 
     private void validateNotNegative(BigDecimal amount, String field) {

@@ -49,4 +49,13 @@ class QuoteTest {
 
         assertEquals(0, new BigDecimal("1210").compareTo(quote.getTotal()));
     }
+
+    @Test
+    void testElTotalSumaLosOpcionalesAntesDeAplicarIva() {
+        // (1000 + 100 + 50) * 1.21 = 1391.5
+        Quote quote = new Quote(new BigDecimal("1000"), new BigDecimal("0.21"), BigDecimal.ZERO,
+                List.of(new BigDecimal("100"), new BigDecimal("50")), 1);
+
+        assertEquals(0, new BigDecimal("1391.5").compareTo(quote.getTotal()));
+    }
 }
