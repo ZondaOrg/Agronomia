@@ -21,7 +21,13 @@ interface QuoteProduct {
 	listPrice: number
 	iva: Iva                    // shared/domain/iva
 	freight: number             // 0 = sin flete informado
-	hasOptionals: boolean
+	optionals: QuoteOptional[]  // [] = sin opcionales
+}
+
+interface QuoteOptional {
+	id: number
+	name: string
+	price: number               // en la moneda del producto
 }
 
 interface QuoteAmount {
@@ -59,14 +65,15 @@ calculate(amount: number, operation: Operation, operand: number): Promise<QuoteA
 Adapters:
 response/
 type OptionResponse = { id: number, name: string }
-type QuoteProductResponse = { id: number, name: string, money: "ARS" | "USD", listPrice: number, iva: "GENERAL" | "REDUCIDA", freight: number, hasOptionals: boolean }
+type QuoteOptionalResponse = { id: number, name: string, price: number }
+type QuoteProductResponse = { id: number, name: string, money: "ARS" | "USD", listPrice: number, iva: "GENERAL" | "REDUCIDA", freight: number, optionals: QuoteOptionalResponse[] }
 type CalculateResponse = { amount: number, total: number }
 /*
 	PROPÓSITO: Describe las opciones de búsqueda a partir de la respuesta.
 */
 optionsAdapter(response: OptionResponse[]): ProviderOption[] | ProductOption[]
 /*
-	PROPÓSITO: Describe el producto a cotizar a partir de la respuesta.
+	PROPÓSITO: Describe el producto a cotizar, con sus opcionales, a partir de la respuesta.
 */
 quoteProductAdapter(response: QuoteProductResponse): QuoteProduct
 /*
@@ -223,7 +230,7 @@ ivaRate(iva: Iva): number      // shared/domain/iva
 - El monto se calcula de forma incremental contra `api/v1/quote/calculate`: precio de lista → MULTIPLY (1 + IVA) → SUM flete (solo si «Flete incluido» y freight > 0) → MULTIPLY cantidad. Se muestra siempre `total`; para encadenar se usa `amount`.
 - No llaman al backend: elegir «No incluye flete» y elegir «Flete incluido» con freight = 0.
 - `freight = 0` se muestra como campo vacío de solo lectura.
-- La sección Opcionales se oculta cuando `hasOptionals` es false.
+- La sección Opcionales se oculta cuando `optionals` está vacía.
 - `nextDisabled = !selectIsStepComplete`; no se usan estados de error por falta de selección.
 - Al cambiar producto o proveedor se limpian también los datos del paso Formas de pago.
 

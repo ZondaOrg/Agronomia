@@ -103,12 +103,6 @@ SearchProviderMapper:
 ## Feature `product`
 
 ```
-Domain:
-/*
-	PROPÓSITO: Describe si el producto tiene opcionales.
-*/
-boolean hasOptionals()
-
 Persistence:
 interface ProductDAO extends JpaRepository<Product, Long>
 /*
@@ -155,9 +149,10 @@ SearchProductMapper:
 	List<SearchProductResponse> toResponses(List<Product> products)
 
 dtos/quote/response:
-record QuoteProductResponse(Long id, String name, Money money, Double listPrice, IVA iva, Double freight, boolean hasOptionals)
+record QuoteProductResponse(Long id, String name, Money money, Double listPrice, IVA iva, Double freight, List<OptionalResponseDTO> optionals)
 QuoteProductMapper:
 	QuoteProductResponse toResponse(Product product)
+	OptionalResponseDTO toOptionalResponse(Optional optional)
 ```
 
 ## Desing
@@ -166,6 +161,7 @@ QuoteProductMapper:
 - La pertenencia del producto al proveedor no se valida en el cálculo: la garantiza la cadena de filtros del frontend (los productos se buscan por proveedor).
 - `searchByProvider` valida la existencia del proveedor con `ProviderDataService.existProvider`, igual que `ProductServiceImpl.add`.
 - `ProviderService.search` obtiene la compañía con `UserDataService`, igual que `getProviders`.
+- `QuoteProductResponse.optionals` reutiliza `OptionalResponseDTO(id, name, price)` de `feature/product/dtos` (misma feature). La moneda de los opcionales es la del producto. Sin opcionales se devuelve `[]`; los opcionales se cargan con `findByIdWithinOptionals`.
 - Agregar `Api.QUOTE = MAIN_NAME + V + "/quote"` en `core/api/Api`.
 
 ## Shared Dependencies

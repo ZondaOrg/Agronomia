@@ -50,7 +50,13 @@ response: 200
 	listPrice: number
 	iva: "GENERAL" | "REDUCIDA"
 	freight: number          // 0 = sin flete informado
-	hasOptionals: boolean
+	optionals: [             // [] = sin opcionales
+		{
+			id: number
+			name: string
+			price: number    // en la moneda del producto
+		}
+	]
 }
 errors:
 	404: BuisnessErrorResponse
