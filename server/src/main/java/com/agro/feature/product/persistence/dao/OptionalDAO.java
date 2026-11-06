@@ -24,4 +24,11 @@ public interface OptionalDAO extends JpaRepository<Optional, Long> {
             "WHERE o.product.id = :idProduct"
     )
     Page<Optional> findByProductId(@Param("idProduct") Long idProduct, Pageable of);
+
+    @Query("""
+        SELECT o.name
+        FROM Optional o
+        WHERE o.id IN :ids
+    """)
+    List<String> findAllNamesById(@Param("ids") List<Long> ids);
 }

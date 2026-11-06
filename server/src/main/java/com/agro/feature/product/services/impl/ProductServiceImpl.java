@@ -85,4 +85,5 @@ public class ProductServiceImpl implements ProductService {
         return dao.findAllByIdTypeAndProviderIds(idType, providerIds,search, PageRequest.of(page, size));
     }
 
+
 }

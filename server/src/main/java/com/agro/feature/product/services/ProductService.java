@@ -28,4 +28,5 @@ public interface ProductService {
             List<Long> OptionalsToDelete);
 
     Page<Product> getPageOfProducts(Integer page, Integer size, Long typeId, String search, Set<Long> longs);
+
 }
