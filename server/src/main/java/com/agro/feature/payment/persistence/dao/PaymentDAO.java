@@ -28,7 +28,7 @@ public interface PaymentDAO extends JpaRepository<Payment, Long> {
 
     @Query("""
         SELECT p FROM Payment p
-        WHERE p.vigentePayment.provider = :provider
+        WHERE p.vigentePayment.provider.id = :providerId
      """)
-    List<Payment> findAllByProvider(Provider provider);
+    List<Payment> findAllByProviderId(@Param("providerId") Long providerId);
 }

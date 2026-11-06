@@ -14,6 +14,8 @@ export type FilterValues = Record<string, string>;
  */
 export type ActionsPosition = "top" | "aside" | "between" | "bottom";
 
+export type ExtraPosition = "before" | "after";
+
 /** Propiedades del componente `Step`. */
 export interface StepProps {
     /** Id del paso en el slice `filterChain`. Debe coincidir con el del filtro. */
@@ -33,6 +35,9 @@ export interface StepProps {
 
     /** Contenido adicional que se renderiza debajo del formulario. */
     extra?: ReactNode;
+
+    /** Posición del contenido adicional respecto del formulario. */
+    extraPosition?: ExtraPosition;
 
     /**
      * Se ejecuta con los valores del filtro cuando está completo.

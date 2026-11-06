@@ -7,7 +7,12 @@ import {
 import type { StepProps } from "./Step.types";
 import { actionsRecipe, asideRowRecipe, title as titleStyle } from "./step.style";
 
-export type { ActionsPosition, FilterValues, StepProps } from "./Step.types";
+export type {
+    ActionsPosition,
+    ExtraPosition,
+    FilterValues,
+    StepProps,
+} from "./Step.types";
 
 /**
  * Renderiza un paso del formulario: filtro + formulario de resultados,
@@ -43,6 +48,7 @@ export const Step = ({
     filter,
     form,
     extra,
+    extraPosition = "after",
     service,
     onClear,
     actions,
@@ -86,8 +92,9 @@ export const Step = ({
                 filter
             )}
             {actionsPosition === "between" && actionsBlock}
+            {extraPosition === "before" && extra}
             {form}
-            {extra}
+            {extraPosition === "after" && extra}
             {actionsPosition === "bottom" && actionsBlock}
         </>
     );
