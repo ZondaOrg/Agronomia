@@ -14,4 +14,6 @@ public interface VigentesPaymentDataService {
     VigentePayment getVigentPaymentsById(Long providerId);
 
     List<Payment> searchVigentPaymentsByProviderId(Long providerId, String description);
+
+    List<Payment> getPayments(Long idProvider);
 }
