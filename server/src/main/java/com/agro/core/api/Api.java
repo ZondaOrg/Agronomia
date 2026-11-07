@@ -26,6 +26,8 @@ public final class Api {
 
     public static final String OPTIONAL = MAIN_NAME + V + "/optional";
 
+    public static final String QUOTE = MAIN_NAME + V + "/quote";
+
     public static final String SESSION = MAIN_NAME + V + "/session";
     public static final String REFRESH = "/refresh";
 }

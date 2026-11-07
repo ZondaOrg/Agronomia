@@ -29,7 +29,7 @@ public class GlobalHandlerException {
                 request.getServletPath(),
                 CauseError.ENTITY_NOT_FOUND
         );
-        return ResponseEntity.badRequest().body(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(ConflictException.class)
