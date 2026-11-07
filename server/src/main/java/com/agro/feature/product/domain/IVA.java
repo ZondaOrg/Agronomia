@@ -1,9 +1,18 @@
 package com.agro.feature.product.domain;
 
-public enum IVA {
-    GENERAL("21%"),
-    REDUCIDA("10,5%");
+import java.math.BigDecimal;
 
-    IVA(String iva) {
+public enum IVA {
+    GENERAL("0.21"),
+    REDUCIDA("0.105");
+
+    private final BigDecimal rate;
+
+    IVA(String rate) {
+        this.rate = new BigDecimal(rate);
+    }
+
+    public BigDecimal rate() {
+        return rate;
     }
 }
