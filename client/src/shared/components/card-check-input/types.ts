@@ -7,7 +7,7 @@ export type CardCheckVariant =
 
 export interface CardCheckOption {
     value: string;
-    label: string;
+    label: ReactNode;
     description?: string;
     content?: ReactNode;
 }
