@@ -62,7 +62,9 @@ export const FormPayment = ({
     const valorGuardado =
         typeof valoresGuardados?.[FIELD_NAME] === "string"
             ? valoresGuardados[FIELD_NAME]
-            : "";
+            : Array.isArray(valoresGuardados?.paymentIds)
+              ? valoresGuardados.paymentIds.join(",")
+              : "";
     const observacionesGuardadas =
         typeof valoresGuardados?.observations === "string"
             ? valoresGuardados.observations
@@ -83,8 +85,23 @@ export const FormPayment = ({
     );
 
     const onSave = useCallback(
-        (values: StepPaymentFormValues) =>
-            dispatch(guardarValores({ stepId, valores: values })),
+        (values: StepPaymentFormValues) => {
+            const paymentIds = values.payment
+                .split(",")
+                .filter(Boolean)
+                .map(Number);
+            const observations = values.observations.trim();
+
+            dispatch(
+                guardarValores({
+                    stepId,
+                    valores: {
+                        paymentIds,
+                        ...(observations ? { observations } : {}),
+                    },
+                }),
+            );
+        },
         [dispatch, stepId],
     );
 
