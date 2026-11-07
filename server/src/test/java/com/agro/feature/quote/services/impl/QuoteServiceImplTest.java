@@ -10,6 +10,7 @@ import com.agro.feature.product.services.ProductService;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.quote.domain.Quote;
+import com.agro.feature.quote.domain.exceptions.InvalidQuantityException;
 import com.agro.shared.service.ResetService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -111,6 +112,17 @@ class QuoteServiceImplTest {
         Quote quote = service.calculate(added.getId(), 3, List.of(), true);
 
         assertEquals(0, new BigDecimal("36300000").compareTo(quote.getTotal()));
+    }
+
+    @Test
+    void testSiLaCantidadEsMenorQueUnoLanzaInvalidQuantityException() {
+        TestFixtures.Tenant tenant = fixtures.tenant("Empresa 1", "30-11111111-1", "owner@gmail.com");
+        ProductType tractor = fixtures.defaultTypes(tenant.owner().getId()).get("Tractor");
+        Provider provider = fixtures.provider(tenant.company().getId());
+        Product added = productService.add(fixtures.product("Product 1", tractor.getId()), tractor.getId(), provider.getId());
+
+        assertThrows(InvalidQuantityException.class,
+                () -> service.calculate(added.getId(), 0, List.of(), true));
     }
 
     @AfterEach
