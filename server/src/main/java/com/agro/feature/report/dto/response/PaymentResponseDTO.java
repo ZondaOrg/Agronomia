@@ -1,4 +1,4 @@
-package com.agro.feature.cotizar.dto.response;
+package com.agro.feature.report.dto.response;
 
 import com.agro.feature.payment.domain.Payment;
 import com.agro.shared.annotations.format.FixedTwoDecimals;

@@ -1,10 +1,10 @@
-package com.agro.feature.cotizar.oorchestrator;
+package com.agro.feature.report.orchestrator;
 
 import com.agro.core.ContainerPostgresql;
 import com.agro.core.TestFixtures;
-import com.agro.feature.cotizar.dto.response.PaymentResponseDTO;
-import com.agro.feature.cotizar.dto.response.StepPreviewResponseDTO;
-import com.agro.feature.cotizar.orchestrator.previewStep2.PreviewStep2;
+import com.agro.feature.report.dto.response.PaymentResponseDTO;
+import com.agro.feature.report.dto.response.StepPreviewResponseDTO;
+import com.agro.feature.report.orchestrator.previewStep2.PreviewStep3;
 import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.services.ProductService;
@@ -38,7 +38,7 @@ class PreviewStep2OrchestratorImplTest {
     @Container
     private static PostgreSQLContainer postgres = ContainerPostgresql.getContainer();
 
-    @Autowired private PreviewStep2 orchestrator;
+    @Autowired private PreviewStep3 orchestrator;
     @Autowired private ProductService productService;
     @Autowired private ResetService resetService;
     @Autowired private TestFixtures fixtures;

@@ -1,7 +1,6 @@
-package com.agro.feature.cotizar.dto.response;
+package com.agro.feature.report.dto.response;
 
 import com.agro.feature.payment.domain.Payment;
-import com.agro.feature.payment.domain.VigentePayment;
 
 import java.util.List;
 
