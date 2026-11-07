@@ -43,6 +43,7 @@ export const StepClient = ({ stepId }: StepClientProps) => {
     return (
         <Step
             stepId={stepId}
+            title="Seleccioná el cliente"
             filter={<FilterClient stepId={stepId} />}
             form={
                 <FormClient

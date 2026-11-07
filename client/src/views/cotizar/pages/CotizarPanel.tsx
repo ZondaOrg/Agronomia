@@ -13,8 +13,8 @@ import { useCotizador } from "../hooks/useCotizador";
 
 const STEPS: StepDefinition[] = [
     { label: "Cliente", component: StepClient },
-    { label: "Producto", component: StepProduct },
     { label: "Formas de pago", component: StepPayment },
+    { label: "Producto", component: StepProduct },
     { component: StepPreview },
 ];
 

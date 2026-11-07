@@ -19,6 +19,9 @@ export interface StepProps {
     /** Id del paso en el slice `filterChain`. Debe coincidir con el del filtro. */
     stepId: string;
 
+    /** Título que se muestra al inicio del paso. */
+    title?: string;
+
     /** Filtro del paso. */
     filter: ReactNode;
 
@@ -26,7 +29,10 @@ export interface StepProps {
      * Formulario que muestra los resultados del paso (por ejemplo, un
      * `HydrationForm` ya configurado).
      */
-    form: ReactNode;
+    form?: ReactNode;
+
+    /** Contenido adicional que se renderiza debajo del formulario. */
+    extra?: ReactNode;
 
     /**
      * Se ejecuta con los valores del filtro cuando está completo.

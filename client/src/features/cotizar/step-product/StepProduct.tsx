@@ -20,6 +20,7 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
     return (
         <Step
             stepId={stepId}
+            title="Seleccioná el producto"
             filter={<div>{/* Coloca aquí tu componente de filtro */}</div>}
             form={
                 <div>
