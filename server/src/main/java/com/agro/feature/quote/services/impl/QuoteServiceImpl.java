@@ -7,6 +7,7 @@ import com.agro.feature.quote.services.QuoteService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public Quote calculate(Long productId, Integer quantity, List<Long> optionalIds, boolean includeFreight) {
         ProductQuoteData data = productQuoteData.findForQuote(productId, optionalIds);
-        return new Quote(data.listPrice(), data.ivaRate(), data.freight(), data.optionalPrices(), quantity);
+        BigDecimal freight = includeFreight ? data.freight() : BigDecimal.ZERO;
+        return new Quote(data.listPrice(), data.ivaRate(), freight, data.optionalPrices(), quantity);
     }
 }

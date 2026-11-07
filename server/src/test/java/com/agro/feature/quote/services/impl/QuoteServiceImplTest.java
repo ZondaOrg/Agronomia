@@ -55,7 +55,7 @@ class QuoteServiceImplTest {
         ProductType tractor = fixtures.defaultTypes(tenant.owner().getId()).get("Tractor");
         Provider provider = fixtures.provider(tenant.company().getId());
         Product added = productService.add(fixtures.product("Product 1", tractor.getId()), tractor.getId(), provider.getId());
-        productService.edit(added, Money.ARS, 1000d, IVA.GENERAL, 0, 100d, "", new ArrayList<>(), new ArrayList<>());
+        productService.edit(added, Money.ARS, 1000d, IVA.GENERAL, 1, 100d, "", new ArrayList<>(), new ArrayList<>());
 
         Quote quote = service.calculate(added.getId(), 1, List.of(), false);
 
