@@ -8,10 +8,6 @@ export const form = css({
 export const content = css({
     position: "relative",
     minHeight: "240px",
-    maxHeight: "400px",
-    overflowY: "auto",
-    paddingRight: "8px",
-    scrollbarGutter: "stable",
 });
 
 export const loadingBox = css({
