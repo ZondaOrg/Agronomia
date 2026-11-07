@@ -6,6 +6,7 @@ import {
     type FieldValues,
     type Path,
     type DefaultValues,
+    type Control,
 } from "react-hook-form";
 import {
     form,
@@ -32,6 +33,8 @@ export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
     defaultValues?: DefaultValues<TFormValues>;
     error?: boolean;
     onValueChange?: (value: string | null) => void;
+    onValuesChange?: (values: TFormValues) => void;
+    renderAdditionalFields?: (control: Control<TFormValues>) => React.ReactNode;
     onReset?: () => void;
     saveNonce?: number;
     onSave?: (values: TFormValues) => void;
@@ -47,6 +50,8 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     fieldName,
     defaultValues,
     onValueChange,
+    onValuesChange,
+    renderAdditionalFields,
     saveNonce = 0,
     onSave,
 }: HydrationFormProps<TItem, TFormValues>) => {
@@ -56,10 +61,15 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     });
 
     const fieldValue = useWatch({ control, name: fieldName }) as string | null;
+    const formValues = useWatch({ control }) as TFormValues;
 
     useEffect(() => {
         onValueChange?.(fieldValue);
     }, [fieldValue, onValueChange]);
+
+    useEffect(() => {
+        onValuesChange?.(formValues);
+    }, [formValues, onValuesChange]);
 
     const lastSave = useRef(saveNonce);
     useEffect(() => {
@@ -92,6 +102,7 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
                     />
                 )}
             </div>
+            {renderAdditionalFields?.(control)}
         </form>
     );
 };

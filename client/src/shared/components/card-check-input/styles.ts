@@ -13,6 +13,10 @@ export const styles = {
         flexDirection: "column",
         gap: "2rem",
         width: "100%",
+        maxHeight: "400px",
+        overflowY: "auto",
+        paddingRight: "8px",
+        scrollbarGutter: "stable",
     }),
     simpleOptions: css({
         display: "grid",
