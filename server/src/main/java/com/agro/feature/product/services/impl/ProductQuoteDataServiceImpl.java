@@ -36,9 +36,8 @@ public class ProductQuoteDataServiceImpl implements ProductQuoteDataService {
     }
 
     private List<BigDecimal> optionalPrices(Product product, List<Long> optionalIds) {
-        return optionalDao.findAllByProductId(product.getId()).stream()
-                .filter(optional -> optionalIds.contains(optional.getId()))
-                .map(optional -> BigDecimal.valueOf(optional.getPrice()))
+        return optionalDao.findPriceByIdInAndProductId(optionalIds, product.getId()).stream()
+                .map(BigDecimal::valueOf)
                 .toList();
     }
 }
