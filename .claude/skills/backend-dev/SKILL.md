@@ -10,6 +10,7 @@ description: Implementa con TDD los contratos de docs/<id-feature>/backend.md. U
 - Solo lee `server/docs/architecture.md`, `backend.md` y el código que este referencia. No lee `spec.md` ni `api-contract.md`.
 - No implementa nada fuera de `backend.md`. Si falta un contrato, se detiene y lo informa.
 - Un contrato por ciclo, en el orden de `backend.md`.
+- Se propone un test a la vez.
 - Cada precondición tiene al menos un test.
 - No ejecuta tests: los ejecuta el usuario.
 - No modifica un test para que pase.
