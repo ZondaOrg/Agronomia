@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "vigent_payments")
+@Table(name = "vigent_payments")
 @EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
