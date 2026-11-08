@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import { Controller } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
 import { HydrationForm } from "@/shared/components/step/components/form/HydratationForm";
 import {
@@ -15,6 +16,7 @@ import {
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import { validateStepSchema } from "@/shared/components/step/components/form/schema-validator";
 import { CardCheckPayment } from "../checks/CardCheckPayment";
+import { AdditionalInformation } from "./AdditionalInformation";
 import type { PaymentPreview } from "../../types/step-preview";
 import {
     stepPaymentSchema,
@@ -40,7 +42,7 @@ export const FormPayment = ({
         dispatch(
             initForm({
                 stepId,
-                obligatorios: Object.keys(stepPaymentSchema.shape),
+                obligatorios: [FIELD_NAME],
             }),
         );
     }, [dispatch, stepId]);
@@ -54,19 +56,21 @@ export const FormPayment = ({
     const highlightNonce = useAppSelector((state) =>
         selectMostrarFaltantesNonce(state, stepId),
     );
-    const valorGuardado = useAppSelector(
-        (state) =>
-            (selectFormValores(state, stepId)?.[FIELD_NAME] as
-                | string
-                | null
-                | undefined) ?? null,
+    const valoresGuardados = useAppSelector((state) =>
+        selectFormValores(state, stepId),
     );
+    const valorGuardado =
+        typeof valoresGuardados?.[FIELD_NAME] === "string"
+            ? valoresGuardados[FIELD_NAME]
+            : "";
+    const observacionesGuardadas =
+        typeof valoresGuardados?.observations === "string"
+            ? valoresGuardados.observations
+            : "";
 
-    const onValueChange = useCallback(
-        (value: string | null) => {
-            const result = validateStepSchema(stepPaymentSchema, {
-                [FIELD_NAME]: value ?? "",
-            });
+    const onValuesChange = useCallback(
+        (values: StepPaymentFormValues) => {
+            const result = validateStepSchema(stepPaymentSchema, values);
 
             dispatch(setEstadoForm({ stepId, ...result }));
         },
@@ -92,9 +96,24 @@ export const FormPayment = ({
             loading={loading}
             Input={CardCheckPayment}
             fieldName={FIELD_NAME}
-            defaultValues={{ payment: valorGuardado ?? "" }}
+            defaultValues={{
+                payment: valorGuardado,
+                observations: observacionesGuardadas,
+            }}
             error={highlightNonce > 0 && faltantes.includes(FIELD_NAME)}
-            onValueChange={onValueChange}
+            onValuesChange={onValuesChange}
+            renderAdditionalFields={(control) => (
+                <Controller
+                    name="observations"
+                    control={control}
+                    render={({ field }) => (
+                        <AdditionalInformation
+                            value={field.value ?? ""}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
+            )}
             onReset={onReset}
             saveNonce={saveNonce}
             onSave={onSave}
