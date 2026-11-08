@@ -5,7 +5,7 @@ import {
     selectStepValues,
 } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 import type { StepProps } from "./Step.types";
-import { actionsRecipe, asideRowRecipe } from "./step.style";
+import { actionsRecipe, asideRowRecipe, title as titleStyle } from "./step.style";
 
 export type { ActionsPosition, FilterValues, StepProps } from "./Step.types";
 
@@ -39,8 +39,10 @@ export type { ActionsPosition, FilterValues, StepProps } from "./Step.types";
  */
 export const Step = ({
     stepId,
+    title,
     filter,
     form,
+    extra,
     service,
     onClear,
     actions,
@@ -73,6 +75,7 @@ export const Step = ({
 
     return (
         <>
+            {title && <h2 className={titleStyle}>{title}</h2>}
             {actionsPosition === "top" && actionsBlock}
             {actionsPosition === "aside" ? (
                 <div className={asideRowRecipe()}>
@@ -84,6 +87,7 @@ export const Step = ({
             )}
             {actionsPosition === "between" && actionsBlock}
             {form}
+            {extra}
             {actionsPosition === "bottom" && actionsBlock}
         </>
     );

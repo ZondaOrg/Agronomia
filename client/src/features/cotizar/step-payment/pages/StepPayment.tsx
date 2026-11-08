@@ -1,30 +1,82 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
     Step,
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
+import DataField from "@/shared/components/dataField/DataField";
+import { useStep3Preview } from "../hooks/use-step3-preview";
+import { optionalList, preview, previewFields } from "./styles";
+
+const STEP3_PREVIEW_REQUEST = {
+    idProvider: 1,
+    idProduct: 1,
+    idOptionals: [1, 2, 3],
+};
 
 interface StepPaymentProps {
     stepId: string;
 }
 
 export const StepPayment = ({ stepId }: StepPaymentProps) => {
-    const handleSearch = useCallback((filters: FilterValues) => {
-        // TODO: Implementar la lógica de búsqueda o llamada al servicio
-    }, []);
+    const { data, error, getPreview, loading } = useStep3Preview();
 
-    const handleClear = useCallback(() => {
-        // TODO: Implementar la lógica para limpiar o resetear datos
-    }, []);
+    useEffect(() => {
+        void getPreview(STEP3_PREVIEW_REQUEST);
+    }, [getPreview]);
+
+    const handleSearch = useCallback((_filters: FilterValues) => undefined, []);
+
+    const handleClear = useCallback(() => undefined, []);
 
     return (
         <Step
             stepId={stepId}
+            title="Elegí la forma de pago"
             filter={<div>{/* Coloca aquí tu componente de filtro */}</div>}
-            form={
-                <div>
-                    {/* Coloca aquí tu formulario o listado de elementos */}
-                </div>
+            extra={
+                <section
+                    className={preview}
+                    aria-labelledby="step-payment-preview"
+                >
+                    <dl className={previewFields}>
+                        <DataField
+                            label="Nombre proveedor"
+                            value={
+                                loading
+                                    ? "Cargando..."
+                                    : data?.nameProvider ?? "—"
+                            }
+                        />
+                        <DataField
+                            label="Nombre producto"
+                            value={
+                                loading
+                                    ? "Cargando..."
+                                    : data?.nameProduct ?? "—"
+                            }
+                        />
+                        <DataField
+                            label="¿Incluye flete?"
+                            value="Sí"
+                        />
+                        <DataField
+                            label="Opcionales"
+                            value={
+                                <ul className={optionalList}>
+                                    {data?.nameOptionals.map((optional) => (
+                                        <li key={optional}>{optional}</li>
+                                    ))}
+                                </ul>
+                            }
+                        />
+                        {error && (
+                            <DataField
+                                label="Error"
+                                value="No se pudo cargar la vista previa"
+                            />
+                        )}
+                    </dl>
+                </section>
             }
             service={handleSearch}
             onClear={handleClear}

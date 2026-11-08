@@ -17,7 +17,7 @@ const title = css.raw({
 
 const border = css.raw({
     width: "100%",
-    borderColor: token("borders.borderColor.line"),
+    borderColor: token("colors.borderLine"),
 });
 
 const styles = sva({
@@ -30,4 +30,3 @@ const styles = sva({
 });
 
 export default styles;
-
