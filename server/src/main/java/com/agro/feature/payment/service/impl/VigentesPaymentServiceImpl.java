@@ -77,6 +77,12 @@ public class VigentesPaymentServiceImpl implements VigentesPaymentDataService, V
         return paymentDAO.findAllByProviderAndDescriptionContainingIgnoreCase(provider, description);
     }
 
+    @Override
+    public List<Payment> getPayments(Long idProvider) {
+        Provider provider = getProvider(idProvider);
+        return paymentDAO.findAllByProvider(provider);
+    }
+
     private VigentePayment getVigentById(Long vigentId) {
         return vigentesPaymentDAO.findById(vigentId).orElseThrow(() -> new EntityNotFoundException("No se encontro el metodo de pago"));
     }

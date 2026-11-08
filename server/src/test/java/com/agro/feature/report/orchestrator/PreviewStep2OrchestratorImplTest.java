@@ -1,9 +1,10 @@
-package com.agro.feature.cotizar.oorchestrator;
+package com.agro.feature.report.orchestrator;
 
 import com.agro.core.ContainerPostgresql;
 import com.agro.core.TestFixtures;
-import com.agro.feature.cotizar.dto.response.StepPreviewResponseDTO;
-import com.agro.feature.cotizar.orchestrator.previewStep2.PreviewStep2;
+import com.agro.feature.report.dto.response.PaymentResponseDTO;
+import com.agro.feature.report.dto.response.StepPreviewResponseDTO;
+import com.agro.feature.report.orchestrator.previewStep2.PreviewStep3;
 import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.services.ProductService;
@@ -23,6 +24,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +38,7 @@ class PreviewStep2OrchestratorImplTest {
     @Container
     private static PostgreSQLContainer postgres = ContainerPostgresql.getContainer();
 
-    @Autowired private PreviewStep2 orchestrator;
+    @Autowired private PreviewStep3 orchestrator;
     @Autowired private ProductService productService;
     @Autowired private ResetService resetService;
     @Autowired private TestFixtures fixtures;
@@ -99,6 +102,54 @@ class PreviewStep2OrchestratorImplTest {
         assertEquals(List.of("Flete"), result.nameOptionals());
     }
 
+    // ---------- pagos vigentes ----------
+
+    @Test
+    void testDevuelveLosPagosVigentesDelProveedor() {
+        Product product = addProduct("Semilla A");
+        createVigentePayments(provider, "Contado", "30 dias");
+
+        StepPreviewResponseDTO result =
+                orchestrator.getPreview(provider.getId(), product.getId(), List.of());
+
+        assertEquals(2, result.vigentePayment().size());
+        assertEquals(
+                Set.of("Contado", "30 dias"),
+                result.vigentePayment().stream()
+                        .map(PaymentResponseDTO::description)
+                        .collect(Collectors.toSet()));
+    }
+
+    @Test
+    void testElPagoDevueltoTieneLosCamposDelModelo() {
+        Product product = addProduct("Semilla A");
+        createVigentePayments(provider, "Contado");
+
+        StepPreviewResponseDTO result =
+                orchestrator.getPreview(provider.getId(), product.getId(), List.of());
+
+        PaymentResponseDTO payment = result.vigentePayment().get(0);
+        assertEquals("Contado", payment.description());
+        assertNotNull(payment.application());
+        assertEquals(10d, payment.percentage());
+        assertEquals(5d, payment.bonusPercentage());
+    }
+
+    @Test
+    void testNoDevuelvePagosDeOtroProveedor() {
+        Product product = addProduct("Semilla A");
+        Provider other = fixtures.provider(tenant.company().getId(), "Proveedor Dos", "30-22222222-9");
+
+        createVigentePayments(provider, "Contado");
+        createVigentePayments(other, "Cheque 60 dias");
+
+        StepPreviewResponseDTO result =
+                orchestrator.getPreview(provider.getId(), product.getId(), List.of());
+
+        assertEquals(1, result.vigentePayment().size());
+        assertEquals("Contado", result.vigentePayment().get(0).description());
+    }
+
     // ---------- no encontrados ----------
 
     @Test
@@ -130,5 +181,9 @@ class PreviewStep2OrchestratorImplTest {
         return fixtures.optionals(product, names).stream()
                 .map(Optional::getId)
                 .toList();
+    }
+
+    private void createVigentePayments(Provider provider, String... descriptions) {
+        fixtures.vigentePayment(provider.getId(), descriptions);
     }
 }

@@ -1,5 +1,5 @@
 import http from "@/core/server/http-client";
-import { STEP3_PREVIEW_PATH } from "@/core/server/urls/cotizar";
+import { STEP3_PREVIEW_PATH } from "@/core/server/urls/report";
 import { step3PreviewRequestAdapter } from "../adapters/request";
 import {
     stepPreviewResponseAdapter,

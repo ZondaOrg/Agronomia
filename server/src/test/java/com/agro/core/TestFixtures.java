@@ -5,6 +5,10 @@ import com.agro.feature.branch.persistence.BranchDAO;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
 import com.agro.feature.image.domain.Imagen;
+import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Application;
+import com.agro.feature.payment.domain.Payment;
+import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Optional;
@@ -36,6 +40,7 @@ public class TestFixtures {
     private final ProductTypeService productTypeService;
     private final ProviderService providerService;
     private final OptionalDAO optionalDAO;
+    private final VigentesPaymentDataService vigentesPaymentDataService;
 
     public TestFixtures(
             BranchDAO branchDAO,
@@ -43,7 +48,8 @@ public class TestFixtures {
             RegisterOrchestrator orchestrator,
             ProductTypeService productTypeService,
             ProviderService providerService,
-            OptionalDAO optionalDAO
+            OptionalDAO optionalDAO,
+            VigentesPaymentDataService vigentesPaymentDataService
     ) {
         this.branchDAO = branchDAO;
         this.companyService = companyService;
@@ -51,6 +57,7 @@ public class TestFixtures {
         this.productTypeService = productTypeService;
         this.providerService = providerService;
         this.optionalDAO = optionalDAO;
+        this.vigentesPaymentDataService = vigentesPaymentDataService;
     }
 
     /** Empresa + sucursal + owner ya registrados. */
@@ -152,5 +159,23 @@ public class TestFixtures {
     /** Crea y persiste varios opcionales para el producto, en el orden dado. */
     public List<Optional> optionals(Product product, String... names) {
         return Arrays.stream(names).map(n -> optional(product, n)).toList();
+    }
+
+    /** Crea y persiste los pagos vigentes del proveedor, uno por descripción. */
+    public VigentePayment vigentePayment(Long providerId, String... descriptions) {
+        VigentePayment model = VigentePayment.builder()
+                .nameList("Lista test")
+                .build();
+
+        for (String description : descriptions) {
+            model.getPayments().add(Payment.builder()
+                    .description(description)
+                    .application(Application.values()[0])
+                    .percentage(10d)
+                    .bonusPercentage(5d)
+                    .vigentePayment(model)
+                    .build());
+        }
+        return vigentesPaymentDataService.createVigentePayment(model, providerId);
     }
 }

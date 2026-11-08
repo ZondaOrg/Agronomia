@@ -1,4 +1,4 @@
-package com.agro.feature.cotizar.dto.request;
+package com.agro.feature.report.dto.request;
 
 import java.util.List;
 
