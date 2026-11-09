@@ -1,6 +1,7 @@
 package com.agro.feature.provider.persistence;
 
 import com.agro.feature.provider.domain.Provider;
+import com.agro.feature.provider.persistence.projections.SearchProviderProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,19 @@ public interface ProviderDAO extends JpaRepository<Provider, Long> {
             @Param("companyId") Long companyId,
             @Param("search") String search,
             Pageable pageable
+    );
+
+    @Query("""
+        SELECT new com.agro.feature.provider.persistence.projections.SearchProviderProjection(p.id, p.tradeName)
+        FROM Provider p
+        WHERE p.companyId = :companyId
+        AND (LOWER(p.tradeName) LIKE LOWER(CONCAT('%', :search, '%'))
+             OR LOWER(p.legalName) LIKE LOWER(CONCAT('%', :search, '%')))
+        ORDER BY p.tradeName ASC
+    """)
+    List<SearchProviderProjection> searchAllByCompanyId(
+            @Param("companyId") Long companyId,
+            @Param("search") String search
     );
 
     boolean existsByCuit_Cuit(String cuitCuit);
