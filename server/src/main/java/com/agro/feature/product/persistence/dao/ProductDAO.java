@@ -42,7 +42,8 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             SELECT new com.agro.feature.product.persistence.projections.SearchProductProjection(p.id, p.name.value)
             FROM Product p
             WHERE p.provider_id = :providerId
-                AND p.name.value LIKE CONCAT('%', :search, '%')
+                AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%'))
+            ORDER BY p.name.value ASC
             """)
     List<SearchProductProjection> searchAllByProvider(
             @Param("providerId") Long providerId,

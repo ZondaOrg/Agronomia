@@ -188,6 +188,26 @@ class ProductServiceImplTest {
         assertTrue(result.stream().noneMatch(p -> p.name().equals("Semilla Trigo")));
     }
 
+    @Test
+    void testLaBusquedaPorProveedorNoDistingueMayusculasDeMinusculas() {
+        addProducts("Semilla Soja", "semilla maiz", "Tractor Grande");
+
+        List<SearchProductProjection> result = service.searchByProvider(provider.getId(), "SEMILLA");
+
+        assertEquals(2, result.size());
+        assertTrue(result.stream().allMatch(p -> p.name().toLowerCase().contains("semilla")));
+    }
+
+    @Test
+    void testLaBusquedaPorProveedorDevuelveLosProductosOrdenadosPorNombre() {
+        addProducts("Semilla Soja", "Semilla Avena", "Semilla Maiz");
+
+        List<SearchProductProjection> result = service.searchByProvider(provider.getId(), "");
+
+        assertEquals(List.of("Semilla Avena", "Semilla Maiz", "Semilla Soja"),
+                result.stream().map(SearchProductProjection::name).toList());
+    }
+
     @AfterEach
     void tearDown() {
         resetService.resetAll();
