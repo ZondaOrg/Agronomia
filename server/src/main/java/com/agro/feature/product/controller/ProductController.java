@@ -17,6 +17,7 @@ import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 import com.agro.feature.product.dtos.table.response.ProductRowSimpleResponse;
 import com.agro.feature.product.dtos.table.type.TableProductByTypeMapper;
 import com.agro.feature.product.orchestrator.FindProductsWithProvider;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import com.agro.feature.product.services.OptionalService;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
@@ -71,6 +72,16 @@ public class ProductController {
     ) {
         Page<Product> pagesOfProducts = productService.getPageOfProducts(page, size, search, providerId);
         return ResponseEntity.ok(TableProductMapper.modelToDto(pagesOfProducts));
+    }
+
+    @GetMapping("/provider/{providerId}/search")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Buscar productos de un proveedor por un criterio de búsqueda")
+    public ResponseEntity<List<SearchProductProjection>> search(
+            @PathVariable Long providerId,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        return ResponseEntity.ok(productService.searchByProvider(providerId, search));
     }
 
     @PutMapping("/edit/{productId}")
