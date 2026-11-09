@@ -5,6 +5,7 @@ import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.persistence.dao.OptionalDAO;
 import com.agro.feature.product.persistence.dao.ProductDAO;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import com.agro.feature.product.services.ProductService;
 import com.agro.feature.productType.contract.ProductTypeDataService;
 import com.agro.feature.provider.contracts.ProviderDataService;
@@ -55,6 +56,11 @@ public class ProductServiceImpl implements ProductService {
         return dao.searchPagesOfProductsWith(search, idProvider, PageRequest.of(page, size));
     }
 
+
+    @Override
+    public List<SearchProductProjection> searchByProvider(Long providerId, String search) {
+        return dao.searchAllByProvider(providerId, search);
+    }
 
     @Override
     public Product findByIdWithinOptionals(Long id) {

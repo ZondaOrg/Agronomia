@@ -8,6 +8,7 @@ import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
 import com.agro.feature.product.domain.exceptions.SameProductNameException;
 import com.agro.feature.product.persistence.dao.ProductDAO;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
@@ -173,6 +174,18 @@ class ProductServiceImplTest {
                 "", new ArrayList<>(), toDelete);
 
         assertTrue(edited.getOptionals().isEmpty());
+    }
+
+    @Test
+    void testLaBusquedaPorProveedorDevuelveSoloLosProductosDeEseProveedor() {
+        Provider otherProvider = fixtures.provider(tenant.company().getId(), "Otro Proveedor", "30-22222222-2");
+        addProducts("Semilla Soja", "Semilla Maiz");
+        service.add(fixtures.product("Semilla Trigo", semillero.getId()), semillero.getId(), otherProvider.getId());
+
+        List<SearchProductProjection> result = service.searchByProvider(provider.getId(), "");
+
+        assertEquals(2, result.size());
+        assertTrue(result.stream().noneMatch(p -> p.name().equals("Semilla Trigo")));
     }
 
     @AfterEach

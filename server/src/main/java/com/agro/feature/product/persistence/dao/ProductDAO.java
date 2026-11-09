@@ -1,6 +1,7 @@
 package com.agro.feature.product.persistence.dao;
 
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,16 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             @Param("search") String search,
             @Param("idProvider") Long idProvider,
             PageRequest pageRequest);
+
+    @Query("""
+            SELECT new com.agro.feature.product.persistence.projections.SearchProductProjection(p.id, p.name.value)
+            FROM Product p
+            WHERE p.provider_id = :providerId
+                AND p.name.value LIKE CONCAT('%', :search, '%')
+            """)
+    List<SearchProductProjection> searchAllByProvider(
+            @Param("providerId") Long providerId,
+            @Param("search") String search);
 
     @Query(
             "SELECT p " +
