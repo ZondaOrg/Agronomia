@@ -6,6 +6,9 @@ import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.dtos.request.ProviderEditRequestDTO;
 import com.agro.feature.provider.dtos.request.ProviderRequestDTO;
 import com.agro.feature.provider.dtos.response.ProviderResponseDTO;
+import com.agro.feature.provider.persistence.projections.SearchProviderProjection;
+import com.agro.feature.provider.service.ProviderService;
+import com.agro.shared.annotations.role.VendedorOrOwnerEndpoint;
 import com.agro.shared.dtos.page.PageResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequestMapping(Api.PROVIDER)
@@ -23,8 +28,21 @@ public class ProviderControllerREST {
 
     private final ProviderDataService providerDataService;
 
-    public ProviderControllerREST(ProviderDataService providerDataService) {
+    private final ProviderService providerService;
+
+    public ProviderControllerREST(ProviderDataService providerDataService, ProviderService providerService) {
         this.providerDataService = providerDataService;
+        this.providerService = providerService;
+    }
+
+    @GetMapping("/search")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Buscar proveedores de la compañía por nombre comercial o razón social")
+    public ResponseEntity<List<SearchProviderProjection>> search(
+            @RequestAttribute("userId") Long userId,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        return ResponseEntity.ok(providerService.search(userId, search));
     }
 
     @GetMapping
