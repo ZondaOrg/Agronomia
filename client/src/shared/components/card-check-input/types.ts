@@ -15,12 +15,8 @@ export interface CardCheckOption {
 interface BaseCardCheckInputProps {
     options: CardCheckOption[];
     variant: CardCheckVariant;
-    /** Título del estado vacío cuando `options` no tiene elementos. */
-    emptyMessage?: string;
-    /** Texto secundario del estado vacío. */
-    emptyDescription?: ReactNode;
-    /** Ícono del estado vacío. Por defecto se usa `SearchX`. */
-    emptyIcon?: ReactNode;
+    /** Contenido del estado vacío cuando `options` no tiene elementos. */
+    emptyState?: ReactNode;
     error?: string | boolean;
     result?: string;
 }

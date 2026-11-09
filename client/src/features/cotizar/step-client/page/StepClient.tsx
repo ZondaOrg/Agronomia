@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { useLocation, useNavigate } from "react-router";
 import { FilterClient } from "../components/filter/FilterClient";
 import { FormClient } from "../components/form/FormClient";
 import { useGetClientsByTypeAndName } from "../hooks/use-get-clients-by-name-and-type";
@@ -7,9 +6,10 @@ import {
     Step,
     type FilterValues,
 } from "@/shared/components/step/components/step/Step";
-import { AddClientAction } from "../components/actions/AddClient";
 import type { Client } from "../types/client";
 import { useAutoSelectNewClient } from "../../hooks/use-auto-selected-new-client";
+import { AddEntityAction } from "../../components/action/AddEntityAction";
+import { useAddEntityNavigation } from "../hooks/use-direct-to-add-client";
 
 const EMPTY_CLIENTS: Client[] = [];
 
@@ -18,13 +18,12 @@ interface StepClientProps {
 }
 
 export const StepClient = ({ stepId }: StepClientProps) => {
-    const navigate = useNavigate();
-    const location = useLocation();
-
     useAutoSelectNewClient(stepId);
 
     const { data, loading, getClientsByTypeAndName, refresh } =
         useGetClientsByTypeAndName();
+
+    const handleAddClient = useAddEntityNavigation("nuevo-cliente");
 
     const searchClients = useCallback(
         ({ tipoCliente, datosClients }: FilterValues) =>
@@ -34,11 +33,6 @@ export const StepClient = ({ stepId }: StepClientProps) => {
             }),
         [getClientsByTypeAndName],
     );
-    const handleAddClient = useCallback(() => {
-        navigate("nuevo-cliente", {
-            state: { returnTo: location.pathname },
-        });
-    }, [navigate, location.pathname]);
 
     return (
         <Step
@@ -55,7 +49,13 @@ export const StepClient = ({ stepId }: StepClientProps) => {
             service={searchClients}
             onClear={refresh}
             actionsPosition="aside"
-            actions={<AddClientAction onClick={handleAddClient} />}
+            actions={
+                <AddEntityAction
+                    label="Añadir cliente"
+                    hint="Al crear el cliente, volvés a la cotización."
+                    onClick={handleAddClient}
+                />
+            }
         />
     );
 };

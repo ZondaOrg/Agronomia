@@ -6,6 +6,8 @@ import type { HydrationInputProps } from "@/shared/components/step/components/fo
 import type { PaymentPreview } from "../../types/step-preview";
 import { css } from "@styled-system/css";
 
+import { EmptyPaymentsState } from "../emptyState/EmptyPaymentsState";
+
 const adjustmentStyles = {
     Recargo: css({ color: "red.600", fontWeight: "semibold" }),
     Descuento: css({ color: "green.600", fontWeight: "semibold" }),
@@ -31,9 +33,7 @@ const paymentOption = (payment: PaymentPreview): CardCheckOption => {
                     <>
                         {" — "}
                         <strong
-                            className={
-                                adjustmentStyle(payment.application)
-                            }
+                            className={adjustmentStyle(payment.application)}
                         >
                             {payment.application}: {payment.percentage}%
                         </strong>
@@ -67,8 +67,8 @@ export const CardCheckPayment = ({
             onChange={(nextValues) => onChange(nextValues.join(","))}
             multiple
             variant="CardDetailed"
-            emptyMessage="No hay formas de pago disponibles"
             error={error}
+            emptyState={<EmptyPaymentsState />}
         />
     );
 };

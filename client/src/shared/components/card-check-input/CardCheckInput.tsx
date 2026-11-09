@@ -1,10 +1,8 @@
-import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import CardArticleDetailed from "./components/CardArticleDetailed";
 import CardDetailed from "./components/CardDetailed";
 import CardSimple from "./components/CardSimple";
 import { styles } from "./styles";
 import type { CardCheckInputProps, CardCheckOption } from "./types";
-import { SearchIcon } from "../icon/components/icons/Search";
 
 function CardOption({
     option,
@@ -52,15 +50,7 @@ function CardOption({
 }
 
 export default function CardCheckInput(props: CardCheckInputProps) {
-    const {
-        options,
-        variant,
-        emptyMessage = "No hay opciones disponibles",
-        emptyDescription,
-        emptyIcon = <SearchIcon />,
-        error,
-        result,
-    } = props;
+    const { options, variant, emptyState, error, result } = props;
 
     const optionsClassName =
         variant === "CardSimple" ? styles.simpleOptions : styles.options;
@@ -71,11 +61,7 @@ export default function CardCheckInput(props: CardCheckInputProps) {
     return (
         <div className={containerClassName}>
             {options.length === 0 ? (
-                <EmptyState
-                    icon={emptyIcon}
-                    title={emptyMessage}
-                    description={emptyDescription}
-                />
+                emptyState
             ) : (
                 <div className={optionsClassName}>
                     {options.map((option) => (
