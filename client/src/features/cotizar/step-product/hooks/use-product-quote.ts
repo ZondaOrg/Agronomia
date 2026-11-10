@@ -11,6 +11,7 @@ export const useProductQuote = (
     productId: string | undefined,
     quantity: number | null,
     freight: Freight | null,
+    optionalIds: number[],
 ) => {
     const quoteProduct = useQuoteProduct();
     const quoteTotal = useCalculateQuote();
@@ -37,12 +38,12 @@ export const useProductQuote = (
         calculate({
             productId: detail.id,
             quantity,
-            optionalIds: [],
+            optionalIds,
             includeFreight: freight === "INCLUDED",
         })
             .then(() => setCalcProductId(detail.id))
             .catch(() => undefined);
-    }, [detail, quantity, freight, calculate]);
+    }, [detail, quantity, freight, optionalIds, calculate]);
 
     return {
         detail,

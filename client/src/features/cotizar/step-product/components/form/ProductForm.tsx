@@ -2,6 +2,7 @@ import { Controller, useWatch, type Control } from "react-hook-form";
 import type { QuoteProduct } from "../../domain/quote-product";
 import { CurrencySelect } from "./CurrencySelect";
 import { FreightSelector } from "./FreightSelector";
+import { OptionalsSelector } from "./OptionalsSelector";
 import { ProductPriceFields } from "./ProductPriceFields";
 import { TotalPrice } from "./TotalPrice";
 import { formStyles } from "./styles";
@@ -50,6 +51,20 @@ export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
                     />
                 )}
             />
+            {detail && moneda && (
+                <Controller
+                    name="opcionales"
+                    control={control}
+                    render={({ field }) => (
+                        <OptionalsSelector
+                            optionals={detail.optionals}
+                            moneda={detail.money}
+                            selected={field.value}
+                            onToggle={field.onChange}
+                        />
+                    )}
+                />
+            )}
             {detail && <TotalPrice total={total} moneda={moneda} />}
         </div>
     );
