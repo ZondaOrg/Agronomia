@@ -29,7 +29,10 @@ export const CreateVigentPayment = ({ providerId }: Props) => {
 
         setTimeout(() => {
             if (returnTo) {
-                navigate(returnTo, { replace: true });
+                navigate(returnTo, {
+                    replace: true,
+                    state: location.state,
+                });
             } else {
                 navigate(-1);
             }
