@@ -6,6 +6,7 @@ import type {
     VigentesPayment,
 } from "@/features/get-vigentes-payments-by-provider/types/VigentesPayment";
 import { getUpdateVigentPaymentSections } from "./types/updateMultiFormSections";
+import { useLocation, useNavigate } from "react-router";
 
 type Props = {
     vigentId: number;
@@ -26,6 +27,26 @@ export const UpdateVigentPayment = ({
         onRefresh,
         handleCancelNotify,
     } = useUpdateVigentPayments();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleSuccessClose = () => {
+        const returnTo = location.state?.returnTo;
+
+        onRefresh();
+
+        setTimeout(() => {
+            if (returnTo) {
+                navigate(returnTo, {
+                    replace: true,
+                    state: location.state,
+                });
+            } else {
+                navigate(-1);
+            }
+        }, 300);
+    };
 
     const sections = getUpdateVigentPaymentSections(
         data,
@@ -57,9 +78,10 @@ export const UpdateVigentPayment = ({
             notify={notify}
             action={action}
             isCancel={isCancel}
-            isBack={false}
+            isBack={true}
             refresh={onRefresh}
             onCancel={handleCancelNotify}
+            onSuccess={handleSuccessClose}
         >
             <MultiForm
                 sections={sections}

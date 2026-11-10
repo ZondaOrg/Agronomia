@@ -18,6 +18,7 @@ import { validateStepSchema } from "@/shared/components/step/components/form/sch
 import { CardCheckPayment } from "../checks/CardCheckPayment";
 import { AdditionalInformation } from "./AdditionalInformation";
 import type { PaymentPreview } from "../../types/step-preview";
+import type { HydrationInputProps } from "@/shared/components/step/components/form/HydratationForm";
 import {
     stepPaymentSchema,
     type StepPaymentFormValues,
@@ -73,7 +74,6 @@ export const FormPayment = ({
     const onValuesChange = useCallback(
         (values: StepPaymentFormValues) => {
             const result = validateStepSchema(stepPaymentSchema, values);
-
             dispatch(setEstadoForm({ stepId, ...result }));
         },
         [dispatch, stepId],
@@ -105,13 +105,23 @@ export const FormPayment = ({
         [dispatch, stepId],
     );
 
+    const InputWrapper = useCallback(
+        (props: HydrationInputProps<PaymentPreview>) => (
+            <CardCheckPayment
+                {...props}
+                stepId={stepId}
+            />
+        ),
+        [stepId],
+    );
+
     return (
         <HydrationForm<PaymentPreview, StepPaymentFormValues>
             title="Formas de pago seleccionadas"
             subtitle="Elegí una forma de pago de la lista"
             items={items}
             loading={loading}
-            Input={CardCheckPayment}
+            Input={InputWrapper}
             fieldName={FIELD_NAME}
             defaultValues={{
                 payment: valorGuardado,
