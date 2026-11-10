@@ -69,14 +69,18 @@ interface ProviderDAO extends JpaRepository<Provider, Long>
 /*
 	PROPÓSITO: Describe los proveedores de la compañía cuyo tradeName o legalName contiene el criterio dado (sin distinguir mayúsculas), ordenados por tradeName.
 */
-List<Provider> searchAllByCompanyId(Long companyId, String search)
+List<SearchProviderProjection> searchAllByCompanyId(Long companyId, String search)
+
+Projection:
+persistence/projections:
+record SearchProviderProjection(Long id, String name)     // name = tradeName
 
 Service:
 /*
 	PROPÓSITO: Describe los proveedores de la compañía del usuario que coinciden con el criterio de búsqueda.
 	PRECONDICIÓN: Si el usuario no existe, se lanza excepción.
 */
-List<Provider> search(Long userId, String search)
+List<SearchProviderProjection> search(Long userId, String search)
 
 Controller:
 /*
@@ -84,14 +88,7 @@ Controller:
 */
 @GetMapping("/search")
 @VendedorOrOwnerEndpoint
-ResponseEntity<List<SearchProviderResponse>> search(@RequestAttribute Long userId, @RequestParam(defaultValue = "") String search)
-
-Dto:
-dtos/search/response:
-record SearchProviderResponse(Long id, String name)
-SearchProviderMapper:
-	SearchProviderResponse toResponse(Provider provider)     // name = tradeName
-	List<SearchProviderResponse> toResponses(List<Provider> providers)
+ResponseEntity<List<SearchProviderProjection>> search(@RequestAttribute Long userId, @RequestParam(defaultValue = "") String search)
 ```
 
 ## Feature `product`
@@ -120,14 +117,18 @@ interface ProductDAO extends JpaRepository<Product, Long>
 /*
 	PROPÓSITO: Describe los productos del proveedor cuyo nombre contiene el criterio dado (sin distinguir mayúsculas), ordenados por nombre.
 */
-List<Product> searchAllByProvider(Long providerId, String search)
+List<SearchProductProjection> searchAllByProvider(Long providerId, String search)
+
+Projection:
+persistence/projections:
+record SearchProductProjection(Long id, String name)     // name = p.name.value
 
 Service:
 /*
 	PROPÓSITO: Describe los productos del proveedor que coinciden con el criterio de búsqueda.
 	PRECONDICIÓN: Si el proveedor no existe, se lanza EntityNotFoundException.
 */
-List<Product> searchByProvider(Long providerId, String search)
+List<SearchProductProjection> searchByProvider(Long providerId, String search)
 
 /*
 	(Existente, se reutiliza)
@@ -143,7 +144,7 @@ Controller:
 */
 @GetMapping("/provider/{providerId}/search")
 @VendedorOrOwnerEndpoint
-ResponseEntity<List<SearchProductResponse>> search(@PathVariable Long providerId, @RequestParam(defaultValue = "") String search)
+ResponseEntity<List<SearchProductProjection>> search(@PathVariable Long providerId, @RequestParam(defaultValue = "") String search)
 
 /*
 	PROPÓSITO: Describe los datos del producto necesarios para cotizarlo.
@@ -154,12 +155,6 @@ ResponseEntity<List<SearchProductResponse>> search(@PathVariable Long providerId
 ResponseEntity<QuoteProductResponse> getForQuote(@PathVariable Long productId)
 
 Dto:
-dtos/search/response:
-record SearchProductResponse(Long id, String name)
-SearchProductMapper:
-	SearchProductResponse toResponse(Product product)
-	List<SearchProductResponse> toResponses(List<Product> products)
-
 dtos/quote/response:
 record QuoteProductResponse(Long id, String name, Money money, Double listPrice, IVA iva, Double freight, List<OptionalResponseDTO> optionals)
 QuoteProductMapper:
@@ -174,6 +169,8 @@ QuoteProductMapper:
 - La pertenencia del producto al proveedor no se valida en el cálculo: la garantiza la cadena de filtros del frontend (los productos se buscan por proveedor).
 - `searchByProvider` valida la existencia del proveedor con `ProviderDataService.existProvider`, igual que `ProductServiceImpl.add`.
 - `ProviderService.search` obtiene la compañía con `UserDataService`, igual que `getProviders`.
+- Las búsquedas de `provider` y `product` usan proyecciones con constructor expression (`SELECT new ...Projection(p.id, ...)`) para no cargar entidades ni sus relaciones `EAGER`. El record proyectado se devuelve tal cual desde el DAO hasta el controller.
+- Es una excepción acotada a estos dos endpoints: no llevan DTO de respuesta ni mapper propios, y el controller conoce un tipo de `persistence/`. El resto de las operaciones sigue la arquitectura general.
 - `QuoteProductResponse.optionals` reutiliza `OptionalResponseDTO(id, name, price)` de `feature/product/dtos` (misma feature). La moneda de los opcionales es la del producto. Sin opcionales se devuelve `[]`; los opcionales se cargan con `findByIdWithinOptionals`.
 - Agregar `Api.QUOTE = MAIN_NAME + V + "/quote"` en `core/api/Api`.
 
