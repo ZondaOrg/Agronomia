@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { useAppSelector } from "@/core/store/hooks";
 import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 import { PRODUCT } from "../components/filter/types/inputs";
+import { DEFAULT_UNIDADES } from "../components/form/product-schema";
 import { useProductSelection } from "./use-product-selection";
 import { useProductQuote } from "./use-product-quote";
 import { useProductFormSync } from "./use-product-form-sync";
 
 /**
  * Orquesta el formulario del paso Producto.
- * @param quantity Unidades vigentes (viven en el input del filter chain).
  */
-export const useStepProduct = (stepId: string, quantity: number | null) => {
+export const useStepProduct = (stepId: string) => {
+    const [quantity, setQuantity] = useState<number | null>(DEFAULT_UNIDADES);
     const productId = useAppSelector((s) =>
         selectFilterValue(s, stepId, PRODUCT),
     );
@@ -28,8 +30,10 @@ export const useStepProduct = (stepId: string, quantity: number | null) => {
         detail,
         moneda,
         freight,
+        quantity,
         total,
         loading,
+        onQuantityChange: setQuantity,
         onMonedaChange,
         onFreightChange,
     };

@@ -9,6 +9,8 @@ import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-c
 import { FilterProduct } from "./components/filter/FilterProduct";
 import { PRODUCT, PROVIDER } from "./components/filter/types/inputs";
 import { useSearchProviders } from "./hooks/use-search-providers";
+import { ProductForm } from "./components/form/ProductForm";
+import { useStepProduct } from "./hooks/use-step-product";
 import { useSearchProducts } from "./hooks/use-search-products";
 
 interface StepProductProps {
@@ -19,6 +21,7 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
     const dispatch = useAppDispatch();
     const providers = useSearchProviders();
     const products = useSearchProducts();
+    const product = useStepProduct(stepId);
     const providerId = useAppSelector((s) =>
         selectFilterValue(s, stepId, PROVIDER),
     );
@@ -66,9 +69,16 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
                 />
             }
             form={
-                <div>
-                    <h1>PRODUCTOS asdasdas</h1>
-                </div>
+                <ProductForm
+                    detail={product.detail}
+                    moneda={product.moneda}
+                    freight={product.freight}
+                    quantity={product.quantity}
+                    total={product.total}
+                    onMonedaChange={product.onMonedaChange}
+                    onFreightChange={product.onFreightChange}
+                    onQuantityChange={product.onQuantityChange}
+                />
             }
             service={handleSearch}
             onClear={handleClear}
