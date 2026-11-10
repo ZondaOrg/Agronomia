@@ -9,7 +9,7 @@ import type { HydrationInputProps } from "@/shared/components/step/components/fo
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { SearchIcon } from "@/shared/components/icon/components/icons/Search";
 import { AddEntityAction } from "@/features/cotizar/components/action/AddEntityAction";
-import { useAddEntityNavigation } from "../../hooks/use-direct-to-add-client";
+import { useAddEntityNavigation } from "../../../hooks/use-direct-to-add-client";
 
 export const CardCheckClient = ({
     items,

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import { Container } from "@/features/cotizar/components/Container";
 import { StepClient } from "@/features/cotizar/step-client/page/StepClient";
 import { StepPayment } from "@/features/cotizar/step-payment/pages/StepPayment";
@@ -31,6 +33,14 @@ export const CotizarPanel = () => {
         action,
         closeNotify,
     } = useCotizador(STEPS.length);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.stepId !== undefined) {
+            setCurrentStep(location.state.stepId);
+        }
+    }, [location.state?.stepId, setCurrentStep]);
 
     return (
         <NotifyHandler
