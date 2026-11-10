@@ -18,6 +18,7 @@ export interface StepManagerProps {
     currentStep: number;
     onStepChange: (step: number) => void;
     onNext: () => void;
+    nextDisabled?: boolean;
     onCancel?: () => void;
 }
 
@@ -28,6 +29,7 @@ export const StepManager = ({
     currentStep,
     onStepChange,
     onNext,
+    nextDisabled,
     onCancel,
 }: StepManagerProps) => {
     const indexes = useMemo(
@@ -66,6 +68,7 @@ export const StepManager = ({
                     hoverColor={token("colors.primaryColorHover")}
                     textColor="white"
                     onClick={onNext}
+                    disabled={nextDisabled}
                 >
                     {currentStep === steps.length - 1
                         ? "Vista previa"

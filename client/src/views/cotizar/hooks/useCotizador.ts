@@ -4,10 +4,7 @@ import {
     selectFormCompleto,
     selectFormValores,
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
-import {
-    mostrarFaltantes,
-    solicitarGuardado,
-} from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
+import { solicitarGuardado } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
 import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";
 
 const getStepId = (index: number) => String(index + 1);
@@ -36,10 +33,7 @@ export const useCotizador = (totalSteps: number) => {
     }, [valores, totalSteps]);
 
     const handleNext = useCallback(() => {
-        if (!formCompleto) {
-            dispatch(mostrarFaltantes(stepId));
-            return;
-        }
+        if (!formCompleto) return;
         pendingNext.current = true;
         dispatch(solicitarGuardado(stepId));
     }, [dispatch, formCompleto, stepId]);
@@ -62,6 +56,7 @@ export const useCotizador = (totalSteps: number) => {
         currentStep,
         setCurrentStep,
         handleNext,
+        nextDisabled: !formCompleto,
         handleCancel,
         isCancel,
         setIsCancel,
