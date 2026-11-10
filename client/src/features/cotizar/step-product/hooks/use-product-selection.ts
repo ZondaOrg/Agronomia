@@ -8,10 +8,6 @@ interface Selection {
     freight: Freight | null;
 }
 
-/**
- * Moneda y flete elegidos para el producto vigente.
- * Si el producto cambia, las selecciones se descartan por derivación.
- */
 export const useProductSelection = (productId: string | undefined) => {
     const [selection, setSelection] = useState<Selection>({
         productId: undefined,
