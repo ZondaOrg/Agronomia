@@ -2,6 +2,7 @@ import CardCheckInput from "@/shared/components/card-check-input/CardCheckInput"
 import type { CardCheckOption } from "@/shared/components/card-check-input/types";
 import type { Money } from "@/shared/domain/money/money";
 import type { Freight } from "../../domain/freight";
+import { formStyles } from "./styles";
 
 interface FreightSelectorProps {
     value: Freight | null;
@@ -36,18 +37,25 @@ export const FreightSelector = ({
     ];
 
     return (
-        <div
-            style={
-                disabled ? { pointerEvents: "none", opacity: 0.6 } : undefined
-            }
-            aria-disabled={disabled}
-        >
-            <CardCheckInput
-                variant="CardSimple"
-                options={options}
-                value={value}
-                onChange={(v) => onChange(v as Freight)}
-            />
-        </div>
+        <section className={formStyles.section}>
+            <p className={formStyles.sectionTitle}>Flete</p>
+            <hr className={formStyles.sectionDivider} />
+            <span className={formStyles.label}>Condición flete</span>
+            <div
+                style={
+                    disabled
+                        ? { pointerEvents: "none", opacity: 0.6 }
+                        : undefined
+                }
+                aria-disabled={disabled}
+            >
+                <CardCheckInput
+                    variant="CardSimple"
+                    options={options}
+                    value={value}
+                    onChange={(v) => onChange(v as Freight)}
+                />
+            </div>
+        </section>
     );
 };

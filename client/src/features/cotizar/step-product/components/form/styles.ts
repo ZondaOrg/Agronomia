@@ -8,6 +8,22 @@ export const formStyles = {
         gap: "4",
         width: "100%",
     }),
+    section: css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "4",
+        width: "100%",
+        marginTop: "6",
+    }),
+    sectionTitle: css({
+        fontWeight: "400",
+        fontSize: "22px",
+        color: token("colors.textSubtle"),
+    }),
+    sectionDivider: css({
+        width: "100%",
+        borderColor: token("borders.borderColor.line"),
+    }),
     row: css({
         display: "grid",
         gridTemplateColumns: { base: "1fr", md: "1fr 1fr" },
