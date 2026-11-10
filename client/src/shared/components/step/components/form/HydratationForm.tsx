@@ -24,12 +24,15 @@ export interface HydrationInputProps<TItem> {
     error?: boolean;
 }
 export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
-    items: TItem[];
+    items?: TItem[];
     loading: boolean;
     title?: string;
     subtitle?: string;
-    Input: React.ComponentType<HydrationInputProps<TItem>>;
-    fieldName: Path<TFormValues>;
+    /** Input de un solo campo (`fieldName`). Se ignora si se pasan `children`. */
+    Input?: React.ComponentType<HydrationInputProps<TItem>>;
+    fieldName?: Path<TFormValues>;
+    /** Contenido propio para formularios de varios campos (usar con `form`). */
+    children?: React.ReactNode;
     defaultValues?: DefaultValues<TFormValues>;
     form?: UseFormReturn<TFormValues>;
     error?: boolean;
@@ -42,9 +45,10 @@ export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
 export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     title,
     subtitle,
-    items,
+    items = [],
     loading,
     Input,
+    children,
     error,
     fieldName,
     defaultValues,
@@ -59,11 +63,14 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     });
     const { control, getValues } = externalForm ?? ownForm;
 
-    const fieldValue = useWatch({ control, name: fieldName }) as string | null;
+    const watched = useWatch({ control }) as TFormValues;
+    const fieldValue = fieldName
+        ? ((watched[fieldName] as string | null | undefined) ?? null)
+        : null;
 
     useEffect(() => {
-        onValueChange?.(fieldValue);
-    }, [fieldValue, onValueChange]);
+        if (fieldName) onValueChange?.(fieldValue);
+    }, [fieldName, fieldValue, onValueChange]);
 
     const lastSave = useRef(saveNonce);
     useEffect(() => {
@@ -81,7 +88,11 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
                     <div className={loadingBox}>
                         <Spinner centered />
                     </div>
+                ) : children ? (
+                    children
                 ) : (
+                    fieldName &&
+                    Input && (
                     <Controller
                         name={fieldName}
                         control={control}
@@ -94,6 +105,7 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
                             />
                         )}
                     />
+                    )
                 )}
             </div>
         </form>
