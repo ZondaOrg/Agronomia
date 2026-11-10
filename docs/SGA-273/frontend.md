@@ -171,8 +171,13 @@ FilterProduct(props: FilterProductProps)
 interface ProductPriceFieldsProps {
 	listPrice: number
 	iva: Iva
+	moneda: keyof Money   // moneda elegida; se muestra a la derecha del precio neto (ARS / USD)
 }
-ProductPriceFields({ listPrice, iva }: ProductPriceFieldsProps)
+/*
+	PROPÓSITO: Inputs de solo lectura de precio neto e IVA.
+		- A la derecha del valor del precio neto se muestra la moneda (`moneda`), dentro del input.
+*/
+ProductPriceFields({ listPrice, iva, moneda }: ProductPriceFieldsProps)
 
 interface CurrencySelectProps {
 	value: keyof Money | null   // null = sin moneda seleccionada
@@ -224,8 +229,13 @@ OptionalsSelector({ optionals, selected, onToggle }: OptionalsSelectorProps)
 
 interface TotalPriceProps {
 	total: number | null
+	moneda: keyof Money | null   // null = sin moneda elegida: no se muestra la moneda
 }
-TotalPrice({ total }: TotalPriceProps)
+/*
+	PROPÓSITO: Contenedor del monto total de la cotización.
+		- A la derecha del monto se muestra la moneda (`moneda`) cuando hay una elegida y el total no es null.
+*/
+TotalPrice({ total, moneda }: TotalPriceProps)
 
 View (views/cotizar):
 /*

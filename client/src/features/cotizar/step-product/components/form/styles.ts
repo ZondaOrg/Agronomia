@@ -40,6 +40,19 @@ export const formStyles = {
         },
         _disabled: { cursor: "not-allowed", opacity: 0.6 },
     }),
+    controlWithCurrency: css({
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+    }),
+    currencySuffix: css({
+        position: "absolute",
+        right: "3",
+        color: token("colors.textSubtle"),
+        fontSize: "sm",
+        fontWeight: "medium",
+        pointerEvents: "none",
+    }),
     controlReadOnly: css({
         width: "100%",
         minHeight: "10",
@@ -56,7 +69,6 @@ export const formStyles = {
     total: css({
         display: "flex",
         flexDirection: "column",
-        gap: "1",
         padding: "4",
         borderRadius: "md",
         backgroundColor: "white",
@@ -64,13 +76,22 @@ export const formStyles = {
         borderColor: "gray.200",
     }),
     totalLabel: css({
-        color: "gray.500",
-        fontSize: "sm",
+        color: token("colors.primaryColor"),
         fontWeight: "medium",
     }),
+    totalValueRow: css({
+        display: "flex",
+        alignItems: "baseline",
+        gap: "2",
+    }),
     totalValue: css({
-        color: "gray.900",
-        fontSize: "2xl",
+        color: token("colors.textSubtle"),
+        fontSize: "32px",
+        fontWeight: "bold",
+    }),
+    totalCurrency: css({
+        color: token("colors.textSubtle"),
+        fontSize: "32px",
         fontWeight: "bold",
     }),
 };

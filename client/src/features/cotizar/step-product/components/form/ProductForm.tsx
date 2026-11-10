@@ -34,6 +34,7 @@ export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
                 <ProductPriceFields
                     listPrice={detail.listPrice}
                     iva={detail.iva}
+                    moneda={moneda}
                 />
             )}
             <Controller
@@ -47,7 +48,7 @@ export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
                     />
                 )}
             />
-            {detail && <TotalPrice total={total} />}
+            {detail && <TotalPrice total={total} moneda={moneda} />}
         </div>
     );
 };
