@@ -9,7 +9,7 @@ import {
 import type { Client } from "../types/client";
 import { useAutoSelectNewClient } from "../../hooks/use-auto-selected-new-client";
 import { AddEntityAction } from "../../components/action/AddEntityAction";
-import { useAddEntityNavigation } from "../hooks/use-direct-to-add-client";
+import { useAddEntityNavigation } from "../../hooks/use-direct-to-add-client";
 
 const EMPTY_CLIENTS: Client[] = [];
 
