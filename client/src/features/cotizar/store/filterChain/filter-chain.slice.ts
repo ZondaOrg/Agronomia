@@ -54,8 +54,19 @@ const filterChainSlice = createSlice({
 
             step.completo = isStepComplete(step);
         },
+        /**
+         * PROPÓSITO: Limpia los valores de todos los filtros del paso dado.
+         * PRECONDICIÓN: El paso debe estar inicializado.
+         */
+        clearStep: (state, action: PayloadAction<string>) => {
+            const step = state.steps[action.payload];
+            if (!step) return;
+
+            step.values = {};
+            step.completo = isStepComplete(step);
+        },
     },
 });
 
-export const { initStep, setFilterValue } = filterChainSlice.actions;
+export const { initStep, setFilterValue, clearStep } = filterChainSlice.actions;
 export const filterChainReducer = filterChainSlice.reducer;
