@@ -1,4 +1,5 @@
 import type { FilterFieldConfig } from "../types/filter-chain";
+import AutocompleteInput from "./AutocompleteInput";
 import { filterFieldStyles } from "./styles";
 
 interface Props {
@@ -52,6 +53,15 @@ export default function FilterField({
                         </option>
                     ))}
                 </select>
+            ) : filter.variant === "autocomplete" ? (
+                <AutocompleteInput
+                    options={filter.options}
+                    onSearch={filter.onSearch}
+                    value={value}
+                    enabled={enabled}
+                    onChange={onChange}
+                    style={controlStyle}
+                />
             ) : (
                 <input
                     className={filterFieldStyles.control}
