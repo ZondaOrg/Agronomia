@@ -113,7 +113,9 @@ useCalculateQuote()   -> { loading, calculate(selection) }
 		  (includeFreight = freight === "INCLUDED") y guarda el total en el store.
 		- Con cantidad vacía, 0, negativa o fraccionaria no llama al backend y conserva el último total.
 		- Al cambiar proveedor o producto, descarta el estado local (detalle, flete, cantidad, opcionales) y el total, y limpia el paso Formas de pago.
-		- Informa el estado del form (`setEstadoForm`) y, al recibir la señal de guardado (`guardadoNonce`), persiste `{ producto, total }` con `guardarValores`.
+		- Informa el estado del form con `setEstadoForm`: `formCompleto` es true solo si hay producto confirmado, flete elegido y cantidad entera mayor que cero
+		  (el flete y la cantidad son estado local, por eso el hook es quien calcula la completitud para el store).
+		- Al recibir la señal de guardado (`guardadoNonce`), persiste `{ producto, total }` con `guardarValores`.
 	PRECONDICIÓN: El paso Cliente debe estar completo.
 */
 useStepProduct(stepId: string)
@@ -146,7 +148,7 @@ hidratationForm:
 	Acciones reutilizadas: initForm, setEstadoForm, solicitarGuardado, guardarValores, clearForm.
 	/*
 		PROPÓSITO: Describe si el paso permite avanzar: form completo, flete elegido y cantidad entera mayor que cero.
-		(Se deriva de selectFormCompleto + estado local; alimenta `nextDisabled`.)
+		(`useStepProduct` lo calcula con el estado local y lo guarda con `setEstadoForm`; `useCotizador` lo lee con `selectFormCompleto` y deriva `nextDisabled`.)
 	*/
 
 Pages:
@@ -199,9 +201,11 @@ View (views/cotizar):
 /*
 	PROPÓSITO: En el paso Producto, Anterior abre la modal de regreso (hoy `handleCancel` retrocede directo salvo en el paso 0). Al confirmar,
 		limpia el paso Producto (`clearStep("2")` y `clearForm("2")`) y vuelve a Cliente; al cancelar, cierra la modal y conserva los datos.
-		Siguiente se deshabilita con `nextDisabled` y no usa `mostrarFaltantes` en este paso.
+		Expone `nextDisabled = !formCompleto` del paso actual (`selectFormCompleto`), que `CotizarPanel` pasa a `StepManager`.
+		En el paso Producto Siguiente no usa `mostrarFaltantes` ni estados de error por falta de selección.
 */
 useCotizador(totalSteps: number)
+	-> { ..., nextDisabled: boolean }
 /*
 	PROPÓSITO: Limpia todos los datos de la cotización al desmontar el panel (abandono), con `clearStep` y `clearForm` de cada paso.
 */
@@ -212,6 +216,11 @@ Shared (cambios):
 	PROPÓSITO: Variante "autocomplete" de FilterFieldConfig/FilterField. Al escribir invoca onSearch con el texto.
 		Clic en una opción la confirma. Enter o blur confirman solo si el texto coincide de forma exacta y única con una opción; en otro caso no se confirma ni se muestra error.
 	PRECONDICIÓN: Si el campo está deshabilitado, no permite buscar ni seleccionar.
+	Cambios requeridos:
+		- `filter-chain.ts`: agregar `AutocompleteFilterFieldConfig` a la unión `FilterFieldConfig`.
+		- `FilterField.tsx`: hoy solo renderiza `<select>` o `<input type="text">`. Agregar la rama "autocomplete": input con lista de opciones,
+		  `onSearch` al escribir, y confirmación por clic, Enter o blur. El valor que informa `onChange` es el `value` (id) de la opción, o `null` si no hay coincidencia.
+		- `FilterChain.tsx` no cambia (sigue siendo controlado por `filters`, `values`, `enabled` y `onChange`).
 */
 interface AutocompleteFilterFieldConfig extends BaseFilterFieldConfig {
 	variant: "autocomplete"
@@ -220,9 +229,17 @@ interface AutocompleteFilterFieldConfig extends BaseFilterFieldConfig {
 }
 
 /*
-	PROPÓSITO: Deshabilita el botón Siguiente.
+	PROPÓSITO: Deshabilita el botón Siguiente cuando es true.
+	Cambios requeridos: pasar `disabled={nextDisabled}` al `Button` de Siguiente (el `Button` ya reenvía `disabled` al `<button>`).
 */
 StepManager({ ..., nextDisabled?: boolean })
+
+/*
+	PROPÓSITO: Muestra el botón deshabilitado de forma distinguible y sin efecto hover.
+	Cambios requeridos: agregar `_disabled` (color apagado, cursor not-allowed, sin hover) en `button/button.styles`,
+	porque hoy el `Button` genérico deshabilitado se ve igual que uno activo.
+*/
+Button({ ..., disabled?: boolean })
 ```
 
 ## Desing
@@ -234,11 +251,11 @@ StepManager({ ..., nextDisabled?: boolean })
 - Sin condición de flete elegida se calcula con `includeFreight: false`.
 - `freight = 0` se muestra como campo vacío de solo lectura.
 - La sección Opcionales (`OptionalsSelector`) se oculta cuando `optionals` está vacía.
-- `nextDisabled` = form incompleto, flete sin elegir o cantidad inválida; no se usan estados de error por falta de selección.
+- `nextDisabled` = `!formCompleto` del paso. `useStepProduct` calcula la completitud (producto confirmado, flete elegido y cantidad entera mayor que cero) y la guarda con `setEstadoForm`; `useCotizador` la lee del store. No se usan estados de error por falta de selección.
 - Al cambiar producto o proveedor se limpian también los datos del paso Formas de pago.
 
 ## Shared
-- components: `FilterChain`/`FilterField` (nueva variante autocomplete), `StepManager` (nuevo prop `nextDisabled`), `Step`, `NotifyHandler`/`ConfirmModal` (modal de regreso; reutilizar la advertencia existente de `CotizarPanel` si encaja), `CardCheckInput` (opciones de flete), `DataField` (precio, IVA y flete de solo lectura)
+- components: `FilterChain`/`FilterField` (nueva variante autocomplete; cambia `FilterField` y el tipo, no `FilterChain`), `StepManager` (nuevo prop `nextDisabled`), `Button` (estilo `_disabled`), `Step` (sin cambios), `NotifyHandler`/`ConfirmModal` (modal de regreso; reutilizar la advertencia existente de `CotizarPanel` si encaja), `CardCheckInput` (opciones de flete), `DataField` (precio, IVA y flete de solo lectura)
 - domain: `Money`, `Iva`
 - hooks: `useFetch`
 - store de la feature: `filterChain` (nueva acción `clearStep`), `hidratationForm`; `validateStepSchema` y el patrón de `FormClient`
