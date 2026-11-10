@@ -44,6 +44,8 @@ export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
                     <FreightSelector
                         value={field.value}
                         disabled={!detail}
+                        freightPrice={detail?.freight}
+                        moneda={moneda}
                         onChange={field.onChange}
                     />
                 )}
