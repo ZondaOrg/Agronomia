@@ -5,7 +5,6 @@ import {
 import type { HydrationInputProps } from "@/shared/components/step/components/form/HydratationForm";
 import type { PaymentPreview } from "../../types/step-preview";
 import { css } from "@styled-system/css";
-
 import { EmptyPaymentsState } from "../emptyState/EmptyPaymentsState";
 
 const adjustmentStyles = {
@@ -19,7 +18,6 @@ const adjustmentStyle = (application: string) => {
     if (application === "Recargo" || application === "Descuento") {
         return adjustmentStyles[application];
     }
-
     return undefined;
 };
 
@@ -57,7 +55,8 @@ export const CardCheckPayment = ({
     value,
     onChange,
     error,
-}: HydrationInputProps<PaymentPreview>) => {
+    stepId,
+}: HydrationInputProps<PaymentPreview> & { stepId: string }) => {
     const selectedValues = value ? value.split(",") : [];
 
     return (
@@ -68,7 +67,7 @@ export const CardCheckPayment = ({
             multiple
             variant="CardDetailed"
             error={error}
-            emptyState={<EmptyPaymentsState />}
+            emptyState={<EmptyPaymentsState stepId={stepId} />}
         />
     );
 };

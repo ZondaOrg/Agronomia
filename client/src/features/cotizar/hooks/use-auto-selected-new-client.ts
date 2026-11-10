@@ -13,15 +13,13 @@ export const useAutoSelectNewClient = (stepId: string = "1") => {
 
     const valores = useAppSelector((s) => selectFormValores(s, stepId));
 
-    // Ref para bloquear el bucle infinito
     const procesado = useRef(false);
 
     useEffect(() => {
         const state = location.state as { newClient?: Client } | null;
 
-        // Si hay cliente nuevo y TODAVÍA NO lo procesamos
         if (state?.newClient && !procesado.current) {
-            procesado.current = true; // Bloqueamos futuras ejecuciones instantáneamente
+            procesado.current = true;
 
             const client = state.newClient;
             const clientName =
@@ -29,7 +27,6 @@ export const useAutoSelectNewClient = (stepId: string = "1") => {
                     ? client.razonSocial
                     : `${client.name} ${client.surname}`;
 
-            // 1. Rellenamos los filtros
             dispatch(
                 setFilterValue({
                     stepId,
@@ -45,7 +42,6 @@ export const useAutoSelectNewClient = (stepId: string = "1") => {
                 }),
             );
 
-            // 2. Tildamos el cliente
             dispatch(
                 guardarValores({
                     stepId,
@@ -56,7 +52,6 @@ export const useAutoSelectNewClient = (stepId: string = "1") => {
                 }),
             );
 
-            // 3. Limpiamos la ruta
             const newState = { ...location.state };
             delete (newState as any).newClient;
             delete (newState as any).returnTo;
