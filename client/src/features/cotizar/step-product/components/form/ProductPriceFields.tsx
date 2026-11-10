@@ -19,7 +19,7 @@ export const ProductPriceFields = ({
         <label className={formStyles.field}>
             <span className={formStyles.label}>Precio neto</span>
             <input
-                className={formStyles.control}
+                className={formStyles.controlReadOnly}
                 readOnly
                 value={listPrice.toLocaleString("es-AR")}
             />
@@ -27,7 +27,7 @@ export const ProductPriceFields = ({
         <label className={formStyles.field}>
             <span className={formStyles.label}>IVA</span>
             <input
-                className={formStyles.control}
+                className={formStyles.controlReadOnly}
                 readOnly
                 value={IVA_LABEL[iva]}
             />

@@ -178,6 +178,11 @@ interface CurrencySelectProps {
 	value: keyof Money | null   // null = sin moneda seleccionada
 	onChange: (value: keyof Money | null) => void
 }
+/*
+	PROPÓSITO: Select de la moneda del paso Producto.
+		- Estilo: el texto del select usa color negro (`black`), ya que es un campo editable.
+		- Los inputs de solo lectura (ProductPriceFields y similares) mantienen `textSubtle` (`token("colors.textSubtle")`).
+*/
 CurrencySelect({ value, onChange }: CurrencySelectProps)
 
 interface ProductFormProps {

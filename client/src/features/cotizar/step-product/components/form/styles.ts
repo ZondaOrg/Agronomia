@@ -1,4 +1,5 @@
 import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 export const formStyles = {
     form: css({
@@ -30,7 +31,7 @@ export const formStyles = {
         borderColor: "gray.300",
         borderRadius: "sm",
         backgroundColor: "white",
-        color: "gray.800",
+        color: "black",
         fontSize: "sm",
         outline: "none",
         _focus: {
@@ -38,7 +39,19 @@ export const formStyles = {
             boxShadow: "0 0 0 1px var(--colors-blue-500)",
         },
         _disabled: { cursor: "not-allowed", opacity: 0.6 },
-        _readOnly: { backgroundColor: "gray.50", cursor: "default" },
+    }),
+    controlReadOnly: css({
+        width: "100%",
+        minHeight: "10",
+        paddingInline: "3",
+        border: "1px solid",
+        borderColor: "gray.300",
+        borderRadius: "sm",
+        backgroundColor: "gray.50",
+        color: token("colors.textSubtle"),
+        fontSize: "sm",
+        outline: "none",
+        cursor: "default",
     }),
     total: css({
         display: "flex",
