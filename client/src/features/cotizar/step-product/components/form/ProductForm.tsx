@@ -1,5 +1,6 @@
 import { Controller, useWatch, type Control } from "react-hook-form";
 import type { QuoteProduct } from "../../domain/quote-product";
+import { CurrencyReadOnly } from "./CurrencyReadOnly";
 import { CurrencySelect } from "./CurrencySelect";
 import { FreightSelector } from "./FreightSelector";
 import { OptionalsSelector } from "./OptionalsSelector";
@@ -15,22 +16,27 @@ interface ProductFormProps {
 }
 
 export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
-    const moneda = useWatch({ control, name: "moneda" });
+    const selectedMoneda = useWatch({ control, name: "moneda" });
+    const isArs = detail?.money === "ARS";
+    const moneda = isArs ? "ARS" : selectedMoneda;
 
     return (
         <div className={formStyles.form}>
-            {detail && (
-                <Controller
-                    name="moneda"
-                    control={control}
-                    render={({ field }) => (
-                        <CurrencySelect
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
-            )}
+            {detail &&
+                (isArs ? (
+                    <CurrencyReadOnly />
+                ) : (
+                    <Controller
+                        name="moneda"
+                        control={control}
+                        render={({ field }) => (
+                            <CurrencySelect
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                ))}
             {detail && moneda && (
                 <ProductPriceFields
                     listPrice={detail.listPrice}
