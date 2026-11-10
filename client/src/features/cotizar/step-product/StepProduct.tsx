@@ -9,7 +9,9 @@ import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-c
 import { FilterProduct } from "./components/filter/FilterProduct";
 import { PRODUCT, PROVIDER } from "./components/filter/types/inputs";
 import { useSearchProviders } from "./hooks/use-search-providers";
-import { ProductForm } from "./components/form/ProductForm";
+import { Controller } from "react-hook-form";
+import { resetForm } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
+import { FormProduct } from "./components/form/FormProduct";
 import { QuantityInput } from "./components/form/QuantityInput";
 import { useStepProduct } from "./hooks/use-step-product";
 import { useSearchProducts } from "./hooks/use-search-products";
@@ -54,9 +56,10 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
         // TODO: Implementar la lógica de búsqueda o llamada al servicio
     }, []);
 
-    const handleClear = useCallback(() => {
-        // TODO: Implementar la lógica para limpiar o resetear datos
-    }, []);
+    const handleClear = useCallback(
+        () => dispatch(resetForm(stepId)),
+        [dispatch, stepId],
+    );
 
     return (
         <Step
@@ -73,13 +76,11 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
                 />
             }
             form={
-                <ProductForm
+                <FormProduct
+                    stepId={stepId}
+                    form={product.form}
                     detail={product.detail}
-                    moneda={product.moneda}
-                    freight={product.freight}
                     total={product.total}
-                    onMonedaChange={product.onMonedaChange}
-                    onFreightChange={product.onFreightChange}
                 />
             }
             service={handleSearch}
@@ -87,9 +88,15 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
             actionsPosition="aside"
             actions={
                 productId ? (
-                    <QuantityInput
-                        value={product.quantity}
-                        onChange={product.onQuantityChange}
+                    <Controller
+                        name="unidades"
+                        control={product.form.control}
+                        render={({ field }) => (
+                            <QuantityInput
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
                     />
                 ) : undefined
             }
