@@ -32,6 +32,19 @@ export const filterFieldStyles = {
             opacity: 0.6,
         },
     }),
+    row: css({
+        display: "flex",
+        alignItems: "flex-start",
+        gap: "3",
+        width: "100%",
+        "& > :first-child": {
+            flex: "1",
+            minWidth: "0",
+        },
+        "& > :last-child:not(:first-child)": {
+            flexShrink: "0",
+        },
+    }),
     autocomplete: css({
         position: "relative",
         width: "100%",

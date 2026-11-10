@@ -2,6 +2,7 @@ interface BaseFilterFieldConfig {
     id: string;
     label: string;
     required: boolean;
+    trailing?: React.ReactNode;
 }
 
 export interface SelectFilterFieldConfig extends BaseFilterFieldConfig {
