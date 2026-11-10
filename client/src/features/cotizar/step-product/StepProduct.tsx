@@ -10,6 +10,7 @@ import { FilterProduct } from "./components/filter/FilterProduct";
 import { PRODUCT, PROVIDER } from "./components/filter/types/inputs";
 import { useSearchProviders } from "./hooks/use-search-providers";
 import { ProductForm } from "./components/form/ProductForm";
+import { QuantityInput } from "./components/form/QuantityInput";
 import { useStepProduct } from "./hooks/use-step-product";
 import { useSearchProducts } from "./hooks/use-search-products";
 
@@ -24,6 +25,9 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
     const product = useStepProduct(stepId);
     const providerId = useAppSelector((s) =>
         selectFilterValue(s, stepId, PROVIDER),
+    );
+    const productId = useAppSelector((s) =>
+        selectFilterValue(s, stepId, PRODUCT),
     );
 
     const searchProducts = products.search;
@@ -73,17 +77,22 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
                     detail={product.detail}
                     moneda={product.moneda}
                     freight={product.freight}
-                    quantity={product.quantity}
                     total={product.total}
                     onMonedaChange={product.onMonedaChange}
                     onFreightChange={product.onFreightChange}
-                    onQuantityChange={product.onQuantityChange}
                 />
             }
             service={handleSearch}
             onClear={handleClear}
             actionsPosition="aside"
-            // actions={<TuAccionAdicional />} // Opcional
+            actions={
+                productId ? (
+                    <QuantityInput
+                        value={product.quantity}
+                        onChange={product.onQuantityChange}
+                    />
+                ) : undefined
+            }
         />
     );
 };
