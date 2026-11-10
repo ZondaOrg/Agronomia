@@ -34,6 +34,14 @@ export const OptionalsSelector = ({
         <section className={formStyles.section}>
             <p className={formStyles.sectionTitle}>Opcionales</p>
             <hr className={formStyles.sectionDivider} />
+            <div className={formStyles.field}>
+                <p className={formStyles.optionalsTitle}>
+                    Este producto cuenta con opcionales
+                </p>
+                <p className={formStyles.optionalsHint}>
+                    Los opcionales sumados se agregan al precio de lista
+                </p>
+            </div>
             <CardCheckInput
                 variant="CardSimple"
                 multiple
