@@ -2,6 +2,7 @@ interface BaseFilterFieldConfig {
     id: string;
     label: string;
     required: boolean;
+    trailing?: React.ReactNode;
 }
 
 export interface SelectFilterFieldConfig extends BaseFilterFieldConfig {
@@ -13,6 +14,13 @@ export interface TextFilterFieldConfig extends BaseFilterFieldConfig {
     variant: "text";
 }
 
+export interface AutocompleteFilterFieldConfig extends BaseFilterFieldConfig {
+    variant: "autocomplete";
+    options: { value: string; label: string }[];
+    onSearch: (text: string) => void;
+}
+
 export type FilterFieldConfig =
     | SelectFilterFieldConfig
-    | TextFilterFieldConfig;
+    | TextFilterFieldConfig
+    | AutocompleteFilterFieldConfig;

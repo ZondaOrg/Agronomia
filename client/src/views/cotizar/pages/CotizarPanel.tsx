@@ -25,6 +25,7 @@ export const CotizarPanel = () => {
         currentStep,
         setCurrentStep,
         handleNext,
+        nextDisabled,
         handleCancel,
         isCancel,
         setIsCancel,
@@ -48,6 +49,7 @@ export const CotizarPanel = () => {
                 currentStep={currentStep}
                 onStepChange={setCurrentStep}
                 onNext={handleNext}
+                nextDisabled={nextDisabled}
                 onCancel={handleCancel}
             />
         </NotifyHandler>

@@ -8,9 +8,8 @@ export type CardCheckVariant =
 export interface CardCheckOption {
     value: string;
     label: string;
-    description?: string;
-    content?: ReactNode;
-}
+    description?: ReactNode;
+    content?: ReactNode;}
 
 interface BaseCardCheckInputProps {
     options: CardCheckOption[];

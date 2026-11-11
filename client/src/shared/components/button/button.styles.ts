@@ -22,6 +22,12 @@ export const buttonShape = css.raw({
         bg: "var(--button-bg-hover)",
         color: "var(--button-color-hover, var(--button-color, #FFF))",
     },
+    _disabled: {
+        opacity: 0.5,
+        cursor: "not-allowed",
+        bg: "var(--button-bg)",
+        color: "var(--button-color, #FFF)",
+    },
 });
 
 export const fullWidth = css.raw({
