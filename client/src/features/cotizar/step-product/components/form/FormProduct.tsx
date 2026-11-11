@@ -11,7 +11,7 @@ import {
 import { selectGuardadoNonce } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import type { QuoteProduct } from "../../domain/quote-product";
 import type { StepProductValues } from "../../domain/step-product-values";
-import { ProductForm } from "./ProductForm";
+import { ProductForm } from "./product-form/ProductForm";
 import { stepProductSchema, type StepProductFormValues } from "./product-schema";
 
 interface FormProductProps {
