@@ -171,8 +171,40 @@ FilterProduct(props: FilterProductProps)
 interface ProductPriceFieldsProps {
 	listPrice: number
 	iva: Iva
+	moneda: keyof Money   // moneda elegida; se muestra a la derecha del precio neto (ARS / USD)
 }
-ProductPriceFields({ listPrice, iva }: ProductPriceFieldsProps)
+/*
+	PROPÓSITO: Inputs de solo lectura de precio neto e IVA.
+		- A la derecha del valor del precio neto se muestra la moneda (`moneda`), dentro del input.
+*/
+ProductPriceFields({ listPrice, iva, moneda }: ProductPriceFieldsProps)
+
+interface CurrencySelectProps {
+	value: keyof Money | null   // null = sin moneda seleccionada
+	onChange: (value: keyof Money | null) => void
+}
+/*
+	PROPÓSITO: Select de la moneda del paso Producto.
+		- Estilo: el texto del select usa color negro (`black`), ya que es un campo editable.
+		- Los inputs de solo lectura (ProductPriceFields y similares) mantienen `textSubtle` (`token("colors.textSubtle")`).
+*/
+CurrencySelect({ value, onChange }: CurrencySelectProps)
+
+interface ProductFormProps {
+	detail: QuoteProduct | undefined   // undefined = producto aún no confirmado
+	moneda: keyof Money | null
+	freight: Freight | null
+	quantity: number | null
+	total: number | null
+	onMonedaChange / onFreightChange / onQuantityChange
+}
+/*
+	PROPÓSITO: Compone el formulario del paso.
+		- Sin producto: solo QuantityInput y FreightSelector (deshabilitados).
+		- Con producto: agrega CurrencySelect y TotalPrice.
+		- Con moneda elegida: agrega ProductPriceFields (precio neto e IVA de solo lectura).
+*/
+ProductForm(props: ProductFormProps)
 
 interface CurrencySelectProps {
 	value: keyof Money | null   // null = sin moneda seleccionada
@@ -219,8 +251,13 @@ OptionalsSelector({ optionals, selected, onToggle }: OptionalsSelectorProps)
 
 interface TotalPriceProps {
 	total: number | null
+	moneda: keyof Money | null   // null = sin moneda elegida: no se muestra la moneda
 }
-TotalPrice({ total }: TotalPriceProps)
+/*
+	PROPÓSITO: Contenedor del monto total de la cotización.
+		- A la derecha del monto se muestra la moneda (`moneda`) cuando hay una elegida y el total no es null.
+*/
+TotalPrice({ total, moneda }: TotalPriceProps)
 
 View (views/cotizar):
 /*

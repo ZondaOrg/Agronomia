@@ -1,4 +1,5 @@
 import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 export const formStyles = {
     form: css({
@@ -30,7 +31,7 @@ export const formStyles = {
         borderColor: "gray.300",
         borderRadius: "sm",
         backgroundColor: "white",
-        color: "gray.800",
+        color: "black",
         fontSize: "sm",
         outline: "none",
         _focus: {
@@ -38,12 +39,36 @@ export const formStyles = {
             boxShadow: "0 0 0 1px var(--colors-blue-500)",
         },
         _disabled: { cursor: "not-allowed", opacity: 0.6 },
-        _readOnly: { backgroundColor: "gray.50", cursor: "default" },
+    }),
+    controlWithCurrency: css({
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+    }),
+    currencySuffix: css({
+        position: "absolute",
+        right: "3",
+        color: token("colors.textSubtle"),
+        fontSize: "sm",
+        fontWeight: "medium",
+        pointerEvents: "none",
+    }),
+    controlReadOnly: css({
+        width: "100%",
+        minHeight: "10",
+        paddingInline: "3",
+        border: "1px solid",
+        borderColor: "gray.300",
+        borderRadius: "sm",
+        backgroundColor: "gray.50",
+        color: token("colors.textSubtle"),
+        fontSize: "sm",
+        outline: "none",
+        cursor: "default",
     }),
     total: css({
         display: "flex",
         flexDirection: "column",
-        gap: "1",
         padding: "4",
         borderRadius: "md",
         backgroundColor: "white",
@@ -51,13 +76,22 @@ export const formStyles = {
         borderColor: "gray.200",
     }),
     totalLabel: css({
-        color: "gray.500",
-        fontSize: "sm",
+        color: token("colors.primaryColor"),
         fontWeight: "medium",
     }),
+    totalValueRow: css({
+        display: "flex",
+        alignItems: "baseline",
+        gap: "2",
+    }),
     totalValue: css({
-        color: "gray.900",
-        fontSize: "2xl",
+        color: token("colors.textSubtle"),
+        fontSize: "32px",
+        fontWeight: "bold",
+    }),
+    totalCurrency: css({
+        color: token("colors.textSubtle"),
+        fontSize: "32px",
         fontWeight: "bold",
     }),
 };
