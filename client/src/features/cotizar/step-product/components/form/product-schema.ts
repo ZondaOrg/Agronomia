@@ -20,4 +20,5 @@ export interface StepProductFormValues {
     unidades: number | null;
     moneda: keyof Money | null;
     flete: Freight | null;
+    opcionales: number[];
 }

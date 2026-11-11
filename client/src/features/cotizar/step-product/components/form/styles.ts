@@ -24,6 +24,16 @@ export const formStyles = {
         width: "100%",
         borderColor: token("borders.borderColor.line"),
     }),
+    optionalsTitle: css({
+        fontWeight: "bold",
+        fontSize: "sm",
+        color: token("colors.textSubtle"),
+    }),
+    optionalsHint: css({
+        fontWeight: "normal",
+        fontSize: "sm",
+        color: token("colors.textSubtle"),
+    }),
     row: css({
         display: "grid",
         gridTemplateColumns: { base: "1fr", md: "1fr 1fr" },

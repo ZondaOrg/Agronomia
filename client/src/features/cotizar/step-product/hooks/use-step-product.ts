@@ -25,6 +25,7 @@ export const useStepProduct = (stepId: string) => {
             unidades: DEFAULT_UNIDADES,
             moneda: null,
             flete: null,
+            opcionales: [],
         },
     });
     const { control, setValue } = form;
@@ -37,17 +38,19 @@ export const useStepProduct = (stepId: string) => {
         setValue("producto", productId ?? "");
         setValue("moneda", null);
         setValue("flete", null);
+        setValue("opcionales", []);
     }, [productId, setValue]);
 
-    const [unidades, flete] = useWatch({
+    const [unidades, flete, opcionales] = useWatch({
         control,
-        name: ["unidades", "flete"],
+        name: ["unidades", "flete", "opcionales"],
     });
 
     const { detail, total, loading } = useProductQuote(
         productId,
         unidades ?? null,
         flete ?? null,
+        opcionales ?? [],
     );
 
     return { form, detail, total, loading };
