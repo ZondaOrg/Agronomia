@@ -2,8 +2,8 @@ import CardCheckInput from "@/shared/components/card-check-input/CardCheckInput"
 import type { CardCheckOption } from "@/shared/components/card-check-input/types";
 import type { Money } from "@/shared/domain/money/money";
 import { token } from "@styled-system/tokens";
-import type { QuoteOptional } from "../../domain/quote-product";
-import { formStyles } from "./styles";
+import type { QuoteOptional } from "../../../domain/quote-product";
+import { styles } from "./styles";
 
 interface OptionalsSelectorProps {
     optionals: QuoteOptional[];
@@ -18,6 +18,15 @@ export const OptionalsSelector = ({
     selected,
     onToggle,
 }: OptionalsSelectorProps) => {
+    const {
+        section,
+        sectionTitle,
+        sectionDivider,
+        field,
+        optionalsTitle,
+        optionalsHint,
+    } = styles();
+
     if (optionals.length === 0) return null;
 
     const options: CardCheckOption[] = optionals.map((optional) => ({
@@ -31,14 +40,14 @@ export const OptionalsSelector = ({
     }));
 
     return (
-        <section className={formStyles.section}>
-            <p className={formStyles.sectionTitle}>Opcionales</p>
-            <hr className={formStyles.sectionDivider} />
-            <div className={formStyles.field}>
-                <p className={formStyles.optionalsTitle}>
+        <section className={section}>
+            <p className={sectionTitle}>Opcionales</p>
+            <hr className={sectionDivider} />
+            <div className={field}>
+                <p className={optionalsTitle}>
                     Este producto cuenta con opcionales
                 </p>
-                <p className={formStyles.optionalsHint}>
+                <p className={optionalsHint}>
                     Los opcionales sumados se agregan al precio de lista
                 </p>
             </div>

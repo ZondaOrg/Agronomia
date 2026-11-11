@@ -1,13 +1,13 @@
 import { Controller, useWatch, type Control } from "react-hook-form";
-import type { QuoteProduct } from "../../domain/quote-product";
-import { CurrencyReadOnly } from "./CurrencyReadOnly";
-import { CurrencySelect } from "./CurrencySelect";
-import { FreightSelector } from "./FreightSelector";
-import { OptionalsSelector } from "./OptionalsSelector";
-import { ProductPriceFields } from "./ProductPriceFields";
-import { TotalPrice } from "./TotalPrice";
-import { formStyles } from "./styles";
-import type { StepProductFormValues } from "./product-schema";
+import type { QuoteProduct } from "../../../domain/quote-product";
+import { CurrencyReadOnly } from "../currency-read-only/CurrencyReadOnly";
+import { CurrencySelect } from "../currency-select/CurrencySelect";
+import { FreightSelector } from "../freight-selector/FreightSelector";
+import { OptionalsSelector } from "../optionals-selector/OptionalsSelector";
+import { ProductPriceFields } from "../product-price-fields/ProductPriceFields";
+import { TotalPrice } from "../total-price/TotalPrice";
+import { form } from "./styles";
+import type { StepProductFormValues } from "../product-schema";
 
 interface ProductFormProps {
     control: Control<StepProductFormValues>;
@@ -21,7 +21,7 @@ export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
     const moneda = isArs ? "ARS" : selectedMoneda;
 
     return (
-        <div className={formStyles.form}>
+        <div className={form}>
             {detail &&
                 (isArs ? (
                     <CurrencyReadOnly />

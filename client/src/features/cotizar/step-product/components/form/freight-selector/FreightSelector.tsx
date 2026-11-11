@@ -1,8 +1,8 @@
 import CardCheckInput from "@/shared/components/card-check-input/CardCheckInput";
 import type { CardCheckOption } from "@/shared/components/card-check-input/types";
 import type { Money } from "@/shared/domain/money/money";
-import type { Freight } from "../../domain/freight";
-import { formStyles } from "./styles";
+import type { Freight } from "../../../domain/freight";
+import { styles } from "./styles";
 
 interface FreightSelectorProps {
     value: Freight | null;
@@ -19,6 +19,8 @@ export const FreightSelector = ({
     moneda,
     onChange,
 }: FreightSelectorProps) => {
+    const { section, sectionTitle, sectionDivider, label } = styles();
+
     const options: CardCheckOption[] = [
         { value: "NOT_INCLUDED", label: "No incluye flete" },
         {
@@ -37,10 +39,10 @@ export const FreightSelector = ({
     ];
 
     return (
-        <section className={formStyles.section}>
-            <p className={formStyles.sectionTitle}>Flete</p>
-            <hr className={formStyles.sectionDivider} />
-            <span className={formStyles.label}>Condición flete</span>
+        <section className={section}>
+            <p className={sectionTitle}>Flete</p>
+            <hr className={sectionDivider} />
+            <span className={label}>Condición flete</span>
             <div
                 style={
                     disabled
