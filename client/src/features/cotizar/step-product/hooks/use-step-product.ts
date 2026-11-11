@@ -53,5 +53,10 @@ export const useStepProduct = (stepId: string) => {
         opcionales ?? [],
     );
 
+    const listMoney = detail?.money;
+    useEffect(() => {
+        if (listMoney === "ARS") setValue("moneda", "ARS");
+    }, [listMoney, detail?.id, setValue]);
+
     return { form, detail, total, loading };
 };
