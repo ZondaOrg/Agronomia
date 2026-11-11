@@ -5,3 +5,5 @@ export const PAGE_OF  = (idProvider: string) => `${MAIN}/product/page-of/${idPro
 export const FIND_BY = (id: string) => `${MAIN}/product/find/${id}`
 export const EDIT_TO = (id: string) => `${MAIN}/product/edit/${id}`
 export const PRODUCTS_BY_TYPE = (typeId: number) => `${MAIN}/product/${typeId}`
+export const PRODUCT_SEARCH_BY_PROVIDER = (providerId: number) =>
+    `${MAIN}/product/provider/${providerId}/search`
