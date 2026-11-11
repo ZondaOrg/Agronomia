@@ -6,6 +6,7 @@ import {
     type FieldValues,
     type Path,
     type DefaultValues,
+    type UseFormReturn,
 } from "react-hook-form";
 import {
     form,
@@ -30,6 +31,7 @@ export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
     Input: React.ComponentType<HydrationInputProps<TItem>>;
     fieldName: Path<TFormValues>;
     defaultValues?: DefaultValues<TFormValues>;
+    form?: UseFormReturn<TFormValues>;
     error?: boolean;
     onValueChange?: (value: string | null) => void;
     onReset?: () => void;
@@ -46,14 +48,16 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     error,
     fieldName,
     defaultValues,
+    form: externalForm,
     onValueChange,
     saveNonce = 0,
     onSave,
 }: HydrationFormProps<TItem, TFormValues>) => {
-    const { control, getValues } = useForm<TFormValues>({
+    const ownForm = useForm<TFormValues>({
         defaultValues,
         values: defaultValues as TFormValues,
     });
+    const { control, getValues } = externalForm ?? ownForm;
 
     const fieldValue = useWatch({ control, name: fieldName }) as string | null;
 
