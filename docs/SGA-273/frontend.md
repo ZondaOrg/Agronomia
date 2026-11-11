@@ -46,6 +46,8 @@ type Freight = "INCLUDED" | "NOT_INCLUDED"
 /* Valores del paso guardados en hidratationForm (solo el id del producto, no el objeto) */
 interface StepProductValues {
 	producto: string            // id del producto
+	unidades: number
+	moneda: keyof Money
 	total: number
 }
 
@@ -172,11 +174,34 @@ interface ProductPriceFieldsProps {
 }
 ProductPriceFields({ listPrice, iva }: ProductPriceFieldsProps)
 
+interface CurrencySelectProps {
+	value: keyof Money | null   // null = sin moneda seleccionada
+	onChange: (value: keyof Money | null) => void
+}
+CurrencySelect({ value, onChange }: CurrencySelectProps)
+
+interface ProductFormProps {
+	detail: QuoteProduct | undefined   // undefined = producto aún no confirmado
+	moneda: keyof Money | null
+	freight: Freight | null
+	quantity: number | null
+	total: number | null
+	onMonedaChange / onFreightChange / onQuantityChange
+}
+/*
+	PROPÓSITO: Compone el formulario del paso.
+		- Sin producto: solo QuantityInput y FreightSelector (deshabilitados).
+		- Con producto: agrega CurrencySelect y TotalPrice.
+		- Con moneda elegida: agrega ProductPriceFields (precio neto e IVA de solo lectura).
+*/
+ProductForm(props: ProductFormProps)
+
 interface FreightSelectorProps {
 	value: Freight | null
-	freight: number
+	disabled?: boolean
 	onChange: (value: Freight) => void
 }
+// CardCheckInput variant "CardSimple", selección única: "Incluir flete" / "No incluir flete"
 FreightSelector({ value, freight, onChange }: FreightSelectorProps)
 
 interface QuantityInputProps {
