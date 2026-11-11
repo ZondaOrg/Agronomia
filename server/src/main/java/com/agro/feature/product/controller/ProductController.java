@@ -12,6 +12,8 @@ import com.agro.feature.product.dtos.edit.request.EditOptionalMapper;
 import com.agro.feature.product.dtos.edit.request.EditProductRequestDTO;
 import com.agro.feature.product.dtos.get.GetProductMapper;
 import com.agro.feature.product.dtos.get.GetProductResponseDTO;
+import com.agro.feature.product.dtos.quote.QuoteProductMapper;
+import com.agro.feature.product.dtos.quote.response.QuoteProductResponse;
 import com.agro.feature.product.dtos.table.TableProductMapper;
 import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 import com.agro.feature.product.dtos.table.response.ProductRowSimpleResponse;
@@ -117,6 +119,14 @@ public class ProductController {
         Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 4);
         GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product, pageOffOptionals);
         return ResponseEntity.ok(productResponseDto);
+    }
+
+    @GetMapping("/{productId}/quote")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Obtiene los datos de un producto para cotizar")
+    public ResponseEntity<QuoteProductResponse> getForQuote(@PathVariable Long productId) {
+        Product product = productService.findByIdWithinOptionals(productId);
+        return ResponseEntity.ok(QuoteProductMapper.toResponse(product));
     }
 
     @GetMapping("/{typeId}")

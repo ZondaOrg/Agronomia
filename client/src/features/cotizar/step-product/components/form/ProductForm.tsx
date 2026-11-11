@@ -1,45 +1,53 @@
-import type { Money } from "@/shared/domain/money/money";
+import { Controller, useWatch, type Control } from "react-hook-form";
 import type { QuoteProduct } from "../../domain/quote-product";
-import type { Freight } from "../../domain/freight";
 import { CurrencySelect } from "./CurrencySelect";
 import { FreightSelector } from "./FreightSelector";
 import { ProductPriceFields } from "./ProductPriceFields";
-import { QuantityInput } from "./QuantityInput";
 import { TotalPrice } from "./TotalPrice";
 import { formStyles } from "./styles";
+import type { StepProductFormValues } from "./product-schema";
 
 interface ProductFormProps {
+    control: Control<StepProductFormValues>;
     detail: QuoteProduct | undefined;
-    moneda: keyof Money | null;
-    freight: Freight | null;
-    quantity: number | null;
     total: number | null;
-    onMonedaChange: (value: keyof Money | null) => void;
-    onFreightChange: (value: Freight) => void;
-    onQuantityChange: (value: number | null) => void;
 }
 
-export const ProductForm = ({
-    detail,
-    moneda,
-    freight,
-    quantity,
-    total,
-    onMonedaChange,
-    onFreightChange,
-    onQuantityChange,
-}: ProductFormProps) => (
-    <div className={formStyles.form}>
-        {detail && <CurrencySelect value={moneda} onChange={onMonedaChange} />}
-        {detail && moneda && (
-            <ProductPriceFields listPrice={detail.listPrice} iva={detail.iva} />
-        )}
-        <QuantityInput value={quantity} onChange={onQuantityChange} />
-        <FreightSelector
-            value={freight}
-            disabled={!detail}
-            onChange={onFreightChange}
-        />
-        {detail && <TotalPrice total={total} />}
-    </div>
-);
+export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
+    const moneda = useWatch({ control, name: "moneda" });
+
+    return (
+        <div className={formStyles.form}>
+            {detail && (
+                <Controller
+                    name="moneda"
+                    control={control}
+                    render={({ field }) => (
+                        <CurrencySelect
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
+            )}
+            {detail && moneda && (
+                <ProductPriceFields
+                    listPrice={detail.listPrice}
+                    iva={detail.iva}
+                />
+            )}
+            <Controller
+                name="flete"
+                control={control}
+                render={({ field }) => (
+                    <FreightSelector
+                        value={field.value}
+                        disabled={!detail}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
+            {detail && <TotalPrice total={total} />}
+        </div>
+    );
+};
