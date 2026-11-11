@@ -18,7 +18,7 @@ export const styles = sva({
         },
         sectionDivider: {
             width: "100%",
-            borderColor: token("borders.borderColor.line"),
+            borderColor: token("colors.surfaceCardColor"),
         },
         label: {
             color: "gray.700",
