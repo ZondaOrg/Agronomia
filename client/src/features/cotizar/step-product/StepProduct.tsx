@@ -12,7 +12,7 @@ import { useSearchProviders } from "./hooks/use-search-providers";
 import { Controller } from "react-hook-form";
 import { resetForm } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
 import { FormProduct } from "./components/form/FormProduct";
-import { QuantityInput } from "./components/form/QuantityInput";
+import { QuantityInput } from "./components/form/quantity-input/QuantityInput";
 import { useStepProduct } from "./hooks/use-step-product";
 import { useSearchProducts } from "./hooks/use-search-products";
 
