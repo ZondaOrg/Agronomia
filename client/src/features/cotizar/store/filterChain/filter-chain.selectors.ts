@@ -8,6 +8,9 @@ export const selectStepValues = (state: RootState, stepId: string) =>
 
 export const selectFilterValues = selectStepValues;
 
+export const selectStepLabels = (state: RootState, stepId: string) =>
+    state.filterChain.steps[stepId]?.labels ?? EMPTY_VALUES;
+
 export const selectFilterValue = (
     state: RootState,
     stepId: string,
