@@ -60,7 +60,7 @@ export const StepManager = ({
                     textColor={token("colors.primaryColor")}
                     onClick={onCancel}
                 >
-                    {currentStep === 0 ? "Cancelar" : "Anterior"}
+                    {currentStep === 0 ? "Cancelar" : "Regresar"}
                 </Button>
                 <Button
                     fullWidth
