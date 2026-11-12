@@ -1,3 +1,4 @@
+import { css } from "@styled-system/css";
 import FilterField from "./field/FilterField";
 import type { FilterFieldConfig } from "./types/filter-chain";
 
@@ -47,7 +48,12 @@ export default function FilterChain({
     errors,
 }: Props) {
     return (
-        <div>
+        <div className={css({ 
+                minHeight: 160, 
+                display: "flex", 
+                flexDirection: "column", 
+                justifyContent: "space-between" 
+            })}>
             {filters.map((f) => (
                 <FilterField
                     key={f.id}
