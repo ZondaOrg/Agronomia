@@ -4,6 +4,7 @@ import SuccessToast from "../toast/success/SuccessToast";
 import { ConfirmModal } from "../modal/variants/commit/ConfirmModalProps";
 import { useNavigate } from "react-router";
 import type { NotifyMessage } from "./types/notify-message";
+import type { AdvertenceData } from "./types/advertence-data";
 import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";
 import BackButton from "./components/back-button/BackButton";
 
@@ -16,6 +17,7 @@ interface NotifyHandlerProps {
     onCancel: (isData: boolean) => void;
     refresh: () => void;
     onSuccess?: () => void;
+    advertenceData?: AdvertenceData;
 }
 
 function NotifyHandler({
@@ -27,6 +29,7 @@ function NotifyHandler({
     onCancel,
     refresh,
     onSuccess,
+    advertenceData,
 }: NotifyHandlerProps) {
     const navigate = useNavigate();
 
@@ -47,11 +50,16 @@ function NotifyHandler({
                 <ConfirmModal
                     isOpen={action === "advertence"}
                     title="¿Seguro deseas cancelar?"
-                    message="Si cancelas perderás los cambios realizados."
-                    confirmText="Abandonar"
-                    cancelText="Continuar editando"
+                    message={
+                        advertenceData?.subtitle ??
+                        "Si cancelas perderás los cambios realizados."
+                    }
+                    confirmText={advertenceData?.confirmText ?? "Abandonar"}
+                    cancelText={
+                        advertenceData?.cancelText ?? "Continuar editando"
+                    }
                     danger
-                    onConfirm={backToPrev}
+                    onConfirm={advertenceData?.onConfirm ?? backToPrev}
                     onCancel={refresh}
                 />
             )}
