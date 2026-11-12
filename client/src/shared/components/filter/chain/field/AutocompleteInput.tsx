@@ -13,7 +13,7 @@ interface Props {
     value: string | null;
     enabled: boolean;
     onChange: (value: string | null) => void;
-    style?: React.CSSProperties;
+    error?: boolean;
 }
 
 export default function AutocompleteInput({
@@ -22,7 +22,7 @@ export default function AutocompleteInput({
     value,
     enabled,
     onChange,
-    style,
+    error,
 }: Props) {
     const [text, setText] = useState("");
     const [open, setOpen] = useState(false);
@@ -67,11 +67,10 @@ export default function AutocompleteInput({
     return (
         <div className={filterFieldStyles.autocomplete}>
             <input
-                className={filterFieldStyles.control}
+                className={filterFieldStyles.control({ error })}
                 type="text"
                 disabled={!enabled}
                 value={text}
-                style={style}
                 onChange={handleChange}
                 onFocus={() => setOpen(true)}
                 onBlur={confirmIfExact}

@@ -1,4 +1,4 @@
-import { css } from "@styled-system/css";
+import { css, cva } from "@styled-system/css";
 
 export const filterFieldStyles = {
     container: css({
@@ -7,29 +7,50 @@ export const filterFieldStyles = {
         gap: "1",
         width: "100%",
     }),
-    label: css({
-        color: "gray.700",
-        fontSize: "sm",
-        fontWeight: "medium",
-    }),
-    control: css({
-        width: "100%",
-        minHeight: "10",
-        paddingInline: "3",
-        border: "1px solid",
-        borderColor: "gray.300",
-        borderRadius: "sm",
-        backgroundColor: "white",
-        color: "gray.800",
-        fontSize: "sm",
-        outline: "none",
-        _focus: {
-            borderColor: "blue.500",
-            boxShadow: "0 0 0 1px var(--colors-blue-500)",
+    label: cva({
+        base: {
+            color: "gray.700",
+            fontSize: "sm",
+            fontWeight: "medium",
         },
-        _disabled: {
-            cursor: "not-allowed",
-            opacity: 0.6,
+        variants: {
+            error: {
+                true: { color: "danger" },
+            },
+        },
+    }),
+    control: cva({
+        base: {
+            width: "100%",
+            minHeight: "10",
+            paddingInline: "3",
+            border: "1px solid",
+            borderColor: "gray.300",
+            borderRadius: "sm",
+            backgroundColor: "white",
+            color: "gray.800",
+            fontSize: "sm",
+            outline: "none",
+            _focus: {
+                borderColor: "blue.500",
+                boxShadow: "0 0 0 1px var(--colors-blue-500)",
+            },
+            _disabled: {
+                cursor: "not-allowed",
+                opacity: 0.6,
+            },
+        },
+        variants: {
+            error: {
+                true: {
+                    borderColor: "danger",
+                    outlineColor: "danger",
+                    _focus: {
+                        borderColor: "danger",
+                        boxShadow: "0 0 0 1px var(--colors-danger)",
+                    },
+                },
+            },
         },
     }),
     row: css({
