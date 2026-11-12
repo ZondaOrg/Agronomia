@@ -23,7 +23,7 @@ const EMPTY_NOTIFY = {} as NotifyMessage;
 export const CotizarPanel = () => {
     const {
         currentStep,
-        setCurrentStep,
+        handleStepClick,
         handleNext,
         nextDisabled,
         handleCancel,
@@ -31,6 +31,7 @@ export const CotizarPanel = () => {
         setIsCancel,
         action,
         closeNotify,
+        advertenceData,
     } = useCotizador(STEPS.length);
 
     return (
@@ -41,13 +42,14 @@ export const CotizarPanel = () => {
             isBack={false}
             onCancel={() => setIsCancel(true)}
             refresh={closeNotify}
+            advertenceData={advertenceData}
         >
             <StepManager
                 steps={STEPS}
                 Container={Container}
                 title="Nueva cotización"
                 currentStep={currentStep}
-                onStepChange={setCurrentStep}
+                onStepChange={handleStepClick}
                 onNext={handleNext}
                 nextDisabled={nextDisabled}
                 onCancel={handleCancel}
