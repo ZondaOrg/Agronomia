@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "@/core/store/hooks";
 import {
@@ -30,36 +30,27 @@ export const useStepNavigation = ({
     const navigate = useNavigate();
     const [backTarget, setBackTarget] = useState<number | null>(null);
 
-    const requestBack = useCallback(
-        (target: number) => {
-            setBackTarget(target);
-            openNotify();
-        },
-        [openNotify],
-    );
+    const requestBack = (target: number) => {
+        setBackTarget(target);
+        openNotify();
+    };
 
-    const handleCancel = useCallback(
-        () => requestBack(currentStep - 1),
-        [requestBack, currentStep],
-    );
+    const handleCancel = () => requestBack(currentStep - 1);
 
-    const handleStepClick = useCallback(
-        (index: number) => requestBack(index),
-        [requestBack],
-    );
+    const handleStepClick = (index: number) => requestBack(index);
 
-    const advertenceData = useMemo<AdvertenceData | undefined>(() => {
-        if (backTarget === null) return undefined;
+    const clearFilters = (from: number) => {
+        for (let i = from; i <= currentStep; i++) {
+            dispatch(clearStep(getStepId(i)));
+        }
+    };
 
+    const buildAdvertenceData = (
+        target: number,
+    ): AdvertenceData => {
         const textos = STEP_ADVERTENCE[currentStep];
 
-        const clearFilters = (from: number) => {
-            for (let i = from; i <= currentStep; i++) {
-                dispatch(clearStep(getStepId(i)));
-            }
-        };
-
-        if (backTarget === EXIT_TARGET) {
+        if (target === EXIT_TARGET) {
             return {
                 ...textos,
                 onConfirm: () => {
@@ -74,13 +65,16 @@ export const useStepNavigation = ({
         return {
             ...textos,
             onConfirm: () => {
-                dispatch(clearFormsPosteriores(getStepId(backTarget)));
-                clearFilters(backTarget + 1);
-                setCurrentStep(backTarget);
+                dispatch(clearFormsPosteriores(getStepId(target)));
+                clearFilters(target + 1);
+                setCurrentStep(target);
                 closeNotify();
             },
         };
-    }, [backTarget, currentStep, dispatch, navigate, closeNotify, setCurrentStep]);
+    };
+
+    const advertenceData =
+        backTarget === null ? undefined : buildAdvertenceData(backTarget);
 
     return { handleCancel, handleStepClick, advertenceData };
 };
