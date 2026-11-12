@@ -9,6 +9,7 @@ export const styles = sva({
         "field",
         "optionalsTitle",
         "optionalsHint",
+        "price",
     ],
     base: {
         section: {
@@ -25,7 +26,7 @@ export const styles = sva({
         },
         sectionDivider: {
             width: "100%",
-            borderColor: token("borders.borderColor.line"),
+            borderColor: "borders.borderColor.line",
         },
         field: {
             display: "flex",
@@ -41,6 +42,9 @@ export const styles = sva({
             fontWeight: "normal",
             fontSize: "sm",
             color: token("colors.textSubtle"),
+        },
+        price: {
+            color: token("colors.success"),
         },
     },
 });
