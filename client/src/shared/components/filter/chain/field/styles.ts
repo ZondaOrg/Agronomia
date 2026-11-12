@@ -4,7 +4,7 @@ export const filterFieldStyles = {
     container: css({
         display: "flex",
         flexDirection: "column",
-        gap: "1",
+        gap: 2,
         width: "100%",
     }),
     label: cva({
