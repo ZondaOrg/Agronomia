@@ -1,5 +1,5 @@
 import { Container } from "@/features/cotizar/components/Container";
-import { StepClient } from "@/features/cotizar/step-client/page/StepClient";
+import { StepClient } from "@/features/cotizar/step-client/StepClient";
 import { StepPayment } from "@/features/cotizar/step-payment/pages/StepPayment";
 import { StepPreview } from "@/features/cotizar/step-preview/pages/StepPreview";
 import { StepProduct } from "@/features/cotizar/step-product/StepProduct";

@@ -51,8 +51,12 @@ export const actionsRecipe = cva({
 export const asideRowRecipe = cva({
     base: {
         display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
+        flexDirection: { 
+            base: "column",
+            md: "row" 
+        },
+        alignItems: { md: "flex-start" },
+        justifyContent: { md: "space-between" },
         gap: "6",
         width: "100%",
         "& > :first-child": {
