@@ -40,6 +40,7 @@ export const EditClient = () => {
                         "razonSocial" in client ? "razon social" : "persona natural"
                     }
                     disableOptions
+                    isLine
                     initialValues={client}
                     onDirty={onDirty}
                     buttonData={{ text: "Guardar cambios" }}
