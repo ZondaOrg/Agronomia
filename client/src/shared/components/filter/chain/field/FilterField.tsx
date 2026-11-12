@@ -21,28 +21,19 @@ export default function FilterField({
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
     ) => onChange(e.target.value || null);
 
-    const labelStyle = error ? { color: "#ef4444" } : {};
-    const controlStyle = error
-        ? { borderColor: "#ef4444", outlineColor: "#ef4444" }
-        : {};
-
     return (
         <label className={filterFieldStyles.container}>
-            <span
-                className={filterFieldStyles.label}
-                style={labelStyle}
-            >
+            <span className={filterFieldStyles.label({ error })}>
                 {filter.label}
                 {filter.required && " *"}
             </span>
             <div className={filterFieldStyles.row}>
             {filter.variant === "select" ? (
                 <select
-                    className={filterFieldStyles.control}
+                    className={filterFieldStyles.control({ error })}
                     disabled={!enabled}
                     value={value ?? ""}
                     onChange={handleChange}
-                    style={controlStyle}
                 >
                     <option value="">Seleccionar...</option>
                     {filter.options.map((o) => (
@@ -61,16 +52,15 @@ export default function FilterField({
                     value={value}
                     enabled={enabled}
                     onChange={onChange}
-                    style={controlStyle}
+                    error={error}
                 />
             ) : (
                 <input
-                    className={filterFieldStyles.control}
+                    className={filterFieldStyles.control({ error })}
                     disabled={!enabled}
                     type="text"
                     value={value ?? ""}
                     onChange={handleChange}
-                    style={controlStyle}
                 />
             )}
             {filter.trailing}

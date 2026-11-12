@@ -1,7 +1,6 @@
 import CardCheckInput from "@/shared/components/card-check-input/CardCheckInput";
 import type { CardCheckOption } from "@/shared/components/card-check-input/types";
 import type { Money } from "@/shared/domain/money/money";
-import { token } from "@styled-system/tokens";
 import type { QuoteOptional } from "../../../domain/quote-product";
 import { styles } from "./styles";
 
@@ -25,6 +24,7 @@ export const OptionalsSelector = ({
         field,
         optionalsTitle,
         optionalsHint,
+        price,
     } = styles();
 
     if (optionals.length === 0) return null;
@@ -33,7 +33,7 @@ export const OptionalsSelector = ({
         value: String(optional.id),
         label: optional.name,
         description: (
-            <strong style={{ color: token("colors.success") }}>
+            <strong className={price}>
                 ${optional.price.toLocaleString("es-AR")} {moneda}
             </strong>
         ),
