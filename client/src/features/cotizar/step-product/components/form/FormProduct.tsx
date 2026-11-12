@@ -53,11 +53,13 @@ export const FormProduct = ({ stepId, form, detail, total }: FormProductProps) =
         (current: StepProductFormValues) => {
             const parsed = stepProductSchema.safeParse(current);
             if (!parsed.success || total === null) return;
-            const { producto, unidades, moneda } = parsed.data;
+            const { producto, unidades, moneda, flete } = parsed.data;
             const valores: StepProductValues = {
                 producto,
                 unidades,
                 moneda,
+                flete,
+                opcionales: current.opcionales,
                 total,
             };
             dispatch(guardarValores({ stepId, valores: { ...valores } }));
