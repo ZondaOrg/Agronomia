@@ -6,8 +6,7 @@ import {
 } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import { solicitarGuardado } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
 import type { NotifyAction } from "@/shared/hooks/use-notify/modal-action";
-
-const getStepId = (index: number) => String(index + 1);
+import { getStepId, useStepNavigation } from "./useStepNavigation";
 
 export const useCotizador = (totalSteps: number) => {
     const dispatch = useAppDispatch();
@@ -38,23 +37,27 @@ export const useCotizador = (totalSteps: number) => {
         dispatch(solicitarGuardado(stepId));
     }, [dispatch, formCompleto, stepId]);
 
-    const handleCancel = useCallback(() => {
-        if (currentStep > 0) {
-            setCurrentStep((c) => c - 1);
-        } else {
-            setIsCancel(true);
-            setAction("advertence");
-        }
-    }, [currentStep]);
+    const openNotify = useCallback(() => {
+        setIsCancel(true);
+        setAction("advertence");
+    }, []);
 
     const closeNotify = useCallback(() => {
         setIsCancel(false);
         setAction(undefined);
     }, []);
 
+    const { handleCancel, handleStepClick, advertenceData } =
+        useStepNavigation({
+            currentStep,
+            setCurrentStep,
+            openNotify,
+            closeNotify,
+        });
+
     return {
         currentStep,
-        setCurrentStep,
+        handleStepClick,
         handleNext,
         nextDisabled: !formCompleto,
         handleCancel,
@@ -62,5 +65,6 @@ export const useCotizador = (totalSteps: number) => {
         setIsCancel,
         action,
         closeNotify,
+        advertenceData,
     };
 };
