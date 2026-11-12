@@ -2,7 +2,7 @@ import { sva } from "@styled-system/css";
 import { token } from "@styled-system/tokens";
 
 export const styles = sva({
-    slots: ["section", "sectionTitle", "sectionDivider", "label", "price"],
+    slots: ["section", "sectionTitle", "sectionDivider", "label", "price", "optionsGroup"],
     base: {
         section: {
             display: "flex",
@@ -27,6 +27,17 @@ export const styles = sva({
         },
         price: {
             color: token("colors.success"),
+        },
+        optionsGroup: {},
+    },
+    variants: {
+        disabled: {
+            true: {
+                optionsGroup: {
+                    pointerEvents: "none",
+                    opacity: 0.6,
+                },
+            },
         },
     },
 });

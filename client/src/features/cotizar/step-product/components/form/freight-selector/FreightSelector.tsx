@@ -19,7 +19,8 @@ export const FreightSelector = ({
     moneda,
     onChange,
 }: FreightSelectorProps) => {
-    const { section, sectionTitle, sectionDivider, label, price } = styles();
+    const { section, sectionTitle, sectionDivider, label, price, optionsGroup } =
+        styles({ disabled });
 
     const options: CardCheckOption[] = [
         { value: "NOT_INCLUDED", label: "No incluye flete" },
@@ -44,11 +45,7 @@ export const FreightSelector = ({
             <hr className={sectionDivider} />
             <span className={label}>Condición flete</span>
             <div
-                style={
-                    disabled
-                        ? { pointerEvents: "none", opacity: 0.6 }
-                        : undefined
-                }
+                className={optionsGroup}
                 aria-disabled={disabled}
             >
                 <CardCheckInput
