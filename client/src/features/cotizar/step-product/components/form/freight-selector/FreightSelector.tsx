@@ -19,7 +19,7 @@ export const FreightSelector = ({
     moneda,
     onChange,
 }: FreightSelectorProps) => {
-    const { section, sectionTitle, sectionDivider, label } = styles();
+    const { section, sectionTitle, sectionDivider, label, price } = styles();
 
     const options: CardCheckOption[] = [
         { value: "NOT_INCLUDED", label: "No incluye flete" },
@@ -30,7 +30,7 @@ export const FreightSelector = ({
                 freightPrice && moneda ? (
                     <>
                         Tiene un valor de{" "}
-                        <strong style={{ color: "#0D9488" }}>
+                        <strong className={price}>
                             ${freightPrice.toLocaleString("es-AR")} {moneda}
                         </strong>
                     </>
