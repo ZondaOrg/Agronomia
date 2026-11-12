@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useAppSelector } from "@/core/store/hooks";
 import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
+import { selectFormValores } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
+import type { StepProductValues } from "../domain/step-product-values";
 import { PRODUCT } from "../components/filter/types/inputs";
 import {
     DEFAULT_UNIDADES,
@@ -19,13 +21,18 @@ export const useStepProduct = (stepId: string) => {
         selectFilterValue(s, stepId, PRODUCT),
     );
 
+    // Valores guardados al avanzar: rehidratan el form al volver al paso.
+    const saved = useAppSelector((s) => selectFormValores(s, stepId)) as
+        | Partial<StepProductValues>
+        | undefined;
+
     const form = useForm<StepProductFormValues>({
         defaultValues: {
             producto: productId ?? "",
-            unidades: DEFAULT_UNIDADES,
-            moneda: null,
-            flete: null,
-            opcionales: [],
+            unidades: saved?.unidades ?? DEFAULT_UNIDADES,
+            moneda: saved?.moneda ?? null,
+            flete: saved?.flete ?? null,
+            opcionales: saved?.opcionales ?? [],
         },
     });
     const { control, setValue } = form;

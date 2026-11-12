@@ -28,6 +28,7 @@ const filterChainSlice = createSlice({
                 state.steps[stepId] = {
                     config: filters,
                     values: {},
+                    labels: {},
                     completo: false,
                 };
             }
@@ -38,9 +39,10 @@ const filterChainSlice = createSlice({
                 stepId: string;
                 filterId: string;
                 value: string | null;
+                label?: string;
             }>,
         ) => {
-            const { stepId, filterId, value } = action.payload;
+            const { stepId, filterId, value, label } = action.payload;
             const step = state.steps[stepId];
             if (!step) return;
 
@@ -49,8 +51,12 @@ const filterChainSlice = createSlice({
 
             step.config.slice(index).forEach((f) => {
                 delete step.values[f.id];
+                delete step.labels[f.id];
             });
-            if (value) step.values[filterId] = value;
+            if (value) {
+                step.values[filterId] = value;
+                if (label) step.labels[filterId] = label;
+            }
 
             step.completo = isStepComplete(step);
         },
@@ -63,6 +69,7 @@ const filterChainSlice = createSlice({
             if (!step) return;
 
             step.values = {};
+            step.labels = {};
             step.completo = isStepComplete(step);
         },
     },

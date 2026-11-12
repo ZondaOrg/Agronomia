@@ -40,16 +40,34 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
         [providerId, searchProducts],
     );
 
+    const providerOptions = providers.data;
     const handleSelectProvider = useCallback(
         (value: string | null) =>
-            dispatch(setFilterValue({ stepId, filterId: PROVIDER, value })),
-        [dispatch, stepId],
+            dispatch(
+                setFilterValue({
+                    stepId,
+                    filterId: PROVIDER,
+                    value,
+                    label: providerOptions?.find((p) => String(p.id) === value)
+                        ?.name,
+                }),
+            ),
+        [dispatch, stepId, providerOptions],
     );
 
+    const productOptions = products.data;
     const handleSelectProduct = useCallback(
         (value: string | null) =>
-            dispatch(setFilterValue({ stepId, filterId: PRODUCT, value })),
-        [dispatch, stepId],
+            dispatch(
+                setFilterValue({
+                    stepId,
+                    filterId: PRODUCT,
+                    value,
+                    label: productOptions?.find((p) => String(p.id) === value)
+                        ?.name,
+                }),
+            ),
+        [dispatch, stepId, productOptions],
     );
 
     const handleSearch = useCallback((filters: FilterValues) => {
