@@ -17,6 +17,7 @@ response: 200
 	totalArs: number            // total en pesos, redondeado hacia arriba al entero
 	totalUsd: number            // total en dólares, redondeado hacia arriba al entero
 	dolarPrice: number          // valor del dólar oficial utilizado
+	listPriceArs: number        // precio de lista convertido a pesos (listPrice × dolarPrice)
 }
 response: 206
 {
@@ -49,6 +50,7 @@ response: 200
 	totalArs: number
 	totalUsd: number
 	dolarPrice: number
+	listPriceArs: number
 }
 errors:
 	400: ErrorResponse[]            // validación del request (incluye dolarPrice <= 0)
