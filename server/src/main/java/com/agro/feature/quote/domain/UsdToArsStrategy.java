@@ -1,12 +1,12 @@
 package com.agro.feature.quote.domain;
 
-import com.agro.feature.quote.domain.exceptions.NegativeAmountException;
+import com.agro.feature.quote.domain.valueObjects.DolarPrice;
 
 import java.math.BigDecimal;
 
 public class UsdToArsStrategy implements TotalStrategy {
 
-    private BigDecimal dolarPrice;
+    private DolarPrice dolarPrice;
 
     public UsdToArsStrategy(BigDecimal dolarPrice) {
         setDolarPrice(dolarPrice);
@@ -14,13 +14,10 @@ public class UsdToArsStrategy implements TotalStrategy {
 
     @Override
     public BigDecimal convert(BigDecimal usdTotal) {
-        return usdTotal.multiply(dolarPrice);
+        return usdTotal.multiply(dolarPrice.get());
     }
 
     private void setDolarPrice(BigDecimal dolarPrice) {
-        if (dolarPrice.signum() <= 0) {
-            throw new NegativeAmountException("dólar");
-        }
-        this.dolarPrice = dolarPrice;
+        this.dolarPrice = new DolarPrice(dolarPrice);
     }
 }

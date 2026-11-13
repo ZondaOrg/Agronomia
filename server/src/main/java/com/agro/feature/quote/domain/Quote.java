@@ -2,6 +2,8 @@ package com.agro.feature.quote.domain;
 
 import com.agro.feature.quote.domain.exceptions.InvalidQuantityException;
 import com.agro.feature.quote.domain.exceptions.NegativeAmountException;
+import com.agro.feature.quote.domain.valueObjects.DolarPrice;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,6 +16,8 @@ public class Quote {
     private BigDecimal freight;
     private List<BigDecimal> optionalPrices;
     private Integer quantity;
+    @Setter
+    private TotalStrategy strategy = new NetPriceStrategy();
 
     public Quote(BigDecimal listPrice, BigDecimal ivaRate, BigDecimal freight, List<BigDecimal> optionalPrices, Integer quantity) {
         setListPrice(listPrice);
@@ -24,9 +28,15 @@ public class Quote {
     }
 
     public BigDecimal getTotal() {
-        return unitPrice()
-                .multiply(BigDecimal.valueOf(quantity))
-                .setScale(0, RoundingMode.CEILING);
+        return strategy.convert(usdTotal()).setScale(0, RoundingMode.CEILING);
+    }
+
+    public BigDecimal toArs(BigDecimal dolarPrice) {
+        return listPrice.multiply(new DolarPrice(dolarPrice).get());
+    }
+
+    private BigDecimal usdTotal() {
+        return unitPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
     private BigDecimal unitPrice() {
