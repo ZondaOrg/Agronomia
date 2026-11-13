@@ -6,14 +6,21 @@ import java.math.BigDecimal;
 
 public class UsdToArsStrategy implements TotalStrategy {
 
+    private BigDecimal dolarPrice;
+
     public UsdToArsStrategy(BigDecimal dolarPrice) {
-        if (dolarPrice.signum() <= 0) {
-            throw new NegativeAmountException("dólar");
-        }
+        setDolarPrice(dolarPrice);
     }
 
     @Override
     public BigDecimal convert(BigDecimal usdTotal) {
-        throw new UnsupportedOperationException();
+        return usdTotal.multiply(dolarPrice);
+    }
+
+    private void setDolarPrice(BigDecimal dolarPrice) {
+        if (dolarPrice.signum() <= 0) {
+            throw new NegativeAmountException("dólar");
+        }
+        this.dolarPrice = dolarPrice;
     }
 }
