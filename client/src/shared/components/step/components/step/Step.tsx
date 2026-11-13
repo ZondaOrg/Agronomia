@@ -5,7 +5,11 @@ import {
     selectStepValues,
 } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 import type { StepProps } from "./Step.types";
-import { actionsRecipe, asideRowRecipe, title as titleStyle } from "./step.style";
+import {
+    actionsRecipe,
+    asideRowRecipe,
+    title as titleStyle,
+} from "./step.style";
 
 export type {
     ActionsPosition,
@@ -14,36 +18,6 @@ export type {
     StepProps,
 } from "./Step.types";
 
-/**
- * Renderiza un paso del formulario: filtro + formulario de resultados,
- * con un bloque opcional de acciones.
- *
- * Cuando el slice del filtro indica que está completo, ejecuta `service`
- * con los valores actuales. Cuando deja de estar completo, ejecuta `onClear`
- * para que quien usa el paso limpie los datos que hidratan el formulario.
- *
- * El `form` solo se muestra cuando el filtro está completo.
- *
- * `filter` y `form` se reciben ya armados, por lo que el paso no depende
- * de ningún formulario en particular.
- *
- * El bloque `actions` se ubica según `actionsPosition`:
- * - `top`: arriba de todo.
- * - `aside`: a la derecha del filtro, en la misma fila.
- * - `between`: entre el filtro y el formulario.
- * - `bottom`: debajo de todo.
- *
- * @example
- * <Step
- *     stepId="cliente"
- *     filter={<FilterClient />}
- *     form={<FormClient items={data} loading={loading} />}
- *     service={buscarClientes}
- *     onClear={limpiarClientes}
- *     actionsPosition="aside"
- *     actions={<AddClientAction onClick={handleAddClient} />}
- * />
- */
 export const Step = ({
     stepId,
     title,
@@ -61,13 +35,19 @@ export const Step = ({
     const completo = useAppSelector((s) => selectFiltersCompleto(s, stepId));
     const values = useAppSelector((s) => selectStepValues(s, stepId));
 
-    useEffect(() => {
-        if (completo) service(values);
-    }, [completo, values, service]);
+    const hasFilter = Boolean(filter);
 
     useEffect(() => {
-        if (!completo) onClear?.();
-    }, [completo, onClear]);
+        if (hasFilter && completo && service) {
+            service(values);
+        }
+    }, [hasFilter, completo, values, service]);
+
+    useEffect(() => {
+        if (hasFilter && !completo && onClear) {
+            onClear();
+        }
+    }, [hasFilter, completo, onClear]);
 
     const actionsBlock = actions ? (
         <div
@@ -85,7 +65,8 @@ export const Step = ({
         <>
             {title && <h2 className={titleStyle}>{title}</h2>}
             {actionsPosition === "top" && actionsBlock}
-            {actionsPosition === "aside" ? (
+
+            {actionsPosition === "aside" && filter ? (
                 <div className={asideRowRecipe()}>
                     {filter}
                     {actionsBlock}
@@ -93,11 +74,13 @@ export const Step = ({
             ) : (
                 filter
             )}
+
             {actionsPosition === "between" && actionsBlock}
             {extraPosition === "before" && extra}
-            {form}
+
+            {hasFilter ? completo && form : form}
+
             {extraPosition === "after" && extra}
-            {completo && form}
             {actionsPosition === "bottom" && actionsBlock}
         </>
     );

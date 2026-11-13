@@ -25,7 +25,7 @@ export interface StepProps {
     title?: string;
 
     /** Filtro del paso. */
-    filter: ReactNode;
+    filter?: ReactNode;
 
     /**
      * Formulario que muestra los resultados del paso (por ejemplo, un
@@ -43,7 +43,7 @@ export interface StepProps {
      * Se ejecuta con los valores del filtro cuando está completo.
      * Debe tener una referencia estable.
      */
-    service: (values: FilterValues) => void;
+    service?: (values: FilterValues) => void;
 
     /**
      * Se ejecuta cuando el filtro deja de estar completo (y al montar, si
