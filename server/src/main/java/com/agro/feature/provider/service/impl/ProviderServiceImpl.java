@@ -3,6 +3,7 @@ package com.agro.feature.provider.service.impl;
 import com.agro.feature.provider.contracts.ProviderDataService;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.provider.persistence.ProviderDAO;
+import com.agro.feature.provider.persistence.projections.SearchProviderProjection;
 import com.agro.feature.provider.service.ProviderService;
 import com.agro.feature.user.contracts.UserDataService;
 import com.agro.feature.user.domain.User;
@@ -75,6 +76,12 @@ public class ProviderServiceImpl implements ProviderService, ProviderDataService
         return providerDAO.findAllByCompanyId(idCompany);
     }
 
+
+    @Override
+    public List<SearchProviderProjection> search(Long userId, String search) {
+        User user = userDataService.getUserById(userId);
+        return providerDAO.searchAllByCompanyId(user.getCompany().getId(), search);
+    }
 
     @Override
     public Provider save(Provider provider) {

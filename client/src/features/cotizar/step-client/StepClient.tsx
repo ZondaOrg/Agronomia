@@ -1,15 +1,13 @@
 import { useCallback } from "react";
-import { FilterClient } from "../components/filter/FilterClient";
-import { FormClient } from "../components/form/FormClient";
-import { useGetClientsByTypeAndName } from "../hooks/use-get-clients-by-name-and-type";
-import {
-    Step,
-    type FilterValues,
-} from "@/shared/components/step/components/step/Step";
-import type { Client } from "../types/client";
-import { useAutoSelectNewClient } from "../../hooks/use-auto-selected-new-client";
-import { AddEntityAction } from "../../components/action/AddEntityAction";
-import { useAddEntityNavigation } from "../../hooks/use-direct-to-add-client";
+import type { Client } from "./types/client";
+import { useAutoSelectNewClient } from "../hooks/use-auto-selected-new-client";
+import { useGetClientsByTypeAndName } from "./hooks/use-get-clients-by-name-and-type";
+import { useAddEntityNavigation } from "../hooks/use-direct-to-add-client";
+import type { FilterValues } from "@/shared/components/step/components/step/Step.types";
+import { FilterClient } from "./components/filter/FilterClient";
+import { Step } from "@/shared/components/step/components/step/Step";
+import { FormClient } from "./components/form/FormClient";
+import { AddEntityAction } from "../components/action/AddEntityAction";
 
 const EMPTY_CLIENTS: Client[] = [];
 

@@ -3,6 +3,7 @@ package com.agro.feature.product.services;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -15,6 +16,8 @@ public interface ProductService {
     Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long providerId);
 
     Product findByIdWithinOptionals(Long id);
+
+    List<SearchProductProjection> searchByProvider(Long providerId, String search);
 
     Product edit(
             Product product,

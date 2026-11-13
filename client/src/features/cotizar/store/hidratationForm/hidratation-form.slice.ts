@@ -65,6 +65,19 @@ const hydratationFormSlice = createSlice({
             delete state[action.payload];
         },
 
+        // Borra todos los forms de los pasos posteriores al indicado (ids numéricos ordenados)
+        clearFormsPosteriores(state, action: PayloadAction<string>) {
+            const limite = Number(action.payload);
+            Object.keys(state).forEach((id) => {
+                if (Number(id) > limite) delete state[id];
+            });
+        },
+
+        // Borrado de todos los forms
+        clearAllForms() {
+            return {};
+        },
+
         solicitarGuardado(state, action: PayloadAction<string>) {
             const form = state[action.payload];
             if (form) form.guardadoNonce += 1;
@@ -96,6 +109,8 @@ export const {
     setEstadoForm,
     resetForm,
     clearForm,
+    clearFormsPosteriores,
+    clearAllForms,
     solicitarGuardado,
     guardarValores,
     mostrarFaltantes,

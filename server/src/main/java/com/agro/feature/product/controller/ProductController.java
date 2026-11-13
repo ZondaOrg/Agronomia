@@ -12,11 +12,14 @@ import com.agro.feature.product.dtos.edit.request.EditOptionalMapper;
 import com.agro.feature.product.dtos.edit.request.EditProductRequestDTO;
 import com.agro.feature.product.dtos.get.GetProductMapper;
 import com.agro.feature.product.dtos.get.GetProductResponseDTO;
+import com.agro.feature.product.dtos.quote.QuoteProductMapper;
+import com.agro.feature.product.dtos.quote.response.QuoteProductResponse;
 import com.agro.feature.product.dtos.table.TableProductMapper;
 import com.agro.feature.product.dtos.table.response.ProductRowRequestDTO;
 import com.agro.feature.product.dtos.table.response.ProductRowSimpleResponse;
 import com.agro.feature.product.dtos.table.type.TableProductByTypeMapper;
 import com.agro.feature.product.orchestrator.FindProductsWithProvider;
+import com.agro.feature.product.persistence.projections.SearchProductProjection;
 import com.agro.feature.product.services.OptionalService;
 import com.agro.feature.product.services.ProductService;
 import com.agro.shared.annotations.role.OwnerEndpoint;
@@ -73,6 +76,16 @@ public class ProductController {
         return ResponseEntity.ok(TableProductMapper.modelToDto(pagesOfProducts));
     }
 
+    @GetMapping("/provider/{providerId}/search")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Buscar productos de un proveedor por un criterio de búsqueda")
+    public ResponseEntity<List<SearchProductProjection>> search(
+            @PathVariable Long providerId,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        return ResponseEntity.ok(productService.searchByProvider(providerId, search));
+    }
+
     @PutMapping("/edit/{productId}")
     @Operation(summary = "Editar un producto por su id")
     @OwnerEndpoint
@@ -106,6 +119,14 @@ public class ProductController {
         Page<Optional> pageOffOptionals = optionalService.getPagesOffOptionals(productId, 0, 4);
         GetProductResponseDTO productResponseDto = GetProductMapper.modelToDto(product, pageOffOptionals);
         return ResponseEntity.ok(productResponseDto);
+    }
+
+    @GetMapping("/{productId}/quote")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Obtiene los datos de un producto para cotizar")
+    public ResponseEntity<QuoteProductResponse> getForQuote(@PathVariable Long productId) {
+        Product product = productService.findByIdWithinOptionals(productId);
+        return ResponseEntity.ok(QuoteProductMapper.toResponse(product));
     }
 
     @GetMapping("/{typeId}")

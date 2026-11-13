@@ -22,6 +22,8 @@ export type {
  * con los valores actuales. Cuando deja de estar completo, ejecuta `onClear`
  * para que quien usa el paso limpie los datos que hidratan el formulario.
  *
+ * El `form` solo se muestra cuando el filtro está completo.
+ *
  * `filter` y `form` se reciben ya armados, por lo que el paso no depende
  * de ningún formulario en particular.
  *
@@ -95,6 +97,7 @@ export const Step = ({
             {extraPosition === "before" && extra}
             {form}
             {extraPosition === "after" && extra}
+            {completo && form}
             {actionsPosition === "bottom" && actionsBlock}
         </>
     );

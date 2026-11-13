@@ -6,6 +6,7 @@ export interface FilterConfig {
 export interface StepFiltersState {
     config: FilterConfig[];
     values: Record<string, string>;
+    labels: Record<string, string>;
     completo: boolean;
 }
 
