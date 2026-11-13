@@ -47,16 +47,18 @@ export const useCotizador = (totalSteps: number) => {
         setAction(undefined);
     }, []);
 
-    const { handleCancel, handleStepClick, advertenceData } =
-        useStepNavigation({
+    const { handleCancel, handleStepClick, advertenceData } = useStepNavigation(
+        {
             currentStep,
             setCurrentStep,
             openNotify,
             closeNotify,
-        });
+        },
+    );
 
     return {
         currentStep,
+        setCurrentStep,
         handleStepClick,
         handleNext,
         nextDisabled: !formCompleto,
