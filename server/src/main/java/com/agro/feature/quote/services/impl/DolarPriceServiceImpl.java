@@ -19,7 +19,7 @@ public class DolarPriceServiceImpl implements DolarPriceService {
     }
 
     @Override
-    @Cacheable(cacheNames = CacheConfig.DOLAR_OFICIAL, sync = true)
+    @Cacheable(cacheNames = CacheConfig.DOLAR_OFICIAL, key = "'oficial'", sync = true)
     public BigDecimal get(Quote quote) {
         return client.getDolar(quote);
     }
