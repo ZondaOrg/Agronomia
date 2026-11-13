@@ -10,6 +10,7 @@ import com.agro.feature.product.services.ProductService;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.provider.domain.Provider;
 import com.agro.feature.quote.client.DolarPriceClient;
+import com.agro.feature.quote.domain.exceptions.NotDolarPrice;
 import com.agro.shared.service.ResetService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,51 @@ class QuoteControllerTest {
                 .andExpect(jsonPath("$.totalUsd").value(1310))
                 .andExpect(jsonPath("$.dolarPrice").value(1000))
                 .andExpect(jsonPath("$.listPriceArs").value(1000000));
+    }
+
+    @Test
+    @WithMockUser(roles = "DUENIO")
+    void testCalculateArsSiFallaElServicioExternoDelDolarResponde206ConElTotalEnDolares() throws Exception {
+        when(dolarPriceClient.getDolar(any()))
+                .thenThrow(new NotDolarPrice("No se pudo obtener el precio del dolar oficial", new BigDecimal("1310")));
+        TestFixtures.Tenant tenant = fixtures.tenant("Empresa 1", "30-11111111-1", "owner@gmail.com");
+        ProductType tractor = fixtures.defaultTypes(tenant.owner().getId()).get("Tractor");
+        Provider provider = fixtures.provider(tenant.company().getId());
+        Product added = productService.add(fixtures.product("Product 1", tractor.getId()), tractor.getId(), provider.getId());
+        productService.edit(added, Money.ARS, 1000d, IVA.GENERAL, 1, 100d, "", new ArrayList<>(), new ArrayList<>());
+
+        String body = """
+                {"productId": %d, "quantity": 1, "optionalIds": [], "includeFreight": true}
+                """.formatted(added.getId());
+
+        mockMvc.perform(post("/api/v1/quote/calculate-ars")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isPartialContent())
+                .andExpect(jsonPath("$.total").value(1310));
+    }
+
+    @Test
+    @WithMockUser(roles = "DUENIO")
+    void testCalculateArsManualResponde200ConLosTotalesCalculadosConElDolarIngresado() throws Exception {
+        TestFixtures.Tenant tenant = fixtures.tenant("Empresa 1", "30-11111111-1", "owner@gmail.com");
+        ProductType tractor = fixtures.defaultTypes(tenant.owner().getId()).get("Tractor");
+        Provider provider = fixtures.provider(tenant.company().getId());
+        Product added = productService.add(fixtures.product("Product 1", tractor.getId()), tractor.getId(), provider.getId());
+        productService.edit(added, Money.ARS, 1000d, IVA.GENERAL, 1, 100d, "", new ArrayList<>(), new ArrayList<>());
+
+        String body = """
+                {"productId": %d, "quantity": 1, "optionalIds": [], "includeFreight": true, "dolarPrice": 2000}
+                """.formatted(added.getId());
+
+        mockMvc.perform(post("/api/v1/quote/calculate-ars/manual")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalArs").value(2620000))
+                .andExpect(jsonPath("$.totalUsd").value(1310))
+                .andExpect(jsonPath("$.dolarPrice").value(2000))
+                .andExpect(jsonPath("$.listPriceArs").value(2000000));
     }
 
     @Test

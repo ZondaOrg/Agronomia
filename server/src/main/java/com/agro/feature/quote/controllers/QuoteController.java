@@ -5,6 +5,9 @@ import com.agro.feature.quote.domain.Quote;
 import com.agro.feature.quote.dtos.calculateArs.CalculateArsMapper;
 import com.agro.feature.quote.dtos.calculateArs.request.CalculateArsRequest;
 import com.agro.feature.quote.dtos.calculateArs.response.CalculateArsResponse;
+import com.agro.feature.quote.dtos.calculateArsManual.CalculateArsManualMapper;
+import com.agro.feature.quote.dtos.calculateArsManual.request.CalculateArsManualRequest;
+import com.agro.feature.quote.dtos.calculateArsManual.response.CalculateArsManualResponse;
 import com.agro.feature.quote.services.DolarPriceService;
 import com.agro.feature.quote.dtos.calculate.CalculateQuoteMapper;
 import com.agro.feature.quote.dtos.calculate.request.CalculateQuoteRequest;
@@ -45,6 +48,18 @@ public class QuoteController {
                 request.includeFreight());
         BigDecimal dolar = dolarPriceService.get(quote);
         return ResponseEntity.ok(CalculateArsMapper.toResponse(quote, dolar));
+    }
+
+    @PostMapping("/calculate-ars/manual")
+    @VendedorOrOwnerEndpoint
+    @Operation(summary = "Calcular el precio completo de la selección en pesos y en dólares con el dólar ingresado manualmente")
+    public ResponseEntity<CalculateArsManualResponse> calculateArsManual(@Valid @RequestBody CalculateArsManualRequest request) {
+        Quote quote = quoteService.calculate(
+                request.productId(),
+                request.quantity(),
+                request.optionalIds(),
+                request.includeFreight());
+        return ResponseEntity.ok(CalculateArsManualMapper.toResponse(quote, request.dolarPrice()));
     }
 
     @PostMapping("/calculate")
