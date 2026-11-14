@@ -6,6 +6,7 @@ import {
     type FieldValues,
     type Path,
     type DefaultValues,
+    type Control,
     type UseFormReturn,
 } from "react-hook-form";
 import {
@@ -37,6 +38,8 @@ export interface HydrationFormProps<TItem, TFormValues extends FieldValues> {
     form?: UseFormReturn<TFormValues>;
     error?: boolean;
     onValueChange?: (value: string | null) => void;
+    onValuesChange?: (values: TFormValues) => void;
+    renderAdditionalFields?: (control: Control<TFormValues>) => React.ReactNode;
     onReset?: () => void;
     saveNonce?: number;
     onSave?: (values: TFormValues) => void;
@@ -54,6 +57,8 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     defaultValues,
     form: externalForm,
     onValueChange,
+    onValuesChange,
+    renderAdditionalFields,
     saveNonce = 0,
     onSave,
 }: HydrationFormProps<TItem, TFormValues>) => {
@@ -63,14 +68,19 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
     });
     const { control, getValues } = externalForm ?? ownForm;
 
+    const formValues = useWatch({ control }) as TFormValues;
     const watched = useWatch({ control }) as TFormValues;
     const fieldValue = fieldName
-        ? ((watched[fieldName] as string | null | undefined) ?? null)
+        ? (watched[fieldName] as string | null | undefined) ?? null
         : null;
 
     useEffect(() => {
         if (fieldName) onValueChange?.(fieldValue);
     }, [fieldName, fieldValue, onValueChange]);
+
+    useEffect(() => {
+        onValuesChange?.(formValues);
+    }, [formValues, onValuesChange]);
 
     const lastSave = useRef(saveNonce);
     useEffect(() => {
@@ -93,21 +103,22 @@ export const HydrationForm = <TItem, TFormValues extends FieldValues>({
                 ) : (
                     fieldName &&
                     Input && (
-                    <Controller
-                        name={fieldName}
-                        control={control}
-                        render={({ field }) => (
-                            <Input
-                                items={items}
-                                value={field.value}
-                                onChange={field.onChange}
-                                error={error}
-                            />
-                        )}
-                    />
+                        <Controller
+                            name={fieldName}
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    items={items}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={error}
+                                />
+                            )}
+                        />
                     )
                 )}
             </div>
+            {renderAdditionalFields?.(control)}
         </form>
     );
 };

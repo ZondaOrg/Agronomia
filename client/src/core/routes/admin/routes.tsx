@@ -169,9 +169,14 @@ export const AdminRoutes: RouteData[] = [
                         element: <CotizarPanel />,
                     },
                     {
-                        path: "nuevo-cliente",
+                        path: ADMIN_ROUTES.COTIZAR.ADD_CLIENT,
                         element: <AddClient />,
                         handle: { breadcrumb: "Nuevo Cliente" },
+                    },
+                    {
+                        path: "nueva-forma-pago/:providerId",
+                        element: <VigentPaymentPage />,
+                        handle: { breadcrumb: "Forma de Pago" },
                     },
                 ],
             },

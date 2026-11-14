@@ -14,25 +14,36 @@ export type FilterValues = Record<string, string>;
  */
 export type ActionsPosition = "top" | "aside" | "between" | "bottom";
 
+export type ExtraPosition = "before" | "after";
+
 /** Propiedades del componente `Step`. */
 export interface StepProps {
     /** Id del paso en el slice `filterChain`. Debe coincidir con el del filtro. */
     stepId: string;
 
+    /** Título que se muestra al inicio del paso. */
+    title?: string;
+
     /** Filtro del paso. */
-    filter: ReactNode;
+    filter?: ReactNode;
 
     /**
      * Formulario que muestra los resultados del paso (por ejemplo, un
      * `HydrationForm` ya configurado).
      */
-    form: ReactNode;
+    form?: ReactNode;
+
+    /** Contenido adicional que se renderiza debajo del formulario. */
+    extra?: ReactNode;
+
+    /** Posición del contenido adicional respecto del formulario. */
+    extraPosition?: ExtraPosition;
 
     /**
      * Se ejecuta con los valores del filtro cuando está completo.
      * Debe tener una referencia estable.
      */
-    service: (values: FilterValues) => void;
+    service?: (values: FilterValues) => void;
 
     /**
      * Se ejecuta cuando el filtro deja de estar completo (y al montar, si

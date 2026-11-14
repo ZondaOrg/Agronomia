@@ -25,7 +25,7 @@ export const subtitle = css({
 
 export const border = css({
     width: "100%",
-    borderColor: token("borders.borderColor.line"),
+    borderColor: token("colors.borderLine"),
 });
 
 export const formContainer = css({

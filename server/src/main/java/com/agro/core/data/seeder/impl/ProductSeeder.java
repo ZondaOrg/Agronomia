@@ -4,7 +4,9 @@ import com.agro.core.data.seeder.EntitySeeder;
 import com.agro.core.data.seeder.entity.SeedContext;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
+import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.persistence.dao.OptionalDAO;
 import com.agro.feature.product.services.ProductService;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.productType.services.ProductTypeService;
@@ -27,15 +29,18 @@ public class ProductSeeder implements EntitySeeder {
     private final ProductService productService;
     private final ProviderService providerService;
     private final ProductTypeService productTypeService;
+    private final OptionalDAO optionalDAO;
 
     public ProductSeeder(
             ProductService productService,
             ProviderService providerService,
-            ProductTypeService productTypeService
+            ProductTypeService productTypeService,
+            OptionalDAO optionalDAO
     ) {
         this.productService = productService;
         this.providerService = providerService;
         this.productTypeService = productTypeService;
+        this.optionalDAO = optionalDAO;
     }
 
     @Override
@@ -78,8 +83,35 @@ public class ProductSeeder implements EntitySeeder {
             if (typeId == null) {
                 throw new IllegalStateException("No existe el ProductType: " + spec.typeName());
             }
-            productService.add(spec.toProduct(typeId), typeId, provider.getId());
+            Product saved = productService.add(spec.toProduct(typeId), typeId, provider.getId());
+            saveOptionals(saved, spec.name());
         });
+    }
+
+    private void saveOptionals(Product product, String productName) {
+        optionalSpecsFor(productName).forEach(o ->
+                optionalDAO.save(new Optional(product, o.name(), o.price())));
+    }
+
+    private List<OptionalSpec> optionalSpecsFor(String productName) {
+        return switch (productName) {
+            case "Tractorzote" -> List.of(
+                    new OptionalSpec("Cabina con aire acondicionado", 1500D),
+                    new OptionalSpec("Contrapesos delanteros", 400D),
+                    new OptionalSpec("GPS de guiado", 900D));
+            case "Tractocito" -> List.of(
+                    new OptionalSpec("Cabina simple", 300D),
+                    new OptionalSpec("Luces LED", 80D));
+            case "Camioncito", "Camionzote" -> List.of(
+                    new OptionalSpec("Lona cobertora", 120D),
+                    new OptionalSpec("Balanza integrada", 350D));
+            case "Desmalezadora 1", "Desmalezadora 2" -> List.of(
+                    new OptionalSpec("Cuchillas de repuesto", 60D));
+            case "Palota", "PalotITA" -> List.of(
+                    new OptionalSpec("Mango reforzado", 40D),
+                    new OptionalSpec("Funda protectora", 15D));
+            default -> List.of();
+        };
     }
 
     private List<ProductSpec> baseSpecs() {
@@ -99,6 +131,8 @@ public class ProductSeeder implements EntitySeeder {
                 new ProductSpec("PalotITA", "Pala para salir a laburar poco", Money.ARS, 800D, IVA.GENERAL, "Pala", 50, 60D)
         );
     }
+
+    private record OptionalSpec(String name, Double price) {}
 
     private record ProductSpec(
             String name,

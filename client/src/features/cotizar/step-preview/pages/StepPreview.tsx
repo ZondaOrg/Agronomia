@@ -19,6 +19,7 @@ export const StepPreview = ({ stepId }: StepPreviewProps) => {
     return (
         <Step
             stepId={stepId}
+            title="Vista previa"
             filter={<div>{/* Coloca aquí tu componente de filtro */}</div>}
             form={
                 <div>

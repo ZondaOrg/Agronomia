@@ -31,7 +31,7 @@ public class Payment {
     private double bonusPercentage;
 
     @ManyToOne
-    @JoinColumn(name = "vigentePayments_id")
+    @JoinColumn(name = "vigente_payments_id")
     private VigentePayment vigentePayment;
 
     @Builder.Default

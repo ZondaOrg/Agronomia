@@ -5,9 +5,15 @@ import com.agro.feature.branch.persistence.BranchDAO;
 import com.agro.feature.company.domain.Company;
 import com.agro.feature.company.service.CompanyService;
 import com.agro.feature.image.domain.Imagen;
+import com.agro.feature.payment.contracts.VigentesPaymentDataService;
+import com.agro.feature.payment.domain.Application;
+import com.agro.feature.payment.domain.Payment;
+import com.agro.feature.payment.domain.VigentePayment;
 import com.agro.feature.product.domain.IVA;
 import com.agro.feature.product.domain.Money;
+import com.agro.feature.product.domain.Optional;
 import com.agro.feature.product.domain.Product;
+import com.agro.feature.product.persistence.dao.OptionalDAO;
 import com.agro.feature.productType.domain.ProductType;
 import com.agro.feature.productType.services.ProductTypeService;
 import com.agro.feature.provider.domain.Provider;
@@ -33,19 +39,25 @@ public class TestFixtures {
     private final RegisterOrchestrator orchestrator;
     private final ProductTypeService productTypeService;
     private final ProviderService providerService;
+    private final OptionalDAO optionalDAO;
+    private final VigentesPaymentDataService vigentesPaymentDataService;
 
     public TestFixtures(
             BranchDAO branchDAO,
             CompanyService companyService,
             RegisterOrchestrator orchestrator,
             ProductTypeService productTypeService,
-            ProviderService providerService
+            ProviderService providerService,
+            OptionalDAO optionalDAO,
+            VigentesPaymentDataService vigentesPaymentDataService
     ) {
         this.branchDAO = branchDAO;
         this.companyService = companyService;
         this.orchestrator = orchestrator;
         this.productTypeService = productTypeService;
         this.providerService = providerService;
+        this.optionalDAO = optionalDAO;
+        this.vigentesPaymentDataService = vigentesPaymentDataService;
     }
 
     /** Empresa + sucursal + owner ya registrados. */
@@ -132,5 +144,38 @@ public class TestFixtures {
 
     public Product product(String name, Long typeId) {
         return new Product(name, "product nss", Money.ARS, 10000000d, IVA.GENERAL, typeId, 20);
+    }
+
+    /** Crea y persiste un opcional de un producto ya guardado. */
+    public Optional optional(Product product, String name, Double price) {
+        return optionalDAO.save(new Optional(product, name, price));
+    }
+
+    /** Opcional con precio por defecto. */
+    public Optional optional(Product product, String name) {
+        return optional(product, name, 1000d);
+    }
+
+    /** Crea y persiste varios opcionales para el producto, en el orden dado. */
+    public List<Optional> optionals(Product product, String... names) {
+        return Arrays.stream(names).map(n -> optional(product, n)).toList();
+    }
+
+    /** Crea y persiste los pagos vigentes del proveedor, uno por descripción. */
+    public VigentePayment vigentePayment(Long providerId, String... descriptions) {
+        VigentePayment model = VigentePayment.builder()
+                .nameList("Lista test")
+                .build();
+
+        for (String description : descriptions) {
+            model.getPayments().add(Payment.builder()
+                    .description(description)
+                    .application(Application.values()[0])
+                    .percentage(10d)
+                    .bonusPercentage(5d)
+                    .vigentePayment(model)
+                    .build());
+        }
+        return vigentesPaymentDataService.createVigentePayment(model, providerId);
     }
 }

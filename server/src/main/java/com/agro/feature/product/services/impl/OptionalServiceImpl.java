@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class OptionalServiceImpl implements OptionalService {
@@ -21,5 +23,10 @@ public class OptionalServiceImpl implements OptionalService {
     @Override
     public Page<Optional> getPagesOffOptionals(Long idProduct, Integer page, Integer size) {
         return dao.findByProductId(idProduct, PageRequest.of(page, size));
+    }
+
+    @Override
+    public List<String> getOptionalsById(List<Long> idsOptionals) {
+        return dao.findAllNamesById(idsOptionals);
     }
 }
