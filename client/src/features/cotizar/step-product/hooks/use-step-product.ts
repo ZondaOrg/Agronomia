@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import type { Money } from "@/shared/domain/money/money";
 import { useAppSelector } from "@/core/store/hooks";
 import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 import { selectFormValores } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import type { StepProductValues } from "../domain/step-product-values";
+import { isValidDolarPrice } from "../domain/dolar-price";
 import { PRODUCT } from "../components/filter/types/inputs";
 import {
     DEFAULT_UNIDADES,
@@ -37,7 +39,28 @@ export const useStepProduct = (stepId: string) => {
     });
     const { control, setValue } = form;
 
-    // Al cambiar de producto se descarta la moneda y el flete elegidos.
+    const [unidades, flete, opcionales] = useWatch({
+        control,
+        name: ["unidades", "flete", "opcionales"],
+    });
+
+    const {
+        detail,
+        total,
+        ars,
+        arsLoading,
+        loading,
+        requestOfficial,
+        requestManual,
+        requestNative,
+    } = useProductQuote(
+        productId,
+        unidades ?? null,
+        flete ?? null,
+        opcionales ?? [],
+    );
+
+    // Al cambiar de producto se descarta la moneda, el flete y el modo de cálculo.
     const lastProductId = useRef(productId);
     useEffect(() => {
         if (lastProductId.current === productId) return;
@@ -46,18 +69,23 @@ export const useStepProduct = (stepId: string) => {
         setValue("moneda", null);
         setValue("flete", null);
         setValue("opcionales", []);
-    }, [productId, setValue]);
+        requestNative();
+    }, [productId, setValue, requestNative]);
 
-    const [unidades, flete, opcionales] = useWatch({
-        control,
-        name: ["unidades", "flete", "opcionales"],
-    });
+    const onSelectMoneda = useCallback(
+        (moneda: keyof Money | null) => {
+            setValue("moneda", moneda);
+            if (moneda === "ARS") requestOfficial();
+            else requestNative();
+        },
+        [setValue, requestOfficial, requestNative],
+    );
 
-    const { detail, total, loading } = useProductQuote(
-        productId,
-        unidades ?? null,
-        flete ?? null,
-        opcionales ?? [],
+    const onApplyDolar = useCallback(
+        (dolarPrice: number) => {
+            if (isValidDolarPrice(dolarPrice)) requestManual(dolarPrice);
+        },
+        [requestManual],
     );
 
     const listMoney = detail?.money;
@@ -65,5 +93,14 @@ export const useStepProduct = (stepId: string) => {
         if (listMoney === "ARS") setValue("moneda", "ARS");
     }, [listMoney, detail?.id, setValue]);
 
-    return { form, detail, total, loading };
+    return {
+        form,
+        detail,
+        total,
+        ars,
+        arsLoading,
+        loading,
+        onSelectMoneda,
+        onApplyDolar,
+    };
 };
