@@ -2,7 +2,7 @@ import { ivaPorcents, Iva } from "@/shared/domain/iva/iva";
 import type { Money } from "@/shared/domain/money/money";
 import { styles } from "./styles";
 
-const IVA_LABEL: Record<Iva, (typeof ivaPorcents)[number]> = {
+export const IVA_LABEL: Record<Iva, (typeof ivaPorcents)[number]> = {
     GENERAL: "21%",
     REDUCIDA: "10,5%",
 };
