@@ -10,8 +10,8 @@ import org.springframework.web.client.RestClient;
 public class DolarApiConfig {
 
     @Bean
-    RestClient dolarApi(RestClient.Builder builder) {
-        return builder
+    RestClient dolarApi() {
+        return RestClient.builder()
                 .baseUrl("https://dolarapi.com/v1")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();

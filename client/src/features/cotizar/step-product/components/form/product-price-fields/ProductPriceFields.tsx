@@ -2,7 +2,8 @@ import { ivaPorcents, Iva } from "@/shared/domain/iva/iva";
 import type { Money } from "@/shared/domain/money/money";
 import { styles } from "./styles";
 
-const IVA_LABEL: Record<Iva, (typeof ivaPorcents)[number]> = {
+// eslint-disable-next-line react-refresh/only-export-components
+export const IVA_LABEL: Record<Iva, (typeof ivaPorcents)[number]> = {
     GENERAL: "21%",
     REDUCIDA: "10,5%",
 };
