@@ -6,7 +6,7 @@ import type { ArsQuoteResult } from "../domain/ars-quote";
 import type { QuoteSelection } from "../domain/quote-selection";
 import type { ManualQuoteSelection } from "../domain/manual-quote-selection";
 
-export const useCalculateArs = () => {
+export const useCalculateConvert = () => {
     const { data, isLoading, execute, refresh } = useFetch<ArsQuoteResult>();
 
     const calculate = useCallback(

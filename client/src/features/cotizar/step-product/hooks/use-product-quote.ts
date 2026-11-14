@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Freight } from "../domain/freight";
 import type { QuoteMode } from "../types/quote-mode";
-import { useQuoteProduct } from "./use-quote-product";
+import { useGetProductQuote } from "./use-get-product-quote";
 import { useCalculateByMode } from "./use-calculate-by-mode";
 
 export const isValidQuantity = (q: number | null): q is number =>
@@ -14,24 +14,16 @@ export const useProductQuote = (
     freight: Freight | null,
     optionalIds: number[],
 ) => {
-    const quoteProduct = useQuoteProduct();
+    const { detail, loading: productLoading } = useGetProductQuote(productId);
     const [mode, setMode] = useState<QuoteMode>({ kind: "NATIVE" });
-    const quote = useCalculateByMode(mode);
-    const [calcProductId, setCalcProductId] = useState<number>();
-
-    const { get } = quoteProduct;
-    const { calculate, resetArs } = quote;
-
-    const detail =
-        quoteProduct.data && String(quoteProduct.data.id) === productId
-            ? quoteProduct.data
-            : undefined;
-    const total =
-        detail && calcProductId === detail.id ? quote.total : null;
-
-    useEffect(() => {
-        if (productId) get(Number(productId));
-    }, [productId, get]);
+    const {
+        calculate,
+        total,
+        ars,
+        arsLoading,
+        loading: calcLoading,
+        resetArs,
+    } = useCalculateByMode(mode, detail?.id);
 
     useEffect(() => {
         if (!detail || !isValidQuantity(quantity)) return;
@@ -40,9 +32,7 @@ export const useProductQuote = (
             quantity,
             optionalIds,
             includeFreight: freight === "INCLUDED",
-        })
-            .then(() => setCalcProductId(detail.id))
-            .catch(() => undefined);
+        }).catch(() => undefined);
     }, [detail, quantity, freight, optionalIds, calculate]);
 
     const requestOfficial = useCallback(
@@ -61,11 +51,11 @@ export const useProductQuote = (
     return {
         detail,
         total,
-        ars: quote.ars,
-        arsLoading: quote.arsLoading,
+        ars,
+        arsLoading,
         requestOfficial,
         requestManual,
         requestNative,
-        loading: quoteProduct.loading || quote.loading,
+        loading: productLoading || calcLoading,
     };
 };

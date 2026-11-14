@@ -1,13 +1,17 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import type { ProductTotal } from "../domain/product-total";
 import type { QuoteSelection } from "../domain/quote-selection";
 import type { QuoteMode } from "../types/quote-mode";
-import { useCalculateArs } from "./use-calculate-ars";
+import { useCalculateConvert } from "./use-calculate-convert";
 import { useCalculateQuote } from "./use-calculate-quote";
 
-export const useCalculateByMode = (mode: QuoteMode) => {
+export const useCalculateByMode = (
+    mode: QuoteMode,
+    productId: number | undefined,
+) => {
     const usd = useCalculateQuote();
-    const ars = useCalculateArs();
+    const ars = useCalculateConvert();
+    const [calcProductId, setCalcProductId] = useState<number>();
 
     const { calculate: calculateUsd } = usd;
     const {
@@ -16,7 +20,7 @@ export const useCalculateByMode = (mode: QuoteMode) => {
         reset: resetArs,
     } = ars;
 
-    const calculate = useCallback(
+    const request = useCallback(
         (selection: QuoteSelection) => {
             switch (mode.kind) {
                 case "OFFICIAL":
@@ -33,7 +37,17 @@ export const useCalculateByMode = (mode: QuoteMode) => {
         [mode, calculateUsd, calculateOfficial, calculateManual],
     );
 
+    const calculate = useCallback(
+        async (selection: QuoteSelection) => {
+            const result = await request(selection);
+            setCalcProductId(selection.productId);
+            return result;
+        },
+        [request],
+    );
+
     const total = ((): ProductTotal | null => {
+        if (productId === undefined || calcProductId !== productId) return null;
         if (mode.kind === "NATIVE") {
             return usd.data ? { kind: "unique", total: usd.data.total } : null;
         }
