@@ -9,22 +9,40 @@ import {
     setEstadoForm,
 } from "@/features/cotizar/store/hidratationForm/hidratation-form.slice";
 import { selectGuardadoNonce } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
+import type { Money } from "@/shared/domain/money/money";
+import type { ArsQuoteResult } from "../../domain/ars-quote";
+import { getStepAmount, type ProductTotal } from "../../domain/product-total";
 import type { QuoteProduct } from "../../domain/quote-product";
 import type { StepProductValues } from "../../domain/step-product-values";
-import { ProductForm } from "./product-form/ProductForm";
+import { ArsProductForm } from "./ars-product-form/ArsProductForm";
+import { UsdProductForm } from "./usd-product-form/UsdProductForm";
 import { stepProductSchema, type StepProductFormValues } from "./product-schema";
 
 interface FormProductProps {
     stepId: string;
     form: UseFormReturn<StepProductFormValues>;
     detail: QuoteProduct | undefined;
-    total: number | null;
+    total: ProductTotal | null;
+    ars: ArsQuoteResult | undefined;
+    arsLoading: boolean;
+    onSelectMoneda: (moneda: keyof Money | null) => void;
+    onApplyDolar: (dolarPrice: number) => void;
 }
 
-export const FormProduct = ({ stepId, form, detail, total }: FormProductProps) => {
+export const FormProduct = ({
+    stepId,
+    form,
+    detail,
+    total,
+    ars,
+    arsLoading,
+    onSelectMoneda,
+    onApplyDolar,
+}: FormProductProps) => {
     const dispatch = useAppDispatch();
     const saveNonce = useAppSelector((s) => selectGuardadoNonce(s, stepId));
     const values = useWatch({ control: form.control });
+    const amount = getStepAmount(total);
 
     useEffect(() => {
         dispatch(
@@ -43,16 +61,16 @@ export const FormProduct = ({ stepId, form, detail, total }: FormProductProps) =
         dispatch(
             setEstadoForm({
                 stepId,
-                formCompleto: formCompleto && total !== null,
+                formCompleto: formCompleto && amount !== null,
                 camposFaltantes,
             }),
         );
-    }, [dispatch, stepId, values, total]);
+    }, [dispatch, stepId, values, amount]);
 
     const onSave = useCallback(
         (current: StepProductFormValues) => {
             const parsed = stepProductSchema.safeParse(current);
-            if (!parsed.success || total === null) return;
+            if (!parsed.success || amount === null) return;
             const { producto, unidades, moneda, flete } = parsed.data;
             const valores: StepProductValues = {
                 producto,
@@ -60,11 +78,11 @@ export const FormProduct = ({ stepId, form, detail, total }: FormProductProps) =
                 moneda,
                 flete,
                 opcionales: current.opcionales,
-                total,
+                total: amount,
             };
             dispatch(guardarValores({ stepId, valores: { ...valores } }));
         },
-        [dispatch, stepId, total],
+        [dispatch, stepId, amount],
     );
 
     return (
@@ -74,7 +92,23 @@ export const FormProduct = ({ stepId, form, detail, total }: FormProductProps) =
             saveNonce={saveNonce}
             onSave={onSave}
         >
-            <ProductForm control={form.control} detail={detail} total={total} />
+            {detail?.money === "USD" ? (
+                <UsdProductForm
+                    control={form.control}
+                    detail={detail}
+                    total={total}
+                    ars={ars}
+                    arsLoading={arsLoading}
+                    onSelectMoneda={onSelectMoneda}
+                    onApplyDolar={onApplyDolar}
+                />
+            ) : (
+                <ArsProductForm
+                    control={form.control}
+                    detail={detail}
+                    total={total}
+                />
+            )}
         </HydrationForm>
     );
 };

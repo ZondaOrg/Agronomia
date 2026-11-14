@@ -99,6 +99,10 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
                     form={product.form}
                     detail={product.detail}
                     total={product.total}
+                    ars={product.ars}
+                    arsLoading={product.arsLoading}
+                    onSelectMoneda={product.onSelectMoneda}
+                    onApplyDolar={product.onApplyDolar}
                 />
             }
             service={handleSearch}

@@ -1,47 +1,84 @@
 import { Controller, useWatch, type Control } from "react-hook-form";
+import type { Money } from "@/shared/domain/money/money";
+import type { ArsQuoteResult } from "../../../domain/ars-quote";
+import { getDolarStatus } from "../../../domain/dolar-status";
+import type { ProductTotal } from "../../../domain/product-total";
 import type { QuoteProduct } from "../../../domain/quote-product";
-import { CurrencyReadOnly } from "../currency-read-only/CurrencyReadOnly";
+import { ArsReadOnlyFields } from "../ars-read-only-fields/ArsReadOnlyFields";
 import { CurrencySelect } from "../currency-select/CurrencySelect";
+import { DolarPriceField } from "../dolar-price-field/DolarPriceField";
+import { DolarStatus } from "../dolar-status/DolarStatus";
 import { FreightSelector } from "../freight-selector/FreightSelector";
 import { OptionalsSelector } from "../optionals-selector/OptionalsSelector";
 import { ProductPriceFields } from "../product-price-fields/ProductPriceFields";
-import { TotalPrice } from "../total-price/TotalPrice";
-import { form } from "./styles";
 import type { StepProductFormValues } from "../product-schema";
+import { TotalPrice } from "../total-price/TotalPrice";
+import { currencyRow, form } from "./styles";
 
-interface ProductFormProps {
+interface UsdProductFormProps {
     control: Control<StepProductFormValues>;
     detail: QuoteProduct | undefined;
-    total: number | null;
+    total: ProductTotal | null;
+    ars: ArsQuoteResult | undefined;
+    arsLoading: boolean;
+    onSelectMoneda: (moneda: keyof Money | null) => void;
+    onApplyDolar: (dolarPrice: number) => void;
 }
 
-export const ProductForm = ({ control, detail, total }: ProductFormProps) => {
-    const selectedMoneda = useWatch({ control, name: "moneda" });
-    const isArs = detail?.money === "ARS";
-    const moneda = isArs ? "ARS" : selectedMoneda;
+export const UsdProductForm = ({
+    control,
+    detail,
+    total,
+    ars,
+    arsLoading,
+    onSelectMoneda,
+    onApplyDolar,
+}: UsdProductFormProps) => {
+    const moneda = useWatch({ control, name: "moneda" });
+    const official = ars?.source === "OFFICIAL" ? ars : undefined;
+    const status = getDolarStatus(arsLoading, ars);
 
     return (
         <div className={form}>
-            {detail &&
-                (isArs ? (
-                    <CurrencyReadOnly />
-                ) : (
+            {detail && (
+                <div className={currencyRow}>
                     <Controller
                         name="moneda"
                         control={control}
                         render={({ field }) => (
                             <CurrencySelect
                                 value={field.value}
-                                onChange={field.onChange}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    onSelectMoneda(value);
+                                }}
                             />
                         )}
                     />
-                ))}
-            {detail && moneda && (
+                    {moneda === "ARS" && (
+                        <>
+                            <DolarPriceField
+                                value={official?.dolarPrice ?? null}
+                                editable={status === "MANUAL"}
+                                onApply={onApplyDolar}
+                            />
+                            <DolarStatus status={status} />
+                        </>
+                    )}
+                </div>
+            )}
+            {detail && moneda === "USD" && (
                 <ProductPriceFields
                     listPrice={detail.listPrice}
                     iva={detail.iva}
                     moneda={moneda}
+                />
+            )}
+            {detail && moneda === "ARS" && (
+                <ArsReadOnlyFields
+                    listPriceUsd={detail.listPrice}
+                    listPriceArs={official?.listPriceArs ?? null}
+                    iva={detail.iva}
                 />
             )}
             <Controller

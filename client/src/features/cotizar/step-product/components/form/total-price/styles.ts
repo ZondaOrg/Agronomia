@@ -2,7 +2,14 @@ import { sva } from "@styled-system/css";
 import { token } from "@styled-system/tokens";
 
 export const styles = sva({
-    slots: ["total", "totalLabel", "totalValueRow", "totalValue", "totalCurrency"],
+    slots: [
+        "total",
+        "totalLabel",
+        "totalValueRow",
+        "totalValue",
+        "totalCurrency",
+        "totalSecondary",
+    ],
     base: {
         total: {
             display: "flex",
@@ -31,6 +38,11 @@ export const styles = sva({
             color: token("colors.textSubtle"),
             fontSize: "32px",
             fontWeight: "bold",
+        },
+        totalSecondary: {
+            color: token("colors.textSubtle"),
+            fontSize: "md",
+            fontWeight: "medium",
         },
     },
 });

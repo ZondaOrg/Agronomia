@@ -13,7 +13,7 @@ export const styles = sva({
     base: {
         row: {
             display: "grid",
-            gridTemplateColumns: { base: "1fr", md: "1fr 1fr" },
+            gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
             gap: "4",
         },
         field: {
