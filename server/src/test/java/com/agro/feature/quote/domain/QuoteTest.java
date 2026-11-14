@@ -85,4 +85,34 @@ class QuoteTest {
 
         assertEquals(0, new BigDecimal("243").compareTo(quote.getTotal()));
     }
+
+    @Test
+    void testElTotalEnPesosNoSeCalculaAPartirDelTotalEnDolaresRedondeado() {
+        Quote quote = new Quote(new BigDecimal("108.01"), BigDecimal.ZERO, BigDecimal.ZERO, List.of(), 1);
+        quote.setStrategy(new UsdToArsStrategy(new BigDecimal("1000")));
+
+        assertEquals(0, new BigDecimal("108010").compareTo(quote.getTotal()));
+    }
+
+    @Test
+    void testToArsConUnDolarIgualACeroLanzaNegativeAmountException() {
+        Quote quote = new Quote(new BigDecimal("1000"), new BigDecimal("0.21"), BigDecimal.ZERO, List.of(), 1);
+
+        assertThrows(NegativeAmountException.class, () -> quote.toArs(BigDecimal.ZERO));
+    }
+
+    @Test
+    void testToArsConUnDolarNegativoLanzaNegativeAmountException() {
+        Quote quote = new Quote(new BigDecimal("1000"), new BigDecimal("0.21"), BigDecimal.ZERO, List.of(), 1);
+
+        assertThrows(NegativeAmountException.class, () -> quote.toArs(new BigDecimal("-1")));
+    }
+
+    @Test
+    void testToArsConvierteElPrecioDeListaAPesosSinIvaNiOpcionalesNiFlete() {
+        Quote quote = new Quote(new BigDecimal("100.50"), new BigDecimal("0.21"), new BigDecimal("10"),
+                List.of(new BigDecimal("20")), 3);
+
+        assertEquals(0, new BigDecimal("100500").compareTo(quote.toArs(new BigDecimal("1000"))));
+    }
 }
