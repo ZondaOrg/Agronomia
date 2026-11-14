@@ -4,7 +4,7 @@ export const styles = sva({
     slots: ["wrapper", "field", "label", "control"],
     base: {
         wrapper: {
-            width: "25%",
+            width: "36.5%",
         },
         field: {
             display: "flex",

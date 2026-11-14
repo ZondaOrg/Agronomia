@@ -6,3 +6,13 @@ export const form = css({
     gap: "4",
     width: "100%",
 });
+
+export const currencyRow = css({
+    display: "flex",
+    alignItems: "flex-end",
+    gap: "4",
+});
+
+export const dolarField = css({
+    width: "36.5%",
+});

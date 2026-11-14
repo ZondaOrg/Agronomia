@@ -6,12 +6,14 @@ import type { ProductTotal } from "../../../domain/product-total";
 import type { QuoteProduct } from "../../../domain/quote-product";
 import { ArsReadOnlyFields } from "../ars-read-only-fields/ArsReadOnlyFields";
 import { CurrencySelect } from "../currency-select/CurrencySelect";
+import { DolarPriceField } from "../dolar-price-field/DolarPriceField";
+import { DolarStatus } from "../dolar-status/DolarStatus";
 import { FreightSelector } from "../freight-selector/FreightSelector";
 import { OptionalsSelector } from "../optionals-selector/OptionalsSelector";
 import { ProductPriceFields } from "../product-price-fields/ProductPriceFields";
 import type { StepProductFormValues } from "../product-schema";
 import { TotalPrice } from "../total-price/TotalPrice";
-import { form } from "./styles";
+import { currencyRow, dolarField, form } from "./styles";
 
 interface UsdProductFormProps {
     control: Control<StepProductFormValues>;
@@ -34,23 +36,38 @@ export const UsdProductForm = ({
 }: UsdProductFormProps) => {
     const moneda = useWatch({ control, name: "moneda" });
     const official = ars?.source === "OFFICIAL" ? ars : undefined;
+    const status = getDolarStatus(arsLoading, ars);
 
     return (
         <div className={form}>
             {detail && (
-                <Controller
-                    name="moneda"
-                    control={control}
-                    render={({ field }) => (
-                        <CurrencySelect
-                            value={field.value}
-                            onChange={(value) => {
-                                field.onChange(value);
-                                onSelectMoneda(value);
-                            }}
-                        />
+                <div className={currencyRow}>
+                    <Controller
+                        name="moneda"
+                        control={control}
+                        render={({ field }) => (
+                            <CurrencySelect
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    onSelectMoneda(value);
+                                }}
+                            />
+                        )}
+                    />
+                    {moneda === "ARS" && (
+                        <>
+                            <div className={dolarField}>
+                                <DolarPriceField
+                                    value={official?.dolarPrice ?? null}
+                                    editable={status === "MANUAL"}
+                                    onApply={onApplyDolar}
+                                />
+                            </div>
+                            <DolarStatus status={status} />
+                        </>
                     )}
-                />
+                </div>
             )}
             {detail && moneda === "USD" && (
                 <ProductPriceFields
@@ -64,9 +81,6 @@ export const UsdProductForm = ({
                     listPriceUsd={detail.listPrice}
                     listPriceArs={official?.listPriceArs ?? null}
                     iva={detail.iva}
-                    dolarPrice={official?.dolarPrice ?? null}
-                    status={getDolarStatus(arsLoading, ars)}
-                    onApply={onApplyDolar}
                 />
             )}
             <Controller

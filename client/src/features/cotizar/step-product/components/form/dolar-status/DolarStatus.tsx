@@ -1,3 +1,4 @@
+import { SuccessIcon } from "@/shared/components/icon/components/icons/Success";
 import Spinner from "@/shared/components/spinner/Spinner";
 import type { DolarStatus as DolarStatusType } from "../../../domain/dolar-status";
 import { styles } from "./styles";
@@ -7,7 +8,7 @@ interface DolarStatusProps {
 }
 
 export const DolarStatus = ({ status }: DolarStatusProps) => {
-    const { wrapper, obtained } = styles();
+    const { wrapper, icon, obtained } = styles();
 
     if (status === "MANUAL") return null;
 
@@ -16,7 +17,10 @@ export const DolarStatus = ({ status }: DolarStatusProps) => {
             {status === "LOADING" ? (
                 <Spinner size="sm" />
             ) : (
-                <span className={obtained}>Valor obtenido</span>
+                <>
+                    <SuccessIcon className={icon} />
+                    <span className={obtained}>Valor obtenido</span>
+                </>
             )}
         </div>
     );
