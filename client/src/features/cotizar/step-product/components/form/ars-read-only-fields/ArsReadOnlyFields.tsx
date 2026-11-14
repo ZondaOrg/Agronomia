@@ -2,10 +2,8 @@ import type { Iva } from "@/shared/domain/iva/iva";
 import type { DolarStatus as DolarStatusType } from "../../../domain/dolar-status";
 import { DolarPriceField } from "../dolar-price-field/DolarPriceField";
 import { DolarStatus } from "../dolar-status/DolarStatus";
-import {
-    IVA_LABEL,
-} from "../product-price-fields/ProductPriceFields";
-import { styles as priceStyles } from "../product-price-fields/styles";
+import { ReadOnlyField } from "../read-only-field/ReadOnlyField";
+import { getReadOnlyFields } from "./types/read-only-fields";
 import { styles } from "./styles";
 
 interface ArsReadOnlyFieldsProps {
@@ -26,8 +24,7 @@ export const ArsReadOnlyFields = ({
     onApply,
 }: ArsReadOnlyFieldsProps) => {
     const { wrapper, dolarRow, priceRow } = styles();
-    const { field, label, controlWithCurrency, control, currencySuffix } =
-        priceStyles();
+    const fields = getReadOnlyFields({ listPriceUsd, listPriceArs, iva });
 
     return (
         <div className={wrapper}>
@@ -40,36 +37,9 @@ export const ArsReadOnlyFields = ({
                 <DolarStatus status={status} />
             </div>
             <div className={priceRow}>
-                <label className={field}>
-                    <span className={label}>Precio de lista</span>
-                    <div className={controlWithCurrency}>
-                        <input
-                            className={control}
-                            readOnly
-                            value={listPriceUsd.toLocaleString("es-AR")}
-                        />
-                        <span className={currencySuffix}>USD</span>
-                    </div>
-                </label>
-                <label className={field}>
-                    <span className={label}>Precio de lista en pesos</span>
-                    <div className={controlWithCurrency}>
-                        <input
-                            className={control}
-                            readOnly
-                            value={listPriceArs?.toLocaleString("es-AR") ?? ""}
-                        />
-                        <span className={currencySuffix}>ARS</span>
-                    </div>
-                </label>
-                <label className={field}>
-                    <span className={label}>IVA</span>
-                    <input
-                        className={control}
-                        readOnly
-                        value={IVA_LABEL[iva]}
-                    />
-                </label>
+                {fields.map((field) => (
+                    <ReadOnlyField key={field.label} {...field} />
+                ))}
             </div>
         </div>
     );
