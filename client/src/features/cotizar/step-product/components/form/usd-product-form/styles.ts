@@ -8,11 +8,8 @@ export const form = css({
 });
 
 export const currencyRow = css({
-    display: "flex",
-    alignItems: "flex-end",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
+    alignItems: "end",
     gap: "4",
-});
-
-export const dolarField = css({
-    width: "36.5%",
 });

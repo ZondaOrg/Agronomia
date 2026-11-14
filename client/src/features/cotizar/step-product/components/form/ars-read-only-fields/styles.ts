@@ -5,7 +5,7 @@ export const styles = sva({
     base: {
         priceRow: {
             display: "grid",
-            gridTemplateColumns: { base: "1fr", md: "1fr 1fr auto" },
+            gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
             gap: "4",
         },
     },

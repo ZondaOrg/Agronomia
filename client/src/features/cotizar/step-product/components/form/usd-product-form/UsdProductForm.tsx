@@ -13,7 +13,7 @@ import { OptionalsSelector } from "../optionals-selector/OptionalsSelector";
 import { ProductPriceFields } from "../product-price-fields/ProductPriceFields";
 import type { StepProductFormValues } from "../product-schema";
 import { TotalPrice } from "../total-price/TotalPrice";
-import { currencyRow, dolarField, form } from "./styles";
+import { currencyRow, form } from "./styles";
 
 interface UsdProductFormProps {
     control: Control<StepProductFormValues>;
@@ -57,13 +57,11 @@ export const UsdProductForm = ({
                     />
                     {moneda === "ARS" && (
                         <>
-                            <div className={dolarField}>
-                                <DolarPriceField
-                                    value={official?.dolarPrice ?? null}
-                                    editable={status === "MANUAL"}
-                                    onApply={onApplyDolar}
-                                />
-                            </div>
+                            <DolarPriceField
+                                value={official?.dolarPrice ?? null}
+                                editable={status === "MANUAL"}
+                                onApply={onApplyDolar}
+                            />
                             <DolarStatus status={status} />
                         </>
                     )}
