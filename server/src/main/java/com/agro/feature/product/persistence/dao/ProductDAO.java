@@ -25,18 +25,27 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
             @Param("idProvider") Long idProvider,
             @Param("productName") String productName
     );
+
     @Query(
         "SELECT p " +
         "FROM Product p " +
-        "LEFT JOIN FETCH p.optionals " +
         "WHERE p.provider_id = :idProvider " +
-        "AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%')) " +
-        "ORDER BY p.name.value ASC"
+        "AND LOWER(p.name.value) LIKE LOWER(CONCAT('%', :search, '%')) "
     )
-    Page<Product> searchPagesOfProductsWith(
+    Page<Product> searchPagesOfProducts(
             @Param("search") String search,
             @Param("idProvider") Long idProvider,
             PageRequest pageRequest);
+
+    @Query(
+            "SELECT DISTINCT p " +
+            "FROM Product p " +
+            "LEFT JOIN FETCH p.optionals " +
+            "WHERE p IN :products " +
+            "ORDER BY p.name.value ASC"
+    )
+    List<Product> findProductsWithOptionals(
+            @Param("products") List<Product> products);
 
     @Query("""
             SELECT new com.agro.feature.product.persistence.projections.SearchProductProjection(p.id, p.name.value)
@@ -48,22 +57,6 @@ public interface ProductDAO extends JpaRepository<Product, Long> {
     List<SearchProductProjection> searchAllByProvider(
             @Param("providerId") Long providerId,
             @Param("search") String search);
-
-    @Query(
-            "SELECT p " +
-            "FROM Product p " +
-            "LEFT JOIN FETCH p.optionals " +
-            "WHERE p.id = :idProduct"
-    )
-    Optional<Product> findByIdWithOptionals(@Param("idProduct") Long id);
-
-    @Query(
-            """
-            FROM Product p
-            WHERE p.idType = :idType
-            """
-    )
-    Page<Product> findAllBYIdType(@Param("idType") Long idType, PageRequest pageRequest);
 
     @Query("""
             FROM Product p 

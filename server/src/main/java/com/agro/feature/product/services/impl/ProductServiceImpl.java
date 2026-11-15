@@ -12,10 +12,10 @@ import com.agro.feature.provider.contracts.ProviderDataService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,7 +53,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getPageOfProducts(Integer page, Integer size, String search, Long idProvider) {
-        return dao.searchPagesOfProductsWith(search, idProvider, PageRequest.of(page, size));
+        Page<Product> products = dao.searchPagesOfProducts(search, idProvider, PageRequest.of(page, size));
+        return products.isEmpty() ? products : new PageImpl<>(
+                dao.findProductsWithOptionals(products.getContent()),
+                products.getPageable(),
+                products.getTotalElements()
+        );
     }
 
 
