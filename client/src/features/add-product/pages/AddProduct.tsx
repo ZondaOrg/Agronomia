@@ -32,6 +32,7 @@ const AddProduct = () => {
                 submitLabel="Guardar producto"
                 onSubmit={handleSubmit}
                 onCancel={handleCancelNotify}
+                isContainer
             />
         </NotifyHandler>
     );

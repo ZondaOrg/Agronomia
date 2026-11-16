@@ -5,7 +5,7 @@ import { token } from "@styled-system/tokens";
 import Button from "../components/button/Button";
 import type { FormSectionHandle } from "./types/FormSection";
 import type { MultiFormSectionConfig } from "./types/MultiFormSection";
-import { container, actions, sectionHeader, title, subtitle } from "./sytles";
+import { container, actions, sectionHeader, title, subtitle, containerWithe } from "./sytles";
 import { renderSection } from "./RenderSection";
 
 interface MultiFormProps {
@@ -17,6 +17,7 @@ interface MultiFormProps {
     onCancel?: (isDirty: boolean) => void;
     submitLabel?: string;
     bordered?: boolean;
+    isContainer?: boolean
 }
 
 function MultiForm({
@@ -24,6 +25,7 @@ function MultiForm({
     onSubmit,
     onCancel,
     submitLabel = "Guardar",
+    isContainer = false
 }: MultiFormProps) {
     const refsMap = useRef<Map<number, FormSectionHandle | null>>(new Map());
 
@@ -58,7 +60,7 @@ function MultiForm({
     };
 
     return (
-        <section className={css(container)}>
+        <section className={css(isContainer ? containerWithe : container)}>
             {sections.map((section, index) => (
                 <div key={index}>
                     {(section.title || section.subtitle) && (
