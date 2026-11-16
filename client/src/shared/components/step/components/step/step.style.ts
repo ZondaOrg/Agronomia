@@ -1,5 +1,7 @@
 import { cva, type RecipeVariantProps } from "@styled-system/css";
 import { token } from "@styled-system/tokens";
+import { css } from "@styled-system/css";
+
 
 /**
  * Recipe del bloque de acciones del {@link Step}.
@@ -70,18 +72,20 @@ export const asideRowRecipe = cva({
     },
 });
 
-import { css } from "@styled-system/css";
+export const line = css({
+    borderColor: "borders.borderColor.line"
+})
 
 export const title = css({
-    fontSize: "24px",
-    fontWeight: "500",
+    fontSize: "22px",
     color: token("colors.textSubtle"),
 });
 
-export const subtitle = css({
-    fontSize: "sm",
-    fontWeight: "normal",
-    color: "#6B7280",
+export const subtitleStyles = css({
+    fontSize: "16px",
+    fontWeight: "semibold",
+    color: token("colors.textSubtle"),
+    borderColor: "borders.borderColor.line"
 });
 
 /** Variantes aceptadas por {@link actionsRecipe}. */

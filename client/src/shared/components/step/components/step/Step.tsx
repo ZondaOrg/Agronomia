@@ -8,8 +8,11 @@ import type { StepProps } from "./Step.types";
 import {
     actionsRecipe,
     asideRowRecipe,
+    line,
+    subtitleStyles,
     title as titleStyle,
 } from "./step.style";
+import { css } from "@styled-system/css";
 
 export type {
     ActionsPosition,
@@ -21,6 +24,7 @@ export type {
 export const Step = ({
     stepId,
     title,
+    subtitle,
     filter,
     form,
     extra,
@@ -64,6 +68,8 @@ export const Step = ({
     return (
         <>
             {title && <h2 className={titleStyle}>{title}</h2>}
+            <hr className={line}/>
+            {subtitle && <p className={subtitleStyles}>{subtitle}</p>}
             {actionsPosition === "top" && actionsBlock}
 
             {actionsPosition === "aside" && filter ? (
