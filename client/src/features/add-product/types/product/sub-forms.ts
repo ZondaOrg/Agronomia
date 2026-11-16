@@ -8,7 +8,6 @@ import type { ProductType } from "../../domain/product-type";
 const productSubForms = (productTypes: readonly ProductType[]) =>
     createSubForms([
         {
-            name: "Identificación",
             fields: [
                 [
                     { motive: "Producto", name: ADD_PRODUCT.name },
@@ -31,7 +30,6 @@ const productSubForms = (productTypes: readonly ProductType[]) =>
             ],
         },
         {
-            name: "Valores",
             fields: [
                 [
                     {

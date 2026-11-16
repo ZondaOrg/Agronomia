@@ -1,6 +1,18 @@
 import { css } from "@styled-system/css";
 import { token } from "@styled-system/tokens";
 
+export const containerWithe = css.raw({
+    padding: "24px",
+    boxSizing: "border-box",
+    border: "1px solid",
+    borderColor: "#E8E8E8",
+    borderRadius: "lg",
+    bg: "white",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
+});
+
 export const container = css.raw({
     display: "flex",
     flexDirection: "column",
