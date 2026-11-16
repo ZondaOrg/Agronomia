@@ -1,9 +1,10 @@
 import { RoleGuard } from "@/core/auth/components/RoleGuard";
-import { tab, tabPanel, tabsContainer, tabsList } from "../styles";
-import type { RouteTab } from "../types/Tabs";
+import { tab, tabsContainer, tabsList } from "../styles";
+import type { RouteTabProps } from "../types/Tabs";
 import { NavLink, Outlet } from "react-router";
+import { css } from "@styled-system/css";
 
-export const RouteTabs = ({ tabs }: { tabs: RouteTab[] }) => (
+export const RouteTabs = ({ tabs, styles }: RouteTabProps) => (
     <section className={tabsContainer}>
         <div
             className={tabsList}
@@ -27,7 +28,7 @@ export const RouteTabs = ({ tabs }: { tabs: RouteTab[] }) => (
             ))}
         </div>
         <div
-            className={tabPanel}
+            className={css(styles)}
             role="tabpanel"
         >
             <Outlet />
