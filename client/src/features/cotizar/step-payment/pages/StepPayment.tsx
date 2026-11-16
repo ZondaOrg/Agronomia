@@ -1,49 +1,15 @@
-import { useEffect, useMemo } from "react";
-import { useAppSelector } from "@/core/store/hooks";
-import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
-import { selectFormValores } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import { Step } from "@/shared/components/step/components/step/Step";
 import DataField from "@/shared/components/dataField/DataField";
 import { FormPayment } from "../components/form/FormPayment";
-import { useStep3Preview } from "../hooks/use-step3-preview";
+import { useStepPayment } from "../hooks/use-step-payment";
 import { optionalList, preview, previewFields } from "./styles";
-import { PROVIDER } from "../../step-product/components/filter/types/inputs";
 
 interface StepPaymentProps {
     stepId: string;
 }
 
-const PRODUCT_STEP_ID = "2";
-
 export const StepPayment = ({ stepId }: StepPaymentProps) => {
-    const { data, error, getPreview, loading } = useStep3Preview();
-
-    const providerId = useAppSelector((s) =>
-        selectFilterValue(s, PRODUCT_STEP_ID, PROVIDER),
-    );
-
-    const productFormValues = useAppSelector((s) =>
-        selectFormValores(s, PRODUCT_STEP_ID),
-    );
-
-    const productId = productFormValues?.producto;
-    const flete = productFormValues?.flete;
-
-    const opcionales = useMemo(() => {
-        return Array.isArray(productFormValues?.opcionales)
-            ? (productFormValues.opcionales as number[])
-            : [];
-    }, [productFormValues?.opcionales]);
-
-    useEffect(() => {
-        if (providerId && productId) {
-            getPreview({
-                idProvider: Number(providerId),
-                idProduct: Number(productId),
-                idOptionals: opcionales,
-            });
-        }
-    }, [getPreview, providerId, productId, opcionales]);
+    const { data, error, loading, flete, total, moneda } = useStepPayment();
 
     return (
         <Step
@@ -96,6 +62,14 @@ export const StepPayment = ({ stepId }: StepPaymentProps) => {
                                         <li>Ninguno</li>
                                     )}
                                 </ul>
+                            }
+                        />
+                        <DataField
+                            label="Monto total"
+                            value={
+                                total !== undefined
+                                    ? `$${total.toLocaleString("es-AR")} ${moneda ?? ""}`.trim()
+                                    : "—"
                             }
                         />
                         {error && (
