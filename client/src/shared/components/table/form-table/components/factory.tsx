@@ -8,10 +8,12 @@ interface TableInputProps {
     error?: string;
 }
 
-const { container,inputContainer, inputInto, errorStyle } = styles();
-
 const SelectInput = ({ input, registration, error }: TableInputProps) => {
     if (input.type !== "select") return null;
+
+    const { container, inputContainer, inputInto, errorStyle } = styles({
+        error: !!error,
+    });
 
     return (
         <div className={container}>
@@ -38,7 +40,12 @@ const SelectInput = ({ input, registration, error }: TableInputProps) => {
     );
 };
 
-const TextInput = ({ input, registration, error }: TableInputProps) => (
+const TextInput = ({ input, registration, error }: TableInputProps) => {
+    const { container, inputContainer, inputInto, errorStyle } = styles({
+        error: !!error,
+    });
+
+    return (
     <div className={container}>
         <div className={inputContainer}>
             <input
@@ -53,9 +60,15 @@ const TextInput = ({ input, registration, error }: TableInputProps) => (
                     <span className={errorStyle}>{error}</span>
                 )}
     </div>
-);
+    );
+};
 
-const NumberInput = ({ input, registration, error }: TableInputProps) => (
+const NumberInput = ({ input, registration, error }: TableInputProps) => {
+    const { container, inputContainer, inputInto, errorStyle } = styles({
+        error: !!error,
+    });
+
+    return (
     <div className={container}>
         <div className={inputContainer}>
             <input
@@ -71,7 +84,8 @@ const NumberInput = ({ input, registration, error }: TableInputProps) => (
                 <span className={errorStyle}>{error}</span>
             )}
     </div>
-);
+    );
+};
 
 export const FormTableInput = (props: TableInputProps) => {
     switch (props.input.type) {

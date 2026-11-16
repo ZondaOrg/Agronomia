@@ -34,5 +34,12 @@ export const styles = sva({
         inputContainer: inputContainer,
         inputInto: inputInto,
         errorStyle: errorStyle
-    }
+    },
+    variants: {
+        error: {
+            true: {
+                inputContainer: { borderColor: token("colors.danger") },
+            },
+        },
+    },
 })
