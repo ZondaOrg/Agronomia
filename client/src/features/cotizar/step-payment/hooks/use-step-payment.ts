@@ -3,6 +3,7 @@ import { useAppSelector } from "@/core/store/hooks";
 import { selectFilterValue } from "@/features/cotizar/store/filterChain/filter-chain.selectors";
 import { selectFormValores } from "@/features/cotizar/store/hidratationForm/hidratation-selectors";
 import { PROVIDER } from "../../step-product/components/filter/types/inputs";
+import type { PaymentSummary } from "../domain/payment-summary";
 import { useGetPreview } from "./use-get-preview";
 
 const PRODUCT_STEP_ID = "2";
@@ -44,5 +45,19 @@ export const useStepPayment = () => {
         opcionales,
     );
 
-    return { data, error, loading, flete, total, moneda };
+    const summary: PaymentSummary = {
+        providerName: data?.nameProvider,
+        productName: data?.nameProduct,
+        includesFreight: flete === "INCLUDED",
+        optionals: data?.nameOptionals ?? [],
+        total,
+        currency: moneda,
+    };
+
+    return {
+        summary,
+        payments: data?.vigentePayment ?? [],
+        error,
+        loading,
+    };
 };
