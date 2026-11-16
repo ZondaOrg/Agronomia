@@ -1,6 +1,7 @@
 package com.agro.feature.auth.filters;
 
 import com.agro.core.api.Api;
+import com.agro.feature.auth.domain.exceptions.UserNotFound;
 import com.agro.feature.auth.entrypoints.JwtEntryPoint;
 import com.agro.feature.auth.services.cookie.RefreshCookieService;
 import com.agro.feature.auth.services.jwt.JwtService;
@@ -62,6 +63,9 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (TokenException e) {
             request.setAttribute(JwtEntryPoint.CAUSE_ATTRIBUTE, e.getCauseError());
+            SecurityContextHolder.clearContext();
+        } catch (UserNotFound e) {
+            request.setAttribute(JwtEntryPoint.CAUSE_ATTRIBUTE, CauseError.INVALID_SESSION);
             SecurityContextHolder.clearContext();
         }
         filterChain.doFilter(request, response);

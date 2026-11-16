@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { isAuthenticate } from "@/core/server/services/jwt/jwt";
+import { hasToken } from "@/core/server/services/jwt/jwt";
 
 interface AuthState {
     isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
-    isAuthenticated: isAuthenticate(),
+    isAuthenticated: hasToken(),
 };
 
 const authSlice = createSlice({

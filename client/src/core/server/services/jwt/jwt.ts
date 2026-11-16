@@ -15,12 +15,11 @@ export function getToken() {
     return localStorage.getItem(TOKEN_KEY);
 }
 
-/* 
-    PROPÓSITO: Indica si el usuario tiene token y si no expiró
+/*
+    PROPÓSITO: Indica si hay un token guardado.
 */
-export function isAuthenticate(): boolean {
-    const token = localStorage.getItem(TOKEN_KEY);
-    return token ? !isExpirate(token) : false;
+export function hasToken(): boolean {
+    return localStorage.getItem(TOKEN_KEY) !== null;
 }
 
 /* 
@@ -38,10 +37,5 @@ export function getSubject(): string {
     const token = localStorage.getItem(TOKEN_KEY);
     const { sub } = jwtDecode<JwtPayload>(token!);
     return sub!;
-}
-
-function isExpirate(token: string): boolean {
-    const { exp } = jwtDecode<JwtPayload>(token);
-    return Date.now() > exp! * 1000;
 }
 

@@ -5,7 +5,6 @@ import com.agro.feature.auth.domain.Auth;
 import com.agro.feature.auth.dtos.AuthMapper;
 import com.agro.feature.auth.dtos.response.AuthResponse;
 import com.agro.feature.auth.orchestrator.session.SessionOrchestrator;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -28,7 +27,6 @@ public class SessionControllerREST {
 
         return ResponseEntity.ok()
                 .header("Authorization", "Bearer " + auth.accessToken())
-                .header(HttpHeaders.SET_COOKIE, auth.refreshCookie().toString())
                 .body(AuthMapper.INSTANCE.modelToDto(auth));
     }
 }

@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
 
     const isVercelPreview = process.env.VERCEL_ENV === "preview";
     const prNumber = process.env.VERCEL_GIT_PULL_REQUEST_ID;
+    const isVercelProduction = process.env.VERCEL_ENV === "production";
 
     const apiBaseUrl =
         isVercelPreview && prNumber
@@ -23,7 +24,9 @@ export default defineConfig(({ mode }) => {
         },
         plugins: [react()],
         define: {
-            "import.meta.env.VITE_API_BASE_URL": JSON.stringify(apiBaseUrl),
+            "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
+                isVercelProduction ? "" : apiBaseUrl,
+            ),
         },
         server: {
             proxy: {
