@@ -6,14 +6,7 @@ const EMPTY = "—";
 const LOADING = "Cargando...";
 
 export const buildSummaryFields = (
-    {
-        providerName,
-        productName,
-        includesFreight,
-        optionals,
-        total,
-        currency,
-    }: PaymentSummary,
+    { providerName, productName, includesFreight, optionals }: PaymentSummary,
     loading: boolean,
 ): SummaryField[] => [
     {
@@ -31,12 +24,5 @@ export const buildSummaryFields = (
     {
         label: "Opcionales",
         value: <OptionalsList optionals={optionals} />,
-    },
-    {
-        label: "Monto total",
-        value:
-            total !== undefined
-                ? `$${total.toLocaleString("es-AR")} ${currency ?? ""}`.trim()
-                : EMPTY,
     },
 ];
