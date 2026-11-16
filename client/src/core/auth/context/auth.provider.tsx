@@ -4,7 +4,7 @@ import login from "../services/login";
 import logout from "../services/logout";
 import useFetch from "@/shared/hooks/use-fetch/useFetch.hook";
 import type { User } from "@/shared/domain/user/user";
-import { isAuthenticate } from "@/core/server/services/jwt/jwt";
+import { hasToken } from "@/core/server/services/jwt/jwt";
 import { useAppDispatch, useAppSelector } from "@/core/store/hooks";
 import authenticateUser from "../services/authenticate-user";
 import type { Credentials } from "../types/credentials";
@@ -24,7 +24,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     useEffect(() => {
         function fn() {
-            if (isAuthenticate()) execute(authenticateUser)();
+            if (hasToken()) execute(authenticateUser)();
         }
         fn();
     }, [execute]);
