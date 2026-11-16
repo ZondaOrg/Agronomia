@@ -4,8 +4,8 @@ import { token } from "@styled-system/tokens";
 const form = css.raw({
     display: "grid",
     gridTemplateRows: "repeat(auto-fit, 1fr)",
-    placeItems: "center",
     width: "100%",
+    maxWidth: "500px",
     gap: "2rem",
 });
 

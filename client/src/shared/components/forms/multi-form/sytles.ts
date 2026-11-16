@@ -1,38 +1,38 @@
- import { token } from "@styled-system/tokens";
+import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
-export const container = {
+export const container = css.raw({
     display: "flex",
-    flexDirection: "column" as const,
-    gap: "1rem",
+    flexDirection: "column",
+    gap: "2rem",
     width: "100%",
     minHeight: "100px",
-};
+});
 
-export const sectionHeader = {
+export const sectionHeader = css.raw({
     display: "flex",
-    flexDirection: "column" as const,
+    flexDirection: "column",
     gap: "0.25rem",
     marginBottom: "1rem",
-};
+});
 
-export const title = {
+export const title = css.raw({
     fontWeight: "600",
     fontSize: "24px",
-    bold: true,
     color: token("colors.textSubtle"),
-};
+});
 
-export const subtitle = {
+export const subtitle = css.raw({
     fontSize: "0.875rem",
     color: token("colors.textSubtle"),
-};
+});
 
-export const actions = {
+export const actions = css.raw({
     width: "90%",
     height: "20%",
     minHeight: "38px",
     display: "flex",
-    flexDirection: "row" as const,
+    flexDirection: "row",
     alignItems: "center",
     gap: "0.75rem",
-};
+});
