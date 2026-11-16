@@ -78,7 +78,6 @@ export const UpdateVigentPayment = ({
             notify={notify}
             action={action}
             isCancel={isCancel}
-            isBack={true}
             refresh={onRefresh}
             onCancel={handleCancelNotify}
             onSuccess={handleSuccessClose}

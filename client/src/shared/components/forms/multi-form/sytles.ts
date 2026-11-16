@@ -1,4 +1,4 @@
-// import { token } from "@styled-system/tokens";
+ import { token } from "@styled-system/tokens";
 
 export const container = {
     display: "flex",
@@ -17,13 +17,14 @@ export const sectionHeader = {
 
 export const title = {
     fontWeight: "600",
-    fontSize: "1rem",
+    fontSize: "24px",
     bold: true,
+    color: token("colors.textSubtle"),
 };
 
 export const subtitle = {
     fontSize: "0.875rem",
-    color: "text.muted",
+    color: token("colors.textSubtle"),
 };
 
 export const actions = {
