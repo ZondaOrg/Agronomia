@@ -1,5 +1,6 @@
 import type { InputData } from "@/shared/types/input/input";
 import type { UseFormRegisterReturn } from "react-hook-form";
+import { styles } from "./styles";
 
 interface TableInputProps {
     input: InputData;
@@ -7,57 +8,68 @@ interface TableInputProps {
     error?: string;
 }
 
+const { container,inputContainer, inputInto, errorStyle } = styles();
+
 const SelectInput = ({ input, registration, error }: TableInputProps) => {
     if (input.type !== "select") return null;
 
     return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-            <select
-                disabled={input.disabled}
-                {...registration}
-            >
-                {input.options.map((option) => (
-                    <option
-                        key={option.id}
-                        value={option.value}
-                    >
-                        {option.label}
-                    </option>
-                ))}
-            </select>
+        <div className={container}>
+            <div className={inputContainer}>
+                <select
+                    disabled={input.disabled}
+                    {...registration}
+                    className={inputInto}
+                >
+                    {input.options.map((option) => (
+                        <option
+                            key={option.id}
+                            value={option.value}
+                        >
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
             {error && (
-                <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
-            )}
+                    <span className={errorStyle}>{error}</span>
+                )}
         </div>
     );
 };
 
 const TextInput = ({ input, registration, error }: TableInputProps) => (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-        <input
-            type={input.type}
-            placeholder={input.placeholder}
-            disabled={input.disabled}
-            {...registration}
-        />
+    <div className={container}>
+        <div className={inputContainer}>
+            <input
+                type={input.type}
+                placeholder={input.placeholder}
+                disabled={input.disabled}
+                className={inputInto}
+                {...registration}
+            />
+        </div>
         {error && (
-            <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
-        )}
+                    <span className={errorStyle}>{error}</span>
+                )}
     </div>
 );
 
 const NumberInput = ({ input, registration, error }: TableInputProps) => (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-        <input
-            type="number"
-            step="any"
-            placeholder={input.placeholder}
-            disabled={input.disabled}
-            {...registration}
-        />
+    <div className={container}>
+        <div className={inputContainer}>
+            <input
+                type="number"
+                step="any"
+                className={inputInto}
+                placeholder={input.placeholder}
+                disabled={input.disabled}
+                {...registration}
+            />
+        </div>
         {error && (
-            <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
-        )}
+                <span className={errorStyle}>{error}</span>
+            )}
     </div>
 );
 
