@@ -38,7 +38,10 @@ export const styles = sva({
     variants: {
         error: {
             true: {
-                inputContainer: { borderColor: token("colors.danger") },
+                inputContainer: { 
+                    borderColor: token("colors.danger"),
+                    border: "1.5px solid", 
+                },
             },
         },
     },
