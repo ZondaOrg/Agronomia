@@ -66,6 +66,7 @@ function MultiForm({
                             {section.title && (
                                 <p className={css(title)}>{section.title}</p>
                             )}
+                            <hr className={css( {color: token("colors.textMuted")} )} />
                             {section.subtitle && (
                                 <p className={css(subtitle)}>
                                     {section.subtitle}

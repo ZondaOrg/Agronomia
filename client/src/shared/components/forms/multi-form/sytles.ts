@@ -12,12 +12,12 @@ export const container = css.raw({
 export const sectionHeader = css.raw({
     display: "flex",
     flexDirection: "column",
-    gap: "0.25rem",
-    marginBottom: "1rem",
+    gap: "1rem",
+    marginBottom: "1.5rem",
 });
 
 export const title = css.raw({
-    fontWeight: "600",
+    fontWeight: "400",
     fontSize: "24px",
     color: token("colors.textSubtle"),
 });
