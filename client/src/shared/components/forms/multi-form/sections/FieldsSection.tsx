@@ -3,12 +3,13 @@ import { useForm, useFormState } from "react-hook-form";
 import type { ValidationFormProps } from "../../validation-form/validation-form";
 import type { InferData, Schema } from "../../validation-form/shema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputWithMaxWidth, styles } from "../../validation-form/styles";
 import { css } from "@styled-system/css";
 import { useImperativeHandle } from "react";
 import type { SubFormData } from "../../types/sub-form";
 import SubForm from "../../validation-form/components/subforms/SubForm";
 import type { FormSectionHandle } from "../types/FormSection";
+import { inputWithMaxWidth, styles } from "../../validation-form/styles";
+import { form } from "./styles";
 
 type FieldsSectionProps<T extends Schema> = Pick<
     ValidationFormProps<T>,
@@ -59,7 +60,7 @@ function FieldsSection<T extends Schema>({
         [isDirty, trigger, getValues, reset],
     );
 
-    const { form, input, row } = styles;
+    const { input, row } = styles;
 
     return (
         <div className={css(form)}>
