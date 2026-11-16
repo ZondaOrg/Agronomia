@@ -8,6 +8,7 @@ import type { ProductType } from "../domain/product-type";
 
 export const productSections = (productTypes: ProductType[]) => [
     composeSection({
+        title: "Identificación",
         subForms: productSubForms(productTypes),
         schema: productSchema,
     }),
