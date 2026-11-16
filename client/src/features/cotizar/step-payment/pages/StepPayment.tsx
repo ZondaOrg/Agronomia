@@ -90,7 +90,7 @@ export const StepPayment = ({ stepId }: StepPaymentProps) => {
                                 <ul className={optionalList}>
                                     {data?.nameOptionals?.length ? (
                                         data.nameOptionals.map((optional) => (
-                                            <li key={optional}>{optional}</li>
+                                            <li key={optional}>{optional}{data?.nameOptionals.indexOf(optional) === data?.nameOptionals.length - 1 ? "" : ","}</li>
                                         ))
                                     ) : (
                                         <li>Ninguno</li>

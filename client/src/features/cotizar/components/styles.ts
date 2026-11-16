@@ -1,4 +1,5 @@
 import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 export const container = css({
     display: "flex",
@@ -15,7 +16,7 @@ export const container = css({
 });
 
 export const title = css({
-    fontSize: "xl",
+    fontSize: "26px",
     fontWeight: "semibold",
-    color: "#18181B",
+    color: token("colors.textSubtle"),
 });

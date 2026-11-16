@@ -25,8 +25,6 @@ export const previewFields = css({
 
 export const optionalList = css({
     display: "flex",
-    flexDirection: "column",
     gap: "1",
     margin: 0,
-    paddingLeft: "4",
 });
