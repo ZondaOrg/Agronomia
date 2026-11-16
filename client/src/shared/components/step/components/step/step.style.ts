@@ -78,7 +78,7 @@ export const line = css({
 
 export const title = css({
     fontSize: "22px",
-    color: token("colors.textSubtle"),
+    color: token("colors.textMuted"),
 });
 
 export const subtitleStyles = css({

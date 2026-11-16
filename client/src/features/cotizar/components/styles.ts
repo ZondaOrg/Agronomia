@@ -3,7 +3,7 @@ import { css } from "@styled-system/css";
 export const container = css({
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "20px",
     width: "100%",
     maxWidth: "900px",
     boxSizing: "border-box",

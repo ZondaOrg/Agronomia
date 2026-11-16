@@ -1,27 +1,30 @@
 import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 const section = css({
     borderTop: "1px solid #E5E7EB",
-    marginTop: "16px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
     paddingTop: "12px",
 });
 
 const title = css({
-    color: "#6B7280",
-    fontSize: "sm",
+    fontSize: "24px",
+    color: token("colors.textSubtle"),
     fontWeight: "normal",
 });
 
 const label = css({
     color: "#6B7280",
     display: "block",
-    fontSize: "xs",
     marginBottom: "4px",
 });
 
 const textarea = css({
-    border: "1px solid #D1D5DB",
+    border: "1px solid #545454",
     borderRadius: "6px",
+    outline: "none",
     boxSizing: "border-box",
     fontSize: "xs",
     minHeight: "92px",
@@ -50,6 +53,7 @@ export const AdditionalInformation = ({
         <h2 id="additional-information-title" className={title}>
             Información adicional
         </h2>
+        <hr className={css({ borderColor: token("colors.textMuted")})}/>
         <label className={label} htmlFor="observations">
             Observaciones
         </label>

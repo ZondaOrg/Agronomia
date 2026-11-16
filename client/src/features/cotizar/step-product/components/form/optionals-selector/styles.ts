@@ -26,7 +26,7 @@ export const styles = sva({
         },
         sectionDivider: {
             width: "100%",
-            borderColor: "borders.borderColor.line",
+            borderColor: token("colors.textMuted"),
         },
         field: {
             display: "flex",
