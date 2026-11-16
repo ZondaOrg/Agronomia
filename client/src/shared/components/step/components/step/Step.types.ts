@@ -24,6 +24,9 @@ export interface StepProps {
     /** Título que se muestra al inicio del paso. */
     title?: string;
 
+    /** Subtitulo que se muestra al inicio del paso. */
+    subtitle?: string
+
     /** Filtro del paso. */
     filter?: ReactNode;
 

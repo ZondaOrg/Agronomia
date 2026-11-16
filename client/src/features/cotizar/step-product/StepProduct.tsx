@@ -82,6 +82,8 @@ export const StepProduct = ({ stepId }: StepProductProps) => {
     return (
         <Step
             stepId={stepId}
+            title="Agregá el tipo de producto a cotizar"
+            subtitle="Todos los campos con asterisco son obligatorios para continuar"
             filter={
                 <FilterProduct
                     stepId={stepId}
