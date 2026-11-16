@@ -1,4 +1,5 @@
 import { css } from "@styled-system/css";
+import { token } from "@styled-system/tokens";
 
 export const fieldContainer = css({
     display: "flex",
@@ -8,9 +9,8 @@ export const fieldContainer = css({
 });
 
 export const labelStyle = css({
-    fontSize: "12px",
-    fontWeight: "900",
-    color: "#9CA3AF",
+    fontSize: "14px",
+    color: token("colors.textSubtle"),
     lineHeight: "1.2",
 });
 

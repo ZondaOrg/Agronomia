@@ -18,7 +18,7 @@ export const styles = sva({
         },
         sectionDivider: {
             width: "100%",
-            borderColor: "borders.borderColor.line",
+            borderColor: token("colors.textMuted"),
         },
         label: {
             color: "gray.700",
